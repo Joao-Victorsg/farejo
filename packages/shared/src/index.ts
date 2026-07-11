@@ -1,3 +1,5 @@
 export type { RawOffer, RunScope, ScrapeResult, PlatformAdapter } from "./contract.js";
 export { createClient } from "./db.js";
 export type { Database, Tables, TablesInsert, TablesUpdate } from "./database.types.js";
+export { ParseError, parseReward } from "./reward.js";
+export type { Reward } from "./reward.js";
