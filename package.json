@@ -8,7 +8,11 @@
   },
   "scripts": {
     "typecheck": "pnpm -r typecheck",
-    "test": "vitest run"
+    "test": "vitest run",
+    "db:start": "supabase start",
+    "db:stop": "supabase stop",
+    "db:reset": "supabase db reset",
+    "db:types": "supabase gen types typescript --local > packages/shared/src/database.types.ts"
   },
   "devDependencies": {
     "typescript": "^5.7.0",
