@@ -1,0 +1,588 @@
+[
+  {
+    "a": "clinique",
+    "b": "cliniquebrasil",
+    "sitesA": [
+      "inter",
+      "zoom",
+      "mycashback"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "umbro",
+    "b": "umbrobrasil",
+    "sitesA": [
+      "inter",
+      "mycashback",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "zoom"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "puma",
+    "b": "pumabrasil",
+    "sitesA": [
+      "inter",
+      "zoom",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "mycashback"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "tanara",
+    "b": "tanarabrasil",
+    "sitesA": [
+      "inter",
+      "mycashback"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "midea",
+    "b": "mideastore",
+    "sitesA": [
+      "inter",
+      "mycashback",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "zoom"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "fila",
+    "b": "filabrasil",
+    "sitesA": [
+      "inter",
+      "mycashback",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "zoom"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "converse",
+    "b": "conversebr",
+    "sitesA": [
+      "cuponomia"
+    ],
+    "sitesB": [
+      "inter"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "lojasrenner",
+    "b": "renner",
+    "sitesA": [
+      "cuponomia"
+    ],
+    "sitesB": [
+      "inter",
+      "zoom",
+      "mycashback"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "adidas",
+    "b": "adidasbrasil",
+    "sitesA": [
+      "zoom",
+      "mycashback",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "inter"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "narscosmetics",
+    "b": "narscosmeticsbr",
+    "sitesA": [
+      "inter",
+      "mycashback",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "zoom"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "decantervinhos",
+    "b": "decantervinhosbr",
+    "sitesA": [
+      "inter",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "zoom"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "lojaspompeia",
+    "b": "pompeia",
+    "sitesA": [
+      "mycashback",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "inter"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "lg",
+    "b": "lojaonlinelg",
+    "sitesA": [
+      "inter",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "zoom"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "elements",
+    "b": "elementsbr",
+    "sitesA": [
+      "zoom",
+      "mycashback",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "inter"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "insider",
+    "b": "insiderstore",
+    "sitesA": [
+      "inter",
+      "zoom"
+    ],
+    "sitesB": [
+      "mycashback",
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "dji",
+    "b": "lojadjibrasil",
+    "sitesA": [
+      "inter"
+    ],
+    "sitesB": [
+      "mycashback"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "brastemp",
+    "b": "brastempstore",
+    "sitesA": [
+      "inter",
+      "zoom",
+      "mycashback"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "arno",
+    "b": "arnobrasil",
+    "sitesA": [
+      "inter",
+      "zoom",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "mycashback"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "sharkninja",
+    "b": "sharkninjabrasil",
+    "sitesA": [
+      "inter",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "mycashback"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "lojaslebes",
+    "b": "lojaslebesbr",
+    "sitesA": [
+      "inter",
+      "mycashback",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "zoom"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "grancursos",
+    "b": "grancursosonline",
+    "sitesA": [
+      "inter"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "dutramaquinas",
+    "b": "dutramaquinasbr",
+    "sitesA": [
+      "inter",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "zoom"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "consul",
+    "b": "consulstore",
+    "sitesA": [
+      "inter",
+      "zoom",
+      "mycashback"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "nike",
+    "b": "nikestore",
+    "sitesA": [
+      "inter",
+      "zoom",
+      "mycashback"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "samsclub",
+    "b": "samsclubbr",
+    "sitesA": [
+      "cuponomia"
+    ],
+    "sitesB": [
+      "inter"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "castor",
+    "b": "lojacastor",
+    "sitesA": [
+      "inter"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "lojastorra",
+    "b": "torra",
+    "sitesA": [
+      "inter",
+      "zoom",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "mycashback"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "cellfy",
+    "b": "cellfybrasil",
+    "sitesA": [
+      "inter",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "mycashback"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "universalmusic",
+    "b": "universalmusicstore",
+    "sitesA": [
+      "cuponomia"
+    ],
+    "sitesB": [
+      "inter"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "brinoxshop",
+    "b": "lojaoficialbrinox",
+    "sitesA": [
+      "zoom",
+      "mycashback"
+    ],
+    "sitesB": [
+      "inter"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "brinox",
+    "b": "lojaoficialbrinox",
+    "sitesA": [
+      "cuponomia"
+    ],
+    "sitesB": [
+      "inter"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "brinox",
+    "b": "brinoxshop",
+    "sitesA": [
+      "cuponomia"
+    ],
+    "sitesB": [
+      "zoom",
+      "mycashback"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "colombo",
+    "b": "lojascolombo",
+    "sitesA": [
+      "cuponomia"
+    ],
+    "sitesB": [
+      "inter",
+      "mycashback"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "shopee",
+    "b": "shopeebrasil",
+    "sitesA": [
+      "inter",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "mycashback"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "claroloja",
+    "b": "lojaclaro",
+    "sitesA": [
+      "cuponomia"
+    ],
+    "sitesB": [
+      "zoom"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "skinceuticals",
+    "b": "skinceuticalsbrasil",
+    "sitesA": [
+      "mycashback"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "lebiscuit",
+    "b": "lojaslebiscuit",
+    "sitesA": [
+      "mycashback"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "playstation",
+    "b": "playstationstore",
+    "sitesA": [
+      "mycashback"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "lojapegada",
+    "b": "pegada",
+    "sitesA": [
+      "mycashback"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "bio2",
+    "b": "lojabio2",
+    "sitesA": [
+      "mycashback"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "qcy",
+    "b": "qcybrasil",
+    "sitesA": [
+      "cuponomia"
+    ],
+    "sitesB": [
+      "mycashback"
+    ],
+    "signal": "decorador",
+    "score": 1
+  },
+  {
+    "a": "drogariapacheco",
+    "b": "drogariaspacheco",
+    "sitesA": [
+      "inter"
+    ],
+    "sitesB": [
+      "mycashback",
+      "cuponomia"
+    ],
+    "signal": "levenshtein",
+    "score": 0.9375
+  },
+  {
+    "a": "farmaciasaojoao",
+    "b": "farmaciassaojoao",
+    "sitesA": [
+      "inter",
+      "mycashback"
+    ],
+    "sitesB": [
+      "cuponomia"
+    ],
+    "signal": "levenshtein",
+    "score": 0.9375
+  },
+  {
+    "a": "drogariastamoio",
+    "b": "drogariatamoio",
+    "sitesA": [
+      "mycashback",
+      "cuponomia"
+    ],
+    "sitesB": [
+      "inter"
+    ],
+    "signal": "levenshtein",
+    "score": 0.9333333333333333
+  },
+  {
+    "a": "discovercars",
+    "b": "discoverycars",
+    "sitesA": [
+      "inter"
+    ],
+    "sitesB": [
+      "mycashback"
+    ],
+    "signal": "levenshtein",
+    "score": 0.9230769230769231
+  }
+]

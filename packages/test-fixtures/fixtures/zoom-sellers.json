@@ -1,0 +1,5736 @@
+[
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 1582,
+      "offerRates": null,
+      "originId": null
+    },
+    "countOfCoupons": 1,
+    "id": "1582",
+    "leadOfferId": "604775383",
+    "leadPath": "/lead?mid=1582&oid=604775383",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/1582-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/1582-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/merchant_1582_1397758033601.com"
+    },
+    "name": "Amazon",
+    "objectID": "seller1582",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/amazon-1582/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/amazon-1582",
+      "rulesPage": "/cupom-de-desconto/amazon-1582/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22906,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22906",
+    "leadOfferId": "1445187814",
+    "leadPath": "/lead?mid=22906&oid=1445187814",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22906-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22906-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Magazine Luiza",
+    "objectID": "seller22906",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/magazine-luiza-22906/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/magazine-luiza-22906",
+      "rulesPage": "/cupom-de-desconto/magazine-luiza-22906/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 34,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "34",
+    "leadOfferId": "586153110",
+    "leadPath": "/lead?mid=34&oid=586153110",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/34-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/34-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/19/10/1147143197.jpg"
+    },
+    "name": "Casas Bahia",
+    "objectID": "seller34",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/casas-bahia-34/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/casas-bahia-34",
+      "rulesPage": "/cupom-de-desconto/casas-bahia-34/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 5,
+      "offerRates": {
+        "max": 0.06,
+        "min": 0.06
+      },
+      "originId": null
+    },
+    "id": "5",
+    "leadOfferId": "1203997334",
+    "leadPath": "/lead?mid=5&oid=1203997334",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/5-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/5-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/1f/39/46317555.jpg"
+    },
+    "name": "Fast Shop",
+    "objectID": "seller5",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/fast-shop-5/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/fast-shop-5",
+      "rulesPage": "/cupom-de-desconto/fast-shop-5/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 4,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "4",
+    "leadOfferId": "586200962",
+    "leadPath": "/lead?mid=4&oid=586200962",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/4-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/4-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/c/2d/51162925.jpg"
+    },
+    "name": "Ponto",
+    "objectID": "seller4",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/ponto-4/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/ponto-4",
+      "rulesPage": "/cupom-de-desconto/ponto-4/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 2,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "2",
+    "leadOfferId": "586183068",
+    "leadPath": "/lead?mid=2&oid=586183068",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/2-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/2-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/13/2d/51162920.jpg"
+    },
+    "name": "Extra",
+    "objectID": "seller2",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/extra-2/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/extra-2",
+      "rulesPage": "/cupom-de-desconto/extra-2/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.08,
+      "bestFormula": 0.08,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 8,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "8",
+    "leadOfferId": "586150470",
+    "leadPath": "/lead?mid=8&oid=586150470",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/8-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/8-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/3/37/71722560.jpg"
+    },
+    "name": "Brastemp",
+    "objectID": "seller8",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/brastemp-8/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/brastemp-8",
+      "rulesPage": "/cupom-de-desconto/brastemp-8/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 50,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "50",
+    "leadOfferId": "586166342",
+    "leadPath": "/lead?mid=50&oid=586166342",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/50-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/50-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/1e/39/46317077.jpg"
+    },
+    "name": "Consul",
+    "objectID": "seller50",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/consul-50/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/consul-50",
+      "rulesPage": "/cupom-de-desconto/consul-50/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 1240,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "1240",
+    "leadOfferId": "586164461",
+    "leadPath": "/lead?mid=1240&oid=586164461",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/1240-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/1240-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/3/18/-579932560.jpg"
+    },
+    "name": "Compra Certa",
+    "objectID": "seller1240",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/compra-certa-1240/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/compra-certa-1240",
+      "rulesPage": "/cupom-de-desconto/compra-certa-1240/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21",
+    "leadOfferId": "667244075",
+    "leadPath": "/lead?mid=21&oid=667244075",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/31/2c/46282463.jpg"
+    },
+    "name": "KaBuM!",
+    "objectID": "seller21",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/kabum!-21/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/kabum!-21",
+      "rulesPage": "/cupom-de-desconto/kabum!-21/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 17608,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "17608",
+    "leadOfferId": "1198081273",
+    "leadPath": "/lead?mid=17608&oid=1198081273",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/17608-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/17608-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/18/13/2070014853.jpg"
+    },
+    "name": "Loja Online LG",
+    "objectID": "seller17608",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/loja-online-lg-17608/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/loja-online-lg-17608",
+      "rulesPage": "/cupom-de-desconto/loja-online-lg-17608/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 5420,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "5420",
+    "leadOfferId": "1359911464",
+    "leadPath": "/lead?mid=5420&oid=1359911464",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/5420-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/5420-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/16/32/118266600.jpg"
+    },
+    "name": "Electrolux",
+    "objectID": "seller5420",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/electrolux-5420/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/electrolux-5420",
+      "rulesPage": "/cupom-de-desconto/electrolux-5420/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21286,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21286",
+    "leadOfferId": "1278481743",
+    "leadPath": "/lead?mid=21286&network_id=AWIN&oid=1278481743",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21286-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21286-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Carrefour",
+    "objectID": "seller21286",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/carrefour-21286/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/carrefour-21286",
+      "rulesPage": "/cupom-de-desconto/carrefour-21286/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.13,
+      "bestFormula": 0.13,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20906,
+      "offerRates": null,
+      "originId": null
+    },
+    "countOfCoupons": 1,
+    "id": "20906",
+    "leadOfferId": "934140189",
+    "leadPath": "/lead?mid=20906&network_id=RAKUTEN&oid=934140189",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20906-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20906-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/1d/13/2070014786.jpg"
+    },
+    "name": "Natura",
+    "objectID": "seller20906",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/natura-20906/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/natura-20906",
+      "rulesPage": "/cupom-de-desconto/natura-20906/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 245,
+      "offerRates": null,
+      "originId": null
+    },
+    "countOfCoupons": 6,
+    "id": "245",
+    "leadOfferId": "586204233",
+    "leadPath": "/lead?mid=245&oid=586204233",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/245-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/245-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/2e/39/904724594.jpg"
+    },
+    "name": "Webcontinental",
+    "objectID": "seller245",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/webcontinental-245/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/webcontinental-245",
+      "rulesPage": "/cupom-de-desconto/webcontinental-245/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.2,
+      "bestFormula": 0.2,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20599,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "20599",
+    "leadOfferId": "1090021000",
+    "leadPath": "/lead?mid=20599&network_id=AWIN&oid=1090021000",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20599-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20599-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "SorteOnline",
+    "objectID": "seller20599",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/sorteonline-20599/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/sorteonline-20599",
+      "rulesPage": "/cupom-de-desconto/sorteonline-20599/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21710,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21710",
+    "leadOfferId": "1458407172",
+    "leadPath": "/lead?mid=21710&network_id=AWIN&oid=1458407172",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21710-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21710-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Centauro",
+    "objectID": "seller21710",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/centauro-21710/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/centauro-21710",
+      "rulesPage": "/cupom-de-desconto/centauro-21710/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21856,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21856",
+    "leadOfferId": "1257057487",
+    "leadPath": "/lead?mid=21856&oid=1257057487",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21856-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21856-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Pague Menos",
+    "objectID": "seller21856",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/pague-menos-21856/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/pague-menos-21856",
+      "rulesPage": "/cupom-de-desconto/pague-menos-21856/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 26569,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "26569",
+    "leadOfferId": "1565221981",
+    "leadPath": "/lead?mid=26569&network_id=RAKUTEN&oid=1565221981",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/26569-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/26569-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Netshoes",
+    "objectID": "seller26569",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/netshoes-26569/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/netshoes-26569",
+      "rulesPage": "/cupom-de-desconto/netshoes-26569/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22342,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22342",
+    "leadOfferId": "1324800434",
+    "leadPath": "/lead?mid=22342&network_id=AWIN&oid=1324800434",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22342-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22342-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Chilli Beans",
+    "objectID": "seller22342",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/chilli-beans-22342/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/chilli-beans-22342",
+      "rulesPage": "/cupom-de-desconto/chilli-beans-22342/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22788,
+      "offerRates": null,
+      "originId": null
+    },
+    "countOfCoupons": 1,
+    "id": "22788",
+    "leadOfferId": "1367239530",
+    "leadPath": "/lead?mid=22788&network_id=RAKUTEN&oid=1367239530",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22788-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22788-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Avon",
+    "objectID": "seller22788",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/avon-22788/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/avon-22788",
+      "rulesPage": "/cupom-de-desconto/avon-22788/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21108,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21108",
+    "leadOfferId": "1076597232",
+    "leadPath": "/lead?mid=21108&network_id=AWIN&oid=1076597232",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21108-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21108-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Cobasi",
+    "objectID": "seller21108",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/cobasi-21108/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/cobasi-21108",
+      "rulesPage": "/cupom-de-desconto/cobasi-21108/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 25860,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "25860",
+    "leadOfferId": "1556161677",
+    "leadPath": "/lead?mid=25860&network_id=AWIN&oid=1556161677",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/25860-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/25860-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Adidas",
+    "objectID": "seller25860",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/adidas-25860/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/adidas-25860",
+      "rulesPage": "/cupom-de-desconto/adidas-25860/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21711,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21711",
+    "leadOfferId": "1175090332",
+    "leadPath": "/lead?mid=21711&network_id=AWIN&oid=1175090332",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21711-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21711-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Boticário",
+    "objectID": "seller21711",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/boticário-21711/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/boticário-21711",
+      "rulesPage": "/cupom-de-desconto/boticário-21711/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21082,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21082",
+    "leadOfferId": "1060697435",
+    "leadPath": "/lead?mid=21082&network_id=AWIN&oid=1060697435",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21082-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21082-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Nike",
+    "objectID": "seller21082",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/nike-21082/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/nike-21082",
+      "rulesPage": "/cupom-de-desconto/nike-21082/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18529,
+      "offerRates": null,
+      "originId": null
+    },
+    "countOfCoupons": 2,
+    "id": "18529",
+    "leadOfferId": "1090908614",
+    "leadPath": "/lead?mid=18529&network_id=AWIN&oid=1090908614",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18529-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18529-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "PUMA",
+    "objectID": "seller18529",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/puma-18529/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/puma-18529",
+      "rulesPage": "/cupom-de-desconto/puma-18529/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21077,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21077",
+    "leadOfferId": "1089286441",
+    "leadPath": "/lead?mid=21077&network_id=AWIN&oid=1089286441",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21077-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21077-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Renner",
+    "objectID": "seller21077",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/renner-21077/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/renner-21077",
+      "rulesPage": "/cupom-de-desconto/renner-21077/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18601,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18601",
+    "leadOfferId": "1077195744",
+    "leadPath": "/lead?mid=18601&network_id=AWIN&oid=1077195744",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18601-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18601-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "DolceGusto",
+    "objectID": "seller18601",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/dolcegusto-18601/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/dolcegusto-18601",
+      "rulesPage": "/cupom-de-desconto/dolcegusto-18601/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.07,
+      "bestFormula": 0.07,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21464,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21464",
+    "leadOfferId": "1279216022",
+    "leadPath": "/lead?mid=21464&network_id=AWIN&oid=1279216022",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21464-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21464-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Eudora",
+    "objectID": "seller21464",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/eudora-21464/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/eudora-21464",
+      "rulesPage": "/cupom-de-desconto/eudora-21464/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21908,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21908",
+    "leadOfferId": "1257057568",
+    "leadPath": "/lead?mid=21908&network_id=AFILIO&oid=1257057568",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21908-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21908-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Latam Airlines",
+    "objectID": "seller21908",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/latam-airlines-21908/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/latam-airlines-21908",
+      "rulesPage": "/cupom-de-desconto/latam-airlines-21908/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18535,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18535",
+    "leadOfferId": "1090024594",
+    "leadPath": "/lead?mid=18535&network_id=AWIN&oid=1090024594",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18535-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18535-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Stanley",
+    "objectID": "seller18535",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/stanley-18535/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/stanley-18535",
+      "rulesPage": "/cupom-de-desconto/stanley-18535/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21102,
+      "offerRates": null,
+      "originId": null
+    },
+    "countOfCoupons": 1,
+    "id": "21102",
+    "leadOfferId": "1076552149",
+    "leadPath": "/lead?mid=21102&network_id=AWIN&oid=1076552149",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21102-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21102-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "C&A",
+    "objectID": "seller21102",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/c&a-21102/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/c&a-21102",
+      "rulesPage": "/cupom-de-desconto/c&a-21102/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22349,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22349",
+    "leadOfferId": "1324800461",
+    "leadPath": "/lead?mid=22349&network_id=AWIN&oid=1324800461",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22349-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22349-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Beleza na Web",
+    "objectID": "seller22349",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/beleza-na-web-22349/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/beleza-na-web-22349",
+      "rulesPage": "/cupom-de-desconto/beleza-na-web-22349/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21116,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21116",
+    "leadOfferId": "1077195915",
+    "leadPath": "/lead?mid=21116&network_id=AWIN&oid=1077195915",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21116-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21116-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Drogaria Araujo",
+    "objectID": "seller21116",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/drogaria-araujo-21116/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/drogaria-araujo-21116",
+      "rulesPage": "/cupom-de-desconto/drogaria-araujo-21116/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.1,
+      "bestFormula": 0.1,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21073,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21073",
+    "leadOfferId": "1089284026",
+    "leadPath": "/lead?mid=21073&network_id=AWIN&oid=1089284026",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21073-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21073-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Loccitane Au Bresil",
+    "objectID": "seller21073",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/loccitane-au-bresil-21073/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/loccitane-au-bresil-21073",
+      "rulesPage": "/cupom-de-desconto/loccitane-au-bresil-21073/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20929,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "20929",
+    "leadOfferId": "960319241",
+    "leadPath": "/lead?mid=20929&network_id=RAKUTEN&oid=960319241",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20929-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20929-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/25/13/2070014809.jpg"
+    },
+    "name": "Madesa",
+    "objectID": "seller20929",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/madesa-20929/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/madesa-20929",
+      "rulesPage": "/cupom-de-desconto/madesa-20929/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23707,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23707",
+    "leadOfferId": "1535264090",
+    "leadPath": "/lead?mid=23707&network_id=AWIN&oid=1535264090",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23707-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23707-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "JBL",
+    "objectID": "seller23707",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/jbl-23707/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/jbl-23707",
+      "rulesPage": "/cupom-de-desconto/jbl-23707/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21872,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21872",
+    "leadOfferId": "1257057066",
+    "leadPath": "/lead?mid=21872&oid=1257057066",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21872-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21872-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Extrafarma",
+    "objectID": "seller21872",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/extrafarma-21872/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/extrafarma-21872",
+      "rulesPage": "/cupom-de-desconto/extrafarma-21872/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21751,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21751",
+    "leadOfferId": "1186799533",
+    "leadPath": "/lead?mid=21751&network_id=RAKUTEN&oid=1186799533",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21751-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21751-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Riachuelo",
+    "objectID": "seller21751",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/riachuelo-21751/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/riachuelo-21751",
+      "rulesPage": "/cupom-de-desconto/riachuelo-21751/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21089,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21089",
+    "leadOfferId": "1076550742",
+    "leadPath": "/lead?mid=21089&network_id=AWIN&oid=1076550742",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21089-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21089-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Asics",
+    "objectID": "seller21089",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/asics-21089/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/asics-21089",
+      "rulesPage": "/cupom-de-desconto/asics-21089/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21083,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21083",
+    "leadOfferId": "1089801987",
+    "leadPath": "/lead?mid=21083&network_id=AWIN&oid=1089801987",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21083-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21083-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Olympikus",
+    "objectID": "seller21083",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/olympikus-21083/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/olympikus-21083",
+      "rulesPage": "/cupom-de-desconto/olympikus-21083/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21115,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21115",
+    "leadOfferId": "1077195663",
+    "leadPath": "/lead?mid=21115&network_id=AWIN&oid=1077195663",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21115-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21115-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Decathlon",
+    "objectID": "seller21115",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/decathlon-21115/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/decathlon-21115",
+      "rulesPage": "/cupom-de-desconto/decathlon-21115/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22023,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22023",
+    "leadOfferId": "1290496166",
+    "leadPath": "/lead?mid=22023&network_id=RAKUTEN&oid=1290496166",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22023-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22023-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "SHEIN",
+    "objectID": "seller22023",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/shein-22023/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/shein-22023",
+      "rulesPage": "/cupom-de-desconto/shein-22023/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21594,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21594",
+    "leadOfferId": "1152025565",
+    "leadPath": "/lead?mid=21594&network_id=RAKUTEN&oid=1152025565",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21594-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21594-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Avell",
+    "objectID": "seller21594",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/avell-21594/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/avell-21594",
+      "rulesPage": "/cupom-de-desconto/avell-21594/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21078,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21078",
+    "leadOfferId": "1089287643",
+    "leadPath": "/lead?mid=21078&network_id=AWIN&oid=1089287643",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21078-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21078-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Madeira Madeira",
+    "objectID": "seller21078",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/madeira-madeira-21078/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/madeira-madeira-21078",
+      "rulesPage": "/cupom-de-desconto/madeira-madeira-21078/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21847,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21847",
+    "leadOfferId": "1257057027",
+    "leadPath": "/lead?mid=21847&oid=1257057027",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21847-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21847-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Ferreira Costa",
+    "objectID": "seller21847",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/ferreira-costa-21847/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/ferreira-costa-21847",
+      "rulesPage": "/cupom-de-desconto/ferreira-costa-21847/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 19381,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "19381",
+    "leadOfferId": "1536088912",
+    "leadPath": "/lead?mid=19381&network_id=AWIN&oid=1536088912",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/19381-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/19381-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Decolar",
+    "objectID": "seller19381",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/decolar-19381/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/decolar-19381",
+      "rulesPage": "/cupom-de-desconto/decolar-19381/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21159,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21159",
+    "leadOfferId": "1090908680",
+    "leadPath": "/lead?mid=21159&network_id=AWIN&oid=1090908680",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21159-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21159-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Authentic Feet",
+    "objectID": "seller21159",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/authentic-feet-21159/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/authentic-feet-21159",
+      "rulesPage": "/cupom-de-desconto/authentic-feet-21159/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23708,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23708",
+    "leadOfferId": "1536071469",
+    "leadPath": "/lead?mid=23708&network_id=AWIN&oid=1536071469",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23708-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23708-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Booking",
+    "objectID": "seller23708",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/booking-23708/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/booking-23708",
+      "rulesPage": "/cupom-de-desconto/booking-23708/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21991,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21991",
+    "leadOfferId": "1278481752",
+    "leadPath": "/lead?mid=21991&network_id=AFILIO&oid=1278481752",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21991-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21991-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Buser",
+    "objectID": "seller21991",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/buser-21991/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/buser-21991",
+      "rulesPage": "/cupom-de-desconto/buser-21991/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22384,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22384",
+    "leadOfferId": "1324800496",
+    "leadPath": "/lead?mid=22384&network_id=RAKUTEN&oid=1324800496",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22384-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22384-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Aliexpress",
+    "objectID": "seller22384",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/aliexpress-22384/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/aliexpress-22384",
+      "rulesPage": "/cupom-de-desconto/aliexpress-22384/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21729,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21729",
+    "leadOfferId": "1175090322",
+    "leadPath": "/lead?mid=21729&network_id=AWIN&oid=1175090322",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21729-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21729-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Decanter Vinhos BR",
+    "objectID": "seller21729",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/decanter-vinhos-br-21729/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/decanter-vinhos-br-21729",
+      "rulesPage": "/cupom-de-desconto/decanter-vinhos-br-21729/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21883,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21883",
+    "leadOfferId": "1257057516",
+    "leadPath": "/lead?mid=21883&oid=1257057516",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21883-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21883-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Pagseguro",
+    "objectID": "seller21883",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/pagseguro-21883/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/pagseguro-21883",
+      "rulesPage": "/cupom-de-desconto/pagseguro-21883/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23700,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23700",
+    "leadOfferId": "1532672283",
+    "leadPath": "/lead?mid=23700&network_id=AWIN&oid=1532672283",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23700-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23700-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "OUI",
+    "objectID": "seller23700",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/oui-23700/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/oui-23700",
+      "rulesPage": "/cupom-de-desconto/oui-23700/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22786,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22786",
+    "leadOfferId": "1365916229",
+    "leadPath": "/lead?mid=22786&network_id=AWIN&oid=1365916229",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22786-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22786-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Monte Carlo Jóias",
+    "objectID": "seller22786",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/monte-carlo-jóias-22786/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/monte-carlo-jóias-22786",
+      "rulesPage": "/cupom-de-desconto/monte-carlo-jóias-22786/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21869,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21869",
+    "leadOfferId": "1257057451",
+    "leadPath": "/lead?mid=21869&oid=1257057451",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21869-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21869-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Technos",
+    "objectID": "seller21869",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/technos-21869/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/technos-21869",
+      "rulesPage": "/cupom-de-desconto/technos-21869/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20946,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "20946",
+    "leadOfferId": "960331364",
+    "leadPath": "/lead?mid=20946&network_id=RAKUTEN&oid=960331364",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20946-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20946-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/30/13/2070014826.jpg"
+    },
+    "name": "VAIO",
+    "objectID": "seller20946",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/vaio-20946/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/vaio-20946",
+      "rulesPage": "/cupom-de-desconto/vaio-20946/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20924,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "20924",
+    "leadOfferId": "960318813",
+    "leadPath": "/lead?mid=20924&network_id=RAKUTEN&oid=960318813",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20924-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20924-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/2c/13/2070014804.jpg"
+    },
+    "name": "HeringOutlet",
+    "objectID": "seller20924",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/heringoutlet-20924/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/heringoutlet-20924",
+      "rulesPage": "/cupom-de-desconto/heringoutlet-20924/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21846,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21846",
+    "leadOfferId": "1257057447",
+    "leadPath": "/lead?mid=21846&oid=1257057447",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21846-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21846-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Gocase",
+    "objectID": "seller21846",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/gocase-21846/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/gocase-21846",
+      "rulesPage": "/cupom-de-desconto/gocase-21846/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21582,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21582",
+    "leadOfferId": "1152025630",
+    "leadPath": "/lead?mid=21582&network_id=RAKUTEN&oid=1152025630",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21582-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21582-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Insider",
+    "objectID": "seller21582",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/insider-21582/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/insider-21582",
+      "rulesPage": "/cupom-de-desconto/insider-21582/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22346,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22346",
+    "leadOfferId": "1324800465",
+    "leadPath": "/lead?mid=22346&network_id=AWIN&oid=1324800465",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22346-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22346-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Azul Linhas Aéreas",
+    "objectID": "seller22346",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/azul-linhas-aéreas-22346/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/azul-linhas-aéreas-22346",
+      "rulesPage": "/cupom-de-desconto/azul-linhas-aéreas-22346/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21130,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21130",
+    "leadOfferId": "1090421702",
+    "leadPath": "/lead?mid=21130&network_id=AWIN&oid=1090421702",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21130-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21130-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Wine",
+    "objectID": "seller21130",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/wine-21130/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/wine-21130",
+      "rulesPage": "/cupom-de-desconto/wine-21130/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18624,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18624",
+    "leadOfferId": "1175090293",
+    "leadPath": "/lead?mid=18624&network_id=RAKUTEN&oid=1175090293",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18624-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18624-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Piccadilly",
+    "objectID": "seller18624",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/piccadilly-18624/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/piccadilly-18624",
+      "rulesPage": "/cupom-de-desconto/piccadilly-18624/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22317,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22317",
+    "leadOfferId": "1324800404",
+    "leadPath": "/lead?mid=22317&network_id=AFILIO&oid=1324800404",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22317-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22317-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Nespresso",
+    "objectID": "seller22317",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/nespresso-22317/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/nespresso-22317",
+      "rulesPage": "/cupom-de-desconto/nespresso-22317/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21113,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21113",
+    "leadOfferId": "1076664907",
+    "leadPath": "/lead?mid=21113&network_id=AWIN&oid=1076664907",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21113-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21113-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Continental",
+    "objectID": "seller21113",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/continental-21113/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/continental-21113",
+      "rulesPage": "/cupom-de-desconto/continental-21113/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18747,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18747",
+    "leadOfferId": "909481132",
+    "leadPath": "/lead?mid=18747&network_id=RAKUTEN&oid=909481132",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18747-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18747-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/3f/13/2070014780.jpg"
+    },
+    "name": "Fila Brasil",
+    "objectID": "seller18747",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/fila-brasil-18747/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/fila-brasil-18747",
+      "rulesPage": "/cupom-de-desconto/fila-brasil-18747/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21581,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21581",
+    "leadOfferId": "1152025466",
+    "leadPath": "/lead?mid=21581&network_id=RAKUTEN&oid=1152025466",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21581-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21581-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Sodimac",
+    "objectID": "seller21581",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/sodimac-21581/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/sodimac-21581",
+      "rulesPage": "/cupom-de-desconto/sodimac-21581/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18307,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18307",
+    "leadOfferId": "909488992",
+    "leadPath": "/lead?mid=18307&network_id=RAKUTEN&oid=909488992",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18307-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18307-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/3e/13/2070014765.jpg"
+    },
+    "name": "Zeenow",
+    "objectID": "seller18307",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/zeenow-18307/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/zeenow-18307",
+      "rulesPage": "/cupom-de-desconto/zeenow-18307/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23202,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23202",
+    "leadOfferId": "1458956343",
+    "leadPath": "/lead?mid=23202&network_id=AWIN&oid=1458956343",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23202-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23202-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Kipling",
+    "objectID": "seller23202",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/kipling-23202/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/kipling-23202",
+      "rulesPage": "/cupom-de-desconto/kipling-23202/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20463,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "20463",
+    "leadOfferId": "1532635280",
+    "leadPath": "/lead?mid=20463&network_id=AWIN&oid=1532635280",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20463-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20463-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Via Inox Tramontina",
+    "objectID": "seller20463",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/via-inox-tramontina-20463/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/via-inox-tramontina-20463",
+      "rulesPage": "/cupom-de-desconto/via-inox-tramontina-20463/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20936,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "20936",
+    "leadOfferId": "934139104",
+    "leadPath": "/lead?mid=20936&network_id=RAKUTEN&oid=934139104",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20936-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20936-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/13/13/2070014816.jpg"
+    },
+    "name": "Positivo",
+    "objectID": "seller20936",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/positivo-20936/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/positivo-20936",
+      "rulesPage": "/cupom-de-desconto/positivo-20936/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21178,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21178",
+    "leadOfferId": "1074936935",
+    "leadPath": "/lead?mid=21178&network_id=RAKUTEN&oid=1074936935",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21178-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21178-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Midea Store",
+    "objectID": "seller21178",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/midea-store-21178/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/midea-store-21178",
+      "rulesPage": "/cupom-de-desconto/midea-store-21178/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20928,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "20928",
+    "leadOfferId": "934141184",
+    "leadPath": "/lead?mid=20928&network_id=RAKUTEN&oid=934141184",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20928-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20928-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/0/13/2070014808.jpg"
+    },
+    "name": "iPlace",
+    "objectID": "seller20928",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/iplace-20928/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/iplace-20928",
+      "rulesPage": "/cupom-de-desconto/iplace-20928/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21928,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21928",
+    "leadOfferId": "1257057031",
+    "leadPath": "/lead?mid=21928&oid=1257057031",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21928-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21928-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Trip.com",
+    "objectID": "seller21928",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/trip.com-21928/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/trip.com-21928",
+      "rulesPage": "/cupom-de-desconto/trip.com-21928/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 19280,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "19280",
+    "leadOfferId": "909488896",
+    "leadPath": "/lead?mid=19280&network_id=RAKUTEN&oid=909488896",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/19280-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/19280-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/2e/13/2070014783.jpg"
+    },
+    "name": "Umbro Brasil",
+    "objectID": "seller19280",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/umbro-brasil-19280/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/umbro-brasil-19280",
+      "rulesPage": "/cupom-de-desconto/umbro-brasil-19280/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21120,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21120",
+    "leadOfferId": "1077196514",
+    "leadPath": "/lead?mid=21120&network_id=AWIN&oid=1077196514",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21120-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21120-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Emma",
+    "objectID": "seller21120",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/emma-21120/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/emma-21120",
+      "rulesPage": "/cupom-de-desconto/emma-21120/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18218,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18218",
+    "leadOfferId": "909469616",
+    "leadPath": "/lead?mid=18218&network_id=RAKUTEN&oid=909469616",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18218-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18218-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/d/13/2070014751.jpg"
+    },
+    "name": "Dakota",
+    "objectID": "seller18218",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/dakota-18218/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/dakota-18218",
+      "rulesPage": "/cupom-de-desconto/dakota-18218/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23704,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23704",
+    "leadOfferId": "1534501244",
+    "leadPath": "/lead?mid=23704&network_id=RAKUTEN&oid=1534501244",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23704-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23704-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Mascavo Mariana Saad",
+    "objectID": "seller23704",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/mascavo-mariana-saad-23704/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/mascavo-mariana-saad-23704",
+      "rulesPage": "/cupom-de-desconto/mascavo-mariana-saad-23704/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23494,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23494",
+    "leadOfferId": "1523041983",
+    "leadPath": "/lead?mid=23494&network_id=AWIN&oid=1523041983",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23494-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23494-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Lojas Lebes BR",
+    "objectID": "seller23494",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/lojas-lebes-br-23494/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/lojas-lebes-br-23494",
+      "rulesPage": "/cupom-de-desconto/lojas-lebes-br-23494/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21081,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21081",
+    "leadOfferId": "1077879931",
+    "leadPath": "/lead?mid=21081&network_id=AWIN&oid=1077879931",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21081-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21081-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Motorola",
+    "objectID": "seller21081",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/motorola-21081/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/motorola-21081",
+      "rulesPage": "/cupom-de-desconto/motorola-21081/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22360,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22360",
+    "leadOfferId": "1324800463",
+    "leadPath": "/lead?mid=22360&network_id=RAKUTEN&oid=1324800463",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22360-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22360-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Amobeleza",
+    "objectID": "seller22360",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/amobeleza-22360/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/amobeleza-22360",
+      "rulesPage": "/cupom-de-desconto/amobeleza-22360/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21840,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21840",
+    "leadOfferId": "1257057147",
+    "leadPath": "/lead?mid=21840&oid=1257057147",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21840-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21840-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Trocafy",
+    "objectID": "seller21840",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/trocafy-21840/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/trocafy-21840",
+      "rulesPage": "/cupom-de-desconto/trocafy-21840/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.1,
+      "bestFormula": 0.1,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21074,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21074",
+    "leadOfferId": "1089284819",
+    "leadPath": "/lead?mid=21074&network_id=AWIN&oid=1089284819",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21074-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21074-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Loccitane en Provence",
+    "objectID": "seller21074",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/loccitane-en-provence-21074/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/loccitane-en-provence-21074",
+      "rulesPage": "/cupom-de-desconto/loccitane-en-provence-21074/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 13625,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "13625",
+    "leadOfferId": "1090554625",
+    "leadPath": "/lead?mid=13625&network_id=AWIN&oid=1090554625",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/13625-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/13625-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Mash",
+    "objectID": "seller13625",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/mash-13625/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/mash-13625",
+      "rulesPage": "/cupom-de-desconto/mash-13625/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18582,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18582",
+    "leadOfferId": "1544287383",
+    "leadPath": "/lead?mid=18582&network_id=AWIN&oid=1544287383",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18582-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18582-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "DROGAL",
+    "objectID": "seller18582",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/drogal-18582/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/drogal-18582",
+      "rulesPage": "/cupom-de-desconto/drogal-18582/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22007,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22007",
+    "leadOfferId": "1278481349",
+    "leadPath": "/lead?mid=22007&network_id=AWIN&oid=1278481349",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22007-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22007-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Taqi",
+    "objectID": "seller22007",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/taqi-22007/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/taqi-22007",
+      "rulesPage": "/cupom-de-desconto/taqi-22007/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21136,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21136",
+    "leadOfferId": "1090544726",
+    "leadPath": "/lead?mid=21136&network_id=AWIN&oid=1090544726",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21136-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21136-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "ZZ Mall",
+    "objectID": "seller21136",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/zz-mall-21136/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/zz-mall-21136",
+      "rulesPage": "/cupom-de-desconto/zz-mall-21136/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21156,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21156",
+    "leadOfferId": "1090555663",
+    "leadPath": "/lead?mid=21156&network_id=AWIN&oid=1090555663",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21156-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21156-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Luuna",
+    "objectID": "seller21156",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/luuna-21156/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/luuna-21156",
+      "rulesPage": "/cupom-de-desconto/luuna-21156/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.09,
+      "bestFormula": 0.09,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21888,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21888",
+    "leadOfferId": "1257057468",
+    "leadPath": "/lead?mid=21888&oid=1257057468",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21888-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21888-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Avast",
+    "objectID": "seller21888",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/avast-21888/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/avast-21888",
+      "rulesPage": "/cupom-de-desconto/avast-21888/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.09,
+      "bestFormula": 0.09,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21725,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21725",
+    "leadOfferId": "1175090345",
+    "leadPath": "/lead?mid=21725&network_id=AWIN&oid=1175090345",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21725-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21725-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Too Faced",
+    "objectID": "seller21725",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/too-faced-21725/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/too-faced-21725",
+      "rulesPage": "/cupom-de-desconto/too-faced-21725/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22323,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22323",
+    "leadOfferId": "1324800387",
+    "leadPath": "/lead?mid=22323&network_id=AWIN&oid=1324800387",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22323-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22323-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "IBBL",
+    "objectID": "seller22323",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/ibbl-22323/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/ibbl-22323",
+      "rulesPage": "/cupom-de-desconto/ibbl-22323/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22010,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22010",
+    "leadOfferId": "1278481631",
+    "leadPath": "/lead?mid=22010&network_id=AWIN&oid=1278481631",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22010-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22010-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Tok&Stok",
+    "objectID": "seller22010",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/tok&stok-22010/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/tok&stok-22010",
+      "rulesPage": "/cupom-de-desconto/tok&stok-22010/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21860,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21860",
+    "leadOfferId": "1257057515",
+    "leadPath": "/lead?mid=21860&oid=1257057515",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21860-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21860-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "DeÔnibus",
+    "objectID": "seller21860",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/deônibus-21860/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/deônibus-21860",
+      "rulesPage": "/cupom-de-desconto/deônibus-21860/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21918,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21918",
+    "leadOfferId": "1257057581",
+    "leadPath": "/lead?mid=21918&oid=1257057581",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21918-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21918-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Probiotica",
+    "objectID": "seller21918",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/probiotica-21918/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/probiotica-21918",
+      "rulesPage": "/cupom-de-desconto/probiotica-21918/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21062,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21062",
+    "leadOfferId": "1257057383",
+    "leadPath": "/lead?mid=21062&oid=1257057383",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21062-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21062-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Buson",
+    "objectID": "seller21062",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/buson-21062/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/buson-21062",
+      "rulesPage": "/cupom-de-desconto/buson-21062/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18906,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18906",
+    "leadOfferId": "1086874533",
+    "leadPath": "/lead?mid=18906&network_id=AWIN&oid=1086874533",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18906-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18906-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Fossil",
+    "objectID": "seller18906",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/fossil-18906/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/fossil-18906",
+      "rulesPage": "/cupom-de-desconto/fossil-18906/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.09,
+      "bestFormula": 0.09,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18308,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18308",
+    "leadOfferId": "909486436",
+    "leadPath": "/lead?mid=18308&network_id=RAKUTEN&oid=909486436",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18308-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18308-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/23/13/2070014766.jpg"
+    },
+    "name": "Nars Cosmetics BR",
+    "objectID": "seller18308",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/nars-cosmetics-br-18308/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/nars-cosmetics-br-18308",
+      "rulesPage": "/cupom-de-desconto/nars-cosmetics-br-18308/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18235,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18235",
+    "leadOfferId": "909484496",
+    "leadPath": "/lead?mid=18235&network_id=RAKUTEN&oid=909484496",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18235-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18235-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/2b/13/2070014757.jpg"
+    },
+    "name": "Maria Filó",
+    "objectID": "seller18235",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/maria-filó-18235/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/maria-filó-18235",
+      "rulesPage": "/cupom-de-desconto/maria-filó-18235/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21916,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21916",
+    "leadOfferId": "1257057485",
+    "leadPath": "/lead?mid=21916&oid=1257057485",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21916-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21916-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Paris City Vision",
+    "objectID": "seller21916",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/paris-city-vision-21916/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/paris-city-vision-21916",
+      "rulesPage": "/cupom-de-desconto/paris-city-vision-21916/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22340,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22340",
+    "leadOfferId": "1324800438",
+    "leadPath": "/lead?mid=22340&network_id=AWIN&oid=1324800438",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22340-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22340-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Reserva",
+    "objectID": "seller22340",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/reserva-22340/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/reserva-22340",
+      "rulesPage": "/cupom-de-desconto/reserva-22340/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18325,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18325",
+    "leadOfferId": "909481391",
+    "leadPath": "/lead?mid=18325&network_id=RAKUTEN&oid=909481391",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18325-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18325-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/2d/13/2070014768.jpg"
+    },
+    "name": "Foxton",
+    "objectID": "seller18325",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/foxton-18325/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/foxton-18325",
+      "rulesPage": "/cupom-de-desconto/foxton-18325/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21722,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21722",
+    "leadOfferId": "1175090341",
+    "leadPath": "/lead?mid=21722&network_id=AWIN&oid=1175090341",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21722-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21722-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "eLens",
+    "objectID": "seller21722",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/elens-21722/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/elens-21722",
+      "rulesPage": "/cupom-de-desconto/elens-21722/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20938,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "20938",
+    "leadOfferId": "960316637",
+    "leadPath": "/lead?mid=20938&network_id=RAKUTEN&oid=960316637",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20938-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20938-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/1d/13/2070014818.jpg"
+    },
+    "name": "Ri Happy",
+    "objectID": "seller20938",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/ri-happy-20938/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/ri-happy-20938",
+      "rulesPage": "/cupom-de-desconto/ri-happy-20938/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21124,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21124",
+    "leadOfferId": "1086978563",
+    "leadPath": "/lead?mid=21124&network_id=AWIN&oid=1086978563",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21124-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21124-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Fut Fanatics",
+    "objectID": "seller21124",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/fut-fanatics-21124/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/fut-fanatics-21124",
+      "rulesPage": "/cupom-de-desconto/fut-fanatics-21124/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23709,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23709",
+    "leadOfferId": "1543839687",
+    "leadPath": "/lead?mid=23709&network_id=AWIN&oid=1543839687",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23709-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23709-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Pet Yard",
+    "objectID": "seller23709",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/pet-yard-23709/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/pet-yard-23709",
+      "rulesPage": "/cupom-de-desconto/pet-yard-23709/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20937,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "20937",
+    "leadOfferId": "960315987",
+    "leadPath": "/lead?mid=20937&network_id=RAKUTEN&oid=960315987",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20937-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20937-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/38/13/2070014817.jpg"
+    },
+    "name": "QuemDisseBerenice",
+    "objectID": "seller20937",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/quemdisseberenice-20937/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/quemdisseberenice-20937",
+      "rulesPage": "/cupom-de-desconto/quemdisseberenice-20937/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21873,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21873",
+    "leadOfferId": "1257057479",
+    "leadPath": "/lead?mid=21873&oid=1257057479",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21873-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21873-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Elements",
+    "objectID": "seller21873",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/elements-21873/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/elements-21873",
+      "rulesPage": "/cupom-de-desconto/elements-21873/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23705,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23705",
+    "leadOfferId": "1534765275",
+    "leadPath": "/lead?mid=23705&network_id=RAKUTEN&oid=1534765275",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23705-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23705-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Contem1G",
+    "objectID": "seller23705",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/contem1g-23705/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/contem1g-23705",
+      "rulesPage": "/cupom-de-desconto/contem1g-23705/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21084,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21084",
+    "leadOfferId": "1089999679",
+    "leadPath": "/lead?mid=21084&network_id=AWIN&oid=1089999679",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21084-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21084-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Posthaus",
+    "objectID": "seller21084",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/posthaus-21084/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/posthaus-21084",
+      "rulesPage": "/cupom-de-desconto/posthaus-21084/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21121,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21121",
+    "leadOfferId": "1077196688",
+    "leadPath": "/lead?mid=21121&network_id=AWIN&oid=1077196688",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21121-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21121-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Eotica",
+    "objectID": "seller21121",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/eotica-21121/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/eotica-21121",
+      "rulesPage": "/cupom-de-desconto/eotica-21121/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 25765,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "25765",
+    "leadOfferId": "1555537441",
+    "leadPath": "/lead?mid=25765&network_id=AWIN&oid=1555537441",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/25765-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/25765-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Ropo",
+    "objectID": "seller25765",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/ropo-25765/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/ropo-25765",
+      "rulesPage": "/cupom-de-desconto/ropo-25765/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23699,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23699",
+    "leadOfferId": "1532656248",
+    "leadPath": "/lead?mid=23699&network_id=AWIN&oid=1532656248",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23699-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23699-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Dr Jones",
+    "objectID": "seller23699",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/dr-jones-23699/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/dr-jones-23699",
+      "rulesPage": "/cupom-de-desconto/dr-jones-23699/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23492,
+      "offerRates": null,
+      "originId": null
+    },
+    "countOfCoupons": 1,
+    "id": "23492",
+    "leadOfferId": "1522764978",
+    "leadPath": "/lead?mid=23492&network_id=AWIN&oid=1522764978",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23492-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23492-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "VX Case",
+    "objectID": "seller23492",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/vx-case-23492/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/vx-case-23492",
+      "rulesPage": "/cupom-de-desconto/vx-case-23492/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22006,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22006",
+    "leadOfferId": "1278481485",
+    "leadPath": "/lead?mid=22006&network_id=AWIN&oid=1278481485",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22006-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22006-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Sestini",
+    "objectID": "seller22006",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/sestini-22006/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/sestini-22006",
+      "rulesPage": "/cupom-de-desconto/sestini-22006/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21584,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21584",
+    "leadOfferId": "1152025461",
+    "leadPath": "/lead?mid=21584&network_id=RAKUTEN&oid=1152025461",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21584-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21584-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "LIVE!",
+    "objectID": "seller21584",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/live!-21584/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/live!-21584",
+      "rulesPage": "/cupom-de-desconto/live!-21584/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 19290,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "19290",
+    "leadOfferId": "1076550508",
+    "leadPath": "/lead?mid=19290&network_id=AWIN&oid=1076550508",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/19290-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/19290-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Alura",
+    "objectID": "seller19290",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/alura-19290/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/alura-19290",
+      "rulesPage": "/cupom-de-desconto/alura-19290/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21117,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21117",
+    "leadOfferId": "1077196107",
+    "leadPath": "/lead?mid=21117&network_id=AWIN&oid=1077196107",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21117-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21117-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Eclock",
+    "objectID": "seller21117",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/eclock-21117/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/eclock-21117",
+      "rulesPage": "/cupom-de-desconto/eclock-21117/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 26570,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "26570",
+    "leadOfferId": "1565222352",
+    "leadPath": "/lead?mid=26570&network_id=RAKUTEN&oid=1565222352",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/26570-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/26570-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Zattini",
+    "objectID": "seller26570",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/zattini-26570/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/zattini-26570",
+      "rulesPage": "/cupom-de-desconto/zattini-26570/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21590,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21590",
+    "leadOfferId": "1152025568",
+    "leadPath": "/lead?mid=21590&network_id=RAKUTEN&oid=1152025568",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21590-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21590-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Ellus",
+    "objectID": "seller21590",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/ellus-21590/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/ellus-21590",
+      "rulesPage": "/cupom-de-desconto/ellus-21590/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18627,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18627",
+    "leadOfferId": "1090382838",
+    "leadPath": "/lead?mid=18627&network_id=AWIN&oid=1090382838",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18627-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18627-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Vivara",
+    "objectID": "seller18627",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/vivara-18627/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/vivara-18627",
+      "rulesPage": "/cupom-de-desconto/vivara-18627/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21889,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21889",
+    "leadOfferId": "1257057377",
+    "leadPath": "/lead?mid=21889&oid=1257057377",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21889-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21889-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "BangGood",
+    "objectID": "seller21889",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/banggood-21889/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/banggood-21889",
+      "rulesPage": "/cupom-de-desconto/banggood-21889/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 753,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "753",
+    "leadOfferId": "909481492",
+    "leadPath": "/lead?mid=753&network_id=RAKUTEN&oid=909481492",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/753-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/753-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/1f/13/2070014744.jpg"
+    },
+    "name": "Giuliana Flores",
+    "objectID": "seller753",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/giuliana-flores-753/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/giuliana-flores-753",
+      "rulesPage": "/cupom-de-desconto/giuliana-flores-753/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22314,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22314",
+    "leadOfferId": "1324800384",
+    "leadPath": "/lead?mid=22314&network_id=AFILIO&oid=1324800384",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22314-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22314-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Qualidoc",
+    "objectID": "seller22314",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/qualidoc-22314/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/qualidoc-22314",
+      "rulesPage": "/cupom-de-desconto/qualidoc-22314/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18231,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18231",
+    "leadOfferId": "1090995666",
+    "leadPath": "/lead?mid=18231&network_id=LOMADEE&oid=1090995666",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18231-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18231-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Clube do Malte",
+    "objectID": "seller18231",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/clube-do-malte-18231/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/clube-do-malte-18231",
+      "rulesPage": "/cupom-de-desconto/clube-do-malte-18231/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21737,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21737",
+    "leadOfferId": "1175090340",
+    "leadPath": "/lead?mid=21737&network_id=AWIN&oid=1175090340",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21737-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21737-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Vult",
+    "objectID": "seller21737",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/vult-21737/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/vult-21737",
+      "rulesPage": "/cupom-de-desconto/vult-21737/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20950,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "20950",
+    "leadOfferId": "1247660996",
+    "leadPath": "/lead?mid=20950&network_id=RAKUTEN&oid=1247660996",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20950-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20950-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Genera",
+    "objectID": "seller20950",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/genera-20950/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/genera-20950",
+      "rulesPage": "/cupom-de-desconto/genera-20950/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 2800,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "2800",
+    "leadOfferId": "1358249302",
+    "leadPath": "/lead?mid=2800&oid=1358249302",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/2800-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/2800-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/23/2b/37193681.jpg"
+    },
+    "name": "KitchenAid",
+    "objectID": "seller2800",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/kitchenaid-2800/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/kitchenaid-2800",
+      "rulesPage": "/cupom-de-desconto/kitchenaid-2800/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18555,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18555",
+    "leadOfferId": "1089286855",
+    "leadPath": "/lead?mid=18555&network_id=AWIN&oid=1089286855",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18555-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18555-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "MAC Cosmeticos",
+    "objectID": "seller18555",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/mac-cosmeticos-18555/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/mac-cosmeticos-18555",
+      "rulesPage": "/cupom-de-desconto/mac-cosmeticos-18555/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18322,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18322",
+    "leadOfferId": "1086989872",
+    "leadPath": "/lead?mid=18322&network_id=AWIN&oid=1086989872",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18322-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18322-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Jo Malone",
+    "objectID": "seller18322",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/jo-malone-18322/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/jo-malone-18322",
+      "rulesPage": "/cupom-de-desconto/jo-malone-18322/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18326,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18326",
+    "leadOfferId": "1089996061",
+    "leadPath": "/lead?mid=18326&network_id=AWIN&oid=1089996061",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18326-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18326-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Pilao",
+    "objectID": "seller18326",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/pilao-18326/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/pilao-18326",
+      "rulesPage": "/cupom-de-desconto/pilao-18326/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21730,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21730",
+    "leadOfferId": "1175090344",
+    "leadPath": "/lead?mid=21730&network_id=RAKUTEN&oid=1175090344",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21730-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21730-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Rent Cars",
+    "objectID": "seller21730",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/rent-cars-21730/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/rent-cars-21730",
+      "rulesPage": "/cupom-de-desconto/rent-cars-21730/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18631,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18631",
+    "leadOfferId": "1077882708",
+    "leadPath": "/lead?mid=18631&network_id=AWIN&oid=1077882708",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18631-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18631-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Shopclub",
+    "objectID": "seller18631",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/shopclub-18631/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/shopclub-18631",
+      "rulesPage": "/cupom-de-desconto/shopclub-18631/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18574,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18574",
+    "leadOfferId": "909458197",
+    "leadPath": "/lead?mid=18574&network_id=RAKUTEN&oid=909458197",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18574-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18574-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/22/13/2070014770.jpg"
+    },
+    "name": "GRUPO DE MODA SOMA S.A.",
+    "objectID": "seller18574",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/grupo-de-moda-soma-s.a.-18574/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/grupo-de-moda-soma-s.a.-18574",
+      "rulesPage": "/cupom-de-desconto/grupo-de-moda-soma-s.a.-18574/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20561,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "20561",
+    "leadOfferId": "1527490617",
+    "leadPath": "/lead?mid=20561&network_id=AFILIO&oid=1527490617",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20561-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20561-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Kaspersky",
+    "objectID": "seller20561",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/kaspersky-20561/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/kaspersky-20561",
+      "rulesPage": "/cupom-de-desconto/kaspersky-20561/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18682,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18682",
+    "leadOfferId": "909481622",
+    "leadPath": "/lead?mid=18682&network_id=RAKUTEN&oid=909481622",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18682-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18682-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/1b/13/2070014775.jpg"
+    },
+    "name": "JohnJohnBR",
+    "objectID": "seller18682",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/johnjohnbr-18682/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/johnjohnbr-18682",
+      "rulesPage": "/cupom-de-desconto/johnjohnbr-18682/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.008,
+      "bestFormula": 0.008,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 19293,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "19293",
+    "leadOfferId": "1090554041",
+    "leadPath": "/lead?mid=19293&network_id=AWIN&oid=1090554041",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/19293-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/19293-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Comfy",
+    "objectID": "seller19293",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/comfy-19293/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/comfy-19293",
+      "rulesPage": "/cupom-de-desconto/comfy-19293/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 14168,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "14168",
+    "leadOfferId": "1152025618",
+    "leadPath": "/lead?mid=14168&network_id=AWIN&oid=1152025618",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/14168-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/14168-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Tudo de Bicho",
+    "objectID": "seller14168",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/tudo-de-bicho-14168/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/tudo-de-bicho-14168",
+      "rulesPage": "/cupom-de-desconto/tudo-de-bicho-14168/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 752,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "752",
+    "leadOfferId": "909468753",
+    "leadPath": "/lead?mid=752&network_id=RAKUTEN&oid=909468753",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/752-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/752-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/3a/13/2070014743.jpg"
+    },
+    "name": "Cestas Michelli",
+    "objectID": "seller752",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/cestas-michelli-752/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/cestas-michelli-752",
+      "rulesPage": "/cupom-de-desconto/cestas-michelli-752/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 751,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "751",
+    "leadOfferId": "909487304",
+    "leadPath": "/lead?mid=751&network_id=RAKUTEN&oid=909487304",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/751-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/751-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/15/13/2070014742.jpg"
+    },
+    "name": "Nova Flor",
+    "objectID": "seller751",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/nova-flor-751/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/nova-flor-751",
+      "rulesPage": "/cupom-de-desconto/nova-flor-751/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23698,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23698",
+    "leadOfferId": "1532650434",
+    "leadPath": "/lead?mid=23698&network_id=AWIN&oid=1532650434",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23698-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23698-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Truss",
+    "objectID": "seller23698",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/truss-23698/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/truss-23698",
+      "rulesPage": "/cupom-de-desconto/truss-23698/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23697,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23697",
+    "leadOfferId": "1532637885",
+    "leadPath": "/lead?mid=23697&network_id=AWIN&oid=1532637885",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23697-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23697-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Lacoste",
+    "objectID": "seller23697",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/lacoste-23697/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/lacoste-23697",
+      "rulesPage": "/cupom-de-desconto/lacoste-23697/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23493,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23493",
+    "leadOfferId": "1522772254",
+    "leadPath": "/lead?mid=23493&network_id=AWIN&oid=1522772254",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23493-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23493-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Arno",
+    "objectID": "seller23493",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/arno-23493/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/arno-23493",
+      "rulesPage": "/cupom-de-desconto/arno-23493/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22370,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22370",
+    "leadOfferId": "1324800484",
+    "leadPath": "/lead?mid=22370&network_id=RAKUTEN&oid=1324800484",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22370-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22370-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "OffPremium",
+    "objectID": "seller22370",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/offpremium-22370/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/offpremium-22370",
+      "rulesPage": "/cupom-de-desconto/offpremium-22370/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22345,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22345",
+    "leadOfferId": "1324800457",
+    "leadPath": "/lead?mid=22345&network_id=AWIN&oid=1324800457",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22345-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22345-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Plié",
+    "objectID": "seller22345",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/plié-22345/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/plié-22345",
+      "rulesPage": "/cupom-de-desconto/plié-22345/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22338,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22338",
+    "leadOfferId": "1324800427",
+    "leadPath": "/lead?mid=22338&network_id=AWIN&oid=1324800427",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22338-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22338-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Baggio",
+    "objectID": "seller22338",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/baggio-22338/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/baggio-22338",
+      "rulesPage": "/cupom-de-desconto/baggio-22338/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21989,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21989",
+    "leadOfferId": "1324800472",
+    "leadPath": "/lead?mid=21989&network_id=RAKUTEN&oid=1324800472",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21989-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21989-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "SalonLine",
+    "objectID": "seller21989",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/salonline-21989/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/salonline-21989",
+      "rulesPage": "/cupom-de-desconto/salonline-21989/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21927,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21927",
+    "leadOfferId": "1257057601",
+    "leadPath": "/lead?mid=21927&oid=1257057601",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21927-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21927-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Trip Advisor",
+    "objectID": "seller21927",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/trip-advisor-21927/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/trip-advisor-21927",
+      "rulesPage": "/cupom-de-desconto/trip-advisor-21927/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21919,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21919",
+    "leadOfferId": "1257057068",
+    "leadPath": "/lead?mid=21919&oid=1257057068",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21919-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21919-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Qatar Airways",
+    "objectID": "seller21919",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/qatar-airways-21919/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/qatar-airways-21919",
+      "rulesPage": "/cupom-de-desconto/qatar-airways-21919/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21913,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21913",
+    "leadOfferId": "1257057524",
+    "leadPath": "/lead?mid=21913&network_id=AFILIO&oid=1257057524",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21913-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21913-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Max Titanium",
+    "objectID": "seller21913",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/max-titanium-21913/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/max-titanium-21913",
+      "rulesPage": "/cupom-de-desconto/max-titanium-21913/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21909,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21909",
+    "leadOfferId": "1257057532",
+    "leadPath": "/lead?mid=21909&network_id=AFILIO&oid=1257057532",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21909-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21909-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Loja Claro",
+    "objectID": "seller21909",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/loja-claro-21909/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/loja-claro-21909",
+      "rulesPage": "/cupom-de-desconto/loja-claro-21909/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21906,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21906",
+    "leadOfferId": "1257057374",
+    "leadPath": "/lead?mid=21906&oid=1257057374",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21906-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21906-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Kinguin",
+    "objectID": "seller21906",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/kinguin-21906/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/kinguin-21906",
+      "rulesPage": "/cupom-de-desconto/kinguin-21906/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.09,
+      "bestFormula": 0.09,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21904,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21904",
+    "leadOfferId": "1257057545",
+    "leadPath": "/lead?mid=21904&network_id=LOMADEE&oid=1257057545",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21904-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21904-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Hostinger",
+    "objectID": "seller21904",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/hostinger-21904/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/hostinger-21904",
+      "rulesPage": "/cupom-de-desconto/hostinger-21904/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21895,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21895",
+    "leadOfferId": "1257057373",
+    "leadPath": "/lead?mid=21895&network_id=AFILIO&oid=1257057373",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21895-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21895-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Canon",
+    "objectID": "seller21895",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/canon-21895/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/canon-21895",
+      "rulesPage": "/cupom-de-desconto/canon-21895/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21893,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21893",
+    "leadOfferId": "1257057517",
+    "leadPath": "/lead?mid=21893&network_id=AFILIO&oid=1257057517",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21893-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21893-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Caedu",
+    "objectID": "seller21893",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/caedu-21893/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/caedu-21893",
+      "rulesPage": "/cupom-de-desconto/caedu-21893/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21885,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21885",
+    "leadOfferId": "1257057551",
+    "leadPath": "/lead?mid=21885&oid=1257057551",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21885-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21885-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Care Beauty",
+    "objectID": "seller21885",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/care-beauty-21885/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/care-beauty-21885",
+      "rulesPage": "/cupom-de-desconto/care-beauty-21885/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21880,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21880",
+    "leadOfferId": "1257057442",
+    "leadPath": "/lead?mid=21880&oid=1257057442",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21880-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21880-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Caudalie",
+    "objectID": "seller21880",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/caudalie-21880/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/caudalie-21880",
+      "rulesPage": "/cupom-de-desconto/caudalie-21880/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.07,
+      "bestFormula": 0.07,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21875,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21875",
+    "leadOfferId": "1257057103",
+    "leadPath": "/lead?mid=21875&oid=1257057103",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21875-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21875-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "GaMa Italy",
+    "objectID": "seller21875",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/gama-italy-21875/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/gama-italy-21875",
+      "rulesPage": "/cupom-de-desconto/gama-italy-21875/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21874,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21874",
+    "leadOfferId": "1257057099",
+    "leadPath": "/lead?mid=21874&oid=1257057099",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21874-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21874-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Unidas",
+    "objectID": "seller21874",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/unidas-21874/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/unidas-21874",
+      "rulesPage": "/cupom-de-desconto/unidas-21874/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21861,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21861",
+    "leadOfferId": "1257057057",
+    "leadPath": "/lead?mid=21861&network_id=RAKUTEN&oid=1257057057",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21861-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21861-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Forever Liss",
+    "objectID": "seller21861",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/forever-liss-21861/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/forever-liss-21861",
+      "rulesPage": "/cupom-de-desconto/forever-liss-21861/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21859,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21859",
+    "leadOfferId": "1257057083",
+    "leadPath": "/lead?mid=21859&oid=1257057083",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21859-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21859-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Hipervarejo",
+    "objectID": "seller21859",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/hipervarejo-21859/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/hipervarejo-21859",
+      "rulesPage": "/cupom-de-desconto/hipervarejo-21859/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21858,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21858",
+    "leadOfferId": "1257057430",
+    "leadPath": "/lead?mid=21858&oid=1257057430",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21858-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21858-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Itapemirim",
+    "objectID": "seller21858",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/itapemirim-21858/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/itapemirim-21858",
+      "rulesPage": "/cupom-de-desconto/itapemirim-21858/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21855,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21855",
+    "leadOfferId": "1257057378",
+    "leadPath": "/lead?mid=21855&oid=1257057378",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21855-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21855-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Mundos Infinitos",
+    "objectID": "seller21855",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/mundos-infinitos-21855/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/mundos-infinitos-21855",
+      "rulesPage": "/cupom-de-desconto/mundos-infinitos-21855/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21853,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21853",
+    "leadOfferId": "1387237884",
+    "leadPath": "/lead?mid=21853&network_id=AWIN&oid=1387237884",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21853-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21853-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Soldiers Nutrition",
+    "objectID": "seller21853",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/soldiers-nutrition-21853/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/soldiers-nutrition-21853",
+      "rulesPage": "/cupom-de-desconto/soldiers-nutrition-21853/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21849,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21849",
+    "leadOfferId": "1257057446",
+    "leadPath": "/lead?mid=21849&oid=1257057446",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21849-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21849-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Casa Andina PE",
+    "objectID": "seller21849",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/casa-andina-pe-21849/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/casa-andina-pe-21849",
+      "rulesPage": "/cupom-de-desconto/casa-andina-pe-21849/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21739,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21739",
+    "leadOfferId": "1175090362",
+    "leadPath": "/lead?mid=21739&network_id=AWIN&oid=1175090362",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21739-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21739-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Dutra Maquinas BR",
+    "objectID": "seller21739",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/dutra-maquinas-br-21739/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/dutra-maquinas-br-21739",
+      "rulesPage": "/cupom-de-desconto/dutra-maquinas-br-21739/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21735,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21735",
+    "leadOfferId": "1175090339",
+    "leadPath": "/lead?mid=21735&network_id=RAKUTEN&oid=1175090339",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21735-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21735-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Sem Parar",
+    "objectID": "seller21735",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/sem-parar-21735/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/sem-parar-21735",
+      "rulesPage": "/cupom-de-desconto/sem-parar-21735/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21728,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21728",
+    "leadOfferId": "1175090327",
+    "leadPath": "/lead?mid=21728&network_id=AWIN&oid=1175090327",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21728-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21728-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "WEMOBI",
+    "objectID": "seller21728",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/wemobi-21728/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/wemobi-21728",
+      "rulesPage": "/cupom-de-desconto/wemobi-21728/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.09,
+      "bestFormula": 0.09,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21727,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21727",
+    "leadOfferId": "1175090348",
+    "leadPath": "/lead?mid=21727&network_id=AWIN&oid=1175090348",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21727-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21727-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Estée Lauder",
+    "objectID": "seller21727",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/estée-lauder-21727/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/estée-lauder-21727",
+      "rulesPage": "/cupom-de-desconto/estée-lauder-21727/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.015,
+      "bestFormula": 0.015,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21723,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21723",
+    "leadOfferId": "1175090338",
+    "leadPath": "/lead?mid=21723&network_id=AWIN&oid=1175090338",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21723-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21723-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Grand Cru",
+    "objectID": "seller21723",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/grand-cru-21723/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/grand-cru-21723",
+      "rulesPage": "/cupom-de-desconto/grand-cru-21723/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21589,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21589",
+    "leadOfferId": "1152025631",
+    "leadPath": "/lead?mid=21589&network_id=RAKUTEN&oid=1152025631",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21589-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21589-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Richards",
+    "objectID": "seller21589",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/richards-21589/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/richards-21589",
+      "rulesPage": "/cupom-de-desconto/richards-21589/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21588,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21588",
+    "leadOfferId": "1152025556",
+    "leadPath": "/lead?mid=21588&network_id=RAKUTEN&oid=1152025556",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21588-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21588-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Bobstore Brazil",
+    "objectID": "seller21588",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/bobstore-brazil-21588/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/bobstore-brazil-21588",
+      "rulesPage": "/cupom-de-desconto/bobstore-brazil-21588/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21587,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21587",
+    "leadOfferId": "1152025627",
+    "leadPath": "/lead?mid=21587&network_id=RAKUTEN&oid=1152025627",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21587-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21587-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "VR Collezioni",
+    "objectID": "seller21587",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/vr-collezioni-21587/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/vr-collezioni-21587",
+      "rulesPage": "/cupom-de-desconto/vr-collezioni-21587/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21586,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21586",
+    "leadOfferId": "1152025459",
+    "leadPath": "/lead?mid=21586&network_id=RAKUTEN&oid=1152025459",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21586-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21586-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Salinas Rio",
+    "objectID": "seller21586",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/salinas-rio-21586/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/salinas-rio-21586",
+      "rulesPage": "/cupom-de-desconto/salinas-rio-21586/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21580,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21580",
+    "leadOfferId": "1152025536",
+    "leadPath": "/lead?mid=21580&network_id=RAKUTEN&oid=1152025536",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21580-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21580-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Le Creuset",
+    "objectID": "seller21580",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/le-creuset-21580/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/le-creuset-21580",
+      "rulesPage": "/cupom-de-desconto/le-creuset-21580/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21468,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21468",
+    "leadOfferId": "1152025564",
+    "leadPath": "/lead?mid=21468&network_id=AWIN&oid=1152025564",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21468-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21468-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Vou Levar",
+    "objectID": "seller21468",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/vou-levar-21468/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/vou-levar-21468",
+      "rulesPage": "/cupom-de-desconto/vou-levar-21468/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21148,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21148",
+    "leadOfferId": "1090549380",
+    "leadPath": "/lead?mid=21148&network_id=AWIN&oid=1090549380",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21148-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21148-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Dentro da Historia",
+    "objectID": "seller21148",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/dentro-da-historia-21148/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/dentro-da-historia-21148",
+      "rulesPage": "/cupom-de-desconto/dentro-da-historia-21148/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21135,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21135",
+    "leadOfferId": "1090440845",
+    "leadPath": "/lead?mid=21135&network_id=AWIN&oid=1090440845",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21135-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21135-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Zarpo Viagens",
+    "objectID": "seller21135",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/zarpo-viagens-21135/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/zarpo-viagens-21135",
+      "rulesPage": "/cupom-de-desconto/zarpo-viagens-21135/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21131,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21131",
+    "leadOfferId": "1090422439",
+    "leadPath": "/lead?mid=21131&network_id=AWIN&oid=1090422439",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21131-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21131-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Yamamura",
+    "objectID": "seller21131",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/yamamura-21131/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/yamamura-21131",
+      "rulesPage": "/cupom-de-desconto/yamamura-21131/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21123,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21123",
+    "leadOfferId": "1086874184",
+    "leadPath": "/lead?mid=21123&network_id=AWIN&oid=1086874184",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21123-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21123-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "FlixBus",
+    "objectID": "seller21123",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/flixbus-21123/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/flixbus-21123",
+      "rulesPage": "/cupom-de-desconto/flixbus-21123/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.01,
+      "bestFormula": 0.01,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21122,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21122",
+    "leadOfferId": "1077197045",
+    "leadPath": "/lead?mid=21122&network_id=AWIN&oid=1077197045",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21122-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21122-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Evino",
+    "objectID": "seller21122",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/evino-21122/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/evino-21122",
+      "rulesPage": "/cupom-de-desconto/evino-21122/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21106,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21106",
+    "leadOfferId": "1076554729",
+    "leadPath": "/lead?mid=21106&network_id=AWIN&oid=1076554729",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21106-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21106-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Camicado",
+    "objectID": "seller21106",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/camicado-21106/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/camicado-21106",
+      "rulesPage": "/cupom-de-desconto/camicado-21106/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21100,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21100",
+    "leadOfferId": "1076551614",
+    "leadPath": "/lead?mid=21100&network_id=AWIN&oid=1076551614",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21100-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21100-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Brinox Shop",
+    "objectID": "seller21100",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/brinox-shop-21100/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/brinox-shop-21100",
+      "rulesPage": "/cupom-de-desconto/brinox-shop-21100/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21085,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21085",
+    "leadOfferId": "1077883840",
+    "leadPath": "/lead?mid=21085&network_id=AWIN&oid=1077883840",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21085-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21085-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Spicy",
+    "objectID": "seller21085",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/spicy-21085/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/spicy-21085",
+      "rulesPage": "/cupom-de-desconto/spicy-21085/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21067,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21067",
+    "leadOfferId": "1086989359",
+    "leadPath": "/lead?mid=21067&network_id=AWIN&oid=1086989359",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21067-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21067-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Iguatemi 365",
+    "objectID": "seller21067",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/iguatemi-365-21067/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/iguatemi-365-21067",
+      "rulesPage": "/cupom-de-desconto/iguatemi-365-21067/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21064,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21064",
+    "leadOfferId": "1086987672",
+    "leadPath": "/lead?mid=21064&network_id=AWIN&oid=1086987672",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21064-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21064-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Grupo A",
+    "objectID": "seller21064",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/grupo-a-21064/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/grupo-a-21064",
+      "rulesPage": "/cupom-de-desconto/grupo-a-21064/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 20948,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "20948",
+    "leadOfferId": "960242469",
+    "leadPath": "/lead?mid=20948&network_id=RAKUTEN&oid=960242469",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/20948-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/20948-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/3a/13/2070014828.jpg"
+    },
+    "name": "Zee Dog",
+    "objectID": "seller20948",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/zee-dog-20948/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/zee-dog-20948",
+      "rulesPage": "/cupom-de-desconto/zee-dog-20948/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 19850,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "19850",
+    "leadOfferId": "1089813035",
+    "leadPath": "/lead?mid=19850&network_id=AWIN&oid=1089813035",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/19850-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/19850-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Phooto",
+    "objectID": "seller19850",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/phooto-19850/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/phooto-19850",
+      "rulesPage": "/cupom-de-desconto/phooto-19850/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 19377,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "19377",
+    "leadOfferId": "1543969850",
+    "leadPath": "/lead?mid=19377&network_id=AWIN&oid=1543969850",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/19377-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/19377-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Expedia",
+    "objectID": "seller19377",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/expedia-19377/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/expedia-19377",
+      "rulesPage": "/cupom-de-desconto/expedia-19377/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 19291,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "19291",
+    "leadOfferId": "1076550133",
+    "leadPath": "/lead?mid=19291&network_id=AWIN&oid=1076550133",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/19291-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/19291-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Allianz Travel",
+    "objectID": "seller19291",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/allianz-travel-19291/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/allianz-travel-19291",
+      "rulesPage": "/cupom-de-desconto/allianz-travel-19291/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 19242,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "19242",
+    "leadOfferId": "1090044694",
+    "leadPath": "/lead?mid=19242&network_id=AWIN&oid=1090044694",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/19242-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/19242-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Tjama",
+    "objectID": "seller19242",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/tjama-19242/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/tjama-19242",
+      "rulesPage": "/cupom-de-desconto/tjama-19242/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 19175,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "19175",
+    "leadOfferId": "1175090360",
+    "leadPath": "/lead?mid=19175&network_id=RAKUTEN&oid=1175090360",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/19175-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/19175-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Océane",
+    "objectID": "seller19175",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/océane-19175/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/océane-19175",
+      "rulesPage": "/cupom-de-desconto/océane-19175/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 19128,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "19128",
+    "leadOfferId": "1152025626",
+    "leadPath": "/lead?mid=19128&network_id=AWIN&oid=1152025626",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/19128-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/19128-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Magic Feet",
+    "objectID": "seller19128",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/magic-feet-19128/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/magic-feet-19128",
+      "rulesPage": "/cupom-de-desconto/magic-feet-19128/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 19069,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "19069",
+    "leadOfferId": " 1534754708",
+    "leadPath": "/lead?mid=19069&network_id=RAKUTEN&oid=+1534754708",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/19069-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/19069-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Sallve",
+    "objectID": "seller19069",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/sallve-19069/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/sallve-19069",
+      "rulesPage": "/cupom-de-desconto/sallve-19069/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18959,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18959",
+    "leadOfferId": "1548529426",
+    "leadPath": "/lead?mid=18959&network_id=AWIN&oid=1548529426",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18959-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18959-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Zé Delivery",
+    "objectID": "seller18959",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/zé-delivery-18959/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/zé-delivery-18959",
+      "rulesPage": "/cupom-de-desconto/zé-delivery-18959/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.04,
+      "bestFormula": 0.04,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18859,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18859",
+    "leadOfferId": "1543971500",
+    "leadPath": "/lead?mid=18859&network_id=AWIN&oid=1543971500",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18859-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18859-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Beyoung",
+    "objectID": "seller18859",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/beyoung-18859/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/beyoung-18859",
+      "rulesPage": "/cupom-de-desconto/beyoung-18859/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18790,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18790",
+    "leadOfferId": "1076565300",
+    "leadPath": "/lead?mid=18790&network_id=AWIN&oid=1076565300",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18790-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18790-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Clinique",
+    "objectID": "seller18790",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/clinique-18790/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/clinique-18790",
+      "rulesPage": "/cupom-de-desconto/clinique-18790/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18679,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18679",
+    "leadOfferId": "909458239",
+    "leadPath": "/lead?mid=18679&network_id=RAKUTEN&oid=909458239",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18679-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18679-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/11/13/2070014773.jpg"
+    },
+    "name": "Bobô",
+    "objectID": "seller18679",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/bobô-18679/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/bobô-18679",
+      "rulesPage": "/cupom-de-desconto/bobô-18679/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18678,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18678",
+    "leadOfferId": "909481124",
+    "leadPath": "/lead?mid=18678&network_id=RAKUTEN&oid=909481124",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18678-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18678-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/2c/13/2070014772.jpg"
+    },
+    "name": "Fábula",
+    "objectID": "seller18678",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/fábula-18678/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/fábula-18678",
+      "rulesPage": "/cupom-de-desconto/fábula-18678/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18669,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18669",
+    "leadOfferId": "1531112464",
+    "leadPath": "/lead?mid=18669&network_id=AWIN&oid=1531112464",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18669-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18669-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Lojas Torra",
+    "objectID": "seller18669",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/lojas-torra-18669/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/lojas-torra-18669",
+      "rulesPage": "/cupom-de-desconto/lojas-torra-18669/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18639,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18639",
+    "leadOfferId": "1077196693",
+    "leadPath": "/lead?mid=18639&network_id=AWIN&oid=1077196693",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18639-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18639-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Eurorelogios",
+    "objectID": "seller18639",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/eurorelogios-18639/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/eurorelogios-18639",
+      "rulesPage": "/cupom-de-desconto/eurorelogios-18639/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18602,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18602",
+    "leadOfferId": "1090908425",
+    "leadPath": "/lead?mid=18602&network_id=AWIN&oid=1090908425",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18602-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18602-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "ArtWalk",
+    "objectID": "seller18602",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/artwalk-18602/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/artwalk-18602",
+      "rulesPage": "/cupom-de-desconto/artwalk-18602/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18586,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18586",
+    "leadOfferId": "1152025525",
+    "leadPath": "/lead?mid=18586&network_id=RAKUTEN&oid=1152025525",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18586-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18586-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Farfetch",
+    "objectID": "seller18586",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/farfetch-18586/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/farfetch-18586",
+      "rulesPage": "/cupom-de-desconto/farfetch-18586/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18321,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18321",
+    "leadOfferId": "1076554325",
+    "leadPath": "/lead?mid=18321&network_id=AWIN&oid=1076554325",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18321-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18321-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Café L'or",
+    "objectID": "seller18321",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/café-l'or-18321/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/café-l'or-18321",
+      "rulesPage": "/cupom-de-desconto/café-l'or-18321/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.02,
+      "bestFormula": 0.02,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18257,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18257",
+    "leadOfferId": "909468828",
+    "leadPath": "/lead?mid=18257&network_id=RAKUTEN&oid=909468828",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18257-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18257-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/f/13/2070014762.jpg"
+    },
+    "name": "Chico Rei",
+    "objectID": "seller18257",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/chico-rei-18257/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/chico-rei-18257",
+      "rulesPage": "/cupom-de-desconto/chico-rei-18257/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18250,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18250",
+    "leadOfferId": "1090041498",
+    "leadPath": "/lead?mid=18250&network_id=AWIN&oid=1090041498",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18250-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18250-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Studio Z",
+    "objectID": "seller18250",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/studio-z-18250/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/studio-z-18250",
+      "rulesPage": "/cupom-de-desconto/studio-z-18250/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18222,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18222",
+    "leadOfferId": "909482248",
+    "leadPath": "/lead?mid=18222&network_id=RAKUTEN&oid=909482248",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18222-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18222-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/3c/13/2070014754.jpg"
+    },
+    "name": "Le Lis",
+    "objectID": "seller18222",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/le-lis-18222/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/le-lis-18222",
+      "rulesPage": "/cupom-de-desconto/le-lis-18222/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.03,
+      "bestFormula": 0.03,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18214,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18214",
+    "leadOfferId": "909481566",
+    "leadPath": "/lead?mid=18214&network_id=RAKUTEN&oid=909481566",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18214-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18214-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/46/33/13/2070014748.jpg"
+    },
+    "name": "GrandVision",
+    "objectID": "seller18214",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/grandvision-18214/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/grandvision-18214",
+      "rulesPage": "/cupom-de-desconto/grandvision-18214/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.06,
+      "bestFormula": 0.06,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 23205,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "23205",
+    "leadOfferId": "909458267",
+    "leadPath": "/lead?mid=23205&network_id=AWIN&oid=909458267",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/23205-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/23205-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Calvin Klein",
+    "objectID": "seller23205",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/calvin-klein-23205/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/calvin-klein-23205",
+      "rulesPage": "/cupom-de-desconto/calvin-klein-23205/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 22797,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "22797",
+    "leadOfferId": "1365915575",
+    "leadPath": "/lead?mid=22797&network_id=AWIN&oid=1365915575",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/22797-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/22797-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Nutriage",
+    "objectID": "seller22797",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/nutriage-22797/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/nutriage-22797",
+      "rulesPage": "/cupom-de-desconto/nutriage-22797/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": null,
+      "bestFormula": null,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21747,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21747",
+    "leadOfferId": "1186799535",
+    "leadPath": "/lead?mid=21747&network_id=AWIN&oid=1186799535",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21747-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21747-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Telhanorte",
+    "objectID": "seller21747",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/telhanorte-21747/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/telhanorte-21747",
+      "rulesPage": "/cupom-de-desconto/telhanorte-21747/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.05,
+      "bestFormula": 0.05,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 21479,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "21479",
+    "leadOfferId": "1157953064",
+    "leadPath": "/lead?mid=21479&network_id=AWIN&oid=1157953064",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/21479-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/21479-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "FOM",
+    "objectID": "seller21479",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/fom-21479/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/fom-21479",
+      "rulesPage": "/cupom-de-desconto/fom-21479/regras"
+    }
+  },
+  {
+    "cashbackModality": {
+      "affiliateId": 0,
+      "allMerchant": 0.005,
+      "bestFormula": 0.005,
+      "categories": [],
+      "categoryRates": null,
+      "merchantId": 18715,
+      "offerRates": null,
+      "originId": null
+    },
+    "id": "18715",
+    "leadOfferId": "1532640049",
+    "leadPath": "/lead?mid=18715&network_id=AWIN&oid=1532640049",
+    "logoUrls": {
+      "mediumRoundend": "https://s.zst.com.br/prod/cupons/18715-Logo-200x200.png",
+      "smallRoundend": "https://s.zst.com.br/prod/cupons/18715-Logo-80x80.png",
+      "squared": "https://s.zst.com.br/prod/cupons/thumbs/9/null"
+    },
+    "name": "Mistral",
+    "objectID": "seller18715",
+    "paths": {
+      "bestProductsPage": "/cupom-de-desconto/mistral-18715/melhores-ofertas",
+      "homePage": "/cupom-de-desconto/mistral-18715",
+      "rulesPage": "/cupom-de-desconto/mistral-18715/regras"
+    }
+  }
+]

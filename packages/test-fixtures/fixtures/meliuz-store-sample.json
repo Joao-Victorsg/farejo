@@ -1,0 +1,322 @@
+[
+  {
+    "slug": "cupom-anhaguera",
+    "name": "Anhanguera Graduação",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-anhaguera.png",
+    "value": "R$ 25,00",
+    "isUpTo": false,
+    "kind": "brl"
+  },
+  {
+    "slug": "anhanguera-pos-graduacao",
+    "name": "Anhanguera Pós Graduação",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/anhanguera-pos-graduacao.png",
+    "value": "R$ 25,00",
+    "isUpTo": false,
+    "kind": "brl"
+  },
+  {
+    "slug": "cupom-apostaganha",
+    "name": "Aposta Ganha",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-apostaganha.png",
+    "value": "R$ 30,00",
+    "isUpTo": false,
+    "kind": "brl"
+  },
+  {
+    "slug": "cupom-avira",
+    "name": "Avira",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-avira.png",
+    "value": "R$ 60,00",
+    "isUpTo": false,
+    "kind": "brl"
+  },
+  {
+    "slug": "cupom-bet7k",
+    "name": "Bet7k",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-bet7k.png",
+    "value": "R$ 40,00",
+    "isUpTo": false,
+    "kind": "brl"
+  },
+  {
+    "slug": "cupom-box-magenta",
+    "name": "Box Magenta",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-box-magenta.png",
+    "value": "R$ 11,00",
+    "isUpTo": false,
+    "kind": "brl"
+  },
+  {
+    "slug": "cheapoair-com",
+    "name": "CheapOair.com",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cheapoair-com.png",
+    "value": "R$ 12,00",
+    "isUpTo": false,
+    "kind": "brl"
+  },
+  {
+    "slug": "cielo",
+    "name": "Cielo",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cielo.png",
+    "value": "R$ 4,00",
+    "isUpTo": false,
+    "kind": "brl"
+  },
+  {
+    "slug": "cupom-clear-vpn",
+    "name": "ClearVPN",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-clear-vpn.png",
+    "value": "R$ 140,00",
+    "isUpTo": false,
+    "kind": "brl"
+  },
+  {
+    "slug": "cupom-coinbase",
+    "name": "Coinbase",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-coinbase.png",
+    "value": "R$ 40,00",
+    "isUpTo": false,
+    "kind": "brl"
+  },
+  {
+    "slug": "cupom-consultoria-da-beleza",
+    "name": "Consultoria da Beleza",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-consultoria-da-beleza.png",
+    "value": "R$ 2,00",
+    "isUpTo": false,
+    "kind": "brl"
+  },
+  {
+    "slug": "cupom-crunchyroll",
+    "name": "Crunchyroll",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-crunchyroll.png",
+    "value": "R$ 5,00",
+    "isUpTo": false,
+    "kind": "brl"
+  },
+  {
+    "slug": "cupom-magazine-luiza",
+    "name": "Magazine Luiza",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-magazine-luiza.png",
+    "value": "10%",
+    "isUpTo": true,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-netshoes",
+    "name": "Netshoes",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-netshoes.png",
+    "value": "12%",
+    "isUpTo": true,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-renner",
+    "name": "Renner",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-renner.png",
+    "value": "12%",
+    "isUpTo": true,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-cobasi",
+    "name": "Cobasi",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-cobasi.png",
+    "value": "4%",
+    "isUpTo": true,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-desconto-mercado-livre",
+    "name": "Mercado Livre",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-desconto-mercado-livre.png",
+    "value": "2,5%",
+    "isUpTo": true,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-beleza-na-web",
+    "name": "Beleza na Web",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-beleza-na-web.png",
+    "value": "11%",
+    "isUpTo": true,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-dji-dro",
+    "name": "DJI Drones",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-dji-dro.png",
+    "value": "6,5%",
+    "isUpTo": true,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-mascavo",
+    "name": "Mascavo",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-mascavo.png",
+    "value": "12,5%",
+    "isUpTo": true,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-shopee",
+    "name": "Shopee",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-shopee.png",
+    "value": "1,5%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-adcos",
+    "name": "ADCOS",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-adcos.png",
+    "value": "6%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "autodesk",
+    "name": "Autodesk",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/autodesk.png",
+    "value": "3,5%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-botineiros",
+    "name": "Botineiros",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-botineiros.png",
+    "value": "3%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-clinique",
+    "name": "Clinique",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-clinique.png",
+    "value": "5,5%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-decolarcom",
+    "name": "Decolar.com",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-decolarcom.png",
+    "value": "1%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "eden-fantasys",
+    "name": "EdenFantasys",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/eden-fantasys.png",
+    "value": "11,5%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "farmacia-indiana",
+    "name": "Farmácia Indiana",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/farmacia-indiana.png",
+    "value": "2,5%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "gocase",
+    "name": "Gocase",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/gocase.png",
+    "value": "3,5%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-inciclo",
+    "name": "Inciclo",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-inciclo.png",
+    "value": "4,5%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-knowfashionstyle",
+    "name": "KnowFashionStyle",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-knowfashionstyle.png",
+    "value": "3,5%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-coral-tintas",
+    "name": "Loja Coral",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-coral-tintas.png",
+    "value": "5%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-malwee",
+    "name": "Malwee",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-malwee.png",
+    "value": "3%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-ricca",
+    "name": "Mundo Ricca",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-ricca.png",
+    "value": "3,5%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-oui-paris",
+    "name": "OUI Paris",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-oui-paris.png",
+    "value": "3%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-plie",
+    "name": "Plié",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-plie.png",
+    "value": "3%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "reebok",
+    "name": "Reebok",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/reebok.png",
+    "value": "2%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-skelt",
+    "name": "Skelt",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-skelt.png",
+    "value": "2%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "teste-ops",
+    "name": "teste ops",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/teste-ops.png",
+    "value": "0,5%",
+    "isUpTo": false,
+    "kind": "percent"
+  },
+  {
+    "slug": "cupom-vai-de-promo",
+    "name": "Vai de Promo",
+    "logoUrl": "https://s.staticz.com.br/app/img/partner/filled/cupom-vai-de-promo.png",
+    "value": "1%",
+    "isUpTo": false,
+    "kind": "percent"
+  }
+]

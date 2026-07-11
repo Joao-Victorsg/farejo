@@ -1,0 +1,4718 @@
+[
+  {
+    "slug": "accor-hoteis",
+    "name": "All Accor Hotéis",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/all-accor-hoteis-639082385025271592.png?v4"
+  },
+  {
+    "slug": "acer",
+    "name": "Acer",
+    "kind": "percent",
+    "value": 0.2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/acer-638908817361135017.png?v4"
+  },
+  {
+    "slug": "adcos",
+    "name": "ADCOS",
+    "kind": "percent",
+    "value": 6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/adcos-637588428416576270.png?v4"
+  },
+  {
+    "slug": "adidas",
+    "name": "adidas",
+    "kind": "percent",
+    "value": 8,
+    "upTo": false,
+    "previous": "(era 3%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/adidas-638838772217588422.png?v4"
+  },
+  {
+    "slug": "aerow",
+    "name": "Aerow Chip Virtual",
+    "kind": "percent",
+    "value": 5.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/aerow-638884536126364965.png?v4"
+  },
+  {
+    "slug": "airalo",
+    "name": "Airalo",
+    "kind": "percent",
+    "value": 13,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/airalo-637884851019210051.png?v4"
+  },
+  {
+    "slug": "airhelp",
+    "name": "AirHelp",
+    "kind": "percent",
+    "value": 9,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/airhelp-638144128691212634.png?v4"
+  },
+  {
+    "slug": "aliexpress",
+    "name": "AliExpress",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/aliexpress-638803272105563962.png?v4"
+  },
+  {
+    "slug": "allianz-assistance",
+    "name": "Allianz Travel",
+    "kind": "percent",
+    "value": 4.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/allianz-travel-636975977619204000.png?v4"
+  },
+  {
+    "slug": "allugator",
+    "name": "Allu",
+    "kind": "percent",
+    "value": 50,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/allugator-639059041038650053.png?v4"
+  },
+  {
+    "slug": "altenburg",
+    "name": "Altenburg",
+    "kind": "percent",
+    "value": 1.8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/altenburg-638453443745092751.png?v4"
+  },
+  {
+    "slug": "alura",
+    "name": "Alura",
+    "kind": "percent",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/alura-637582521816079946.png?v4"
+  },
+  {
+    "slug": "amazon-music",
+    "name": "Amazon Music",
+    "kind": "brl",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/amazon-music-637992840792393696.png?v4"
+  },
+  {
+    "slug": "amend",
+    "name": "Amend",
+    "kind": "percent",
+    "value": 2.8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/amend-637810377481697981.png?v4"
+  },
+  {
+    "slug": "america-chip",
+    "name": "America Chip",
+    "kind": "percent",
+    "value": 8.5,
+    "upTo": false,
+    "previous": "(era 5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/america-chip-638611328160808587.png?v4"
+  },
+  {
+    "slug": "american-tourister",
+    "name": "American Tourister",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/american-tourister-639191199804109136.png?v4"
+  },
+  {
+    "slug": "amobeleza",
+    "name": "AMOBELEZA",
+    "kind": "percent",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/amobeleza-638828958099828201.png?v4"
+  },
+  {
+    "slug": "amoedo",
+    "name": "Amoedo",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/amoedo-637636605944065511.png?v4"
+  },
+  {
+    "slug": "anatomic-gel",
+    "name": "Anatomic Gel",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/anatomic-gel-638449065837017188.png?v4"
+  },
+  {
+    "slug": "animale",
+    "name": "Animale",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/animale.jpg?v4"
+  },
+  {
+    "slug": "anna-pegova",
+    "name": "Anna Pegova",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/anna-pegova.png?v4"
+  },
+  {
+    "slug": "aramis",
+    "name": "Aramis",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/aramis-637457289015508859.png?v4"
+  },
+  {
+    "slug": "armybr",
+    "name": "ARMYBR",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/armybr-638931175974944914.png?v4"
+  },
+  {
+    "slug": "arno",
+    "name": "Arno",
+    "kind": "percent",
+    "value": 4,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/arno-638762677691280220.png?v4"
+  },
+  {
+    "slug": "artwalk",
+    "name": "Artwalk",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/artwalk-637825113928974857.png?v4"
+  },
+  {
+    "slug": "asics",
+    "name": "Asics",
+    "kind": "percent",
+    "value": 7,
+    "upTo": false,
+    "previous": "(era 3,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/asics-638908805459020933.png?v4"
+  },
+  {
+    "slug": "assist-card",
+    "name": "Assist Card",
+    "kind": "percent",
+    "value": 14.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/assist-card-637562607077299983.png?v4"
+  },
+  {
+    "slug": "asus",
+    "name": "ASUS",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/asus-637708415447543628.png?v4"
+  },
+  {
+    "slug": "authentic-feet",
+    "name": "Authentic Feet",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/authentic-feet-637849308499906151.png?v4"
+  },
+  {
+    "slug": "autodesk",
+    "name": "Autodesk",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/autodesk-637704275314341601.png?v4"
+  },
+  {
+    "slug": "avast",
+    "name": "Avast",
+    "kind": "percent",
+    "value": 15,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/avast-638908817190441487.png?v4"
+  },
+  {
+    "slug": "avell",
+    "name": "Avell",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/avell-638162289798270201.png?v4"
+  },
+  {
+    "slug": "avg",
+    "name": "AVG",
+    "kind": "percent",
+    "value": 15,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/avg-637344900739760684.png?v4"
+  },
+  {
+    "slug": "avianca",
+    "name": "avianca",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/avianca-638578720373680268.png?v4"
+  },
+  {
+    "slug": "avon",
+    "name": "Avon",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/avon-639088275594397800.png?v4"
+  },
+  {
+    "slug": "baggio-cafe",
+    "name": "Baggio Café",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/baggio-cafe-639044407763140155.png?v4"
+  },
+  {
+    "slug": "bahia-principe",
+    "name": "Bahia Principe",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/bahia-principe-638919161395230492.png?v4"
+  },
+  {
+    "slug": "bang-good",
+    "name": "Banggood",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/bang-good.jpg?v4"
+  },
+  {
+    "slug": "barcelo-hotels-e-resorts",
+    "name": "Barceló Hotels & Resorts",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/barcelo-hotels-e-resorts.jpg?v4"
+  },
+  {
+    "slug": "basicocom",
+    "name": "basico.com",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/basico-638296047980454206.png?v4"
+  },
+  {
+    "slug": "bauducco",
+    "name": "Bauducco",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/bauducco-638635503278822801.png?v4"
+  },
+  {
+    "slug": "beach-park-ingressos",
+    "name": "Beach Park Ingressos",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/beach-park-ingressos-639059041262787894.png?v4"
+  },
+  {
+    "slug": "beleza-na-web",
+    "name": "Beleza na Web",
+    "kind": "percent",
+    "value": 11,
+    "upTo": true,
+    "previous": "(era 3,1%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/beleza-na-web-638838771973464675.png?v4"
+  },
+  {
+    "slug": "bellaphytus",
+    "name": "Bellaphytus",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/bellaphytus-639136641963294435.png?v4"
+  },
+  {
+    "slug": "bemol",
+    "name": "Bemol",
+    "kind": "percent",
+    "value": 1.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/bemol-639039009084721253.png?v4"
+  },
+  {
+    "slug": "bibi",
+    "name": "Bibi",
+    "kind": "percent",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/bibi-638023098172664370.png?v4"
+  },
+  {
+    "slug": "birden",
+    "name": "Birden",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/birden.png?v4"
+  },
+  {
+    "slug": "biscoite",
+    "name": "Biscoitê",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/biscoite-638791812948856935.png?v4"
+  },
+  {
+    "slug": "bitdefender-brasil",
+    "name": "Bitdefender Brasil",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/bitdefender-brasil-637697267206207192.png?v4"
+  },
+  {
+    "slug": "bluetti",
+    "name": "Bluetti",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/bluetti-639100600305701897.png?v4"
+  },
+  {
+    "slug": "bobo",
+    "name": "BO.BÔ",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/bobo-638744542023658000.png?v4"
+  },
+  {
+    "slug": "bold",
+    "name": "Bold",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/bold-638749706384806958.png?v4"
+  },
+  {
+    "slug": "booking-com",
+    "name": "Booking.com",
+    "kind": "percent",
+    "value": 4,
+    "upTo": true,
+    "previous": "(era 2%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/bookingcom-638838772283170336.png?v4"
+  },
+  {
+    "slug": "botineiros",
+    "name": "Botineiros",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/botineiros-639088366340313183.png?v4"
+  },
+  {
+    "slug": "box-magenta",
+    "name": "Box Magenta",
+    "kind": "brl",
+    "value": 11.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/box-magenta-639088248081602855.png?v4"
+  },
+  {
+    "slug": "brae",
+    "name": "Braé",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/brae-637846824858965584.png?v4"
+  },
+  {
+    "slug": "brastemp-store",
+    "name": "Brastemp Store",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/brastemp-store-638838782378569997.png?v4"
+  },
+  {
+    "slug": "bringit",
+    "name": "BringIT",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/bringit-637557385165699039.png?v4"
+  },
+  {
+    "slug": "brinox",
+    "name": "Brinox",
+    "kind": "percent",
+    "value": 2.2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/brinox-638217605710404953.png?v4"
+  },
+  {
+    "slug": "britania",
+    "name": "Britânia",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/britania-637055490023664022.png?v4"
+  },
+  {
+    "slug": "busbud",
+    "name": "Busbud",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/busbud-637195400065228270.png?v4"
+  },
+  {
+    "slug": "buser",
+    "name": "Buser",
+    "kind": "percent",
+    "value": 8,
+    "upTo": false,
+    "previous": "(era 3,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/buser-638908449590484118.png?v4"
+  },
+  {
+    "slug": "caedu",
+    "name": "Caedu",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/caedu-637526351830572372.png?v4"
+  },
+  {
+    "slug": "cafe-lor",
+    "name": "Café L'or",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/cafe-lor-637849307774243900.png?v4"
+  },
+  {
+    "slug": "calvin-klein",
+    "name": "Calvin Klein",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/calvin-klein.jpg?v4"
+  },
+  {
+    "slug": "calzedonia",
+    "name": "Calzedonia",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/calzedonia-637002555983148000.png?v4"
+  },
+  {
+    "slug": "cama-inbox",
+    "name": "Cama inBox",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": "(era 1,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/cama-inbox-638100848418240136.png?v4"
+  },
+  {
+    "slug": "camicado",
+    "name": "Camicado",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/camicado-638908805791948945.png?v4"
+  },
+  {
+    "slug": "canon",
+    "name": "Canon",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/canon.jpg?v4"
+  },
+  {
+    "slug": "carraro-moveis",
+    "name": "Móveis Carraro",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/carraro-moveis-637988623989180906.png?v4"
+  },
+  {
+    "slug": "carrefour",
+    "name": "Carrefour",
+    "kind": "percent",
+    "value": 1.1,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/carrefour-638838771671087289.png?v4"
+  },
+  {
+    "slug": "casa-dos-perfumes-importados",
+    "name": "Casa dos Perfumes Importados",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/casa-dos-perfumes-importados-639160960767917969.png?v4"
+  },
+  {
+    "slug": "casas-bahia",
+    "name": "Casas Bahia",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/casas-bahia-638838773826349665.png?v4"
+  },
+  {
+    "slug": "casa-tema",
+    "name": "Casatema",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/casatema.png?v4"
+  },
+  {
+    "slug": "caudalie",
+    "name": "Caudalie",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/caudalie-637957422210282069.png?v4"
+  },
+  {
+    "slug": "ccleaner",
+    "name": "CCleaner",
+    "kind": "percent",
+    "value": 15,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ccleaner-637080391239264315.png?v4"
+  },
+  {
+    "slug": "cea",
+    "name": "C&A",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/cea-638838774298821579.png?v4"
+  },
+  {
+    "slug": "cellfy",
+    "name": "Cellfy",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/cellfy-639177998781337614.png?v4"
+  },
+  {
+    "slug": "centauro",
+    "name": "Centauro",
+    "kind": "percent",
+    "value": 10,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/centauro-638838771760582780.png?v4"
+  },
+  {
+    "slug": "central-ar",
+    "name": "Central Ar",
+    "kind": "percent",
+    "value": 1.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/central-ar-638908719150200196.png?v4"
+  },
+  {
+    "slug": "central-toalhas",
+    "name": "Central Toalhas",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/central-toalhas-638158637576974649.png?v4"
+  },
+  {
+    "slug": "cestas-michelli",
+    "name": "Cestas Michelli",
+    "kind": "percent",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/cestas-michelli-636983795540418000.png?v4"
+  },
+  {
+    "slug": "charme-no-detalhe",
+    "name": "Charme do Detalhe",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/charme-no-detalhe-638986307636894394.png?v4"
+  },
+  {
+    "slug": "chicco",
+    "name": "Chicco",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/chicco-639041853428378646.png?v4"
+  },
+  {
+    "slug": "chico-rei",
+    "name": "Chico Rei",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/chico-rei-637556424712588216.png?v4"
+  },
+  {
+    "slug": "chilli-beans",
+    "name": "Chilli Beans",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/chilli-beans-637850158288581617.png?v4"
+  },
+  {
+    "slug": "claro-loja",
+    "name": "Claro Loja",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/claro-loja-637871058726805700.png?v4"
+  },
+  {
+    "slug": "claudia",
+    "name": "Claudia",
+    "kind": "percent",
+    "value": 7,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/claudia-638472396494212429.png?v4"
+  },
+  {
+    "slug": "clinique-brasil",
+    "name": "Clinique Brasil",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/clinique-brasil-637534203927401809.png?v4"
+  },
+  {
+    "slug": "clovis",
+    "name": "Clovis",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/clovis-637503105739055481.png?v4"
+  },
+  {
+    "slug": "clube-da-borracha",
+    "name": "Clube da Borracha",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/clube-da-borracha-639101143012271052.png?v4"
+  },
+  {
+    "slug": "clube-giro",
+    "name": "Clube Giro",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/clube-giro-638634868179174631.png?v4"
+  },
+  {
+    "slug": "clubinho-de-ofertas",
+    "name": "Clubinho de Ofertas",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/clubinho-de-ofertas-638575897685758704.png?v4"
+  },
+  {
+    "slug": "cobasi",
+    "name": "Cobasi",
+    "kind": "percent",
+    "value": 4,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/cobasi-638838772154775465.png?v4"
+  },
+  {
+    "slug": "coffee-mais",
+    "name": "Coffee ++",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": "(era 2%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/coffee--637768059260190566.png?v4"
+  },
+  {
+    "slug": "colchoes-emma",
+    "name": "Colchões Emma",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/colchoes-emma-638908806688004481.png?v4"
+  },
+  {
+    "slug": "colibri",
+    "name": "Colibri",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/colibri-638574080799132031.png?v4"
+  },
+  {
+    "slug": "colombo",
+    "name": "Colombo",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/colombo-638908444207890552.png?v4"
+  },
+  {
+    "slug": "compra-certa",
+    "name": "Compra Certa",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/compra-certa-638838772615579917.png?v4"
+  },
+  {
+    "slug": "compra-direta",
+    "name": "Compra Direta Empresas",
+    "kind": "percent",
+    "value": 0.8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/compra-direta-638659851916962004.png?v4"
+  },
+  {
+    "slug": "consul-store",
+    "name": "Consul Store",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/consul-store-638908719743348665.png?v4"
+  },
+  {
+    "slug": "contem1g",
+    "name": "Contém1g",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/contem1g-638960594327558550.png?v4"
+  },
+  {
+    "slug": "continental",
+    "name": "Continental",
+    "kind": "percent",
+    "value": 0.3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/continental-637286217344413204.png?v4"
+  },
+  {
+    "slug": "copag",
+    "name": "Copag",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/copag-638678763027150788.png?v4"
+  },
+  {
+    "slug": "coral",
+    "name": "Lojas Coral",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/coral-638786912575556138.png?v4"
+  },
+  {
+    "slug": "cotton-on",
+    "name": "Cotton On",
+    "kind": "percent",
+    "value": 4.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/cotton-on-637952993691493173.png?v4"
+  },
+  {
+    "slug": "coursera",
+    "name": "Coursera",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/coursera-639014061484325020.png?v4"
+  },
+  {
+    "slug": "cpaps",
+    "name": "CPAPS",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/cpaps.jpg?v4"
+  },
+  {
+    "slug": "creamy",
+    "name": "Creamy",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/creamy-638354652602487642.png?v4"
+  },
+  {
+    "slug": "crunchyroll",
+    "name": "Crunchyroll",
+    "kind": "brl",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/crunchyroll-639072001160053900.png?v4"
+  },
+  {
+    "slug": "cvc",
+    "name": "CVC",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/cvc-637638743291743647.png?v4"
+  },
+  {
+    "slug": "dafiti",
+    "name": "Dafiti",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dafiti-638908443212401710.png?v4"
+  },
+  {
+    "slug": "daikin",
+    "name": "Daikin",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/daikin-639186071353624327.png?v4"
+  },
+  {
+    "slug": "dako",
+    "name": "Dako",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dako-637825213435263619.png?v4"
+  },
+  {
+    "slug": "dakota",
+    "name": "Dakota",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dakota-638467258667224523.png?v4"
+  },
+  {
+    "slug": "danone-sabor-de-viver",
+    "name": "Mundo Danone",
+    "kind": "percent",
+    "value": 5.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/danone-sabor-de-viver-637623134096104292.png?v4"
+  },
+  {
+    "slug": "dark-lab",
+    "name": "Dark Lab",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dark-lab-639009852000917348.png?v4"
+  },
+  {
+    "slug": "davene",
+    "name": "Davene",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/davene-639039190446834971.png?v4"
+  },
+  {
+    "slug": "decanter-vinhos",
+    "name": "Decanter Vinhos",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/decanter-vinhos-638278928155067273.png?v4"
+  },
+  {
+    "slug": "decathlon",
+    "name": "Decathlon",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/decathlon-638833651263041648.png?v4"
+  },
+  {
+    "slug": "decolarcom",
+    "name": "Decolar.com",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/decolarcom-638908443475910073.png?v4"
+  },
+  {
+    "slug": "decor-colors",
+    "name": "Decor Colors",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/decor-colors-638653790384354493.png?v4"
+  },
+  {
+    "slug": "degrau-cultural",
+    "name": "Degrau Cultural",
+    "kind": "percent",
+    "value": 6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/degrau-cultural.jpg?v4"
+  },
+  {
+    "slug": "dell",
+    "name": "Dell",
+    "kind": "percent",
+    "value": 3,
+    "upTo": true,
+    "previous": "(era 0,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dell-638822055953533735.png?v4"
+  },
+  {
+    "slug": "democrata",
+    "name": "Democrata",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/democrata-637656865427986427.png?v4"
+  },
+  {
+    "slug": "dentro-da-historia",
+    "name": "Dentro da História",
+    "kind": "percent",
+    "value": 3.8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dentro-da-historia-637190000827755309.png?v4"
+  },
+  {
+    "slug": "deonibus",
+    "name": "DeÔnibus",
+    "kind": "percent",
+    "value": 4.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/deonibus-637505434545598527.png?v4"
+  },
+  {
+    "slug": "descorcha",
+    "name": "Concha y Toro - Descorcha",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/concha-y-toro---descorcha-639117588417030863.jpeg?v4"
+  },
+  {
+    "slug": "dhgate",
+    "name": "DHgate",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dhgate-637280979559589630.png?v4"
+  },
+  {
+    "slug": "diesel",
+    "name": "Diesel",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/diesel-638960348914963997.png?v4"
+  },
+  {
+    "slug": "disney-plus",
+    "name": "Disney+",
+    "kind": "percent",
+    "value": 13,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/disney-638580138223275847.png?v4"
+  },
+  {
+    "slug": "dji-drones",
+    "name": "DJI Drones",
+    "kind": "percent",
+    "value": 10,
+    "upTo": true,
+    "previous": "(era 0,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dji-drones-639034859486432273.png?v4"
+  },
+  {
+    "slug": "doce-beleza",
+    "name": "Doce Beleza",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/doce-beleza-638297925839939379.png?v4"
+  },
+  {
+    "slug": "dona-coelha-sex-shop",
+    "name": "Dona Coelha Sex Shop",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dona-coelha-sex-shop-637279086592065542.png?v4"
+  },
+  {
+    "slug": "drogal",
+    "name": "Drogal",
+    "kind": "percent",
+    "value": 4,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/drogal-638908447616291935.png?v4"
+  },
+  {
+    "slug": "drogaria-araujo",
+    "name": "Drogaria Araujo",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/drogaria-araujo-638908445823640146.png?v4"
+  },
+  {
+    "slug": "drogaria-catarinense",
+    "name": "Drogaria Catarinense",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/drogaria-catarinense-637952994056535346.png?v4"
+  },
+  {
+    "slug": "drogaria-rosario",
+    "name": "Drogaria Rosário",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/drogaria-rosario-638972601036268511.png?v4"
+  },
+  {
+    "slug": "drogaria-sao-paulo",
+    "name": "Drogaria São Paulo",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/drogaria-sao-paulo-638838773852012852.png?v4"
+  },
+  {
+    "slug": "drogarias-pacheco",
+    "name": "Drogarias Pacheco",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/drogarias-pacheco-638908447234655853.png?v4"
+  },
+  {
+    "slug": "drogarias-tamoio",
+    "name": "Drogarias Tamoio",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/drogarias-tamoio-638972739921995862.png?v4"
+  },
+  {
+    "slug": "drogaria-venancio",
+    "name": "Drogaria Venancio",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/drogaria-venancio-638908446022516058.png?v4"
+  },
+  {
+    "slug": "drogasmil",
+    "name": "Drogasmil",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/drogasmil-638757309081719900.png?v4"
+  },
+  {
+    "slug": "dr-peanut",
+    "name": "DR. Peanut",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dr-peanut-638332467656141988.png?v4"
+  },
+  {
+    "slug": "dudalina",
+    "name": "Dudalina",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dudalina-639096133862098808.png?v4"
+  },
+  {
+    "slug": "dufrio",
+    "name": "Dufrio",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dufrio.png?v4"
+  },
+  {
+    "slug": "dutra-maquinas",
+    "name": "Dutra Máquinas",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dutra-maquinas-638140585912611036.png?v4"
+  },
+  {
+    "slug": "dux-nutrition",
+    "name": "Dux Nutrition",
+    "kind": "percent",
+    "value": 3.2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dux-nutrition-638587430599259462.png?v4"
+  },
+  {
+    "slug": "dyson",
+    "name": "Dyson",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/dyson-639130570456958598.png?v4"
+  },
+  {
+    "slug": "easeus",
+    "name": "EaseUS",
+    "kind": "percent",
+    "value": 15,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/easeus-637433014142983849.png?v4"
+  },
+  {
+    "slug": "eclock",
+    "name": "eClock",
+    "kind": "percent",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/eclock-637733629957149389.png?v4"
+  },
+  {
+    "slug": "editora-panini",
+    "name": "Panini",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/editora-panini.jpg?v4"
+  },
+  {
+    "slug": "efacil",
+    "name": "eFácil",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/efacil-638908717737515178.png?v4"
+  },
+  {
+    "slug": "elbo",
+    "name": "Elbo",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/elbo-639185059694916503.png?v4"
+  },
+  {
+    "slug": "electrolux",
+    "name": "Electrolux",
+    "kind": "percent",
+    "value": 0.3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/electrolux-638838782160279448.png?v4"
+  },
+  {
+    "slug": "elements",
+    "name": "Elements",
+    "kind": "percent",
+    "value": 6,
+    "upTo": false,
+    "previous": "(era 2,6%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/elements-638738443568835627.png?v4"
+  },
+  {
+    "slug": "e-lens",
+    "name": "e-Lens",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/e-lens-638908718834186369.png?v4"
+  },
+  {
+    "slug": "ellus",
+    "name": "Ellus",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ellus.jpg?v4"
+  },
+  {
+    "slug": "eotica",
+    "name": "eÓtica",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/eotica-639128996333789619.png?v4"
+  },
+  {
+    "slug": "epoca-cosmeticos",
+    "name": "Época Cosméticos",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/epoca-cosmeticos-639143554086941122.png?v4"
+  },
+  {
+    "slug": "eset",
+    "name": "ESET Antivírus",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/eset-antivirus.png?v4"
+  },
+  {
+    "slug": "esplanada-moveis",
+    "name": "Esplanada Móveis",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/esplanada-moveis-638652984962501996.png?v4"
+  },
+  {
+    "slug": "estee-lauder",
+    "name": "Estée Lauder",
+    "kind": "percent",
+    "value": 6.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/estee-lauder-638114494158175604.png?v4"
+  },
+  {
+    "slug": "estoque-outlet",
+    "name": "Estoque Outlet",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/estoque-outlet-638744542371990212.png?v4"
+  },
+  {
+    "slug": "eudora",
+    "name": "Eudora",
+    "kind": "percent",
+    "value": 10,
+    "upTo": true,
+    "previous": "(era 5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/eudora-638908816487433026.png?v4"
+  },
+  {
+    "slug": "euro",
+    "name": "Euro",
+    "kind": "percent",
+    "value": 3.8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/euro-637318090003124836.png?v4"
+  },
+  {
+    "slug": "evas",
+    "name": "Evas",
+    "kind": "percent",
+    "value": 2.8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/evas-638822224664238379.png?v4"
+  },
+  {
+    "slug": "evino",
+    "name": "Evino",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/evino-638803271647288345.png?v4"
+  },
+  {
+    "slug": "expedia",
+    "name": "Expedia",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/expedia-639105588165091012.png?v4"
+  },
+  {
+    "slug": "experiencias-xcaret",
+    "name": "Experiencias Xcaret",
+    "kind": "percent",
+    "value": 2.2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/experiencias-xcaret-638308075662560217.png?v4"
+  },
+  {
+    "slug": "extra",
+    "name": "Extra",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/extra-637628911957836202.png?v4"
+  },
+  {
+    "slug": "extrafarma",
+    "name": "Extrafarma",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/extrafarma-637384714795617744.png?v4"
+  },
+  {
+    "slug": "facil-persianas",
+    "name": "Fácil Persianas",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/facil-persianas-639003752664590178.png?v4"
+  },
+  {
+    "slug": "farfetch",
+    "name": "Farfetch",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/farfetch-638908446271388502.png?v4"
+  },
+  {
+    "slug": "farm",
+    "name": "Farm",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/farm-638908442821008418.png?v4"
+  },
+  {
+    "slug": "farma-22",
+    "name": "Farma 22",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/farma-22-637294010074204649.png?v4"
+  },
+  {
+    "slug": "farmacia-indiana",
+    "name": "Farmácia Indiana",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/farmacia-indiana-638290125191543154.png?v4"
+  },
+  {
+    "slug": "farmacia-preco-popular",
+    "name": "Farmácia Preço Popular",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/farmacia-preco-popular-637952994488866447.png?v4"
+  },
+  {
+    "slug": "farmacias-app",
+    "name": "Farmácias App",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/farmacias-app-638249483141934108.png?v4"
+  },
+  {
+    "slug": "farmacias-nissei",
+    "name": "Farmácias Nissei",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/farmacias-nissei-638949274149400827.png?v4"
+  },
+  {
+    "slug": "farmacias-sao-joao",
+    "name": "Farmácias São João",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/farmacias-sao-joao-638496395684124784.png?v4"
+  },
+  {
+    "slug": "fast-shop",
+    "name": "Fast Shop",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/fast-shop-638838771932107427.png?v4"
+  },
+  {
+    "slug": "fast-shop-empresas",
+    "name": "Fast Shop Empresas",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/fast-shop-empresas-638718547482829773.png?v4"
+  },
+  {
+    "slug": "ferramentas-kennedy",
+    "name": "Ferramentas Kennedy",
+    "kind": "percent",
+    "value": 1.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ferramentas-kennedy-638005763637595051.png?v4"
+  },
+  {
+    "slug": "ferreira-costa",
+    "name": "Ferreira Costa",
+    "kind": "percent",
+    "value": 0.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ferreira-costa-638488930469903410.png?v4"
+  },
+  {
+    "slug": "fini",
+    "name": "Fini",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": "(era 2%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/fini-637058018715710006.png?v4"
+  },
+  {
+    "slug": "fjallraven",
+    "name": "Fjällräven",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/fjallraven-637250675445881427.png?v4"
+  },
+  {
+    "slug": "flixbus",
+    "name": "FlixBus",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/flixbus-638578719851258357.png?v4"
+  },
+  {
+    "slug": "flores-online",
+    "name": "Flores Online",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/flores-online-637985945902782004.png?v4"
+  },
+  {
+    "slug": "foco-aluguel-de-carros",
+    "name": "Foco Aluguel de Carros",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/foco-aluguel-de-carros-639125482263817044.png?v4"
+  },
+  {
+    "slug": "forever-liss-cosmeticos",
+    "name": "Forever Liss Cosméticos",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/forever-liss-cosmeticos-638246939149162968.png?v4"
+  },
+  {
+    "slug": "fossil",
+    "name": "Fossil",
+    "kind": "percent",
+    "value": 3.8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/fossil.png?v4"
+  },
+  {
+    "slug": "fotoregistro",
+    "name": "FotoRegistro",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/fotoregistro-638578723829581890.png?v4"
+  },
+  {
+    "slug": "friopecas",
+    "name": "Friopeças",
+    "kind": "percent",
+    "value": 0.3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/friopecas-637849303118959419.png?v4"
+  },
+  {
+    "slug": "fut-fanatics",
+    "name": "FutFanatics",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": "(era 2,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/futfanatics-638908807297929194.png?v4"
+  },
+  {
+    "slug": "g2a",
+    "name": "G2A",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/g2a.png?v4"
+  },
+  {
+    "slug": "gama-italy",
+    "name": "GA.MA Italy",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/gama-italy-638349614567921395.png?v4"
+  },
+  {
+    "slug": "gang",
+    "name": "Gang",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/gang-638205409242640199.png?v4"
+  },
+  {
+    "slug": "garage",
+    "name": "Garage",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/garage-638264156097490961.png?v4"
+  },
+  {
+    "slug": "gazin",
+    "name": "Gazin",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/gazin-638908720059942516.png?v4"
+  },
+  {
+    "slug": "gfarma",
+    "name": "GFarma",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/gfarma-638965682331124021.png?v4"
+  },
+  {
+    "slug": "gigantec",
+    "name": "Gigantec",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": "(era 0,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/gigantec-638971776373484733.png?v4"
+  },
+  {
+    "slug": "giuliana-flores",
+    "name": "Giuliana Flores",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/giuliana-flores-637782803200784785.png?v4"
+  },
+  {
+    "slug": "globo-play",
+    "name": "Globoplay",
+    "kind": "brl",
+    "value": 20,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/globoplay-638502636972254898.png?v4"
+  },
+  {
+    "slug": "gocase",
+    "name": "Gocase",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/gocase-637786365970805097.png?v4"
+  },
+  {
+    "slug": "gol",
+    "name": "Gol",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/gol-638908450046769811.png?v4"
+  },
+  {
+    "slug": "good-vibres",
+    "name": "Good Vibres",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/good-vibres-639125586131381496.png?v4"
+  },
+  {
+    "slug": "google-workspace",
+    "name": "Google Workspace",
+    "kind": "brl",
+    "value": 17,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/google-workspace-637855423858809978.png?v4"
+  },
+  {
+    "slug": "granado",
+    "name": "Granado",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/granado.jpg?v4"
+  },
+  {
+    "slug": "gran-cursos-online",
+    "name": "Gran Cursos Online",
+    "kind": "percent",
+    "value": 11,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/gran-cursos-online-638838771761562298.png?v4"
+  },
+  {
+    "slug": "grandvision",
+    "name": "GrandVision",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/grandvision-638451421473278728.png?v4"
+  },
+  {
+    "slug": "green-man-gaming",
+    "name": "Green Man Gaming",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/green-man-gaming-638133665108917508.png?v4"
+  },
+  {
+    "slug": "grupo-a",
+    "name": "Grupo A",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/grupo-a-638131069111636305.png?v4"
+  },
+  {
+    "slug": "guess",
+    "name": "Guess",
+    "kind": "percent",
+    "value": 4.2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/guess-637565971600720774.png?v4"
+  },
+  {
+    "slug": "hangar-33",
+    "name": "Hangar 33",
+    "kind": "percent",
+    "value": 2.8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/hangar-33-638990731757940964.png?v4"
+  },
+  {
+    "slug": "hang-loose",
+    "name": "Hang Loose",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/hang-loose-639149818914550164.png?v4"
+  },
+  {
+    "slug": "havaianas",
+    "name": "Havaianas",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/havaianas.jpg?v4"
+  },
+  {
+    "slug": "havanna",
+    "name": "Havanna",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/havanna.jpg?v4"
+  },
+  {
+    "slug": "hering",
+    "name": "Hering",
+    "kind": "percent",
+    "value": 8,
+    "upTo": false,
+    "previous": "(era 2,6%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/hering-638908444820533535.png?v4"
+  },
+  {
+    "slug": "hipervarejo",
+    "name": "Hipervarejo",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/hipervarejo-638180326497859236.png?v4"
+  },
+  {
+    "slug": "hope-lingerie",
+    "name": "Hope Lingerie",
+    "kind": "percent",
+    "value": 4.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/hope-lingerie-638853418770995562.png?v4"
+  },
+  {
+    "slug": "hope-resort",
+    "name": "Hope Resort",
+    "kind": "percent",
+    "value": 4.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/hope-resort-638853417744595163.png?v4"
+  },
+  {
+    "slug": "hostelworld",
+    "name": "Hostelworld",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/hostelworld-637999680190331897.png?v4"
+  },
+  {
+    "slug": "hostinger",
+    "name": "Hostinger",
+    "kind": "percent",
+    "value": 15,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/hostinger-638971769513470029.png?v4"
+  },
+  {
+    "slug": "hoteiscom",
+    "name": "Hoteis.com",
+    "kind": "percent",
+    "value": 4,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/hoteiscom-639093343545640386.png?v4"
+  },
+  {
+    "slug": "hp",
+    "name": "HP",
+    "kind": "percent",
+    "value": 8,
+    "upTo": false,
+    "previous": "(era 3,1%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/hp-638908816809335375.png?v4"
+  },
+  {
+    "slug": "hurley",
+    "name": "Hurley",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/hurley-639149819998818457.png?v4"
+  },
+  {
+    "slug": "hype-games",
+    "name": "Hype Games",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/hype-games-638665117372261594.png?v4"
+  },
+  {
+    "slug": "ibbl",
+    "name": "IBBL",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ibbl-638466381432644132.png?v4"
+  },
+  {
+    "slug": "iberia",
+    "name": "Iberia",
+    "kind": "percent",
+    "value": 0.3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/iberia-637197121280412983.png?v4"
+  },
+  {
+    "slug": "iberostar",
+    "name": "Iberostar",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/iberostar-638085102815952371.png?v4"
+  },
+  {
+    "slug": "ibis-hotel",
+    "name": "Ibis Hotel",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ibis-hotel.jpg?v4"
+  },
+  {
+    "slug": "ibyte",
+    "name": "ibyte",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ibyte.jpg?v4"
+  },
+  {
+    "slug": "iguatemi-365",
+    "name": "Iguatemi 365",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": "(era 1,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/iguatemi-365-637864780321817788.png?v4"
+  },
+  {
+    "slug": "iherb",
+    "name": "Iherb",
+    "kind": "percent",
+    "value": 6,
+    "upTo": false,
+    "previous": "(era 2,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/iherb-637520196829341751.png?v4"
+  },
+  {
+    "slug": "inciclo",
+    "name": "Inciclo",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/inciclo-638987297434311926.png?v4"
+  },
+  {
+    "slug": "individual",
+    "name": "Individual",
+    "kind": "percent",
+    "value": 5.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/individual-638744542695953159.png?v4"
+  },
+  {
+    "slug": "infinix",
+    "name": "Infinix",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/infinix-637902188020969972.png?v4"
+  },
+  {
+    "slug": "integralmedica",
+    "name": "Integralmédica",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/integralmedica-637405317562531501.png?v4"
+  },
+  {
+    "slug": "intelbras",
+    "name": "Intelbras",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/intelbras.jpg?v4"
+  },
+  {
+    "slug": "intimissimi",
+    "name": "Intimissimi",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/intimissimi.png?v4"
+  },
+  {
+    "slug": "invideo",
+    "name": "InVideo",
+    "kind": "percent",
+    "value": 15.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/invideo-638605319953510728.png?v4"
+  },
+  {
+    "slug": "iplace",
+    "name": "iPlace",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": "(era 1%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/iplace-638908717355299877.png?v4"
+  },
+  {
+    "slug": "isabela-flores",
+    "name": "Isabela Flores",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/isabela-flores.png?v4"
+  },
+  {
+    "slug": "ita-airways",
+    "name": "ITA Airways",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ita-airways-638488771102425011.png?v4"
+  },
+  {
+    "slug": "ivan-joias",
+    "name": "Ivan Joias",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ivan-joias-639114211823228231.png?v4"
+  },
+  {
+    "slug": "jbl",
+    "name": "JBL",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/jbl-638134585668408067.png?v4"
+  },
+  {
+    "slug": "john-john",
+    "name": "John John",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/john-john-638745156505296959.png?v4"
+  },
+  {
+    "slug": "joma",
+    "name": "Joma",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": "(era 2%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/joma-638802521080222841.png?v4"
+  },
+  {
+    "slug": "jo-malone",
+    "name": "Jo Malone",
+    "kind": "percent",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/jo-malone-637716327243046941.png?v4"
+  },
+  {
+    "slug": "kabum",
+    "name": "KaBuM!",
+    "kind": "percent",
+    "value": 1.1,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/kabum-638973455463617518.png?v4"
+  },
+  {
+    "slug": "karcher",
+    "name": "Kärcher",
+    "kind": "percent",
+    "value": 6.5,
+    "upTo": false,
+    "previous": "(era 2,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/karcher-637394167309629662.png?v4"
+  },
+  {
+    "slug": "karsten",
+    "name": "Karsten",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/karsten-639035660980691774.png?v4"
+  },
+  {
+    "slug": "kaspersky",
+    "name": "Kaspersky",
+    "kind": "percent",
+    "value": 20,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/kaspersky-lab-637497577370404634.png?v4"
+  },
+  {
+    "slug": "kipling",
+    "name": "Kipling",
+    "kind": "percent",
+    "value": 3.2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/kipling-637616837075391261.png?v4"
+  },
+  {
+    "slug": "kitchenaid",
+    "name": "KitchenAid",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/kitchenaid-637175553231563801.png?v4"
+  },
+  {
+    "slug": "koerich",
+    "name": "Koerich",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/koerich-638833348059080171.png?v4"
+  },
+  {
+    "slug": "lacoste",
+    "name": "Lacoste",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lacoste-639129814939689912.png?v4"
+  },
+  {
+    "slug": "lanca-perfume",
+    "name": "Lança Perfume",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lanca-perfume-637121989075001864.png?v4"
+  },
+  {
+    "slug": "larroude",
+    "name": "Larroudé",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/larroude-639136654699133980.png?v4"
+  },
+  {
+    "slug": "latam",
+    "name": "LATAM",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/latam-638838772035897645.png?v4"
+  },
+  {
+    "slug": "lauri-esporte",
+    "name": "Lauri Esporte",
+    "kind": "percent",
+    "value": 5.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lauri-esporte-638170901361198425.png?v4"
+  },
+  {
+    "slug": "lego",
+    "name": "Lego",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lego.png?v4"
+  },
+  {
+    "slug": "leite-de-rosas",
+    "name": "Leite de Rosas",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/leite-de-rosas-638787586534489933.png?v4"
+  },
+  {
+    "slug": "leiturinha",
+    "name": "Leiturinha",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/leiturinha-637709478166381258.png?v4"
+  },
+  {
+    "slug": "le-lis-blanc",
+    "name": "Le Lis Blanc",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/le-lis-blanc-638744543328889964.png?v4"
+  },
+  {
+    "slug": "lenovo",
+    "name": "Lenovo",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lenovo-638838772740626462.png?v4"
+  },
+  {
+    "slug": "leroy-merlin",
+    "name": "Leroy Merlin",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/leroy-merlin-638838771560277242.png?v4"
+  },
+  {
+    "slug": "lez-a-lez",
+    "name": "Lez a Lez",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lez-a-lez-638835094025148042.png?v4"
+  },
+  {
+    "slug": "lg",
+    "name": "LG",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lg-638802520736776263.png?v4"
+  },
+  {
+    "slug": "libresse",
+    "name": "Libresse",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/libresse-638307986080476473.png?v4"
+  },
+  {
+    "slug": "lindt",
+    "name": "Lindt",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lindt-638243453516257599.png?v4"
+  },
+  {
+    "slug": "liquido-store",
+    "name": "Líquido Store",
+    "kind": "percent",
+    "value": 4.3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/liquido-store-637638743978931574.png?v4"
+  },
+  {
+    "slug": "litet",
+    "name": "Litet",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/litet-639070912530288997.png?v4"
+  },
+  {
+    "slug": "live",
+    "name": "Live!",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/live-638908807897964569.png?v4"
+  },
+  {
+    "slug": "livraria-martins-fontes-paulista",
+    "name": "Livraria Martins Fontes Paulista",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/livraria-martins-fontes-paulista-638786981957649885.png?v4"
+  },
+  {
+    "slug": "livre-e-leve",
+    "name": "Livre e Leve",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/livre-e-leve-639119345145341956.png?v4"
+  },
+  {
+    "slug": "liz",
+    "name": "Liz",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/liz-638168337274411089.png?v4"
+  },
+  {
+    "slug": "localiza",
+    "name": "Localiza",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/localiza-638578722625213037.png?v4"
+  },
+  {
+    "slug": "locaweb",
+    "name": "Locaweb",
+    "kind": "brl",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/locaweb.png?v4"
+  },
+  {
+    "slug": "loccitane-au-bresil",
+    "name": "Loccitane au Brésil",
+    "kind": "percent",
+    "value": 8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/loccitane-au-bresil-638908814980104099.png?v4"
+  },
+  {
+    "slug": "loja-castor",
+    "name": "Loja Castor",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/loja-castor-638841398828672281.png?v4"
+  },
+  {
+    "slug": "loja-do-cruzeiro",
+    "name": "Loja do Cruzeiro",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/loja-do-cruzeiro-639106631393296733.png?v4"
+  },
+  {
+    "slug": "loja-do-inter",
+    "name": "Loja do Inter",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/loja-do-inter-637344861455132034.png?v4"
+  },
+  {
+    "slug": "loja-do-mecanico",
+    "name": "Loja do Mecânico",
+    "kind": "percent",
+    "value": 1.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/loja-do-mecanico-638980456987570129.png?v4"
+  },
+  {
+    "slug": "loja-nba",
+    "name": "Loja NBA",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/loja-nba-639106621935048934.png?v4"
+  },
+  {
+    "slug": "loja-pst",
+    "name": "Loja PST",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/loja-pst-639106627742771330.png?v4"
+  },
+  {
+    "slug": "lojas-benoit",
+    "name": "Lojas Benoit",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lojas-benoit-638467252168426737.png?v4"
+  },
+  {
+    "slug": "lojas-lebes",
+    "name": "Lojas Lebes",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lojas-lebes.jpg?v4"
+  },
+  {
+    "slug": "lojas-pompeia",
+    "name": "Lojas Pompéia",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lojas-pompeia-637992841369173095.png?v4"
+  },
+  {
+    "slug": "lojas-rede",
+    "name": "Lojas Rede",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lojas-rede.png?v4"
+  },
+  {
+    "slug": "lojas-renner",
+    "name": "Lojas Renner",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lojas-renner-638838772565723575.png?v4"
+  },
+  {
+    "slug": "lojas-torra",
+    "name": "Lojas Torra",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lojas-torra-638173415537633035.png?v4"
+  },
+  {
+    "slug": "lola-cosmetics",
+    "name": "Lola Cosmetics",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lola-cosmetics-639166916897847680.png?v4"
+  },
+  {
+    "slug": "lottoland",
+    "name": "Lottoland",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lottoland-639177514555344730.png?v4"
+  },
+  {
+    "slug": "loungerie",
+    "name": "Loungerie",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/loungerie.jpg?v4"
+  },
+  {
+    "slug": "lumae",
+    "name": "Lumaê",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lumae-638133666492029219.png?v4"
+  },
+  {
+    "slug": "lupo",
+    "name": "Lupo",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lupo.jpg?v4"
+  },
+  {
+    "slug": "lupo-sport",
+    "name": "Lupo Sport",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/lupo-sport-638967440255430714.png?v4"
+  },
+  {
+    "slug": "luuna",
+    "name": "Luuna",
+    "kind": "percent",
+    "value": 3.2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/luuna-639086650913136703.png?v4"
+  },
+  {
+    "slug": "luxury-escapes",
+    "name": "Luxury Escapes",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/luxury-escapes-639178176557134535.png?v4"
+  },
+  {
+    "slug": "mac",
+    "name": "M.A.C",
+    "kind": "percent",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/mac-638908815823553916.png?v4"
+  },
+  {
+    "slug": "madeira-madeira",
+    "name": "MadeiraMadeira",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/madeiramadeira-638838771148430431.png?v4"
+  },
+  {
+    "slug": "madeiranit",
+    "name": "Madeiranit",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/madeiranit-638986461257818813.png?v4"
+  },
+  {
+    "slug": "magazine-luiza",
+    "name": "Magazine Luiza",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/magazine-luiza-638838771436931812.png?v4"
+  },
+  {
+    "slug": "magicfeet",
+    "name": "Magicfeet",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/magicfeet-637722475459553744.png?v4"
+  },
+  {
+    "slug": "mais-mu",
+    "name": "Mais Mu",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/mais-mu-638612101659270768.png?v4"
+  },
+  {
+    "slug": "malwee",
+    "name": "Malwee",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/malwee-638731427732409148.png?v4"
+  },
+  {
+    "slug": "mambo",
+    "name": "Mambo",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/mambo.png?v4"
+  },
+  {
+    "slug": "manual",
+    "name": "Manual",
+    "kind": "percent",
+    "value": 10,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/manual-637735213625120363.png?v4"
+  },
+  {
+    "slug": "marelli",
+    "name": "Marelli",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/marelli-638067247489112292.png?v4"
+  },
+  {
+    "slug": "maria-filo",
+    "name": "Maria Filó",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/maria-filo-637544493285595586.png?v4"
+  },
+  {
+    "slug": "mascavo",
+    "name": "Mascavo",
+    "kind": "percent",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/mascavo-638838697020162396.png?v4"
+  },
+  {
+    "slug": "mash",
+    "name": "Mash",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/mash.jpg?v4"
+  },
+  {
+    "slug": "max-titanium",
+    "name": "Max Titanium",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/max-titanium-637683533982120380.png?v4"
+  },
+  {
+    "slug": "mcafee",
+    "name": "McAfee",
+    "kind": "percent",
+    "value": 15.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/mcafee-638834418966157903.png?v4"
+  },
+  {
+    "slug": "melhor-seguro",
+    "name": "Melhor Seguro",
+    "kind": "percent",
+    "value": 11,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/melhor-seguro-639142806255428416.png?v4"
+  },
+  {
+    "slug": "mercafe",
+    "name": "Mercafé",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/tres-coracoes-637632410197136323.png?v4"
+  },
+  {
+    "slug": "mercure",
+    "name": "Mercure",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/mercure.png?v4"
+  },
+  {
+    "slug": "midea",
+    "name": "Midea",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/midea.png?v4"
+  },
+  {
+    "slug": "milano",
+    "name": "Milano",
+    "kind": "percent",
+    "value": 4.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/milano-637849307085488531.png?v4"
+  },
+  {
+    "slug": "mizuno",
+    "name": "Mizuno",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/mizuno-637636604911909559.png?v4"
+  },
+  {
+    "slug": "mobifacil",
+    "name": "Mobifácil",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/mobifacil-638978534141694158.png?v4"
+  },
+  {
+    "slug": "mondaine",
+    "name": "Mondaine",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/mondaine-638696021521524545.png?v4"
+  },
+  {
+    "slug": "monte-carlo",
+    "name": "Monte Carlo",
+    "kind": "percent",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/monte-carlo-638961147242813636.png?v4"
+  },
+  {
+    "slug": "morena-rosa",
+    "name": "Morena Rosa",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/morena-rosa-637423550810178285.png?v4"
+  },
+  {
+    "slug": "motorola",
+    "name": "Motorola",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/motorola-638905100273084260.png?v4"
+  },
+  {
+    "slug": "moveis-linhares",
+    "name": "Móveis Linhares",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/moveis-linhares-638261595152741826.png?v4"
+  },
+  {
+    "slug": "movida",
+    "name": "Movida",
+    "kind": "percent",
+    "value": 5.5,
+    "upTo": false,
+    "previous": "(era 5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/movida-637520197083679160.png?v4"
+  },
+  {
+    "slug": "mpozenato-moveis",
+    "name": "Mpozenato Móveis",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/mpozenato-moveis-638133664483955810.png?v4"
+  },
+  {
+    "slug": "multi-ar",
+    "name": "Leveros",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/leveros-636971520644746000.png?v4"
+  },
+  {
+    "slug": "multilaser",
+    "name": "Multilaser",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/multilaser-637965252887149652.png?v4"
+  },
+  {
+    "slug": "myphios",
+    "name": "MyPhios",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/myphios-638993239510862015.png?v4"
+  },
+  {
+    "slug": "nars-cosmetics",
+    "name": "Nars Cosmetics",
+    "kind": "percent",
+    "value": 6.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/nars-cosmetics-637777581684406605.png?v4"
+  },
+  {
+    "slug": "natura",
+    "name": "Natura",
+    "kind": "percent",
+    "value": 15,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/natura-639120335945548462.png?v4"
+  },
+  {
+    "slug": "nespresso",
+    "name": "Nespresso",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/nespresso-638908816111755349.png?v4"
+  },
+  {
+    "slug": "netshoes",
+    "name": "Netshoes",
+    "kind": "percent",
+    "value": 15,
+    "upTo": true,
+    "previous": "(era 3,1%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/netshoes-638803272305429697.png?v4"
+  },
+  {
+    "slug": "new-era",
+    "name": "New Era",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/new-era-637820099090546626.png?v4"
+  },
+  {
+    "slug": "nh-hoteles",
+    "name": "NH Hotels Group",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/nh-hotels-group-639100321690105597.png?v4"
+  },
+  {
+    "slug": "nike-store",
+    "name": "Nike Store",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/nike-store.png?v4"
+  },
+  {
+    "slug": "nordpass",
+    "name": "NordPass",
+    "kind": "percent",
+    "value": 23,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/nordpass-638427305127870671.png?v4"
+  },
+  {
+    "slug": "nordvpn",
+    "name": "NordVPN",
+    "kind": "percent",
+    "value": 24.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/nordvpn-638908818312015868.png?v4"
+  },
+  {
+    "slug": "norton",
+    "name": "Norton",
+    "kind": "percent",
+    "value": 31,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/norton-638908815308504443.png?v4"
+  },
+  {
+    "slug": "nova-flor",
+    "name": "Nova Flor",
+    "kind": "percent",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/nova-flor-637111441856384692.png?v4"
+  },
+  {
+    "slug": "novvo",
+    "name": "Novvo",
+    "kind": "percent",
+    "value": 5.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/novvo-639078179333412884.png?v4"
+  },
+  {
+    "slug": "nutriage",
+    "name": "Nutriage",
+    "kind": "percent",
+    "value": 8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/nutriage-638611543690734110.png?v4"
+  },
+  {
+    "slug": "nutrify",
+    "name": "Nutrify",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/nutrify-637940919820027501.png?v4"
+  },
+  {
+    "slug": "nuuvem",
+    "name": "Nuuvem",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/nuuvem-638908809631771785.png?v4"
+  },
+  {
+    "slug": "oakley",
+    "name": "Oakley",
+    "kind": "percent",
+    "value": 8,
+    "upTo": false,
+    "previous": "(era 4,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/oakley-637190954739324403.png?v4"
+  },
+  {
+    "slug": "o-boticario",
+    "name": "O Boticário",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/o-boticario-638838772989469048.png?v4"
+  },
+  {
+    "slug": "oceane",
+    "name": "Océane",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/oceane-637642181013450485.png?v4"
+  },
+  {
+    "slug": "off-premium",
+    "name": "OFF PREMIUM",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/off-premium.jpg?v4"
+  },
+  {
+    "slug": "olympikus",
+    "name": "Olympikus",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/olympikus-638908809946416234.png?v4"
+  },
+  {
+    "slug": "omio",
+    "name": "Omio",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/omio-639142585907373259.png?v4"
+  },
+  {
+    "slug": "one-travel",
+    "name": "One Travel",
+    "kind": "brl",
+    "value": 12,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/one-travel.jpg?v4"
+  },
+  {
+    "slug": "oqvestir",
+    "name": "OQVestir",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/oqvestir-638908442147731982.png?v4"
+  },
+  {
+    "slug": "orthocrin",
+    "name": "Orthocrin",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/orthocrin-638133666960353008.png?v4"
+  },
+  {
+    "slug": "ortope",
+    "name": "Ortopé",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ortope-637600535951395954.png?v4"
+  },
+  {
+    "slug": "oscar-calcados",
+    "name": "Oscar Calçados",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/oscar-calcados.png?v4"
+  },
+  {
+    "slug": "osklen",
+    "name": "Osklen",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/osklen.jpg?v4"
+  },
+  {
+    "slug": "oticas-paris",
+    "name": "Óticas Paris",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/oticas-paris-638318643833729141.png?v4"
+  },
+  {
+    "slug": "ou",
+    "name": "OU",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ou-638491459720303637.png?v4"
+  },
+  {
+    "slug": "oui",
+    "name": "O.U.i",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/oui-638671813527506270.png?v4"
+  },
+  {
+    "slug": "ourtrip",
+    "name": "OurTrip",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ourtrip-638884311726686853.png?v4"
+  },
+  {
+    "slug": "outlet-de-passagens",
+    "name": "Outlet de Passagens",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/outlet-de-passagens-638645837150570478.png?v4"
+  },
+  {
+    "slug": "outlet-espaco-hering",
+    "name": "Outlet Espaço Hering",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/outlet-espaco-hering-638908444958965870.png?v4"
+  },
+  {
+    "slug": "pagbank",
+    "name": "PagBank",
+    "kind": "brl",
+    "value": 24,
+    "upTo": false,
+    "previous": "(era R$ 6)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/pagbank-638612110971853255.png?v4"
+  },
+  {
+    "slug": "pague-menos",
+    "name": "Pague Menos",
+    "kind": "percent",
+    "value": 6,
+    "upTo": true,
+    "previous": "(era 2,6%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/pague-menos-638815313543271899.png?v4"
+  },
+  {
+    "slug": "panasonic",
+    "name": "Panasonic",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/panasonic.jpg?v4"
+  },
+  {
+    "slug": "panda-security",
+    "name": "Panda Security",
+    "kind": "percent",
+    "value": 10,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/panda-security-637116750095508874.png?v4"
+  },
+  {
+    "slug": "parafuzo",
+    "name": "Parafuzo",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/parafuzo.png?v4"
+  },
+  {
+    "slug": "patpat",
+    "name": "PatPat",
+    "kind": "percent",
+    "value": 6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/patpat-637914280175967904.png?v4"
+  },
+  {
+    "slug": "peahi",
+    "name": "Peahi",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/peahi-639126363795892405.png?v4"
+  },
+  {
+    "slug": "pegada",
+    "name": "Pegada",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/pegada-638822229994068796.png?v4"
+  },
+  {
+    "slug": "perfume-shopping",
+    "name": "Perfume Shopping",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/perfume-shopping-638832645637487470.png?v4"
+  },
+  {
+    "slug": "petite-jolie",
+    "name": "Petite Jolie",
+    "kind": "percent",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/petite-jolie-638882619073988798.png?v4"
+  },
+  {
+    "slug": "petz",
+    "name": "Petz",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/petz-638838773261063681.png?v4"
+  },
+  {
+    "slug": "phebo",
+    "name": "Phebo",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/phebo-639160960066705317.png?v4"
+  },
+  {
+    "slug": "philco",
+    "name": "Philco",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/philco-637055489769603065.png?v4"
+  },
+  {
+    "slug": "philips-walita",
+    "name": "Philips Walita",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/philips-walita-638491208633586159.png?v4"
+  },
+  {
+    "slug": "phooto",
+    "name": "Phooto!",
+    "kind": "percent",
+    "value": 4.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/phooto.jpg?v4"
+  },
+  {
+    "slug": "pilao",
+    "name": "Pilão",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/pilao-637357799602771397.png?v4"
+  },
+  {
+    "slug": "piuka",
+    "name": "Piuka",
+    "kind": "percent",
+    "value": 4.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/piuka-639058994437211729.png?v4"
+  },
+  {
+    "slug": "plie",
+    "name": "Plié",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/plie.png?v4"
+  },
+  {
+    "slug": "pm3",
+    "name": "PM3",
+    "kind": "percent",
+    "value": 4.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/pm3-638763519921761573.png?v4"
+  },
+  {
+    "slug": "pneu-store",
+    "name": "Pneu Store",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/pneu-store-638034323497007084.png?v4"
+  },
+  {
+    "slug": "polishop",
+    "name": "Polishop",
+    "kind": "percent",
+    "value": 11,
+    "upTo": true,
+    "previous": "(era 2,2%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/polishop.png?v4"
+  },
+  {
+    "slug": "polo-play",
+    "name": "Polo Play",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/polo-play-639058993252516989.png?v4"
+  },
+  {
+    "slug": "pontofrio",
+    "name": "Pontofrio",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/pontofrio-638838773645629427.png?v4"
+  },
+  {
+    "slug": "portal-educacao",
+    "name": "Portal Educação",
+    "kind": "percent",
+    "value": 7.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/portal-educacao.png?v4"
+  },
+  {
+    "slug": "porto-seguro-celular",
+    "name": "Porto Seguro Celular",
+    "kind": "brl",
+    "value": 15,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/porto-seguro-celular-638572445663199722.png?v4"
+  },
+  {
+    "slug": "positivo",
+    "name": "Positivo",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/positivo-637843430836520719.png?v4"
+  },
+  {
+    "slug": "positivo-casa-inteligente",
+    "name": "Positivo Casa Inteligente",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/positivo-casa-inteligente-637902187836457152.png?v4"
+  },
+  {
+    "slug": "posthaus-moda",
+    "name": "Posthaus Moda",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/posthaus-moda-638908445374032625.png?v4"
+  },
+  {
+    "slug": "prison",
+    "name": "Prison",
+    "kind": "percent",
+    "value": 8.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/prison-639120406060769219.png?v4"
+  },
+  {
+    "slug": "probel",
+    "name": "Probel",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/probel-637909086773057347.png?v4"
+  },
+  {
+    "slug": "probiotica",
+    "name": "Probiótica",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/probiotica-638987428966511670.png?v4"
+  },
+  {
+    "slug": "promofarma",
+    "name": "PromoFarma",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/promofarma-638798823589782163.png?v4"
+  },
+  {
+    "slug": "puma",
+    "name": "puma",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/puma-638908811023282590.png?v4"
+  },
+  {
+    "slug": "qatar-airways",
+    "name": "Qatar Airways",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/qatar-airways.png?v4"
+  },
+  {
+    "slug": "qualidoc",
+    "name": "Qualidoc",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/qualidoc-638476500110164100.png?v4"
+  },
+  {
+    "slug": "quatro-rodas",
+    "name": "Quatro Rodas",
+    "kind": "percent",
+    "value": 7.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/quatro-rodas-638472395978138814.png?v4"
+  },
+  {
+    "slug": "quem-disse-berenice",
+    "name": "Quem disse, Berenice?",
+    "kind": "percent",
+    "value": 10,
+    "upTo": true,
+    "previous": "(era 5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/quem-disse-berenice-637508024029145111.png?v4"
+  },
+  {
+    "slug": "quero-passagem",
+    "name": "Quero Passagem",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/quero-passagem-637106483693275112.png?v4"
+  },
+  {
+    "slug": "qustodio",
+    "name": "Qustodio",
+    "kind": "percent",
+    "value": 9.7,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/qustodio-637019103823589909.png?v4"
+  },
+  {
+    "slug": "radiale-pneus",
+    "name": "Radiale Pneus",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/radiale-pneus-639186816147668953.png?v4"
+  },
+  {
+    "slug": "ray-ban",
+    "name": "Ray-Ban",
+    "kind": "percent",
+    "value": 8,
+    "upTo": false,
+    "previous": "(era 4,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ray-ban-638908811539551829.png?v4"
+  },
+  {
+    "slug": "redmagic",
+    "name": "REDMAGIC",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/redmagic-638829884516962988.png?v4"
+  },
+  {
+    "slug": "reebok",
+    "name": "Reebok",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/reebok-638132916939773591.png?v4"
+  },
+  {
+    "slug": "remessa-online",
+    "name": "Remessa Online",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/remessa-online-638908448155545059.png?v4"
+  },
+  {
+    "slug": "renova-ecopecas",
+    "name": "Renova Ecopeças",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/renova-ecopecas.png?v4"
+  },
+  {
+    "slug": "reserva",
+    "name": "Reserva",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/reserva-637499530982740703.png?v4"
+  },
+  {
+    "slug": "riachuelo",
+    "name": "Riachuelo",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/riachuelo-639002831219887591.png?v4"
+  },
+  {
+    "slug": "ricca",
+    "name": "Ricca",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ricca-638285631630725155.png?v4"
+  },
+  {
+    "slug": "richards",
+    "name": "Richards",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/richards.jpg?v4"
+  },
+  {
+    "slug": "ropo",
+    "name": "Ropo",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ropo-638932911135088166.png?v4"
+  },
+  {
+    "slug": "rovitex",
+    "name": "Rovitex",
+    "kind": "percent",
+    "value": 3.8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/rovitex-637668816788400258.png?v4"
+  },
+  {
+    "slug": "saldao-da-informatica",
+    "name": "Saldão da Informática",
+    "kind": "percent",
+    "value": 1.3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/saldao-da-informatica.png?v4"
+  },
+  {
+    "slug": "sallve",
+    "name": "Sallve",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/sallve-638452258677482406.png?v4"
+  },
+  {
+    "slug": "salonline",
+    "name": "Salon Line",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/salon-line-637598754734294809.png?v4"
+  },
+  {
+    "slug": "sams-club",
+    "name": "Sam's Club",
+    "kind": "brl",
+    "value": 8.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/sams-club-638981317577714048.png?v4"
+  },
+  {
+    "slug": "samsonite",
+    "name": "Samsonite",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/samsonite-638465510535608932.png?v4"
+  },
+  {
+    "slug": "samsung",
+    "name": "Samsung",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/samsung-638802455508442580.png?v4"
+  },
+  {
+    "slug": "sanavita",
+    "name": "Sanavita",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/sanavita-638884461030731283.png?v4"
+  },
+  {
+    "slug": "sao-paulo-mania",
+    "name": "São Store",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/sao-paulo-mania-639100298463746494.png?v4"
+  },
+  {
+    "slug": "sawary",
+    "name": "Sawary",
+    "kind": "percent",
+    "value": 4.3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/sawary-638288370257278628.png?v4"
+  },
+  {
+    "slug": "scala",
+    "name": "Scala",
+    "kind": "percent",
+    "value": 4.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/scala.jpg?v4"
+  },
+  {
+    "slug": "schumann",
+    "name": "Schumann",
+    "kind": "percent",
+    "value": 0.3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/schumann-639039020831770617.png?v4"
+  },
+  {
+    "slug": "seculus",
+    "name": "Seculus",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/seculus-638696033290021801.png?v4"
+  },
+  {
+    "slug": "seguros-promo",
+    "name": "Seguros Promo",
+    "kind": "percent",
+    "value": 7.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/seguros-promo-637426072670021942.png?v4"
+  },
+  {
+    "slug": "sem-parar",
+    "name": "Sem Parar",
+    "kind": "brl",
+    "value": 20,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/sem-parar-637727379127792895.png?v4"
+  },
+  {
+    "slug": "sestini",
+    "name": "Sestini",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/sestini-638373921100638220.png?v4"
+  },
+  {
+    "slug": "shark-beauty",
+    "name": "Shark Ninja",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/sharkninja-639071102535991989.png?v4"
+  },
+  {
+    "slug": "shein",
+    "name": "Shein",
+    "kind": "percent",
+    "value": 5.5,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/shein-638838773442284183.png?v4"
+  },
+  {
+    "slug": "she-lingerie",
+    "name": "She Lingerie",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/she-lingerie-638683291854405602.png?v4"
+  },
+  {
+    "slug": "shiseido",
+    "name": "Shiseido",
+    "kind": "percent",
+    "value": 6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/shiseido-637777582240881448.png?v4"
+  },
+  {
+    "slug": "shop2gether",
+    "name": "Shop2gether",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/shop2gether-638908442542204335.png?v4"
+  },
+  {
+    "slug": "shopclub",
+    "name": "Shopclub",
+    "kind": "percent",
+    "value": 0.3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/shopclub-638908716765140306.png?v4"
+  },
+  {
+    "slug": "shopee",
+    "name": "Shopee",
+    "kind": "percent",
+    "value": 5,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/shopee-638838772975633575.png?v4"
+  },
+  {
+    "slug": "shopinfo",
+    "name": "Shopinfo",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/shopinfo-637359421222119784.png?v4"
+  },
+  {
+    "slug": "shoptimao",
+    "name": "Shop Timão",
+    "kind": "percent",
+    "value": 1.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/shoptimao-638132914936619528.png?v4"
+  },
+  {
+    "slug": "sieno-perfumaria",
+    "name": "Sieno Perfumaria",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/sieno-perfumaria-637564262887557019.png?v4"
+  },
+  {
+    "slug": "singular-medicamentos",
+    "name": "Singular Medicamentos",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/singular-medicamentos-638161421363625744.png?v4"
+  },
+  {
+    "slug": "skelt",
+    "name": "Skelt",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/skelt-638398055019623566.png?v4"
+  },
+  {
+    "slug": "soldiers-nutrition",
+    "name": "Soldiers Nutrition",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/soldiers-nutrition-638355822479719746.png?v4"
+  },
+  {
+    "slug": "sorte-online",
+    "name": "Sorte Online",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/sorte-online-638908448376165052.png?v4"
+  },
+  {
+    "slug": "speedo",
+    "name": "Speedo",
+    "kind": "percent",
+    "value": 5.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/speedo-638319496484464521.png?v4"
+  },
+  {
+    "slug": "spicy",
+    "name": "Spicy",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/spicy-638104121410258050.png?v4"
+  },
+  {
+    "slug": "stanley",
+    "name": "Stanley",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/stanley-638908812346381758.png?v4"
+  },
+  {
+    "slug": "studio-geek",
+    "name": "Studio Geek",
+    "kind": "percent",
+    "value": 2.2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/studio-geek-637540903166394789.png?v4"
+  },
+  {
+    "slug": "studio-z-calcados",
+    "name": "Studio Z Calçados",
+    "kind": "percent",
+    "value": 3,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/studio-z-calcados-638688070906516574.png?v4"
+  },
+  {
+    "slug": "sunglass-hut",
+    "name": "Sunglass Hut",
+    "kind": "percent",
+    "value": 8,
+    "upTo": false,
+    "previous": "(era 4,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/sunglass-hut-637420958023634137.png?v4"
+  },
+  {
+    "slug": "sun-kids",
+    "name": "Sun Kids",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/sun-kids-638847211194535342.png?v4"
+  },
+  {
+    "slug": "super-interessante",
+    "name": "Super Interessante",
+    "kind": "percent",
+    "value": 7,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/super-interessante-638472394351293075.png?v4"
+  },
+  {
+    "slug": "surfshark",
+    "name": "Surfshark",
+    "kind": "percent",
+    "value": 20,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/surfshark.png?v4"
+  },
+  {
+    "slug": "tap",
+    "name": "TAP Air Portugal",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/tap-air-portugal-638908446923200712.png?v4"
+  },
+  {
+    "slug": "taqi",
+    "name": "taQi",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/taqi-637783793207453950.png?v4"
+  },
+  {
+    "slug": "technos",
+    "name": "Technos",
+    "kind": "percent",
+    "value": 3.8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/technos.png?v4"
+  },
+  {
+    "slug": "temu",
+    "name": "Temu",
+    "kind": "percent",
+    "value": 10.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/temu-638521476928894870.png?v4"
+  },
+  {
+    "slug": "tena",
+    "name": "Tena",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/tena-637323251265193306.png?v4"
+  },
+  {
+    "slug": "the-north-face",
+    "name": "The North Face",
+    "kind": "percent",
+    "value": 2.4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/the-north-face.jpg?v4"
+  },
+  {
+    "slug": "tim",
+    "name": "TIM",
+    "kind": "brl",
+    "value": 75,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/tim-live-638219185699043361.png?v4"
+  },
+  {
+    "slug": "time-center",
+    "name": "Time Center",
+    "kind": "percent",
+    "value": 3.7,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/time-center.jpg?v4"
+  },
+  {
+    "slug": "too-faced",
+    "name": "Too Faced",
+    "kind": "percent",
+    "value": 6.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/too-faced-638114494603799208.png?v4"
+  },
+  {
+    "slug": "toshiba",
+    "name": "Toshiba",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/toshiba-639034872301456788.png?v4"
+  },
+  {
+    "slug": "toymania",
+    "name": "Toymania",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/toymania.png?v4"
+  },
+  {
+    "slug": "trifil",
+    "name": "Trifil",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/trifil.jpg?v4"
+  },
+  {
+    "slug": "tripcom",
+    "name": "Trip.com",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/tripcom-637142629239733740.png?v4"
+  },
+  {
+    "slug": "trocafone",
+    "name": "Trocafone",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": true,
+    "previous": "(era 0,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/troca-fone.png?v4"
+  },
+  {
+    "slug": "trocafy",
+    "name": "Trocafy",
+    "kind": "percent",
+    "value": 7,
+    "upTo": false,
+    "previous": "(era 2,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/trocafy-638908813357086314.png?v4"
+  },
+  {
+    "slug": "truss",
+    "name": "TRUSS",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/truss-638925198812349091.png?v4"
+  },
+  {
+    "slug": "trussardi",
+    "name": "Trussardi",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/trussardi-637602336345539389.png?v4"
+  },
+  {
+    "slug": "udemy",
+    "name": "Udemy",
+    "kind": "percent",
+    "value": 8,
+    "upTo": false,
+    "previous": "(era 5,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/udemy-638908817571487639.png?v4"
+  },
+  {
+    "slug": "umbro",
+    "name": "Umbro",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/umbro-638908813691065394.png?v4"
+  },
+  {
+    "slug": "under-armour",
+    "name": "Under Armour",
+    "kind": "percent",
+    "value": 3.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/under-armour-638908813936168571.png?v4"
+  },
+  {
+    "slug": "unidas",
+    "name": "Unidas",
+    "kind": "percent",
+    "value": 2.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/unidas-638908446638408360.png?v4"
+  },
+  {
+    "slug": "universal-music",
+    "name": "Universal Music",
+    "kind": "percent",
+    "value": 2.8,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/universal-music-637904831259966129.png?v4"
+  },
+  {
+    "slug": "uol-host",
+    "name": "UOL Host",
+    "kind": "brl",
+    "value": 19.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/uol-host-638913829603636013.png?v4"
+  },
+  {
+    "slug": "uol-play",
+    "name": "Uol Play",
+    "kind": "brl",
+    "value": 21,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/uol-play-637581656216712302.png?v4"
+  },
+  {
+    "slug": "update",
+    "name": "Update",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/update-638973550831285977.png?v4"
+  },
+  {
+    "slug": "usaflex",
+    "name": "Usaflex",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/usaflex-637697081885466595.png?v4"
+  },
+  {
+    "slug": "use-bob",
+    "name": "Use Bob",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/use-bob-637925457857058932.png?v4"
+  },
+  {
+    "slug": "utilidades-clinicas",
+    "name": "Utilidades Clínicas",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/utilidades-clinicas-639052953435174984.png?v4"
+  },
+  {
+    "slug": "vai-de-promo",
+    "name": "Vai de Promo",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/vai-de-promo-639100475582186711.png?v4"
+  },
+  {
+    "slug": "vaio",
+    "name": "VAIO",
+    "kind": "percent",
+    "value": 4,
+    "upTo": true,
+    "previous": "(era 2,1%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/vaio.png?v4"
+  },
+  {
+    "slug": "veek",
+    "name": "Veek",
+    "kind": "brl",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/veek-638253539762942001.png?v4"
+  },
+  {
+    "slug": "veja",
+    "name": "Veja",
+    "kind": "percent",
+    "value": 9,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/veja-638472396879535126.png?v4"
+  },
+  {
+    "slug": "veja-saude",
+    "name": "Veja Saúde",
+    "kind": "percent",
+    "value": 7,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/veja-saude-638472392565090535.png?v4"
+  },
+  {
+    "slug": "vhita",
+    "name": "Vhita",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/vhita-637244518636471444.png?v4"
+  },
+  {
+    "slug": "via-aroma",
+    "name": "Via Aroma",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/via-aroma-638956002213204422.png?v4"
+  },
+  {
+    "slug": "viagogo",
+    "name": "Viagogo",
+    "kind": "percent",
+    "value": 4,
+    "upTo": false,
+    "previous": "(era 3,5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/viagogo.jpg?v4"
+  },
+  {
+    "slug": "via-inox-tramontina",
+    "name": "Via Inox Tramontina",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/via-inox-tramontina-637849370992673336.png?v4"
+  },
+  {
+    "slug": "viaza",
+    "name": "Viaza",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/viaza-639167036774737824.png?v4"
+  },
+  {
+    "slug": "vissla",
+    "name": "Vissla",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/vissla-639149819485364086.png?v4"
+  },
+  {
+    "slug": "vitaminas-brasil",
+    "name": "Vitaminas Brasil",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/vitaminas-brasil-639015900434764894.png?v4"
+  },
+  {
+    "slug": "vittal-calcados",
+    "name": "Vittal Calçados",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/vittal-calcados-638980365374922995.png?v4"
+  },
+  {
+    "slug": "vivara",
+    "name": "Vivara",
+    "kind": "percent",
+    "value": 15,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/vivara-638838772414084700.png?v4"
+  },
+  {
+    "slug": "voce-rh",
+    "name": "Você RH",
+    "kind": "percent",
+    "value": 7,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/voce-rh-638472394872566132.png?v4"
+  },
+  {
+    "slug": "volcom",
+    "name": "Volcom",
+    "kind": "percent",
+    "value": 3.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/volcom-636994008069824000.png?v4"
+  },
+  {
+    "slug": "vou-levar",
+    "name": "Vou Levar",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/vou-levar.png?v4"
+  },
+  {
+    "slug": "voy",
+    "name": "Voy",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/voy-639118681248989854.png?v4"
+  },
+  {
+    "slug": "vult",
+    "name": "Vult",
+    "kind": "percent",
+    "value": 5.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/vult-638563750147550129.png?v4"
+  },
+  {
+    "slug": "vx-case",
+    "name": "VX Case",
+    "kind": "percent",
+    "value": 8.5,
+    "upTo": false,
+    "previous": "(era 5%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/vx-case-638906774993486993.png?v4"
+  },
+  {
+    "slug": "web-continental",
+    "name": "Webcontinental",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/webcontinental-638908718491419776.png?v4"
+  },
+  {
+    "slug": "webfones",
+    "name": "Webfones",
+    "kind": "percent",
+    "value": 3,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/webfones-638131949380037187.png?v4"
+  },
+  {
+    "slug": "weleda",
+    "name": "Weleda",
+    "kind": "percent",
+    "value": 2.7,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/weleda-639149823931057934.png?v4"
+  },
+  {
+    "slug": "wemobi",
+    "name": "WEMOBI",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/wemobi-637813112348663818.png?v4"
+  },
+  {
+    "slug": "westwing",
+    "name": "Westwing",
+    "kind": "percent",
+    "value": 2.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/westwing-639003798161232983.png?v4"
+  },
+  {
+    "slug": "wine",
+    "name": "Wine",
+    "kind": "percent",
+    "value": 4.1,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/wine-638098319003403906.png?v4"
+  },
+  {
+    "slug": "wish",
+    "name": "Wish",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/wish-637953115875801456.png?v4"
+  },
+  {
+    "slug": "woly",
+    "name": "Woly",
+    "kind": "percent",
+    "value": 3.6,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/woly-638388608472876405.png?v4"
+  },
+  {
+    "slug": "wondershare-filmora",
+    "name": "Wondershare",
+    "kind": "percent",
+    "value": 15,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/wondershare-637098563296143327.png?v4"
+  },
+  {
+    "slug": "world-tennis",
+    "name": "World Tennis",
+    "kind": "percent",
+    "value": 6,
+    "upTo": false,
+    "previous": "(era 3,6%)",
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/world-tennis.jpg?v4"
+  },
+  {
+    "slug": "wps-office",
+    "name": "WPS Office",
+    "kind": "percent",
+    "value": 19.2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/wps-office-638865498934131349.png?v4"
+  },
+  {
+    "slug": "xiaomi",
+    "name": "Xiaomi",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/xiaomi-637212523066988908.png?v4"
+  },
+  {
+    "slug": "yamamura",
+    "name": "Yamamura",
+    "kind": "percent",
+    "value": 2.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/yamamura-637952995946584581.png?v4"
+  },
+  {
+    "slug": "youcom",
+    "name": "Youcom",
+    "kind": "percent",
+    "value": 4.1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/youcom-638908444604202525.png?v4"
+  },
+  {
+    "slug": "zarpo",
+    "name": "Zarpo",
+    "kind": "percent",
+    "value": 1,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/zarpo-637749870243412375.png?v4"
+  },
+  {
+    "slug": "zattini",
+    "name": "Zattini",
+    "kind": "percent",
+    "value": 5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/zattini-638908814309526760.png?v4"
+  },
+  {
+    "slug": "ze-delivery",
+    "name": "Zé Delivery",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": true,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/ze-delivery-638768494526481039.png?v4"
+  },
+  {
+    "slug": "zeedog",
+    "name": "Zee.Dog",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/zeedog.png?v4"
+  },
+  {
+    "slug": "zeenow",
+    "name": "Zee.Now",
+    "kind": "percent",
+    "value": 2,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/zeenow-638962222206853085.png?v4"
+  },
+  {
+    "slug": "zema",
+    "name": "Zema",
+    "kind": "percent",
+    "value": 1.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/zema-637598754231416188.png?v4"
+  },
+  {
+    "slug": "zupper-viagens",
+    "name": "Zupper Viagens",
+    "kind": "percent",
+    "value": 0.5,
+    "upTo": false,
+    "previous": null,
+    "logoUrl": "https://assets.cuponomia.com.br/img/stores/medium/zupper-viagens-638830014922639943.png?v4"
+  }
+]

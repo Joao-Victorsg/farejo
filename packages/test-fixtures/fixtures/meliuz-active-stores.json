@@ -1,0 +1,4650 @@
+[
+  {
+    "slug": "cupom-magazine-luiza",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": true,
+    "mainRate": "5%"
+  },
+  {
+    "slug": "cupom-shopee",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-casas-bahia",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-aliexpress",
+    "value": "1,9%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-netshoes",
+    "value": "12%",
+    "kind": "percent",
+    "upTo": true,
+    "mainRate": "3%"
+  },
+  {
+    "slug": "cupom-kabum",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-renner",
+    "value": "12%",
+    "kind": "percent",
+    "upTo": true,
+    "mainRate": "3%"
+  },
+  {
+    "slug": "cupom-centauro",
+    "value": "12%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-carrefour",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-shein",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-booking",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-pague-menos",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-leroy-merlin",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-de-desconto-nike",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-natura",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-cobasi",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": true,
+    "mainRate": "2%"
+  },
+  {
+    "slug": "cupom-samsung",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-petz",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-americanas",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-hoteiscom",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-epoca-cosmeticos",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-madeiramadeira",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-electrolux",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-adidas",
+    "value": "8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-dell",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-boticario",
+    "value": "8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-fast-shop",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-desconto-mercado-livre",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": true,
+    "mainRate": "1,5%"
+  },
+  {
+    "slug": "cupom-ze-delivery",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-beleza-na-web",
+    "value": "11%",
+    "kind": "percent",
+    "upTo": true,
+    "mainRate": "3%"
+  },
+  {
+    "slug": "24s",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-361-sport",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-4-kids",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "4seating-com",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-accor-hoteis",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-acer",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-adcos",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-airhelp",
+    "value": "7,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-airadvisor",
+    "value": "8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-airalo",
+    "value": "13%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "alamy",
+    "value": "5,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-alibaba",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-allianz-travel",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-allu",
+    "value": "10,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-allycar",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-altenburg",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-alura",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-amend-cosmeticos",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "america-chip",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-amo-beleza",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-desconto-amoedo",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-anantara",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-anatomic-gel",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-anhaguera",
+    "value": "R$ 25,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "anhanguera-pos-graduacao",
+    "value": "R$ 25,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-animale",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "anjuss",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "anna-pegova",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-apostaganha",
+    "value": "R$ 30,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "aprenda-a-transformar-palavras-em-ouro",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "aramis",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-armybr",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-arno",
+    "value": "9%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-artwalk",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "asics",
+    "value": "7%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-assist-card",
+    "value": "14%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-asus",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-auras-insurance",
+    "value": "16%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-authentic-feet",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "autodesk",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-avast",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-avell",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "avg-technologies",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-avianca",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-avira",
+    "value": "R$ 60,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-avon",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-azul",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "bars-over-bottles",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "babbel",
+    "value": "7,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-baggio-cafe",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "bahia-principe-hotels-resorts",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-bar-aberto",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-barcelo",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "basicamente",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "basico",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-bauducco",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-beach-park-ingressos",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "beauty-brands",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-bellaphytus-",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-bemol",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-bershka",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-bet7k",
+    "value": "R$ 40,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-bibi",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "birden",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-biscoite",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "bitdefender",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-bluetti",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "bobo",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-boardmix",
+    "value": "16%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-bobinex",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-bold-snacks",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-botineiros",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-box-magenta",
+    "value": "R$ 11,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "brae",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-brastemp",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "bringit",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-britania",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "bugatchi",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-buser",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-buson",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-cea",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "caedu",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-cafe-lor-br",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-calvin-klein",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "calzedonia",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cama-inbox",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-camicado",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-camper",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-canon",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-carenb",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-casas-pedro",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-casa-tema",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "caudalie",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "ccleaner",
+    "value": "15%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-cellfy",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "central-ar",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cestas-michelli",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cheapoair-com",
+    "value": "R$ 12,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-chicco-br",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "chicme",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "chico-rei",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-chilli-beans",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cielo",
+    "value": "R$ 4,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "minha-claro-movel",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-clear-vpn",
+    "value": "R$ 140,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-clinique",
+    "value": "5,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "clovis",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-clube-giro",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-clubinho-de-ofertas",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-coffee-mais",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-coinbase",
+    "value": "R$ 40,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-colibri-festas",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "coltorti-boutique",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-compra-certa",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-compra-direta",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-compra-mais",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-concha-y-toro-descorcha",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-consul",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-consultoria-da-beleza",
+    "value": "R$ 2,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "contem-1g",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "continental",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-desconto-converse",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-copag",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "corel",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-cotosen",
+    "value": "7,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-cotton-on",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "coursera",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-creamy",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-crunchyroll",
+    "value": "R$ 5,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-desconto-cvc",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-cvs-cestas-basicas",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "dafiti",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-daikin",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-dakota",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-dark-lab",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-davene",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-decanter",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-decathlon",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-decolarcom",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-decor-colors",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "degrau-cultural",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-democrata",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "dentro-da-historia",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "deonibus",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "deposit-photos",
+    "value": "10,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "dhgate",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "diesel",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "direct-ferries",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-disney",
+    "value": "12%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-dji-dro",
+    "value": "6,5%",
+    "kind": "percent",
+    "upTo": true,
+    "mainRate": "0,5%"
+  },
+  {
+    "slug": "cupom-dlz",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "doce-beleza",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-dona-coelha",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-dr-peanut",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "drogal",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-drogaria-araujo",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-drogaria-catarinense",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-drogaria-rosario",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-drogaria-tamoio",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-drogaria-venancio",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-drogasmil",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "drop",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-dudalina",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-dufrio",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "dutra-maquinas",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "dux-nutrition",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-e-lens",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "easeus",
+    "value": "12%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "eclock",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "eden-fantasys",
+    "value": "11,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-edrawsoft",
+    "value": "15%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-efacil",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "elare",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-elements",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-ellus",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "emanualonline",
+    "value": "7,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "emma",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-enifler",
+    "value": "1,25%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-enjoy-travel",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "entertainment-earth",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-enxovais-ibitinga",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-eotica",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-desconto-eset",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-esplanada-moveis",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-esportivabet",
+    "value": "R$ 40,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-estee-lauder",
+    "value": "8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "estoque",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-eudora",
+    "value": "8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "euro-relogios",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-evas-br",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-evino",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-expedia",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-expressvpn",
+    "value": "R$ 18,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-extra",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "extrafarma",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "fsecure-vpn",
+    "value": "10,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "face-the-future",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-facil-persianas",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-farfetch",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-farm",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-farma22",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "farmacia-indiana",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-desconto-preco-popular",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "farmacia-sao-joao",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-farmacias-app",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-farmacias-nissei",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-fast-shop-empresas",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "ferramentas-kennedy",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-ferreira-costa-br",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-flixbus",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-flor-de-lis",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "flores-online",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "foco-aluguel-de-carros",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-foreo",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-foreverliss",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-formula1-tv",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "fossil",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-fotoregistro",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-fut-fanatics",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "g2a",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-gama-italy",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-garage",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "gaston",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-gazin",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "geekbuying",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-get-your-guide",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-gfarma",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-gigantec",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-giuliana-flores",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-glamour-modeladores",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "glasseslit",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-globoplay",
+    "value": "R$ 15,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "gocase",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-gol",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-good-vibres",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-gran-cursos-online",
+    "value": "16%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-granado",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-grandvision",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-grupo-a",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-grupo-wish",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "guess",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-hangar-33",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-havaianas",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "havanna",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "hawkers",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-headway",
+    "value": "R$ 6,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-hering",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-heymondo",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "hidemy-name",
+    "value": "12,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "hilton-honors-rewards",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "hiper-varejo",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-hope-lingerie",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "hope-resort",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-hostinger",
+    "value": "7,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-hp",
+    "value": "8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-hype-games",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "ibbl",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-iberostar",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-ibis",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "icasei",
+    "value": "R$ 2,50",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "igp",
+    "value": "3,25%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-iguatemi365",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-iherb",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "ihg-rewards-club",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-inciclo",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-individual",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-inner-ai",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-inove",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-insider-store",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-integral-medica",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-intelbras",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-inter-store",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-intercontinental",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "international-open-academy",
+    "value": "12%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-intimissimi",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "invideo",
+    "value": "15%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-loja-iplace",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "isabela-flores",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-ita-airways",
+    "value": "2,7%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-iure-digital",
+    "value": "R$ 25,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-ivan-joias",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "jbl",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-jd-sports",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "jetson",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "jo-malone",
+    "value": "5,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "john-john-denim",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-joma",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-justfashionnow",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-kakau-seguros",
+    "value": "20%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-karsten",
+    "value": "7%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-kaspersky",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-keeper-security",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "kipling",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-kiss-fly",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-kitchenaid",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-knowfashionstyle",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-koerich",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-kotas-plus",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "karcher",
+    "value": "6,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-loccitane-au-bresil",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-lacoste",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-lanca-perfume",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-lancome",
+    "value": "7%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-larroude",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-latam",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-le-lis-blanc",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-legale-educacional",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "lego-brasil",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-leite-de-rosas",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "leiturinha",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-lenovo",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-leveros",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-lezalez",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-lg",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-libresse",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-vivara",
+    "value": "8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-life-extension",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-litet",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-live",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-livraria-martins-fontes-paulista",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-livre-e-leve",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-liz",
+    "value": "7%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cd-keys",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-localiza",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "locaweb",
+    "value": "R$ 4,50",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-desconto-castor",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-coral-tintas",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-loja-do-cruzeiro",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-loja-do-mecanico",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "loja-ibyte",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "loja-nba",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-brinox",
+    "value": "6,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-loja-ou",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-loja-pst",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-loja-softys",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-uninjet",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-loja-yale",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-benoit",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "lojas-berlanda",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-lojas-colombo",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-lojas-competicao",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "lojas-lebes",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-torra",
+    "value": "8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "lookfantastic",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-lotogreen",
+    "value": "R$ 10,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-lottoland",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-loungerie",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "lumae",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "luminar",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "lurk",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-luuna",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "luxury-escapes",
+    "value": "1,7%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "lyam-decor",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-mac",
+    "value": "8,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-madeiranit",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-magicfeet",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "magoosh",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-malwee",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "mambo",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-manual",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-marelli",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-maria-filo",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-mascavo",
+    "value": "12,5%",
+    "kind": "percent",
+    "upTo": true,
+    "mainRate": "10%"
+  },
+  {
+    "slug": "masdings",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-mash",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "matt-nat",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-max-titanium",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-mcafee",
+    "value": "15%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-melhor-seguro",
+    "value": "13,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-melhores-bolsas",
+    "value": "R$ 25,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "meliuz-viagens",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "mercafe",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-mga-store",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-midea-store",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "milano",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-mistral",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-mizuno",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-mobifacil",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "mondaine",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-desconto-mondly",
+    "value": "15%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "monte-carlo-joias",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-motorola",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-moveis-carraro",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-kappesberg",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-moveis-linhares",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-movida",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-mpozenato",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-multilaser",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-mundo-danone",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-ricca",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "nars-cosmetics",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-nespresso",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "new-era-cap",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-nh-hoteles",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-noracora",
+    "value": "6,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-norton",
+    "value": "30%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-notta-ai",
+    "value": "15%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "nova-flor",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-novvo",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-nutriage",
+    "value": "7,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-nutrify",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-nuuvem",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-nv",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-oakley",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-oceane",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-oculos-world",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-offpremium",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-olympikus",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "omio",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "oneplus",
+    "value": "0,8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "onetravel-com",
+    "value": "R$ 12,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-opaque",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-oqvestir",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-orthocrin",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "ortobom",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-ortoclass",
+    "value": "1,25%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-osang-br",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-oscar-calcados",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-osklen",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-oticas-paris",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-oui-paris",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-ourtrip",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-outlet-passagens",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-outlet-hering",
+    "value": "8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-outlet-360",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "overtons",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "oxygen-plus",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-pagbank-pagseguro",
+    "value": "R$ 12,50",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "panasonic",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-pandadoc",
+    "value": "7%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-panela-mineira",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "papel-na-mao",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "parafuzo",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "parallels",
+    "value": "7,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "paris-city-vision",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "patpat",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-peahi",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-pegada",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-peliculas-facil",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-perfume-shopping",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-petit-papillon",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-petite-jolie",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-pet-love",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-petlove-saude",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-phebo",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-philco-club",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-desconto-philips-walita",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "phooto",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "phyto",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "pilao",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-piuka",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-plie",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-pm3",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-pneubest",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-pneustore",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "polishop",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": true,
+    "mainRate": "0,5%"
+  },
+  {
+    "slug": "cupom-polo-play",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "ponto-da-porcelana",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-ponto-frio",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-porto-renova",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-porto-seguro-servico",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "pos-umc",
+    "value": "R$ 72,50",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "positivo",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-positivo-casa-inteligente",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-posthaus",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-privalia",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "private-internet-access-vpn",
+    "value": "R$ 8,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupoom-probiotica",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-promofarma",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "protonmail",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "protonvpn",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "pulse-sound",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "puma",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "purevpn",
+    "value": "23%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "qatar",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-qconcursos",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "qeeq",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-qualidoc",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-quem-disse-berenice",
+    "value": "8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-desconto-quero-passagem",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "qustodio",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-ray-ban",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "rayna-tours",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "reebok",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-remessa-online",
+    "value": "R$ 10,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "rentalcars",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-rent-cars",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-reserva",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-riachuelo",
+    "value": "8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "richards",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-rocketseat",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-ropo",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-roselilin",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "rotita",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-rovitex",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-safra-credito-consignado-",
+    "value": "R$ 15,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-sallve",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-salonline",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-sams-club",
+    "value": "R$ 8,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-samsonite",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-sanavita",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "santos-store",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "schumann",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-seazone",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "seculus",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "seguros-promo",
+    "value": "7%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "sem-parar",
+    "value": "R$ 20,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-sephora",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "sestini",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-shark-ninja-br",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-she-lingerie",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-shiseido",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-shop2gether",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-shopclub",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "shopinfo",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-shop-timao",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-signnow",
+    "value": "R$ 140,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-singular-medicamentos",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-skelt",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "skinceuticals",
+    "value": "7%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-soldiers-nutrition-br",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "sophos",
+    "value": "12%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "sorte-online",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-sou-emana",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-speedo",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-spicy",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "stanley-brasil",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-stockx",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-strawberrynet",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "stub-hub",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "studio-geek",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-studio-z-calcados",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "sunglass-hut",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "sunsky",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-superalink",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "surfshark",
+    "value": "15%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "survio",
+    "value": "12%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-desconto-suvinil",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-talkpal",
+    "value": "15%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "tanara",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-tap",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "taqi",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "tbdress",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "teamviewer",
+    "value": "12,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "technos",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-temu",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "tena",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "tenable",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "teste-ops",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "the-beer-planet",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "the-luxury-closet",
+    "value": "2,6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "the-new-york-times-store",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-the-north-face",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "tim-controle",
+    "value": "R$ 37,50",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-tim-ultrafibra",
+    "value": "R$ 75,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "time-center",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "tiqets",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "tjama",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-too-faced",
+    "value": "8%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "toshiba",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "toy-mania",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-transfer-english",
+    "value": "R$ 17,50",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-confidence-cambio",
+    "value": "0,1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "trilhardario",
+    "value": "R$ 3,50",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-tripcom-br",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-trocafone",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": "1,5%"
+  },
+  {
+    "slug": "cupom-trocafy",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-truss",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "trussardi",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "turma-da-monica-aaz",
+    "value": "R$ 5,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-tutorials-point",
+    "value": "12,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "tvc-mall",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-udemy",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-umbro",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-under-armour-brasil",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-unic-pharma",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-unic-pharma-vet",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "unidas-aluguel-de-carros",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "uninter",
+    "value": "R$ 4,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-universal-music-store",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-unopar",
+    "value": "R$ 25,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-unova-cursos",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "uol-host",
+    "value": "R$ 17,50",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "uol-meu-negocio",
+    "value": "R$ 15,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "uol-play",
+    "value": "R$ 20,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-update",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-urban",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "usaflex",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-vai-de-promo",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "vaio",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-veek",
+    "value": "R$ 3,50",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "vegas",
+    "value": "0,4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-verabet",
+    "value": "R$ 40,00",
+    "kind": "brl",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-vestem",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "vestiaire-collective",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "vhita",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-via-aroma",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-via-inox-tramontina",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-viagogo",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-viator",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-viaza",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "vimeo",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-virotrip",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-vitalonga",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-vitaminas-brasil",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "vittal-calcados",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-vizcaya",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "vou-levar",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-voy-br",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "vult",
+    "value": "5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-vx-case",
+    "value": "10%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "waz",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-webcontinental",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "web-fones",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-weleda",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-wemobi",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-wesign",
+    "value": "12%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "westwing",
+    "value": "5,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-wine",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-wish",
+    "value": "0,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-woly",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "world-of-hyatt",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-world-tennis",
+    "value": "3,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-xcaret",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-yamamura",
+    "value": "2,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-youcom",
+    "value": "4%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-young-tennis",
+    "value": "6%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-yves-saint-laurent",
+    "value": "7%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-desconto-zarpo",
+    "value": "1%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-zattini",
+    "value": "4,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-zeedog",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "zeenow",
+    "value": "2%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-zema",
+    "value": "3%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  },
+  {
+    "slug": "cupom-zupper-viagens",
+    "value": "1,5%",
+    "kind": "percent",
+    "upTo": false,
+    "mainRate": null
+  }
+]
