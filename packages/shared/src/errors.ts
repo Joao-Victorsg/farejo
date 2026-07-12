@@ -11,11 +11,11 @@ export class RetryableError extends Error {
 
 /**
  * Circuit breaker de coleta tiered (ADR-0005 decisão 1): 12 soft-blocks seguidos
- * aborta o crawl. Carrega o estado parcial até o abort, para que `runner.ts` grave
- * os números reais em vez de zerar `softBlocks` no run abortado — o sinal que o
+ * aborta o crawl. Carrega o estado parcial até o abort, para que `runner.ts` (T6/#18)
+ * grave os números reais em vez de zerar `softBlocks` no run abortado — o sinal que o
  * throttle adaptativo (`nextThrottleMultiplier`) precisa para subir de nível.
- * Fundação tipada (T2): nenhum crawler lança essa classe ainda, e `runner.ts` ainda
- * não a distingue no catch — chega com os crawlers tiered (méliuz/cuponomia).
+ * Nenhum crawler lança essa classe ainda (chega com os crawlers tiered, méliuz/cuponomia) —
+ * `runner.ts` já distingue o catch, testado com adapters fake (T6).
  */
 export class CircuitBreakerError extends Error {
   readonly softBlocksSoFar: number;
