@@ -323,6 +323,7 @@ export type Database = {
       pipeline_write_offers: {
         Args: {
           p_offers: Json
+          p_outcomes?: Json
           p_platform_id: string
           p_run_started_at: string
           p_scope_store_ids?: number[]
