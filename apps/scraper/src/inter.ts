@@ -1,16 +1,10 @@
-import { RetryableError, type PlatformAdapter, type RawOffer, type ScrapeResult } from "@farejo/shared";
+import type { PlatformAdapter, RawOffer, ScrapeResult } from "@farejo/shared";
 import { z } from "zod";
+import { fetchText } from "./http.js";
 
 const STORE_BASE = "https://shopping.inter.co/site-parceiro/lojas";
 const API_URL =
   "https://marketplace-api.web.bancointer.com.br/site/affiliate/inter/v1/search/stores?lang=pt-BR&limit=400&offset=0";
-
-const BROWSER_HEADERS: Record<string, string> = {
-  "User-Agent":
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-  Accept: "application/json",
-  "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
-};
 
 // Shape cru da API do inter (docs/poc/README.md §1). `shared` nunca vê isto — só RawOffer.
 const InterStore = z.object({
@@ -64,18 +58,9 @@ export function parseInter(json: string): ScrapeResult {
   };
 }
 
-async function fetchInterStores(): Promise<string> {
-  const res = await fetch(API_URL, {
-    headers: BROWSER_HEADERS,
-    signal: AbortSignal.timeout(10_000),
-  });
-  if (!res.ok) throw new RetryableError(`HTTP ${res.status} em ${API_URL}`);
-  return res.text();
-}
-
 export const interAdapter: PlatformAdapter = {
   platformId: "inter",
   async scrape() {
-    return parseInter(await fetchInterStores());
+    return parseInter(await fetchText(API_URL, { Accept: "application/json" }));
   },
 };
