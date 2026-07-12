@@ -1,4 +1,4 @@
-import type { PlatformAdapter, ScrapeResult } from "@farejo/shared";
+import type { PlatformAdapter, ScrapeInstruction, ScrapeResult } from "@farejo/shared";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { exitCodeFor, runAllPlatforms } from "./runner.js";
 import { localSupabaseClient } from "./testDb.js";
@@ -7,12 +7,14 @@ const client = localSupabaseClient();
 
 const PLATFORM_OK = "test-t10-ok";
 const PLATFORM_FAIL = "test-t10-fail";
-const ALL_PLATFORMS = [PLATFORM_OK, PLATFORM_FAIL];
+const PLATFORM_INSTRUCTION = "test-t10-instruction";
+const ALL_PLATFORMS = [PLATFORM_OK, PLATFORM_FAIL, PLATFORM_INSTRUCTION];
 
-function okAdapter(): PlatformAdapter {
+function okAdapter(platformId: string = PLATFORM_OK, receivedInstructions: ScrapeInstruction[] = []): PlatformAdapter {
   return {
-    platformId: PLATFORM_OK,
-    async scrape(): Promise<ScrapeResult> {
+    platformId,
+    async scrape(instruction): Promise<ScrapeResult> {
+      receivedInstructions.push(instruction);
       return {
         offers: [{ storeName: "Runner OK Store", rewardText: "5% Cashback", url: "https://example.test/ok" }],
         scope: { kind: "full" },
@@ -75,6 +77,20 @@ describe("runAllPlatforms (Postgres local)", () => {
 
     const { data: offerRow } = await client.from("offers").select("active").eq("platform_id", PLATFORM_OK).single();
     expect(offerRow?.active).toBe(true);
+  });
+
+  it("T10/#22: monta ScrapeInstruction{throttleMultiplier:1, target:{kind:'full'}} e grava scrape_runs.scope='full'", async () => {
+    const receivedInstructions: ScrapeInstruction[] = [];
+    await runAllPlatforms(client, [okAdapter(PLATFORM_INSTRUCTION, receivedInstructions)]);
+
+    expect(receivedInstructions).toEqual([{ throttleMultiplier: 1, target: { kind: "full" } }]);
+
+    const { data: run } = await client
+      .from("scrape_runs")
+      .select("scope")
+      .eq("platform_id", PLATFORM_INSTRUCTION)
+      .single();
+    expect(run?.scope).toBe("full");
   });
 });
 
