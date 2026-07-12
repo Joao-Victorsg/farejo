@@ -8,6 +8,7 @@ import {
 } from "@farejo/shared";
 import type { SupabaseClient } from "../supabaseClient.js";
 import { prepareOffers, writeOffers } from "./run.js";
+import { insertScrapeRun } from "./scrapeRunsTable.js";
 import type { IntraPlatformCollision } from "./store.js";
 
 export interface ScrapeRunOutcome {
@@ -48,15 +49,15 @@ export async function runPlatformScrape(
     await writeOffers(supabase, platformId, runStartedAt, prepared.rows);
   }
 
-  const { error } = await supabase.from("scrape_runs").insert({
-    platform_id: platformId,
-    started_at: runStartedAt.toISOString(),
-    finished_at: new Date().toISOString(),
+  await insertScrapeRun(supabase, {
+    platformId,
+    startedAt: runStartedAt,
+    finishedAt: new Date(),
     status: verdict.verdict,
-    offers_found: actual.offersFound,
-    active_offers: actual.activeOffers,
-    parse_errors: actual.parseErrors,
-    soft_blocks: scrapeResult.softBlocks,
+    offersFound: actual.offersFound,
+    activeOffers: actual.activeOffers,
+    parseErrors: actual.parseErrors,
+    softBlocks: scrapeResult.softBlocks,
     notes: JSON.stringify({
       verdict: verdict.verdict,
       tripped: verdict.tripped,
@@ -73,7 +74,6 @@ export async function runPlatformScrape(
       parse_error_samples: prepared.parseErrorSamples,
     }),
   });
-  if (error) throw error;
 
   return {
     status: verdict.verdict,

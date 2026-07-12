@@ -4,7 +4,8 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "scrape": "tsx src/index.ts"
   },
   "dependencies": {
     "@farejo/shared": "workspace:*",
@@ -16,6 +17,7 @@
     "@total-typescript/shoehorn": "^0.1.0",
     "@types/node": "^22.0.0",
     "dotenv": "^16.4.0",
+    "tsx": "^4.19.0",
     "typescript": "^5.7.0",
     "vitest": "^3.0.0"
   }
