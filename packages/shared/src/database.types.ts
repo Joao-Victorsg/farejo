@@ -37,6 +37,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      crawl_state: {
+        Row: {
+          last_checked_at: string | null
+          last_outcome: string | null
+          platform_id: string
+          slug: string
+          store_id: number | null
+          tier: string
+        }
+        Insert: {
+          last_checked_at?: string | null
+          last_outcome?: string | null
+          platform_id: string
+          slug: string
+          store_id?: number | null
+          tier?: string
+        }
+        Update: {
+          last_checked_at?: string | null
+          last_outcome?: string | null
+          platform_id?: string
+          slug?: string
+          store_id?: number | null
+          tier?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crawl_state_platform_id_fkey"
+            columns: ["platform_id"]
+            isOneToOne: false
+            referencedRelation: "platforms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "crawl_state_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       offer_history: {
         Row: {
           changed_at: string
@@ -144,16 +186,19 @@ export type Database = {
           base_url: string
           id: string
           name: string
+          throttle_multiplier: number
         }
         Insert: {
           base_url: string
           id: string
           name: string
+          throttle_multiplier?: number
         }
         Update: {
           base_url?: string
           id?: string
           name?: string
+          throttle_multiplier?: number
         }
         Relationships: []
       }
@@ -166,6 +211,7 @@ export type Database = {
           offers_found: number | null
           parse_errors: number | null
           platform_id: string | null
+          scope: string
           soft_blocks: number | null
           started_at: string
           status: string
@@ -178,6 +224,7 @@ export type Database = {
           offers_found?: number | null
           parse_errors?: number | null
           platform_id?: string | null
+          scope?: string
           soft_blocks?: number | null
           started_at: string
           status: string
@@ -190,6 +237,7 @@ export type Database = {
           offers_found?: number | null
           parse_errors?: number | null
           platform_id?: string | null
+          scope?: string
           soft_blocks?: number | null
           started_at?: string
           status?: string
@@ -277,6 +325,7 @@ export type Database = {
           p_offers: Json
           p_platform_id: string
           p_run_started_at: string
+          p_scope_store_ids?: number[]
         }
         Returns: undefined
       }
