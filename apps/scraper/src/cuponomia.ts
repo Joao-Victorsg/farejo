@@ -22,12 +22,10 @@ const realSleep = (ms: number) => new Promise<void>((resolve) => setTimeout(reso
  * o prefixo antes de qualquer parse numérico downstream, dá NaN. `bare` já vem sem o
  * prefixo, pronto pro fallback de `rewardText` sem duplicar "até".
  */
-function parseDisplayed(displayed: string): { kind: "percent" | "brl" | "none"; upTo: boolean; bare: string } {
+function parseDisplayed(displayed: string): { hasCashback: boolean; upTo: boolean; bare: string } {
   const upTo = /^at[eé]\s+/i.test(displayed);
   const bare = displayed.replace(/^at[eé]\s+/i, "").trim();
-  if (!/\d/.test(bare)) return { kind: "none", upTo: false, bare };
-  if (/R\$/i.test(bare)) return { kind: "brl", upTo, bare };
-  return { kind: "percent", upTo, bare };
+  return { hasCashback: /\d/.test(bare), upTo, bare };
 }
 
 /**
@@ -52,11 +50,14 @@ export function parseCuponomiaStorePage(html: string, slug: string): SlugOutcome
 
   const displayed = header.attr("data-cashback-displayed")?.trim() ?? "";
   const actual = header.attr("data-store-cashback-actual")?.trim() ?? "";
-  const { kind, upTo: upToFromText, bare } = parseDisplayed(displayed);
-  if (kind === "none") return { slug, outcome: "no_cashback" };
+  const { hasCashback, upTo: upToFromText, bare } = parseDisplayed(displayed);
+  if (!hasCashback) return { slug, outcome: "no_cashback" };
 
+  // `del` sempre escopado DENTRO do `tag` casado — a página tem 2 widgets rewards-tag
+  // (desktop + mobile) com o mesmo conteúdo; buscar os dois independentemente do header
+  // arrisca parear o `tag` de um com o `del` do outro se um dia divergirem.
   const tag = header.find("[data-test-id='rewards-tag'], aside.rewardsTag").first();
-  const del = header.find("del.rewardsTag-previous").first();
+  const del = tag.find("del.rewardsTag-previous").first();
   const boost = del.length > 0 && /has-store-boost-cashback/.test(tag.attr("class") ?? "");
   const upTo = tag.attr("data-should-use-up-to") === "true" || upToFromText;
 
