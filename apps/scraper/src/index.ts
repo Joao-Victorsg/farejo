@@ -6,6 +6,8 @@ import { mycashbackAdapter } from "./mycashback.js";
 import { exitCodeFor, runAllPlatforms } from "./runner.js";
 import { zoomAdapter } from "./zoom.js";
 
+// cuponomiaAdapter (T8/#20) é coleta tiered por slugs — ainda não plugado aqui: o runner só
+// monta ScrapeInstruction de escopo `full` (T11/#23 liga a coleta tiered lendo crawl_state).
 export const adapters: PlatformAdapter[] = [interAdapter, mycashbackAdapter, zoomAdapter];
 
 async function main() {
