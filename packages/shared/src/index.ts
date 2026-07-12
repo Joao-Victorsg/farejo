@@ -4,3 +4,4 @@ export type { Database, Tables, TablesInsert, TablesUpdate } from "./database.ty
 export { ParseError, parseReward } from "./reward.js";
 export type { Reward } from "./reward.js";
 export { l2Key } from "./normalize.js";
+export { RetryableError } from "./errors.js";
