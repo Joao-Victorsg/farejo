@@ -1,3 +1,5 @@
+import { stripAccents } from "./text.js";
+
 export type Reward =
   | { type: "percent"; value: number; isUpto: boolean }
   | { type: "fixed"; value: number; currency: "BRL" };
@@ -11,12 +13,6 @@ export class ParseError extends Error {
 
 function brNum(raw: string): number {
   return Number.parseFloat(raw.replace(",", "."));
-}
-
-// \b não funciona depois de letra acentuada em JS ("Ativar até 10%" escapa /\bat[ée]\b/);
-// remover acento ANTES do limite de palavra resolve.
-function stripAccents(text: string): string {
-  return text.normalize("NFD").replace(/[̀-ͯ]/g, "");
 }
 
 function firstCapture(re: RegExp, text: string): string | undefined {
