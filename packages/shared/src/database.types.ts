@@ -272,7 +272,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      pipeline_write_offers: {
+        Args: {
+          p_offers: Json
+          p_platform_id: string
+          p_run_started_at: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

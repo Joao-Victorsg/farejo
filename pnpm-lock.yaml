@@ -30,6 +30,9 @@ importers:
       '@farejo/test-fixtures':
         specifier: workspace:*
         version: link:../../packages/test-fixtures
+      '@total-typescript/shoehorn':
+        specifier: ^0.1.0
+        version: 0.1.2
       '@types/node':
         specifier: ^22.0.0
         version: 22.20.1
@@ -48,6 +51,9 @@ importers:
       '@supabase/supabase-js':
         specifier: ^2.45.0
         version: 2.110.2
+      zod:
+        specifier: ^3.24.0
+        version: 3.25.76
     devDependencies:
       typescript:
         specifier: ^5.7.0
@@ -390,6 +396,9 @@ packages:
   '@supabase/supabase-js@2.110.2':
     resolution: {integrity: sha512-r9q9w4ZQ6mOjh36aqUNFSisBF611vzpO8JphBESr2Q1SWvmGFQeI7Jq7Y+PaNMZ6Zszz+S2yTlJStCpnaMSnQg==}
     engines: {node: '>=22.0.0'}
+
+  '@total-typescript/shoehorn@0.1.2':
+    resolution: {integrity: sha512-p7nNZbOZIofpDNyP0u1BctFbjxD44Qc+oO5jufgQdFdGIXJLc33QRloJpq7k5T59CTgLWfQSUxsuqLcmeurYRw==}
 
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
@@ -936,6 +945,8 @@ snapshots:
       '@supabase/postgrest-js': 2.110.2
       '@supabase/realtime-js': 2.110.2
       '@supabase/storage-js': 2.110.2
+
+  '@total-typescript/shoehorn@0.1.2': {}
 
   '@types/chai@5.2.3':
     dependencies:

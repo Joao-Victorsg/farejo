@@ -1,17 +1,9 @@
-import "dotenv/config";
-import { createClient, l2Key } from "@farejo/shared";
+import { l2Key } from "@farejo/shared";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { localSupabaseClient } from "../testDb.js";
 import { findOrCreateStore } from "./store.js";
 
-// Mesmas chaves do stack local usadas em apps/scraper/src/db.test.ts.
-const LOCAL_URL = "http://127.0.0.1:55321";
-const LOCAL_SERVICE_ROLE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU";
-
-const client = createClient(
-  process.env.SUPABASE_URL ?? LOCAL_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY ?? LOCAL_SERVICE_ROLE_KEY,
-);
+const client = localSupabaseClient();
 
 // Plataformas de teste isoladas das 5 reais (meliuz/cuponomia/mycashback/zoom/inter) para
 // não sujar o dicionário de aliases de produção local. Limpas em afterAll.
