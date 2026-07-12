@@ -1,4 +1,4 @@
-import type { PlatformAdapter, RawOffer, ScrapeResult } from "@farejo/shared";
+import type { PlatformAdapter, RawOffer, ScrapeInstruction, ScrapeResult } from "@farejo/shared";
 import * as cheerio from "cheerio";
 import { fetchText } from "./http.js";
 
@@ -51,7 +51,8 @@ export function parseMycashback(html: string): ScrapeResult {
 
 export const mycashbackAdapter: PlatformAdapter = {
   platformId: "mycashback",
-  async scrape() {
+  // Site de 1 request, sem tiers: ignora a instrução (sempre full, sem throttle).
+  async scrape(_instruction: ScrapeInstruction) {
     return parseMycashback(
       await fetchText(LIST_URL, {
         Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",

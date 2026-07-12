@@ -1,4 +1,4 @@
-import type { PlatformAdapter, RawOffer, ScrapeResult } from "@farejo/shared";
+import type { PlatformAdapter, RawOffer, ScrapeInstruction, ScrapeResult } from "@farejo/shared";
 import { z } from "zod";
 import { fetchText } from "./http.js";
 
@@ -60,7 +60,8 @@ export function parseInter(json: string): ScrapeResult {
 
 export const interAdapter: PlatformAdapter = {
   platformId: "inter",
-  async scrape() {
+  // Site de 1 request, sem tiers: ignora a instrução (sempre full, sem throttle).
+  async scrape(_instruction: ScrapeInstruction) {
     return parseInter(await fetchText(API_URL, { Accept: "application/json" }));
   },
 };
