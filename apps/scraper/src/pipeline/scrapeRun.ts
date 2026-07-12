@@ -1,6 +1,7 @@
 import {
   SANITY_THRESHOLDS,
   evaluateSanity,
+  type RunScopeLabel,
   type SanityActual,
   type SanityBaseline,
   type SanityTrip,
@@ -22,18 +23,22 @@ export interface ScrapeRunOutcome {
 /**
  * O gate da escrita (T9, docs/farejo-system-design.md §"Sanity check"): prepara o run
  * (validação + parse + normalização, via `prepareOffers`), avalia as 4 regras contra o
- * baseline dos últimos runs `ok` da plataforma, e só escreve (`writeOffers`) se o
- * veredito for `ok`. Sempre grava uma linha em `scrape_runs`, `ok` ou `suspicious`, com
- * `notes` auto-diagnóstico — inclusive no cold-start, para semear o próprio baseline.
+ * baseline dos últimos runs `ok` da plataforma **do mesmo `scope`** (T5/#17, ADR-0004 —
+ * um run `active` nunca se mistura com um run `tail` da mesma plataforma), e só escreve
+ * (`writeOffers`) se o veredito for `ok`. Sempre grava uma linha em `scrape_runs`, `ok`
+ * ou `suspicious`, com `notes` auto-diagnóstico — inclusive no cold-start, para semear o
+ * próprio baseline. `scope` default `'full'` preserva o comportamento da Fase 1 para
+ * inter/mycashback/zoom.
  */
 export async function runPlatformScrape(
   supabase: SupabaseClient,
   platformId: string,
   scrapeResult: ScrapeResult,
   runStartedAt: Date,
+  scope: RunScopeLabel = "full",
 ): Promise<ScrapeRunOutcome> {
   const [baseline, prepared] = await Promise.all([
-    loadBaseline(supabase, platformId),
+    loadBaseline(supabase, platformId, scope),
     prepareOffers(supabase, platformId, scrapeResult),
   ]);
 
@@ -42,6 +47,7 @@ export async function runPlatformScrape(
     activeOffers: scrapeResult.offers.length,
     parseErrors: prepared.parseErrors,
     declaredTotal: scrapeResult.declaredTotal ?? null,
+    scope,
   };
   const verdict = evaluateSanity(actual, baseline);
 
@@ -54,6 +60,7 @@ export async function runPlatformScrape(
     startedAt: runStartedAt,
     finishedAt: new Date(),
     status: verdict.verdict,
+    scope,
     offersFound: actual.offersFound,
     activeOffers: actual.activeOffers,
     parseErrors: actual.parseErrors,
@@ -61,6 +68,10 @@ export async function runPlatformScrape(
     notes: JSON.stringify({
       verdict: verdict.verdict,
       tripped: verdict.tripped,
+      scope,
+      // `cold_start` só reflete baseline.n < minBaselineRuns — em scope='bootstrap' as
+      // regras 1/2 são puladas mesmo com cold_start:false (ADR-0004); é o `scope` acima
+      // que explica o motivo real nesse caso, não este campo.
       cold_start: verdict.coldStart,
       baseline: { n: baseline.n, avg_offers: baseline.avgOffersFound, avg_active: baseline.avgActiveOffers },
       actual: {
@@ -84,11 +95,12 @@ export async function runPlatformScrape(
   };
 }
 
-async function loadBaseline(supabase: SupabaseClient, platformId: string): Promise<SanityBaseline> {
+async function loadBaseline(supabase: SupabaseClient, platformId: string, scope: RunScopeLabel): Promise<SanityBaseline> {
   const { data, error } = await supabase
     .from("scrape_runs")
     .select("offers_found, active_offers")
     .eq("platform_id", platformId)
+    .eq("scope", scope)
     .eq("status", "ok")
     .order("started_at", { ascending: false })
     .limit(SANITY_THRESHOLDS.baselineWindow);

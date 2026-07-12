@@ -21,6 +21,14 @@ export interface SanityBaseline {
   avgActiveOffers: number | null;
 }
 
+/**
+ * Rótulo de `scrape_runs.scope` (ADR-0004): o que o run em questão cobre. Distinto de
+ * `RunScope` (contract.ts) — aquele descreve o que a ESCRITA pode desativar por
+ * ausência; este descreve o TAMANHO esperado do run, para o baseline do sanity nunca
+ * misturar runs incomparáveis (ex.: tier ativo vs fatia da cauda).
+ */
+export type RunScopeLabel = "full" | "bootstrap" | "active" | "tail";
+
 export interface SanityActual {
   /** = ScrapeResult.rawCount: itens recebidos, antes do filtro de inativas. */
   offersFound: number;
@@ -29,6 +37,14 @@ export interface SanityActual {
   parseErrors: number;
   /** Só onde há total de máquina autoritativo (ex.: inter); null nos demais sites. */
   declaredTotal: number | null;
+  /**
+   * `undefined`/omitido equivale a `'full'` (Fase 1, sites sem `crawl_state`).
+   * `'bootstrap'` nunca aciona as regras 1/2 (ADR-0004): dispatches de bootstrap têm
+   * tamanho arbitrário (retomada, chunking variável) — comparar um contra o outro não
+   * tem o mesmo significado que comparar runs regulares do mesmo tier, mesmo com 3+
+   * runs `bootstrap` acumulados.
+   */
+  scope?: RunScopeLabel;
 }
 
 export type SanityTrip = "rule1_offers_found" | "rule2_active_offers" | "rule3_parse_errors" | "rule4_declared_vs_raw";
@@ -42,13 +58,15 @@ export interface SanityVerdict {
 
 /**
  * As quatro regras, nessa ordem de precedência (a primeira que disparar vence).
- * 1/2 são relativas ao baseline e ficam de fora no cold-start; 3/4 são absolutas
- * e sempre avaliadas — é o que deixa o primeiro run nascer o baseline.
+ * 1/2 são relativas ao baseline e ficam de fora no cold-start (ou em `scope='bootstrap'`,
+ * ADR-0004); 3/4 são absolutas e sempre avaliadas — é o que deixa o primeiro run nascer
+ * o baseline.
  */
 export function evaluateSanity(actual: SanityActual, baseline: SanityBaseline): SanityVerdict {
   const coldStart = baseline.n < SANITY_THRESHOLDS.minBaselineRuns;
+  const skipRelativeRules = coldStart || actual.scope === "bootstrap";
 
-  if (!coldStart) {
+  if (!skipRelativeRules) {
     if (baseline.avgOffersFound != null && actual.offersFound < baseline.avgOffersFound * SANITY_THRESHOLDS.relativeFloor) {
       return { verdict: "suspicious", tripped: "rule1_offers_found", coldStart };
     }

@@ -37,6 +37,24 @@ describe("evaluateSanity", () => {
     expect(evaluateSanity(actual, coldBaseline)).toMatchObject({ verdict: "ok", coldStart: true });
   });
 
+  it("bypasses rules 1 and 2 for scope='bootstrap' even with a hot (3+ run) baseline", () => {
+    // Mesmo baseline "quente" de okBaseline (n=5): sem scope='bootstrap' este actual
+    // dispararia rule1 (10/400=2.5%) e rule2 — mas bootstrap nunca aciona 1/2.
+    const actual: SanityActual = { offersFound: 10, activeOffers: 8, parseErrors: 0, declaredTotal: null, scope: "bootstrap" };
+    expect(evaluateSanity(actual, okBaseline)).toMatchObject({ verdict: "ok", tripped: null });
+  });
+
+  it("still evaluates rules 3 and 4 normally for scope='bootstrap'", () => {
+    const actual: SanityActual = {
+      offersFound: 100,
+      activeOffers: 90,
+      parseErrors: 50, // 50% > 10% ceiling da regra 3
+      declaredTotal: null,
+      scope: "bootstrap",
+    };
+    expect(evaluateSanity(actual, okBaseline)).toMatchObject({ verdict: "suspicious", tripped: "rule3_parse_errors" });
+  });
+
   it("evaluates absolute rules 3 and 4 during cold-start", () => {
     const coldBaseline: SanityBaseline = { n: 0, avgOffersFound: null, avgActiveOffers: null };
     const actual: SanityActual = { offersFound: 374, activeOffers: 363, parseErrors: 50, declaredTotal: null };
