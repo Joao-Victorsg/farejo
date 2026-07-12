@@ -1,6 +1,5 @@
-import { createClient, l2Key } from "@farejo/shared";
-
-type SupabaseClient = ReturnType<typeof createClient>;
+import { l2Key } from "@farejo/shared";
+import type { SupabaseClient } from "../supabaseClient.js";
 
 const UNIQUE_VIOLATION = "23505";
 

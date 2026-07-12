@@ -2,7 +2,7 @@ import { l2Key, type RawOffer, type ScrapeResult } from "@farejo/shared";
 import { fromPartial } from "@total-typescript/shoehorn";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { localSupabaseClient } from "../testDb.js";
-import { runPipeline } from "./run.js";
+import { prepareOffers, runPipeline } from "./run.js";
 
 const client = localSupabaseClient();
 
@@ -232,6 +232,18 @@ describe("runPipeline (Postgres local)", () => {
       runStartedAt,
     );
     expect(result).toMatchObject({ offersWritten: 1, parseErrors: 1 });
+  });
+
+  it("samples up to 5 rejected reward texts for diagnosis (prepareOffers, no write)", async () => {
+    const rejected = scrapeResult([
+      offer("Sample A T8 Run", "Ofertas disponíveis"),
+      offer("Sample B T8 Run", "Cashback especial!"),
+      offer("Sample C T8 Run", "5% Cashback"),
+    ]);
+
+    const prepared = await prepareOffers(client, PLATFORM_ID, rejected);
+    expect(prepared.parseErrors).toBe(2);
+    expect(prepared.parseErrorSamples).toEqual(["Ofertas disponíveis", "Cashback especial!"]);
   });
 
   it("rejects a run scope other than full (only branch implemented in Phase 1)", async () => {

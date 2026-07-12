@@ -1,14 +1,8 @@
-import {
-  ParseError,
-  RawOfferSchema,
-  createClient,
-  parseReward,
-  type Reward,
-  type ScrapeResult,
-} from "@farejo/shared";
+import { ParseError, RawOfferSchema, parseReward, type Reward, type ScrapeResult } from "@farejo/shared";
+import type { SupabaseClient } from "../supabaseClient.js";
 import { findOrCreateStore, type IntraPlatformCollision } from "./store.js";
 
-type SupabaseClient = ReturnType<typeof createClient>;
+const MAX_PARSE_ERROR_SAMPLES = 5;
 
 export interface RunPipelineResult {
   offersWritten: number;
@@ -18,7 +12,7 @@ export interface RunPipelineResult {
 
 // Índice explícito: é o que torna PreparedOfferRow[] estruturalmente um Json (o
 // parâmetro jsonb do RPC) sem precisar de `as` — toda propriedade já é compatível.
-interface PreparedOfferRow {
+export interface PreparedOfferRow {
   [key: string]: string | number | boolean | null;
   store_id: number;
   reward_type: Reward["type"];
@@ -29,25 +23,34 @@ interface PreparedOfferRow {
   url: string;
 }
 
+export interface PrepareOffersResult {
+  rows: PreparedOfferRow[];
+  parseErrors: number;
+  anomalies: IntraPlatformCollision[];
+  /** Até 5 rawText que o `parseReward` recusou — o que mais ajuda a diagnosticar um site que mudou. */
+  parseErrorSamples: string[];
+}
+
 /**
- * Coração do pipeline: RawOffer[] de um run já `ok` (o gate de sanity é o T9, roda
- * antes de chamar isto) → validação zod → parseReward → find-or-create → escrita
- * atômica por plataforma. Item malformado (zod) ou reward_text não reconhecido
- * (`parseReward`) conta em `parseErrors` e é pulado — não derruba o run.
+ * Validação zod → `parseReward` → normalização de loja (find-or-create). Não escreve
+ * nada em `offers`: separado de `writeOffers` para o gate de sanity (T9,
+ * apps/scraper/src/pipeline/scrapeRun.ts) poder decidir escrever ou não usando estes
+ * números, sem a escrita já ter acontecido. Item malformado (zod) ou `rewardText`/
+ * `partialRewardText` não reconhecido conta em `parseErrors` e é pulado — não derruba o run.
  */
-export async function runPipeline(
+export async function prepareOffers(
   supabase: SupabaseClient,
   platformId: string,
   scrapeResult: ScrapeResult,
-  runStartedAt: Date,
-): Promise<RunPipelineResult> {
-  if (scrapeResult.scope.kind !== "full") {
-    throw new Error(`runPipeline: escopo "${scrapeResult.scope.kind}" ainda não implementado (só "full" na Fase 1)`);
-  }
-
+): Promise<PrepareOffersResult> {
   const rows: PreparedOfferRow[] = [];
   const anomalies: IntraPlatformCollision[] = [];
+  const parseErrorSamples: string[] = [];
   let parseErrors = 0;
+
+  const sample = (text: string) => {
+    if (parseErrorSamples.length < MAX_PARSE_ERROR_SAMPLES) parseErrorSamples.push(text.slice(0, 80));
+  };
 
   for (const raw of scrapeResult.offers) {
     const validated = RawOfferSchema.safeParse(raw);
@@ -60,6 +63,7 @@ export async function runPipeline(
     const reward = safeParseReward(rawOffer.rewardText);
     if (!reward) {
       parseErrors++;
+      sample(rawOffer.rewardText);
       continue;
     }
 
@@ -68,6 +72,7 @@ export async function runPipeline(
       const partial = safeParseReward(rawOffer.partialRewardText);
       if (!partial) {
         parseErrors++;
+        sample(rawOffer.partialRewardText);
         continue;
       }
       valuePartial = partial.value;
@@ -87,12 +92,41 @@ export async function runPipeline(
     });
   }
 
+  return { rows, parseErrors, anomalies, parseErrorSamples };
+}
+
+/** Escrita atômica por plataforma (upsert `offers` + `offer_history` + desativação por escopo). */
+export async function writeOffers(
+  supabase: SupabaseClient,
+  platformId: string,
+  runStartedAt: Date,
+  rows: PreparedOfferRow[],
+): Promise<void> {
   const { error } = await supabase.rpc("pipeline_write_offers", {
     p_platform_id: platformId,
     p_run_started_at: runStartedAt.toISOString(),
     p_offers: rows,
   });
   if (error) throw error;
+}
+
+/**
+ * Coração do pipeline, incondicional: prepara e escreve sempre, sem gate de sanity.
+ * O gate (T9) decide ANTES se vale escrever, compondo `prepareOffers` + `writeOffers`
+ * ele mesmo; isto aqui é para quem já decidiu que quer escrever de qualquer jeito.
+ */
+export async function runPipeline(
+  supabase: SupabaseClient,
+  platformId: string,
+  scrapeResult: ScrapeResult,
+  runStartedAt: Date,
+): Promise<RunPipelineResult> {
+  if (scrapeResult.scope.kind !== "full") {
+    throw new Error(`runPipeline: escopo "${scrapeResult.scope.kind}" ainda não implementado (só "full" na Fase 1)`);
+  }
+
+  const { rows, parseErrors, anomalies } = await prepareOffers(supabase, platformId, scrapeResult);
+  await writeOffers(supabase, platformId, runStartedAt, rows);
 
   return { offersWritten: rows.length, parseErrors, anomalies };
 }

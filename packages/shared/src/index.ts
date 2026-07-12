@@ -6,3 +6,5 @@ export { ParseError, parseReward } from "./reward.js";
 export type { Reward } from "./reward.js";
 export { l2Key } from "./normalize.js";
 export { RetryableError } from "./errors.js";
+export { evaluateSanity, SANITY_THRESHOLDS } from "./sanity.js";
+export type { SanityActual, SanityBaseline, SanityTrip, SanityVerdict } from "./sanity.js";
