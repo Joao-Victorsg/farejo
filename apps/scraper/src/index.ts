@@ -4,8 +4,9 @@ import { interAdapter } from "./inter.js";
 import { resolveSupabaseCredentials } from "./localDb.js";
 import { mycashbackAdapter } from "./mycashback.js";
 import { exitCodeFor, runAllPlatforms } from "./runner.js";
+import { zoomAdapter } from "./zoom.js";
 
-export const adapters: PlatformAdapter[] = [interAdapter, mycashbackAdapter];
+export const adapters: PlatformAdapter[] = [interAdapter, mycashbackAdapter, zoomAdapter];
 
 async function main() {
   const { url, key } = resolveSupabaseCredentials();
