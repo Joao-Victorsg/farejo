@@ -1,4 +1,12 @@
-import { CircuitBreakerError, nextThrottleMultiplier, type PlatformAdapter, type ScrapeInstruction, type ThrottleRunOutcome } from "@farejo/shared";
+import {
+  CircuitBreakerError,
+  nextThrottleMultiplier,
+  type PlatformAdapter,
+  type RunScopeLabel,
+  type ScrapeInstruction,
+  type ThrottleRunOutcome,
+} from "@farejo/shared";
+import { type CrawlTier, loadCrawlStateSlugs } from "./pipeline/crawlStateSlugs.js";
 import { loadThrottleMultiplier, updateThrottleMultiplier } from "./pipeline/platformThrottle.js";
 import { runPlatformScrape } from "./pipeline/scrapeRun.js";
 import { insertScrapeRun } from "./pipeline/scrapeRunsTable.js";
@@ -32,15 +40,58 @@ export function exitCodeFor(results: PlatformRunResult[]): number {
   return results.every((r) => r.status === "ok") ? 0 : 1;
 }
 
-// Coleta tiered (lendo crawl_state/throttle_multiplier) ainda não existe (Fase 2, tickets
-// futuros) — por ora todo adapter recebe a mesma instrução full, sem throttle.
+// Sites de 1 request (inter, mycashback, zoom): sempre a instrução full, sem crawl_state
+// (ADR-0005 — "sites de 1 request recebem target:{kind:'full'} e ignoram throttleMultiplier").
 const FULL_SCRAPE_INSTRUCTION: ScrapeInstruction = { throttleMultiplier: 1, target: { kind: "full" } };
 
-async function runOnePlatform(supabase: SupabaseClient, adapter: PlatformAdapter): Promise<PlatformRunResult> {
+function runOnePlatform(supabase: SupabaseClient, adapter: PlatformAdapter): Promise<PlatformRunResult> {
+  return runPlatform(supabase, adapter, "full", () => FULL_SCRAPE_INSTRUCTION);
+}
+
+/**
+ * T11/#23, o capstone da Fase 2: coleta tiered para cuponomia/méliuz. Diferente de
+ * `runOnePlatform` (instrução `full` fixa), aqui o runner MONTA a instrução — lê a fatia
+ * mais vencida de `crawl_state` para o `tier` pedido e `platforms.throttle_multiplier`
+ * atual — antes de chamar `adapter.scrape` (ADR-0005 decisão 4). Mesmo isolamento e mesma
+ * sincronização de throttle de `runOnePlatform` (via `runPlatform`, compartilhado); a
+ * única diferença é como a instrução nasce e que `tier` (não `'full'`) é o que vai para
+ * `scrape_runs.scope`.
+ */
+export function runTieredPlatform(
+  supabase: SupabaseClient,
+  adapter: PlatformAdapter,
+  tier: CrawlTier,
+  limit: number,
+): Promise<PlatformRunResult> {
+  return runPlatform(supabase, adapter, tier, async () => {
+    const [throttleMultiplier, slugs] = await Promise.all([
+      loadThrottleMultiplier(supabase, adapter.platformId),
+      loadCrawlStateSlugs(supabase, adapter.platformId, tier, limit),
+    ]);
+    return { throttleMultiplier, target: { kind: "slugs", slugs } };
+  });
+}
+
+/**
+ * Corpo comum de `runOnePlatform`/`runTieredPlatform` (T11/#23 — extraído para não
+ * duplicar o try/catch de isolamento + sincronização de throttle entre os dois): monta a
+ * instrução (síncrona pra `full`, assíncrona — lê crawl_state/throttle — pra tiered),
+ * chama o adapter, roda o gate de sanity, e sincroniza `platforms.throttle_multiplier` no
+ * fim, sucesso ou `CircuitBreakerError`. `scope` é o mesmo valor em toda a função: o que
+ * vai pro gate de sanity (`runPlatformScrape`) É o que vai pra `scrape_runs.scope` em
+ * qualquer desfecho (ok, suspicious, aborted ou failed).
+ */
+async function runPlatform(
+  supabase: SupabaseClient,
+  adapter: PlatformAdapter,
+  scope: RunScopeLabel,
+  buildInstruction: () => ScrapeInstruction | Promise<ScrapeInstruction>,
+): Promise<PlatformRunResult> {
   const runStartedAt = new Date();
   try {
-    const scrapeResult = await adapter.scrape(FULL_SCRAPE_INSTRUCTION);
-    const outcome = await runPlatformScrape(supabase, adapter.platformId, scrapeResult, runStartedAt);
+    const instruction = await buildInstruction();
+    const scrapeResult = await adapter.scrape(instruction);
+    const outcome = await runPlatformScrape(supabase, adapter.platformId, scrapeResult, runStartedAt, scope);
     await syncThrottleMultiplier(supabase, adapter.platformId, {
       aborted: false,
       ratio: softBlockRatio(scrapeResult.softBlocks, scrapeResult.rawCount),
@@ -57,7 +108,7 @@ async function runOnePlatform(supabase: SupabaseClient, adapter: PlatformAdapter
     // grava softBlocks/rawCount reais (nunca 0) e ainda assim sincroniza o throttle,
     // já que um abort é o sinal mais forte de "sobe de nível" que existe.
     if (err instanceof CircuitBreakerError) {
-      await recordAbortedRun(supabase, adapter.platformId, runStartedAt, err);
+      await recordAbortedRun(supabase, adapter.platformId, runStartedAt, err, scope);
       await syncThrottleMultiplier(supabase, adapter.platformId, {
         aborted: true,
         ratio: softBlockRatio(err.softBlocksSoFar, err.rawCountSoFar),
@@ -65,10 +116,11 @@ async function runOnePlatform(supabase: SupabaseClient, adapter: PlatformAdapter
       return { platformId: adapter.platformId, status: "failed", offersWritten: 0, parseErrors: 0, error: err.message };
     }
 
-    // Erro genérico (rede exaurida, DB fora do ar, etc.): sem soft-blocks reais pra
-    // reportar, o throttle não é tocado — não é sinal de comportamento do site.
+    // Erro genérico (rede exaurida, DB fora do ar, crawl_state/throttle_multiplier
+    // ilegível, etc.): sem soft-blocks reais pra reportar, o throttle não é tocado — não
+    // é sinal de comportamento do site.
     const message = err instanceof Error ? err.message : String(err);
-    await recordFailedRun(supabase, adapter.platformId, runStartedAt, message);
+    await recordFailedRun(supabase, adapter.platformId, runStartedAt, message, scope);
     return { platformId: adapter.platformId, status: "failed", offersWritten: 0, parseErrors: 0, error: message };
   }
 }
@@ -105,12 +157,14 @@ async function recordFailedRun(
   platformId: string,
   runStartedAt: Date,
   message: string,
+  scope: RunScopeLabel = "full",
 ): Promise<void> {
   await insertScrapeRun(supabase, {
     platformId,
     startedAt: runStartedAt,
     finishedAt: new Date(),
     status: "failed",
+    scope,
     offersFound: null,
     activeOffers: null,
     parseErrors: null,
@@ -125,12 +179,14 @@ async function recordAbortedRun(
   platformId: string,
   runStartedAt: Date,
   err: CircuitBreakerError,
+  scope: RunScopeLabel = "full",
 ): Promise<void> {
   await insertScrapeRun(supabase, {
     platformId,
     startedAt: runStartedAt,
     finishedAt: new Date(),
     status: "failed",
+    scope,
     offersFound: err.rawCountSoFar,
     activeOffers: null,
     parseErrors: null,

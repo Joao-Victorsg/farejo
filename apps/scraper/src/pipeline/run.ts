@@ -193,20 +193,45 @@ export async function runPipeline(
   scrapeResult: ScrapeResult,
   runStartedAt: Date,
 ): Promise<RunPipelineResult> {
+  assertScopeHasOutcomes(scrapeResult);
+
+  const prepared = await prepareOffers(supabase, platformId, scrapeResult);
+  const options = await buildWriteOffersOptions(supabase, platformId, scrapeResult, prepared);
+  await writeOffers(supabase, platformId, runStartedAt, prepared.rows, options);
+
+  return { offersWritten: prepared.rows.length, parseErrors: prepared.parseErrors, anomalies: prepared.anomalies };
+}
+
+/**
+ * Guarda compartilhada entre `runPipeline` e o gate de sanity (T9, `scrapeRun.ts`):
+ * escopo `partial` sem `outcomes` não sabe qual desfecho cada slug teve, então não há
+ * como computar `p_scope_store_ids` nem sincronizar `crawl_state` — "ainda não
+ * implementado", não um caso de negócio silencioso.
+ */
+export function assertScopeHasOutcomes(scrapeResult: Pick<ScrapeResult, "scope" | "outcomes">): void {
   if (scrapeResult.scope.kind !== "full" && !scrapeResult.outcomes) {
     throw new Error(`runPipeline: escopo "${scrapeResult.scope.kind}" sem outcomes ainda não implementado`);
   }
+}
 
-  const { rows, parseErrors, anomalies, crawlStateRows } = await prepareOffers(supabase, platformId, scrapeResult);
-
-  const options: WriteOffersOptions = {};
-  if (scrapeResult.outcomes) {
-    options.crawlStateRows = crawlStateRows;
-    options.scopeStoreIds = await computeScopeStoreIds(supabase, platformId, rows, crawlStateRows);
-  }
-  await writeOffers(supabase, platformId, runStartedAt, rows, options);
-
-  return { offersWritten: rows.length, parseErrors, anomalies };
+/**
+ * Monta as opções de `writeOffers` a partir do que `prepareOffers` já preparou (T4/#16,
+ * reusado pelo gate de sanity em T11/#23 — antes disso `runPlatformScrape` escrevia sem
+ * nunca sincronizar `crawl_state`, o que faria `pipeline_write_offers` rejeitar qualquer
+ * plataforma tiered por `p_scope_store_ids` chegar `null` com linhas em `crawl_state`).
+ * `{}` sem `outcomes`: sites full-scope sem `crawl_state` preservam o comportamento da Fase 1.
+ */
+export async function buildWriteOffersOptions(
+  supabase: SupabaseClient,
+  platformId: string,
+  scrapeResult: Pick<ScrapeResult, "outcomes">,
+  prepared: Pick<PrepareOffersResult, "rows" | "crawlStateRows">,
+): Promise<WriteOffersOptions> {
+  if (!scrapeResult.outcomes) return {};
+  return {
+    crawlStateRows: prepared.crawlStateRows,
+    scopeStoreIds: await computeScopeStoreIds(supabase, platformId, prepared.rows, prepared.crawlStateRows),
+  };
 }
 
 /**

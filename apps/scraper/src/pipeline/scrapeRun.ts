@@ -8,7 +8,7 @@ import {
   type ScrapeResult,
 } from "@farejo/shared";
 import type { SupabaseClient } from "../supabaseClient.js";
-import { prepareOffers, writeOffers } from "./run.js";
+import { assertScopeHasOutcomes, buildWriteOffersOptions, prepareOffers, writeOffers } from "./run.js";
 import { insertScrapeRun } from "./scrapeRunsTable.js";
 import type { IntraPlatformCollision } from "./store.js";
 
@@ -37,6 +37,8 @@ export async function runPlatformScrape(
   runStartedAt: Date,
   scope: RunScopeLabel = "full",
 ): Promise<ScrapeRunOutcome> {
+  assertScopeHasOutcomes(scrapeResult);
+
   const [baseline, prepared] = await Promise.all([
     loadBaseline(supabase, platformId, scope),
     prepareOffers(supabase, platformId, scrapeResult),
@@ -52,7 +54,11 @@ export async function runPlatformScrape(
   const verdict = evaluateSanity(actual, baseline);
 
   if (verdict.verdict === "ok") {
-    await writeOffers(supabase, platformId, runStartedAt, prepared.rows);
+    // T11/#23: sincroniza crawl_state (tier/store_id) e restringe a desativação por
+    // ausência ao escopo do run — sem isso, `pipeline_write_offers` rejeita qualquer
+    // plataforma tiered (p_scope_store_ids chegaria null com linhas em crawl_state).
+    const options = await buildWriteOffersOptions(supabase, platformId, scrapeResult, prepared);
+    await writeOffers(supabase, platformId, runStartedAt, prepared.rows, options);
   }
 
   await insertScrapeRun(supabase, {
