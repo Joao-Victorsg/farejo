@@ -1,0 +1,45 @@
+name: Seed crawl state
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Diretório tiered a semear
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - cuponomia
+          - meliuz
+
+permissions:
+  contents: read
+
+jobs:
+  seed:
+    name: Seed ${{ inputs.platform }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: crawl-state-seed
+      cancel-in-progress: false
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Seed both tiered directories
+        if: ${{ inputs.platform == 'all' }}
+        run: pnpm --filter @farejo/scraper seed
+      - name: Seed selected tiered directory
+        if: ${{ inputs.platform != 'all' }}
+        env:
+          SEED_PLATFORM: ${{ inputs.platform }}
+        run: pnpm --filter @farejo/scraper seed
