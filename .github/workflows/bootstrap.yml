@@ -1,0 +1,50 @@
+name: Bootstrap tiered crawlers
+
+on:
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Plataforma tiered a inicializar
+        required: true
+        default: cuponomia
+        type: choice
+        options:
+          - cuponomia
+          - meliuz
+      batch_size:
+        description: Slugs por dispatch (máximo 500)
+        required: true
+        default: "500"
+        type: choice
+        options:
+          - "100"
+          - "250"
+          - "500"
+
+permissions:
+  contents: read
+
+jobs:
+  bootstrap:
+    name: Bootstrap ${{ inputs.platform }}
+    runs-on: ubuntu-latest
+    # O teto considera o lote máximo no throttle 4×; não é um job do cron regular.
+    timeout-minutes: 90
+    concurrency:
+      # Compartilha o grupo dos jobs regulares: nunca dobra a taxa contra o mesmo site.
+      group: scrape-${{ inputs.platform }}
+      cancel-in-progress: false
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      BOOTSTRAP_PLATFORM: ${{ inputs.platform }}
+      BOOTSTRAP_BATCH_SIZE: ${{ inputs.batch_size }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @farejo/scraper bootstrap

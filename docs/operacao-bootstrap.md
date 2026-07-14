@@ -18,20 +18,16 @@ runs regulares.
    `SEED_PLATFORM=cuponomia` ou `SEED_PLATFORM=meliuz`. O seed só insere slugs ausentes:
    não duplica nem sobrescreve `tier`, `last_checked_at` ou `last_outcome` já gravados.
 
-3. Rode um lote por vez de uma plataforma:
+3. No GitHub, abra **Actions → Bootstrap tiered crawlers → Run workflow**, escolha
+   `cuponomia` ou `meliuz` e deixe o lote em `500` (ou use `100`/`250` para uma
+   retomada menor). O workflow é manual, fica fora do cron regular e tem timeout de
+   90 minutos. Ele usa o mesmo grupo de concorrência da plataforma, portanto não
+   sobrepõe o cron nem outro bootstrap.
 
-   ```sh
-   BOOTSTRAP_PLATFORM=cuponomia pnpm --filter @farejo/scraper bootstrap
-   BOOTSTRAP_PLATFORM=meliuz pnpm --filter @farejo/scraper bootstrap
-   ```
-
-   O lote padrão é 500 slugs (máximo aceito: 500). Ajuste para uma retomada menor com
-   `BOOTSTRAP_BATCH_SIZE=100`.
-
-4. Repita o comando enquanto a query de pendências abaixo retornar linhas. Cada execução
-   consulta `crawl_state.last_checked_at IS NULL`; portanto interrupções e reexecuções
-   pulam automaticamente os slugs com desfecho real. Um `soft_block` não preenche esse
-   campo e volta no próximo lote, como deve ser.
+4. Repita o dispatch enquanto a query de pendências abaixo retornar linhas. Cada
+   execução consulta `crawl_state.last_checked_at IS NULL`; portanto interrupções e
+   reexecuções pulam automaticamente os slugs com desfecho real. Um `soft_block` não
+   preenche esse campo e volta no próximo lote, como deve ser.
 
 5. Confira que não há pendências antes de habilitar o cron tiered:
 
@@ -42,9 +38,21 @@ runs regulares.
    group by platform_id;
    ```
 
-## Execução local e credenciais
+## Contingência local
 
-Os comandos acima usam exatamente o mesmo scraper e pipeline do ambiente automatizado.
-Por padrão apontam para o Supabase local; para executar contra o projeto hospedado,
-crie um `.env` fora do Git com `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`. Isso é o
-caminho de contingência quando o IP do GitHub Actions for bloqueado pelo site alvo.
+O dispatch do Actions é o caminho padrão e também a validação inicial de que o IP de
+datacenter passa pelos portais. Se ele falhar repetidamente por bloqueio de IP, siga
+o [runbook de bloqueio persistente](operacao-bloqueio-ip.md) e execute o mesmo lote da
+máquina local:
+
+   ```sh
+   BOOTSTRAP_PLATFORM=cuponomia pnpm --filter @farejo/scraper bootstrap
+   BOOTSTRAP_PLATFORM=meliuz pnpm --filter @farejo/scraper bootstrap
+   ```
+
+   O lote padrão é 500 slugs (máximo aceito: 500). Ajuste para uma retomada menor com
+   `BOOTSTRAP_BATCH_SIZE=100`.
+
+Os comandos usam exatamente o mesmo scraper e pipeline do Actions. Por padrão apontam
+para o Supabase local; para executar contra o projeto hospedado, crie um `.env` fora do
+Git com `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`.
