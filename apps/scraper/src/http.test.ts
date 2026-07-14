@@ -1,4 +1,4 @@
-import { RetryableError } from "@farejo/shared";
+import { NotFoundError, RetryableError } from "@farejo/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchText } from "./http.js";
 
@@ -32,6 +32,14 @@ describe("fetchText", () => {
 
     await expect(result).resolves.toBe("recovered");
     expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("returns 404 as a terminal NotFoundError without retrying", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response("", { status: 404 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(fetchText("https://example.test/missing")).rejects.toBeInstanceOf(NotFoundError);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
   it("gives up after 2 retries (3 tentativas no total) and throws", async () => {

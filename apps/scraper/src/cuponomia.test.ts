@@ -1,4 +1,4 @@
-import { CircuitBreakerError, RetryableError } from "@farejo/shared";
+import { CircuitBreakerError, NotFoundError, RetryableError } from "@farejo/shared";
 import { loadFixture } from "@farejo/test-fixtures";
 import { describe, expect, it, vi } from "vitest";
 import { parseCuponomiaDirectory, parseCuponomiaStorePage, scrapeCuponomiaSlugs } from "./cuponomia.js";
@@ -139,6 +139,18 @@ describe("scrapeCuponomiaSlugs", () => {
     expect(d.sleeps).toEqual([8000]);
     expect(result.outcomes).toEqual([{ slug: "a", outcome: "offer", offer: expect.objectContaining({ storeName: "iPlace" }) }]);
     expect(result.softBlocks).toBe(0);
+  });
+
+  it("turns a NotFoundError into a terminal not_found outcome without backoff", async () => {
+    const d = deps({ a: new NotFoundError("HTTP 404 em https://www.cuponomia.com.br/desconto/a") });
+
+    const result = await scrapeCuponomiaSlugs({ throttleMultiplier: 1, target: { kind: "slugs", slugs: ["a"] } }, d);
+
+    expect(d.sleeps).toEqual([]);
+    expect(result).toMatchObject({
+      softBlocks: 0,
+      outcomes: [{ slug: "a", outcome: "not_found" }],
+    });
   });
 
   it("reports soft_block after RetryableError exhausts the 8/16/24s backoff", async () => {

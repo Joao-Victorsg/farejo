@@ -5,7 +5,7 @@ export type { Database, Tables, TablesInsert, TablesUpdate } from "./database.ty
 export { ParseError, parseReward } from "./reward.js";
 export type { Reward } from "./reward.js";
 export { l2Key } from "./normalize.js";
-export { RetryableError, CircuitBreakerError } from "./errors.js";
+export { RetryableError, NotFoundError, CircuitBreakerError } from "./errors.js";
 export { evaluateSanity, SANITY_THRESHOLDS } from "./sanity.js";
 export type { RunScopeLabel, SanityActual, SanityBaseline, SanityTrip, SanityVerdict } from "./sanity.js";
 export { nextThrottleMultiplier, THROTTLE_THRESHOLDS } from "./throttle.js";

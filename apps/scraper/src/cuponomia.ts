@@ -1,5 +1,6 @@
 import {
   CircuitBreakerError,
+  NotFoundError,
   RetryableError,
   type PlatformAdapter,
   type RawOffer,
@@ -102,6 +103,7 @@ async function scrapeSlugWithBackoff(slug: string, deps: CuponomiaScrapeDeps): P
     try {
       outcome = parseCuponomiaStorePage(await deps.fetchPage(slug), slug);
     } catch (error) {
+      if (error instanceof NotFoundError) return { slug, outcome: "not_found" };
       if (!(error instanceof RetryableError)) throw error;
       outcome = { slug, outcome: "soft_block" };
     }
