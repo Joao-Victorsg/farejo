@@ -8,7 +8,13 @@ runs regulares.
 ## Ordem operacional
 
 1. Aplique as migrations do Supabase.
-2. Com o ambiente apontado ao projeto Supabase de destino, semeie os dois diretórios:
+2. No GitHub, abra **Actions → Seed crawl state → Run workflow**, mantenha
+   `all` para os dois diretórios (ou escolha uma plataforma para uma reexecução).
+   O workflow é exclusivamente manual: usa os GitHub Secrets e não possui cron.
+   Ele só insere slugs ausentes e não sobrescreve estado já processado.
+
+   Como contingência local, com o ambiente apontado ao projeto Supabase de destino,
+   execute:
 
    ```sh
    pnpm --filter @farejo/scraper seed
