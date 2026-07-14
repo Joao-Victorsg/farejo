@@ -10,7 +10,7 @@ import {
 } from "@farejo/shared";
 import * as cheerio from "cheerio";
 import { z } from "zod";
-import { fetchText } from "./http.js";
+import { fetchTextResponse } from "./http.js";
 
 const BASE = "https://www.meliuz.com.br";
 const DELAY_BASE_MS = 1500;
@@ -21,6 +21,12 @@ const CIRCUIT_BREAKER_THRESHOLD = 12;
 const DirectorySlug = z.string().min(1).regex(/^[^/?#\s]+$/u);
 
 const realSleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+/** Redirect para o diretório prova que a rota de loja não existe mais; não é soft-block. */
+export function isMeliuzDirectoryRedirect(finalUrl: string): boolean {
+  const url = new URL(finalUrl);
+  return url.origin === BASE && url.pathname.replace(/\/+$/u, "") === "/desconto";
+}
 
 /** Diretório público usado só para semear o universo da coleta tiered, nunca valores de cashback. */
 export function parseMeliuzDirectory(html: string): string[] {
@@ -179,10 +185,15 @@ export const meliuzAdapter: PlatformAdapter = {
   platformId: "meliuz",
   async scrape(instruction: ScrapeInstruction) {
     return scrapeMeliuzSlugs(instruction, {
-      fetchPage: (slug) =>
-        fetchText(`${BASE}/desconto/${slug}`, {
+      fetchPage: async (slug) => {
+        const response = await fetchTextResponse(`${BASE}/desconto/${slug}`, {
           Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-        }),
+        });
+        if (isMeliuzDirectoryRedirect(response.finalUrl)) {
+          throw new NotFoundError(`meliuz: ${slug} redirecionou para o diretório`);
+        }
+        return response.text;
+      },
       sleep: realSleep,
     });
   },
