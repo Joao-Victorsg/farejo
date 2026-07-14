@@ -1,5 +1,6 @@
 import {
   CircuitBreakerError,
+  RetryableError,
   type PlatformAdapter,
   type RawOffer,
   type ScrapeInstruction,
@@ -97,8 +98,13 @@ interface CuponomiaScrapeDeps {
 async function scrapeSlugWithBackoff(slug: string, deps: CuponomiaScrapeDeps): Promise<SlugOutcome> {
   let last: SlugOutcome = { slug, outcome: "soft_block" };
   for (let attempt = 0; attempt <= SOFT_BLOCK_BACKOFFS_MS.length; attempt++) {
-    const html = await deps.fetchPage(slug);
-    const outcome = parseCuponomiaStorePage(html, slug);
+    let outcome: SlugOutcome;
+    try {
+      outcome = parseCuponomiaStorePage(await deps.fetchPage(slug), slug);
+    } catch (error) {
+      if (!(error instanceof RetryableError)) throw error;
+      outcome = { slug, outcome: "soft_block" };
+    }
     if (outcome.outcome !== "soft_block") return outcome;
     last = outcome;
     if (attempt < SOFT_BLOCK_BACKOFFS_MS.length) await deps.sleep(SOFT_BLOCK_BACKOFFS_MS[attempt]!);

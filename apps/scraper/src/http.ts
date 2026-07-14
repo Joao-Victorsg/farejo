@@ -13,16 +13,22 @@ const FETCH_RETRY_BASE_DELAY_MS = 500;
 export async function fetchText(url: string, extraHeaders: Record<string, string> = {}): Promise<string> {
   return withRetry(
     async () => {
-      const res = await fetch(url, {
-        headers: {
-          "User-Agent": USER_AGENT,
-          "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
-          ...extraHeaders,
-        },
-        signal: AbortSignal.timeout(10_000),
-      });
-      if (!res.ok) throw new RetryableError(`HTTP ${res.status} em ${url}`);
-      return res.text();
+      try {
+        const res = await fetch(url, {
+          headers: {
+            "User-Agent": USER_AGENT,
+            "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
+            ...extraHeaders,
+          },
+          signal: AbortSignal.timeout(10_000),
+        });
+        if (!res.ok) throw new RetryableError(`HTTP ${res.status} em ${url}`);
+        return res.text();
+      } catch (error) {
+        if (error instanceof RetryableError) throw error;
+        const reason = error instanceof Error ? error.message : String(error);
+        throw new RetryableError(`Falha de rede em ${url}: ${reason}`);
+      }
     },
     { retries: FETCH_RETRIES, baseDelayMs: FETCH_RETRY_BASE_DELAY_MS },
   );

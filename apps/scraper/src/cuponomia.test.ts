@@ -1,4 +1,4 @@
-import { CircuitBreakerError } from "@farejo/shared";
+import { CircuitBreakerError, RetryableError } from "@farejo/shared";
 import { loadFixture } from "@farejo/test-fixtures";
 import { describe, expect, it, vi } from "vitest";
 import { parseCuponomiaDirectory, parseCuponomiaStorePage, scrapeCuponomiaSlugs } from "./cuponomia.js";
@@ -76,19 +76,24 @@ describe("parseCuponomiaDirectory", () => {
 });
 
 describe("scrapeCuponomiaSlugs", () => {
-  function deps(htmlBySlug: Record<string, string | string[]>) {
+  type FetchResult = string | Error;
+
+  function deps(htmlBySlug: Record<string, FetchResult | FetchResult[]>) {
     const calls: string[] = [];
     const sleeps: number[] = [];
     const cursor: Record<string, number> = {};
     const fetchPage = vi.fn(async (slug: string) => {
       calls.push(slug);
       const entry = htmlBySlug[slug];
+      const result = Array.isArray(entry)
+        ? entry[Math.min(cursor[slug] ?? 0, entry.length - 1)]!
+        : (entry ?? SOFT_BLOCKED_HTML);
       if (Array.isArray(entry)) {
         const i = cursor[slug] ?? 0;
         cursor[slug] = i + 1;
-        return entry[Math.min(i, entry.length - 1)]!;
       }
-      return entry ?? SOFT_BLOCKED_HTML;
+      if (result instanceof Error) throw result;
+      return result;
     });
     const sleep = vi.fn(async (ms: number) => {
       sleeps.push(ms);
@@ -124,6 +129,40 @@ describe("scrapeCuponomiaSlugs", () => {
     expect(d.sleeps.slice(0, 2)).toEqual([8000, 16000]);
     expect(result.outcomes).toEqual([{ slug: "a", outcome: "offer", offer: expect.objectContaining({ storeName: "iPlace" }) }]);
     expect(result.softBlocks).toBe(0);
+  });
+
+  it("retries a RetryableError from fetchPage through the same soft-block backoff", async () => {
+    const d = deps({ a: [new RetryableError("HTTP 405 em https://www.cuponomia.com.br/desconto/a"), loadFixture("cuponomia-loja-boost.html")] });
+
+    const result = await scrapeCuponomiaSlugs({ throttleMultiplier: 1, target: { kind: "slugs", slugs: ["a"] } }, d);
+
+    expect(d.sleeps).toEqual([8000]);
+    expect(result.outcomes).toEqual([{ slug: "a", outcome: "offer", offer: expect.objectContaining({ storeName: "iPlace" }) }]);
+    expect(result.softBlocks).toBe(0);
+  });
+
+  it("reports soft_block after RetryableError exhausts the 8/16/24s backoff", async () => {
+    const d = deps({ a: [new RetryableError("HTTP 405 em https://www.cuponomia.com.br/desconto/a")] });
+
+    const result = await scrapeCuponomiaSlugs({ throttleMultiplier: 1, target: { kind: "slugs", slugs: ["a"] } }, d);
+
+    expect(d.sleeps).toEqual([8000, 16000, 24000]);
+    expect(result.outcomes).toEqual([{ slug: "a", outcome: "soft_block" }]);
+    expect(result.softBlocks).toBe(1);
+  });
+
+  it("passes exhausted RetryableErrors to the circuit breaker", async () => {
+    const slugs = Array.from({ length: 12 }, (_, index) => `blocked-${index}`);
+    const d = deps(Object.fromEntries(slugs.map((slug) => [slug, new RetryableError(`HTTP 405 em ${slug}`)])));
+
+    await expect(scrapeCuponomiaSlugs({ throttleMultiplier: 1, target: { kind: "slugs", slugs } }, d)).rejects.toSatisfy(
+      (error: unknown) => {
+        if (!(error instanceof CircuitBreakerError)) return false;
+        expect(error.softBlocksSoFar).toBe(12);
+        expect(error.rawCountSoFar).toBe(12);
+        return true;
+      },
+    );
   });
 
   it("gives up on a slug after exhausting the 8/16/24s backoff, reporting soft_block", async () => {
