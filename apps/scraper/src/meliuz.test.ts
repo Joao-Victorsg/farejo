@@ -1,4 +1,4 @@
-import { CircuitBreakerError, parseReward, RetryableError } from "@farejo/shared";
+import { CircuitBreakerError, NotFoundError, parseReward, RetryableError } from "@farejo/shared";
 import { loadFixture } from "@farejo/test-fixtures";
 import { describe, expect, it, vi } from "vitest";
 import { parseMeliuzDirectory, parseMeliuzStorePage, scrapeMeliuzSlugs } from "./meliuz.js";
@@ -173,6 +173,18 @@ describe("scrapeMeliuzSlugs", () => {
     expect(d.sleeps).toEqual([8000]);
     expect(result.outcomes).toEqual([{ slug: "a", outcome: "offer", offer: expect.objectContaining({ storeName: "LojaA" }) }]);
     expect(result.softBlocks).toBe(0);
+  });
+
+  it("turns a NotFoundError into a terminal not_found outcome without backoff", async () => {
+    const d = deps({ a: new NotFoundError("HTTP 404 em https://www.meliuz.com.br/desconto/a") });
+
+    const result = await scrapeMeliuzSlugs({ throttleMultiplier: 1, target: { kind: "slugs", slugs: ["a"] } }, d);
+
+    expect(d.sleeps).toEqual([]);
+    expect(result).toMatchObject({
+      softBlocks: 0,
+      outcomes: [{ slug: "a", outcome: "not_found" }],
+    });
   });
 
   it("reports soft_block after RetryableError exhausts the 8/16/24s backoff", async () => {
