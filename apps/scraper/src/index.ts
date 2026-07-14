@@ -1,10 +1,12 @@
 import "dotenv/config";
 import { createClient, type PlatformAdapter } from "@farejo/shared";
+import { z } from "zod";
 import { cuponomiaAdapter } from "./cuponomia.js";
 import { interAdapter } from "./inter.js";
 import { resolveSupabaseCredentials } from "./localDb.js";
 import { meliuzAdapter } from "./meliuz.js";
 import { mycashbackAdapter } from "./mycashback.js";
+import type { CrawlTier } from "./pipeline/crawlStateSlugs.js";
 import { exitCodeFor, runAllPlatforms, runTieredPlatform, type PlatformRunResult } from "./runner.js";
 import type { SupabaseClient } from "./supabaseClient.js";
 import { zoomAdapter } from "./zoom.js";
@@ -12,40 +14,41 @@ import { zoomAdapter } from "./zoom.js";
 // Sites de 1 request, sem crawl_state (ADR-0005): recebem sempre a instrução full.
 export const fullScopeAdapters: PlatformAdapter[] = [interAdapter, mycashbackAdapter, zoomAdapter];
 
-// Tamanho da fatia por tier (T11/#23). O tuning de produção (524 ativas/~55 cauda por dia
-// no cuponomia, 664/~337 no méliuz — CLAUDE.md) é decisão do workflow do Actions, um ticket
-// à parte; aqui o teto só precisa ser generoso o bastante para puxar tudo que `crawl_state`
-// tiver pronto numa execução manual/local.
-const ACTIVE_BATCH_SIZE = 1000;
-const TAIL_BATCH_SIZE = 500;
+const ScrapeTier = z.enum(["active", "tail"]).default("active");
+
+// O ativo inteiro cabe no teto atual; a cauda é deliberadamente fatiada para cumprir a
+// cadência de 1×/5 dias: ~55 do Cuponomia e ~337 do Méliuz por dia. Os valores são por
+// plataforma porque as caudas têm tamanhos muito diferentes.
+const tieredAdapters = [
+  { adapter: cuponomiaAdapter, batchSizes: { active: 1000, tail: 55 } },
+  { adapter: meliuzAdapter, batchSizes: { active: 1000, tail: 337 } },
+] as const;
 
 /**
- * `active` e `tail` da MESMA plataforma nunca rodam ao mesmo tempo (issue #12, história 48:
- * "concurrency agrupado por PLATAFORMA, não por plataforma+escopo... pra não dobrar a taxa
- * contra o mesmo site") — cada tier já respeita `delay_base × throttleMultiplier` sozinho,
- * mas rodar os dois em paralelo dobraria a taxa efetiva de requests contra o site enquanto
- * as duas fatias se sobrepõem, na contramão do throttle adaptativo (ADR-0005). Plataformas
- * diferentes seguem concorrentes (isolamento preservado, T10/T11).
+ * Cada invocação seleciona um único tier. Isso preserva a cadência da cauda e garante que
+ * uma loja demovida de `active` não seja raspada outra vez como `tail` no mesmo ciclo. O
+ * Actions deve executar o default `active` a cada 12h e `SCRAPE_TIER=tail` uma vez por dia;
+ * plataformas diferentes continuam concorrentes (isolamento preservado, T10/T11).
  */
-async function runTieredSequential(
+async function runTieredForScope(
   supabase: SupabaseClient,
-  adapter: PlatformAdapter,
+  tier: CrawlTier,
 ): Promise<PlatformRunResult[]> {
-  const active = await runTieredPlatform(supabase, adapter, "active", ACTIVE_BATCH_SIZE);
-  const tail = await runTieredPlatform(supabase, adapter, "tail", TAIL_BATCH_SIZE);
-  return [active, tail];
+  return Promise.all(
+    tieredAdapters.map(({ adapter, batchSizes }) => runTieredPlatform(supabase, adapter, tier, batchSizes[tier])),
+  );
 }
 
 async function main() {
   const { url, key } = resolveSupabaseCredentials();
   const supabase = createClient(url, key);
+  const tier = ScrapeTier.parse(process.env.SCRAPE_TIER);
 
-  const [fullResults, cuponomiaResults, meliuzResults] = await Promise.all([
+  const [fullResults, tieredResults] = await Promise.all([
     runAllPlatforms(supabase, fullScopeAdapters),
-    runTieredSequential(supabase, cuponomiaAdapter),
-    runTieredSequential(supabase, meliuzAdapter),
+    runTieredForScope(supabase, tier),
   ]);
-  const results = [...fullResults, ...cuponomiaResults, ...meliuzResults];
+  const results = [...fullResults, ...tieredResults];
 
   for (const r of results) {
     const suffix = r.error ? ` — ${r.error}` : "";

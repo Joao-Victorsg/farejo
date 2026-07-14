@@ -1,10 +1,13 @@
-import type { PlatformAdapter, ScrapeInstruction } from "@farejo/shared";
+import type { PlatformAdapter, ScrapeInstruction, ScrapeResult } from "@farejo/shared";
 import { loadFixture } from "@farejo/test-fixtures";
 import { afterAll, describe, expect, it } from "vitest";
 import { scrapeCuponomiaSlugs } from "./cuponomia.js";
+import { parseInter } from "./inter.js";
 import { scrapeMeliuzSlugs } from "./meliuz.js";
-import { runTieredPlatform } from "./runner.js";
+import { parseMycashback } from "./mycashback.js";
+import { runAllPlatforms, runTieredPlatform } from "./runner.js";
 import { localSupabaseClient } from "./testDb.js";
+import { parseZoom } from "./zoom.js";
 
 /**
  * T11/#23 — prova que a fatia tiered funciona ponta a ponta com o PARSER REAL de
@@ -19,7 +22,10 @@ const client = localSupabaseClient();
 
 const PLATFORM_CUPONOMIA = "test-t23-cuponomia-real";
 const PLATFORM_MELIUZ = "test-t23-meliuz-real";
-const ALL_PLATFORMS = [PLATFORM_CUPONOMIA, PLATFORM_MELIUZ];
+const PLATFORM_INTER = "test-t23-inter-real";
+const PLATFORM_MYCASHBACK = "test-t23-mycashback-real";
+const PLATFORM_ZOOM = "test-t23-zoom-real";
+const ALL_PLATFORMS = [PLATFORM_CUPONOMIA, PLATFORM_MELIUZ, PLATFORM_INTER, PLATFORM_MYCASHBACK, PLATFORM_ZOOM];
 
 const instantSleep = async (_ms: number): Promise<void> => {};
 
@@ -43,6 +49,10 @@ function fixtureMeliuzAdapter(htmlBySlug: Record<string, string>): PlatformAdapt
         sleep: instantSleep,
       }),
   };
+}
+
+function fixtureFullAdapter(platformId: string, result: ScrapeResult): PlatformAdapter {
+  return { platformId, scrape: async () => result };
 }
 
 async function seedPlatform(platformId: string): Promise<void> {
@@ -128,4 +138,40 @@ describe("runTieredPlatform — parser real de cuponomia/méliuz contra fixture 
       .single();
     expect(crawlState).toMatchObject({ tier: "active", last_outcome: "offer" });
   });
+
+  it("executa as cinco plataformas com fixtures reais e grava ofertas para cada uma", async () => {
+    await Promise.all([PLATFORM_INTER, PLATFORM_MYCASHBACK, PLATFORM_ZOOM].map(seedPlatform));
+    await seedPlatform(PLATFORM_CUPONOMIA);
+    await seedPlatform(PLATFORM_MELIUZ);
+    await seedCrawlState(PLATFORM_CUPONOMIA, "iplace");
+    await seedCrawlState(PLATFORM_MELIUZ, "cupom-magazine-luiza");
+
+    const fullAdapters = [
+      fixtureFullAdapter(PLATFORM_INTER, parseInter(loadFixture("inter-stores.api.json"))),
+      fixtureFullAdapter(PLATFORM_MYCASHBACK, parseMycashback(loadFixture("mycashback-all-shops.html"))),
+      fixtureFullAdapter(PLATFORM_ZOOM, parseZoom(loadFixture("zoom-lojas.html"))),
+    ];
+    const cuponomia = fixtureCuponomiaAdapter({ iplace: loadFixture("cuponomia-loja-boost.html") });
+    const meliuz = fixtureMeliuzAdapter({ "cupom-magazine-luiza": loadFixture("meliuz-loja.html") });
+
+    const [fullResults, cuponomiaResult, meliuzResult] = await Promise.all([
+      runAllPlatforms(client, fullAdapters),
+      runTieredPlatform(client, cuponomia, "tail", 10),
+      runTieredPlatform(client, meliuz, "tail", 10),
+    ]);
+
+    expect([...fullResults, cuponomiaResult, meliuzResult]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ platformId: PLATFORM_INTER, status: "ok" }),
+        expect.objectContaining({ platformId: PLATFORM_MYCASHBACK, status: "ok" }),
+        expect.objectContaining({ platformId: PLATFORM_ZOOM, status: "ok" }),
+        expect.objectContaining({ platformId: PLATFORM_CUPONOMIA, status: "ok" }),
+        expect.objectContaining({ platformId: PLATFORM_MELIUZ, status: "ok" }),
+      ]),
+    );
+
+    const { data: offers, error } = await client.from("offers").select("platform_id").in("platform_id", ALL_PLATFORMS);
+    expect(error).toBeNull();
+    expect(new Set((offers ?? []).map((offer) => offer.platform_id))).toEqual(new Set(ALL_PLATFORMS));
+  }, 15_000);
 });

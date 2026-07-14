@@ -21,6 +21,14 @@ function offer(storeName: string, rewardText: string): RawOffer {
   return { storeName, rewardText, url: `https://example.test/${storeName}` };
 }
 
+function offerOutcome(slug: string, rawOffer: RawOffer): SlugOutcome {
+  return { slug, outcome: "offer", offer: rawOffer };
+}
+
+function noCashbackOutcome(slug: string): SlugOutcome {
+  return { slug, outcome: "no_cashback" };
+}
+
 interface FakeTieredAdapter extends PlatformAdapter {
   receivedInstructions: ScrapeInstruction[];
 }
@@ -135,8 +143,8 @@ describe("runTieredPlatform (T11/#23, Postgres local)", () => {
     const adapter = tieredAdapter(PLATFORM_TIERED, (slugs) =>
       slugs.map((slug) =>
         slug === "slug-promove"
-          ? ({ slug, outcome: "offer", offer: offer("Loja T23 Promovida", "6% cashback") } as SlugOutcome)
-          : ({ slug, outcome: "no_cashback" } as SlugOutcome),
+          ? offerOutcome(slug, offer("Loja T23 Promovida", "6% cashback"))
+          : noCashbackOutcome(slug),
       ),
     );
     const runResult = await runTieredPlatform(client, adapter, "tail", 10);
