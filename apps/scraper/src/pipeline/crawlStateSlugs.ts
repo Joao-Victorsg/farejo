@@ -27,3 +27,24 @@ export async function loadCrawlStateSlugs(
 
   return (data ?? []).map((row) => row.slug);
 }
+
+/**
+ * Próximo lote do bootstrap: somente slugs sem desfecho real. Diferente do agendador
+ * regular, o bootstrap ignora o tier porque está completando todo o universo inicial.
+ */
+export async function loadUnvisitedCrawlStateSlugs(
+  supabase: SupabaseClient,
+  platformId: string,
+  limit: number,
+): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("crawl_state")
+    .select("slug")
+    .eq("platform_id", platformId)
+    .is("last_checked_at", null)
+    .order("slug", { ascending: true })
+    .limit(limit);
+  if (error) throw error;
+
+  return (data ?? []).map((row) => row.slug);
+}
