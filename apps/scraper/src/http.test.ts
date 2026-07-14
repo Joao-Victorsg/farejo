@@ -1,6 +1,6 @@
 import { NotFoundError, RetryableError } from "@farejo/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { fetchText } from "./http.js";
+import { fetchText, fetchTextResponse } from "./http.js";
 
 describe("fetchText", () => {
   beforeEach(() => {
@@ -18,6 +18,17 @@ describe("fetchText", () => {
 
     await expect(fetchText("https://example.test")).resolves.toBe("hello");
     expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("preserves the final URL when an adapter needs to inspect redirects", async () => {
+    const response = new Response("hello", { status: 200 });
+    Object.defineProperty(response, "url", { value: "https://example.test/final" });
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response));
+
+    await expect(fetchTextResponse("https://example.test/start")).resolves.toEqual({
+      text: "hello",
+      finalUrl: "https://example.test/final",
+    });
   });
 
   it("retries a non-2xx response and returns the body once it recovers", async () => {

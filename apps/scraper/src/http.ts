@@ -9,8 +9,13 @@ const USER_AGENT =
 const FETCH_RETRIES = 2;
 const FETCH_RETRY_BASE_DELAY_MS = 500;
 
-/** Casca fina de fetch comum aos adapters: 404 = desfecho terminal; falhas transitórias são retentáveis. */
-export async function fetchText(url: string, extraHeaders: Record<string, string> = {}): Promise<string> {
+export interface FetchedText {
+  text: string;
+  finalUrl: string;
+}
+
+/** Casca fina de fetch: 404 = desfecho terminal; falhas transitórias são retentáveis. */
+export async function fetchTextResponse(url: string, extraHeaders: Record<string, string> = {}): Promise<FetchedText> {
   return withRetry(
     async () => {
       try {
@@ -24,7 +29,7 @@ export async function fetchText(url: string, extraHeaders: Record<string, string
         });
         if (res.status === 404) throw new NotFoundError(`HTTP 404 em ${url}`);
         if (!res.ok) throw new RetryableError(`HTTP ${res.status} em ${url}`);
-        return res.text();
+        return { text: await res.text(), finalUrl: res.url || url };
       } catch (error) {
         if (error instanceof RetryableError || error instanceof NotFoundError) throw error;
         const reason = error instanceof Error ? error.message : String(error);
@@ -33,4 +38,9 @@ export async function fetchText(url: string, extraHeaders: Record<string, string
     },
     { retries: FETCH_RETRIES, baseDelayMs: FETCH_RETRY_BASE_DELAY_MS, shouldRetry: (error) => error instanceof RetryableError },
   );
+}
+
+/** Atalho para adapters que só precisam do HTML, não do URL final após redirects. */
+export async function fetchText(url: string, extraHeaders: Record<string, string> = {}): Promise<string> {
+  return (await fetchTextResponse(url, extraHeaders)).text;
 }

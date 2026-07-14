@@ -1,7 +1,7 @@
 import { CircuitBreakerError, NotFoundError, parseReward, RetryableError } from "@farejo/shared";
 import { loadFixture } from "@farejo/test-fixtures";
 import { describe, expect, it, vi } from "vitest";
-import { parseMeliuzDirectory, parseMeliuzStorePage, scrapeMeliuzSlugs } from "./meliuz.js";
+import { isMeliuzDirectoryRedirect, meliuzAdapter, parseMeliuzDirectory, parseMeliuzStorePage, scrapeMeliuzSlugs } from "./meliuz.js";
 
 const SOFT_BLOCKED_HTML = "<html><body><div class=\"home\">bem-vindo ao méliuz</div></body></html>";
 
@@ -84,6 +84,30 @@ describe("parseMeliuzStorePage", () => {
       value: 5,
       isUpto: false,
     });
+  });
+});
+
+describe("isMeliuzDirectoryRedirect", () => {
+  it("recognizes a redirect to the directory, but not a real store route", () => {
+    expect(isMeliuzDirectoryRedirect("https://www.meliuz.com.br/desconto")).toBe(true);
+    expect(isMeliuzDirectoryRedirect("https://www.meliuz.com.br/desconto/cupom-bebrasil")).toBe(false);
+  });
+
+  it("makes a redirect to the directory terminal in the real adapter", async () => {
+    const response = new Response("<html><body>diretório</body></html>", { status: 200 });
+    Object.defineProperty(response, "url", { value: "https://www.meliuz.com.br/desconto" });
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response));
+
+    try {
+      await expect(
+        meliuzAdapter.scrape({ throttleMultiplier: 1, target: { kind: "slugs", slugs: ["cupom-99-taxis"] } }),
+      ).resolves.toMatchObject({
+        softBlocks: 0,
+        outcomes: [{ slug: "cupom-99-taxis", outcome: "not_found" }],
+      });
+    } finally {
+      vi.unstubAllGlobals();
+    }
   });
 });
 
