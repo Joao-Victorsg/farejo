@@ -1,7 +1,7 @@
 import { CircuitBreakerError } from "@farejo/shared";
 import { loadFixture } from "@farejo/test-fixtures";
 import { describe, expect, it, vi } from "vitest";
-import { parseCuponomiaStorePage, scrapeCuponomiaSlugs } from "./cuponomia.js";
+import { parseCuponomiaDirectory, parseCuponomiaStorePage, scrapeCuponomiaSlugs } from "./cuponomia.js";
 
 const SOFT_BLOCKED_HTML = "<html><body><div class=\"home\">bem-vindo ao cuponomia</div></body></html>";
 
@@ -54,6 +54,24 @@ describe("parseCuponomiaStorePage", () => {
   it("does not prefix 'até' when displayed carries no up-to marker", () => {
     const outcome = parseCuponomiaStorePage(upToFixture("4%"), "loja-x");
     expect(outcome).toMatchObject({ outcome: "offer", offer: { rewardText: "4% de cashback" } });
+  });
+});
+
+describe("parseCuponomiaDirectory", () => {
+  it("extrai o universo de slugs do diretório, sem inferir cashback", () => {
+    const slugs = parseCuponomiaDirectory(loadFixture("cuponomia-desconto.html"));
+
+    expect(slugs).toHaveLength(799);
+    expect(slugs).toEqual(expect.arrayContaining(["123-milhas", "iplace", "zupper-viagens"]));
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it("rejeita um slug inválido em vez de persistir HTML externo sem validação", () => {
+    expect(() => parseCuponomiaDirectory('<ul class="list-letter"><li><a href="/desconto/loja/invalida">x</a></li></ul>'))
+      .toThrow(/invalid_string/);
+    expect(() => parseCuponomiaDirectory('<ul class="list-letter"><li><a href="/desconto/">x</a></li></ul>')).toThrow(
+      /sem slug/,
+    );
   });
 });
 

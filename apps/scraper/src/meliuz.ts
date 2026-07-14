@@ -16,8 +16,24 @@ const DELAY_BASE_MS = 1500;
 // backoff do cuponomia até haver sinal real que justifique números próprios.
 const SOFT_BLOCK_BACKOFFS_MS = [8000, 16000, 24000];
 const CIRCUIT_BREAKER_THRESHOLD = 12;
+const DirectorySlug = z.string().min(1).regex(/^[^/?#\s]+$/u);
 
 const realSleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+/** Diretório público usado só para semear o universo da coleta tiered, nunca valores de cashback. */
+export function parseMeliuzDirectory(html: string): string[] {
+  const $ = cheerio.load(html);
+  const slugs = new Set<string>();
+
+  $("a[href^='/desconto/']").each((_, element) => {
+    const href = ($(element).attr("href") ?? "").split("?")[0] ?? "";
+    const slug = href.replace("/desconto/", "").trim();
+    if (!slug) throw new Error("meliuz: diretório contém link de loja sem slug");
+    slugs.add(DirectorySlug.parse(slug));
+  });
+
+  return [...slugs];
+}
 
 // ld+json é dado externo (embutido pelo méliuz na página) — valida com zod antes de
 // virar tipo do domínio, nunca `as` (farejo-typescript §1/§5).

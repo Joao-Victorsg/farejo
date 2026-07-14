@@ -6,7 +6,7 @@ import {
   type ScrapeInstruction,
   type ThrottleRunOutcome,
 } from "@farejo/shared";
-import { type CrawlTier, loadCrawlStateSlugs } from "./pipeline/crawlStateSlugs.js";
+import { type CrawlTier, loadCrawlStateSlugs, loadUnvisitedCrawlStateSlugs } from "./pipeline/crawlStateSlugs.js";
 import { loadThrottleMultiplier, updateThrottleMultiplier } from "./pipeline/platformThrottle.js";
 import { runPlatformScrape } from "./pipeline/scrapeRun.js";
 import { insertScrapeRun } from "./pipeline/scrapeRunsTable.js";
@@ -70,6 +70,30 @@ export function runTieredPlatform(
     ]);
     return { throttleMultiplier, target: { kind: "slugs", slugs } };
   });
+}
+
+/**
+ * Bootstrap manual (T12/#24): pega somente slugs sem `last_checked_at`, independente
+ * do tier, e os envia ao mesmo pipeline parcial dos runs regulares. Cada execução é um
+ * lote retomável; quem já teve desfecho real não volta a entrar na instrução seguinte.
+ */
+export async function runBootstrapPlatform(
+  supabase: SupabaseClient,
+  adapter: PlatformAdapter,
+  limit: number,
+): Promise<PlatformRunResult> {
+  const [slugs, throttleMultiplier] = await Promise.all([
+    loadUnvisitedCrawlStateSlugs(supabase, adapter.platformId, limit),
+    loadThrottleMultiplier(supabase, adapter.platformId),
+  ]);
+  if (slugs.length === 0) {
+    return { platformId: adapter.platformId, status: "ok", offersWritten: 0, parseErrors: 0, error: null };
+  }
+
+  return runPlatform(supabase, adapter, "bootstrap", () => ({
+    throttleMultiplier,
+    target: { kind: "slugs", slugs },
+  }));
 }
 
 /**
