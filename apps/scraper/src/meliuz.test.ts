@@ -1,7 +1,7 @@
 import { CircuitBreakerError, parseReward } from "@farejo/shared";
 import { loadFixture } from "@farejo/test-fixtures";
 import { describe, expect, it, vi } from "vitest";
-import { parseMeliuzStorePage, scrapeMeliuzSlugs } from "./meliuz.js";
+import { parseMeliuzDirectory, parseMeliuzStorePage, scrapeMeliuzSlugs } from "./meliuz.js";
 
 const SOFT_BLOCKED_HTML = "<html><body><div class=\"home\">bem-vindo ao méliuz</div></body></html>";
 
@@ -84,6 +84,28 @@ describe("parseMeliuzStorePage", () => {
       value: 5,
       isUpto: false,
     });
+  });
+});
+
+describe("parseMeliuzDirectory", () => {
+  it("extrai o universo de slugs do diretório, sem usar os valores históricos do POC", () => {
+    const slugs = parseMeliuzDirectory(loadFixture("meliuz-desconto.html"));
+
+    expect(slugs).toHaveLength(2359);
+    expect(slugs).toEqual(
+      expect.arrayContaining([
+        "cupom-desconto-amazon",
+        "cupom-magazine-luiza",
+        "cupom-Directv-go",
+        "cupom-zupper-viagens",
+      ]),
+    );
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it("rejeita um slug inválido em vez de persistir HTML externo sem validação", () => {
+    expect(() => parseMeliuzDirectory('<a href="/desconto/loja/invalida">x</a>')).toThrow(/invalid_string/);
+    expect(() => parseMeliuzDirectory('<a href="/desconto/">x</a>')).toThrow(/sem slug/);
   });
 });
 

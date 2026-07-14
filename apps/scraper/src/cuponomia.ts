@@ -7,6 +7,7 @@ import {
   type SlugOutcome,
 } from "@farejo/shared";
 import * as cheerio from "cheerio";
+import { z } from "zod";
 import { fetchText } from "./http.js";
 
 const BASE = "https://www.cuponomia.com.br";
@@ -14,8 +15,24 @@ const DELAY_BASE_MS = 1300;
 // Backoff do soft-block, não exponencial (8, 16, 24s) — 3 retries antes de desistir do slug.
 const SOFT_BLOCK_BACKOFFS_MS = [8000, 16000, 24000];
 const CIRCUIT_BREAKER_THRESHOLD = 12;
+const DirectorySlug = z.string().min(1).regex(/^[^/?#\s]+$/u);
 
 const realSleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+/** Diretório público usado só para semear o universo da coleta tiered, nunca valores de cashback. */
+export function parseCuponomiaDirectory(html: string): string[] {
+  const $ = cheerio.load(html);
+  const slugs = new Set<string>();
+
+  $("ul.list-letter a[href^='/desconto/']").each((_, element) => {
+    const href = ($(element).attr("href") ?? "").split("?")[0] ?? "";
+    const slug = href.replace("/desconto/", "").trim();
+    if (!slug) throw new Error("cuponomia: diretório contém link de loja sem slug");
+    slugs.add(DirectorySlug.parse(slug));
+  });
+
+  return [...slugs];
+}
 
 /**
  * `data-cashback-displayed` não é só "2%": quando `up-to`, vem **"até 4%"** — sem tirar

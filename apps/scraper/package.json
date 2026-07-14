@@ -6,7 +6,9 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "scrape": "tsx src/index.ts",
-    "summary": "tsx src/summary.ts"
+    "summary": "tsx src/summary.ts",
+    "seed": "tsx src/seed.ts",
+    "bootstrap": "tsx src/bootstrap.ts"
   },
   "dependencies": {
     "@farejo/shared": "workspace:*",
