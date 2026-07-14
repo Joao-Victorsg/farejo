@@ -23,6 +23,7 @@ on:
           - meliuz-tail
 
 permissions:
+  actions: read
   contents: read
 
 jobs:
@@ -176,3 +177,32 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @farejo/scraper scrape
+
+  summary:
+    needs: [inter, zoom, mycashback, cuponomia-active, cuponomia-tail, meliuz-active, meliuz-tail]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read workflow start time
+        id: workflow-start
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          started_at="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" --jq '.run_started_at')"
+          echo "started_at=${started_at}" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @farejo/scraper summary
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          WORKFLOW_STARTED_AT: ${{ steps.workflow-start.outputs.started_at }}
+          JOB_RESULTS_JSON: ${{ toJSON(needs) }}

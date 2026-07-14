@@ -5,7 +5,8 @@
   "version": "0.0.0",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "scrape": "tsx src/index.ts"
+    "scrape": "tsx src/index.ts",
+    "summary": "tsx src/summary.ts"
   },
   "dependencies": {
     "@farejo/shared": "workspace:*",
