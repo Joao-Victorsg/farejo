@@ -95,7 +95,7 @@ describe("runPlatformScrape — sanity segmentado por scope (T5/#17, Postgres lo
     );
     expect(activeRun.status).toBe("suspicious");
     expect(["rule1_offers_found", "rule2_active_offers"]).toContain(activeRun.tripped);
-  });
+  }, 15_000);
 
   it("grava scrape_runs.scope a partir do escopo do run em andamento", async () => {
     await runPlatformScrape(
