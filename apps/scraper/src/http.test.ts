@@ -1,3 +1,4 @@
+import { RetryableError } from "@farejo/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchText } from "./http.js";
 
@@ -39,6 +40,30 @@ describe("fetchText", () => {
 
     const result = fetchText("https://example.test");
     const assertion = expect(result).rejects.toThrow("HTTP 500");
+    await vi.runAllTimersAsync();
+    await assertion;
+
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it("normalizes a network failure into RetryableError after exhausting retries", async () => {
+    const fetchMock = vi.fn().mockRejectedValue(new TypeError("network unavailable"));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = fetchText("https://example.test");
+    const assertion = expect(result).rejects.toBeInstanceOf(RetryableError);
+    await vi.runAllTimersAsync();
+    await assertion;
+
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it("normalizes a timeout into RetryableError after exhausting retries", async () => {
+    const fetchMock = vi.fn().mockRejectedValue(new DOMException("request timed out", "TimeoutError"));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = fetchText("https://example.test");
+    const assertion = expect(result).rejects.toBeInstanceOf(RetryableError);
     await vi.runAllTimersAsync();
     await assertion;
 
