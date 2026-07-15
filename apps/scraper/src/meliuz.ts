@@ -92,8 +92,7 @@ export function parseMeliuzStorePage(html: string, slug: string): SlugOutcome {
   const isCouponOnlyPage =
     canonical !== undefined &&
     new URL(canonical, BASE).pathname === `/desconto/${slug}` &&
-    /^cupom\s+.+\s+de\s+/iu.test($("h1").first().text().trim()) &&
-    $("button").first().text().replace(/\s+/g, " ").trim() === "Entrar";
+    /^cupom\s+.+\s+de\s+/iu.test($("h1").first().text().trim());
   if (isCouponOnlyPage) return { slug, outcome: "no_cashback" };
   if ($(".hero-sec").length === 0) {
     return { slug, outcome: "soft_block" };
