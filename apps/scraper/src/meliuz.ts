@@ -110,6 +110,12 @@ export function parseMeliuzStorePage(html: string, slug: string): SlugOutcome {
 interface MeliuzScrapeDeps {
   fetchPage: (slug: string) => Promise<string>;
   sleep: (ms: number) => Promise<void>;
+  reportSoftBlock?: (slug: string, detail: string) => void;
+}
+
+function softBlockDetail(html: string): string {
+  const $ = cheerio.load(html);
+  return `title=${JSON.stringify($("title").first().text().trim())} canonical=${JSON.stringify($("link[rel='canonical']").attr("href") ?? null)}`;
 }
 
 /** Um slug, com retry por backoff fixo enquanto o desfecho for `soft_block`. */
@@ -118,10 +124,13 @@ async function scrapeSlugWithBackoff(slug: string, deps: MeliuzScrapeDeps): Prom
   for (let attempt = 0; attempt <= SOFT_BLOCK_BACKOFFS_MS.length; attempt++) {
     let outcome: SlugOutcome;
     try {
-      outcome = parseMeliuzStorePage(await deps.fetchPage(slug), slug);
+      const html = await deps.fetchPage(slug);
+      outcome = parseMeliuzStorePage(html, slug);
+      if (outcome.outcome === "soft_block") deps.reportSoftBlock?.(slug, softBlockDetail(html));
     } catch (error) {
       if (error instanceof NotFoundError) return { slug, outcome: "not_found" };
       if (!(error instanceof RetryableError)) throw error;
+      deps.reportSoftBlock?.(slug, error.message);
       outcome = { slug, outcome: "soft_block" };
     }
     if (outcome.outcome !== "soft_block") return outcome;
@@ -195,6 +204,7 @@ export const meliuzAdapter: PlatformAdapter = {
         return response.text;
       },
       sleep: realSleep,
+      reportSoftBlock: (slug, detail) => console.warn(`[meliuz] soft_block ${slug}: ${detail}`),
     });
   },
 };
