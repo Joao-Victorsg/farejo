@@ -20,6 +20,10 @@ function storeFixture(opts: { name?: string; image?: string; button: string }): 
 }
 
 describe("parseMeliuzStorePage", () => {
+  it("reports no_cashback for a canonical coupon-only page served without hero-sec", () => {
+    const html = '<html><head><link rel="canonical" href="https://www.meliuz.com.br/desconto/cupom-bebrasil"></head><body><h1>Cupom BeBrasil de Julho 2026</h1><button>Entrar</button></body></html>';
+    expect(parseMeliuzStorePage(html, "cupom-bebrasil")).toEqual({ slug: "cupom-bebrasil", outcome: "no_cashback" });
+  });
   it("extracts a percent offer with storeName/logoUrl from ld+json (Magazine Luiza, up-to)", () => {
     const outcome = parseMeliuzStorePage(loadFixture("meliuz-loja.html"), "cupom-magazine-luiza");
     expect(outcome).toMatchObject({

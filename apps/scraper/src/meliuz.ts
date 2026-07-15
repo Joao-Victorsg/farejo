@@ -88,7 +88,14 @@ function findLdJsonStore($: cheerio.CheerioAPI): z.infer<typeof LdJsonStore> | u
  */
 export function parseMeliuzStorePage(html: string, slug: string): SlugOutcome {
   const $ = cheerio.load(html);
-  if ($(".hero-sec").length === 0) return { slug, outcome: "soft_block" };
+  if ($(".hero-sec").length === 0) {
+    const canonical = $("link[rel='canonical']").attr("href");
+    const isCouponOnlyPage =
+      canonical !== undefined &&
+      new URL(canonical, BASE).pathname === `/desconto/${slug}` &&
+      /^cupom\s+.+\s+de\s+/iu.test($("h1").first().text().trim());
+    return isCouponOnlyPage ? { slug, outcome: "no_cashback" } : { slug, outcome: "soft_block" };
+  }
 
   const store = findLdJsonStore($);
   const name = store?.name;
