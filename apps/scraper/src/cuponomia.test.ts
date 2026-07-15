@@ -46,6 +46,11 @@ describe("parseCuponomiaStorePage", () => {
     });
   });
 
+  it("reports not_found when a legacy store route points to a coupon canonical URL", () => {
+    const html = '<html><head><link rel="canonical" href="https://www.cuponomia.com.br/cupom/viagem-e-turismo"></head><body></body></html>';
+    expect(parseCuponomiaStorePage(html, "viajanet")).toEqual({ slug: "viajanet", outcome: "not_found" });
+  });
+
   it("normalizes 'até X%' in data-cashback-displayed before building the fallback rewardText (is_upto correct, no duplicated prefix)", () => {
     const outcome = parseCuponomiaStorePage(upToFixture("até 4%"), "loja-x");
     expect(outcome).toMatchObject({ outcome: "offer", offer: { rewardText: "até 4% de cashback" } });

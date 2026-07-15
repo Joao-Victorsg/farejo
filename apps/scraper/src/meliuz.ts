@@ -115,7 +115,7 @@ interface MeliuzScrapeDeps {
 
 function softBlockDetail(html: string): string {
   const $ = cheerio.load(html);
-  return `title=${JSON.stringify($("title").first().text().trim())} canonical=${JSON.stringify($("link[rel='canonical']").attr("href") ?? null)}`;
+  return `title=${JSON.stringify($("title").first().text().trim())} canonical=${JSON.stringify($("link[rel='canonical']").attr("href") ?? null)} h1=${JSON.stringify($("h1").first().text().trim())} button=${JSON.stringify($("button").first().text().replace(/\s+/g, " ").trim())}`;
 }
 
 /** Um slug, com retry por backoff fixo enquanto o desfecho for `soft_block`. */

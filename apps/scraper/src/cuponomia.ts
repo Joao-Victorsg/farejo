@@ -61,6 +61,8 @@ function parseDisplayed(displayed: string): { hasCashback: boolean; upTo: boolea
  */
 export function parseCuponomiaStorePage(html: string, slug: string): SlugOutcome {
   const $ = cheerio.load(html);
+  const canonical = $("link[rel='canonical']").attr("href");
+  if (canonical && new URL(canonical, BASE).pathname.startsWith("/cupom/")) return { slug, outcome: "not_found" };
   const header = $(".store_header").first();
   if (header.length === 0) return { slug, outcome: "soft_block" };
 
@@ -98,7 +100,7 @@ interface CuponomiaScrapeDeps {
 
 function softBlockDetail(html: string): string {
   const $ = cheerio.load(html);
-  return `title=${JSON.stringify($("title").first().text().trim())} canonical=${JSON.stringify($("link[rel='canonical']").attr("href") ?? null)}`;
+  return `title=${JSON.stringify($("title").first().text().trim())} canonical=${JSON.stringify($("link[rel='canonical']").attr("href") ?? null)} h1=${JSON.stringify($("h1").first().text().trim())}`;
 }
 
 /** Um slug, com retry por backoff fixo enquanto o desfecho for `soft_block`. */
