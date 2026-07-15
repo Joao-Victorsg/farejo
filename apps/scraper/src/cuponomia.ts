@@ -182,6 +182,11 @@ export const cuponomiaAdapter: PlatformAdapter = {
       fetchPage: (slug) =>
         fetchText(`${BASE}/desconto/${slug}`, {
           Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+          Referer: `${BASE}/desconto`,
+          "Sec-Fetch-Dest": "document",
+          "Sec-Fetch-Mode": "navigate",
+          "Sec-Fetch-Site": "same-origin",
+          "Upgrade-Insecure-Requests": "1",
         }),
       sleep: realSleep,
       reportSoftBlock: (slug, detail) => console.warn(`[cuponomia] soft_block ${slug}: ${detail}`),
