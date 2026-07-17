@@ -54,6 +54,9 @@ try {
   browser = await chromium.launch();
   const page = await browser.newPage();
   await page.goto(baseUrl);
+  await page.getByRole("link", { name: "Pular para o conteúdo" }).focus();
+  await page.keyboard.press("Enter");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "conteudo");
   const navigation = page.getByRole("navigation", { name: "Navegação principal" });
   await navigation.getByRole("link", { name: "Como funciona" }).click();
   await page.waitForURL(`${baseUrl}/como-funciona`);
@@ -61,8 +64,6 @@ try {
   await navigation.getByRole("link", { name: "FAQ" }).click();
   await page.waitForURL(`${baseUrl}/faq`);
   await expectHeading(page, "Perguntas frequentes");
-  await page.getByRole("link", { name: "Pular para o conteúdo" }).click();
-  assert.equal(await page.evaluate(() => document.activeElement?.id), "conteudo");
 } finally {
   await browser?.close();
   if (server.exitCode === null && server.pid) {
