@@ -37,6 +37,8 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      CATALOG_INVALIDATION_URL: ${{ secrets.CATALOG_INVALIDATION_URL }}
+      CATALOG_INVALIDATION_SECRET: ${{ secrets.CATALOG_INVALIDATION_SECRET }}
       SCRAPE_PLATFORM: inter
     steps:
       - uses: actions/checkout@v4
@@ -58,6 +60,8 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      CATALOG_INVALIDATION_URL: ${{ secrets.CATALOG_INVALIDATION_URL }}
+      CATALOG_INVALIDATION_SECRET: ${{ secrets.CATALOG_INVALIDATION_SECRET }}
       SCRAPE_PLATFORM: zoom
     steps:
       - uses: actions/checkout@v4
@@ -79,6 +83,8 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      CATALOG_INVALIDATION_URL: ${{ secrets.CATALOG_INVALIDATION_URL }}
+      CATALOG_INVALIDATION_SECRET: ${{ secrets.CATALOG_INVALIDATION_SECRET }}
       SCRAPE_PLATFORM: mycashback
     steps:
       - uses: actions/checkout@v4
@@ -100,6 +106,8 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      CATALOG_INVALIDATION_URL: ${{ secrets.CATALOG_INVALIDATION_URL }}
+      CATALOG_INVALIDATION_SECRET: ${{ secrets.CATALOG_INVALIDATION_SECRET }}
       SCRAPE_PLATFORM: cuponomia
       SCRAPE_TIER: active
     steps:
@@ -122,6 +130,8 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      CATALOG_INVALIDATION_URL: ${{ secrets.CATALOG_INVALIDATION_URL }}
+      CATALOG_INVALIDATION_SECRET: ${{ secrets.CATALOG_INVALIDATION_SECRET }}
       SCRAPE_PLATFORM: cuponomia
       SCRAPE_TIER: tail
     steps:
@@ -144,6 +154,8 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      CATALOG_INVALIDATION_URL: ${{ secrets.CATALOG_INVALIDATION_URL }}
+      CATALOG_INVALIDATION_SECRET: ${{ secrets.CATALOG_INVALIDATION_SECRET }}
       SCRAPE_PLATFORM: meliuz
       SCRAPE_TIER: active
     steps:
@@ -166,6 +178,8 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      CATALOG_INVALIDATION_URL: ${{ secrets.CATALOG_INVALIDATION_URL }}
+      CATALOG_INVALIDATION_SECRET: ${{ secrets.CATALOG_INVALIDATION_SECRET }}
       SCRAPE_PLATFORM: meliuz
       SCRAPE_TIER: tail
     steps:

@@ -13,6 +13,7 @@ import { insertScrapeRun } from "./scrapeRunsTable.js";
 import type { IntraPlatformCollision } from "./store.js";
 
 export interface ScrapeRunOutcome {
+  runId: number;
   status: "ok" | "suspicious";
   offersWritten: number;
   parseErrors: number;
@@ -61,7 +62,7 @@ export async function runPlatformScrape(
     await writeOffers(supabase, platformId, runStartedAt, prepared.rows, options);
   }
 
-  await insertScrapeRun(supabase, {
+  const runId = await insertScrapeRun(supabase, {
     platformId,
     startedAt: runStartedAt,
     finishedAt: new Date(),
@@ -93,6 +94,7 @@ export async function runPlatformScrape(
   });
 
   return {
+    runId,
     status: verdict.verdict,
     offersWritten: verdict.verdict === "ok" ? prepared.rows.length : 0,
     parseErrors: prepared.parseErrors,

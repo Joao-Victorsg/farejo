@@ -8,7 +8,8 @@ const client = localSupabaseClient();
 const PLATFORM_OK = "test-t10-ok";
 const PLATFORM_FAIL = "test-t10-fail";
 const PLATFORM_INSTRUCTION = "test-t10-instruction";
-const ALL_PLATFORMS = [PLATFORM_OK, PLATFORM_FAIL, PLATFORM_INSTRUCTION];
+const PLATFORM_INVALIDATION = "test-t10-invalidation";
+const ALL_PLATFORMS = [PLATFORM_OK, PLATFORM_FAIL, PLATFORM_INSTRUCTION, PLATFORM_INVALIDATION];
 
 function okAdapter(platformId: string = PLATFORM_OK, receivedInstructions: ScrapeInstruction[] = []): PlatformAdapter {
   return {
@@ -91,6 +92,34 @@ describe("runAllPlatforms (Postgres local)", () => {
       .eq("platform_id", PLATFORM_INSTRUCTION)
       .single();
     expect(run?.scope).toBe("full");
+  });
+
+  it("reports a retryable invalidation failure without undoing the accepted write", async () => {
+    const results = await runAllPlatforms(client, [okAdapter(PLATFORM_INVALIDATION)], async () => {
+      throw new Error("simulated invalidation outage");
+    });
+
+    expect(results).toEqual([{
+      platformId: PLATFORM_INVALIDATION,
+      status: "invalidation_failed",
+      offersWritten: 1,
+      parseErrors: 0,
+      error: "Catalog invalidation failed after the scrape was committed",
+    }]);
+    expect(exitCodeFor(results)).toBe(1);
+
+    const { data: runs } = await client
+      .from("scrape_runs")
+      .select("status")
+      .eq("platform_id", PLATFORM_INVALIDATION);
+    expect(runs).toEqual([{ status: "ok" }]);
+
+    const { data: offer } = await client
+      .from("offers")
+      .select("active")
+      .eq("platform_id", PLATFORM_INVALIDATION)
+      .single();
+    expect(offer).toEqual({ active: true });
   });
 });
 

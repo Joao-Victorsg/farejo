@@ -2,6 +2,7 @@ import "dotenv/config";
 import { createClient, type PlatformAdapter } from "@farejo/shared";
 import { z } from "zod";
 import { cuponomiaAdapter } from "./cuponomia.js";
+import { createCatalogInvalidator, type CatalogInvalidator } from "./catalogInvalidation.js";
 import { interAdapter } from "./inter.js";
 import { resolveSupabaseCredentials } from "./localDb.js";
 import { meliuzAdapter } from "./meliuz.js";
@@ -36,9 +37,10 @@ const tieredAdapters = [
 async function runTieredForScope(
   supabase: SupabaseClient,
   tier: ScrapeTier,
+  invalidateCatalog: CatalogInvalidator,
 ): Promise<PlatformRunResult[]> {
   return Promise.all(
-    tieredAdapters.map(({ adapter, batchSizes }) => runTieredPlatform(supabase, adapter, tier, batchSizes[tier])),
+    tieredAdapters.map(({ adapter, batchSizes }) => runTieredPlatform(supabase, adapter, tier, batchSizes[tier], invalidateCatalog)),
   );
 }
 
@@ -51,25 +53,26 @@ async function runSelectedPlatform(
   supabase: SupabaseClient,
   platform: ScrapePlatform,
   tier: ScrapeTier,
+  invalidateCatalog: CatalogInvalidator,
 ): Promise<PlatformRunResult[]> {
   switch (platform) {
     case "all": {
       const [fullResults, tieredResults] = await Promise.all([
-        runAllPlatforms(supabase, fullScopeAdapters),
-        runTieredForScope(supabase, tier),
+        runAllPlatforms(supabase, fullScopeAdapters, invalidateCatalog),
+        runTieredForScope(supabase, tier, invalidateCatalog),
       ]);
       return [...fullResults, ...tieredResults];
     }
     case "inter":
-      return runAllPlatforms(supabase, [interAdapter]);
+      return runAllPlatforms(supabase, [interAdapter], invalidateCatalog);
     case "mycashback":
-      return runAllPlatforms(supabase, [mycashbackAdapter]);
+      return runAllPlatforms(supabase, [mycashbackAdapter], invalidateCatalog);
     case "zoom":
-      return runAllPlatforms(supabase, [zoomAdapter]);
+      return runAllPlatforms(supabase, [zoomAdapter], invalidateCatalog);
     case "cuponomia":
-      return [await runTieredPlatform(supabase, cuponomiaAdapter, tier, tieredAdapters[0].batchSizes[tier])];
+      return [await runTieredPlatform(supabase, cuponomiaAdapter, tier, tieredAdapters[0].batchSizes[tier], invalidateCatalog)];
     case "meliuz":
-      return [await runTieredPlatform(supabase, meliuzAdapter, tier, tieredAdapters[1].batchSizes[tier])];
+      return [await runTieredPlatform(supabase, meliuzAdapter, tier, tieredAdapters[1].batchSizes[tier], invalidateCatalog)];
   }
 }
 
@@ -78,7 +81,7 @@ async function main() {
   const supabase = createClient(url, key);
   const tier = ScrapeTier.parse(process.env.SCRAPE_TIER);
   const platform = ScrapePlatform.parse(process.env.SCRAPE_PLATFORM);
-  const results = await runSelectedPlatform(supabase, platform, tier);
+  const results = await runSelectedPlatform(supabase, platform, tier, createCatalogInvalidator());
 
   for (const r of results) {
     const suffix = r.error ? ` — ${r.error}` : "";
