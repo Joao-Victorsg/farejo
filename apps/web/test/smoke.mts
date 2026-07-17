@@ -61,8 +61,8 @@ try {
   await navigation.getByRole("link", { name: "FAQ" }).click();
   await page.waitForURL(`${baseUrl}/faq`);
   await expectHeading(page, "Perguntas frequentes");
-  await page.getByRole("link", { name: "Pular para o conteúdo" }).focus();
-  assert.equal(await page.evaluate(() => document.activeElement?.textContent), "Pular para o conteúdo");
+  await page.getByRole("link", { name: "Pular para o conteúdo" }).click();
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "conteudo");
 } finally {
   await browser?.close();
   if (server.exitCode === null && server.pid) {

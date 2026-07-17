@@ -43,6 +43,9 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Build
+        run: pnpm build
+
       - name: Install Chromium for browser smoke tests
         run: pnpm --filter @farejo/web exec playwright install --with-deps chromium
 
