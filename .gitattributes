@@ -1,0 +1,3 @@
+.agents/** -whitespace
+.claude/** -whitespace
+docs/design_handoff_farejo/** -whitespace

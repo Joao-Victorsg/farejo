@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Hanken+Grotesk:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#fbfaf7;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#12140f}
+a{color:#1c7a4d}
+</style>
+</helmet>
+
+<div style="max-width:1160px;margin:0 auto;padding:0 40px 100px">
+
+  <!-- HEADER -->
+  <div style="padding:72px 0 40px;border-bottom:1px solid #ece9e2">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:34px">
+      <img src="assets/farejo-mark.svg" alt="farejô" style="height:42px;width:auto;display:block">
+      <span style="font:700 26px/1 'Hanken Grotesk',sans-serif;letter-spacing:-.02em">farejô</span>
+    </div>
+    <div style="font:500 13px 'Geist Mono',monospace;color:#1c7a4d;letter-spacing:.08em;margin-bottom:16px">DESIGN SYSTEM · v1</div>
+    <div style="font:700 52px/1.05 'Hanken Grotesk',sans-serif;letter-spacing:-.03em;max-width:760px">Clean Light — a base visual do farejô</div>
+    <div style="margin-top:18px;font-size:18px;line-height:1.55;color:#5b5f56;max-width:640px">Cores, tipografia, marca e componentes extraídos das telas de web e mobile. Tudo em cima de muito respiro, verde-dinheiro e números em Space Grotesk.</div>
+  </div>
+
+  <!-- 01 MARCA -->
+  <div style="padding:64px 0 0">
+    <div style="font:500 12px 'Geist Mono',monospace;color:#9a9d94;letter-spacing:.1em;margin-bottom:8px">01</div>
+    <div style="font:700 30px 'Hanken Grotesk',sans-serif;letter-spacing:-.02em;margin-bottom:24px">Marca</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:36px 40px;display:flex;flex-direction:column;gap:22px;justify-content:center">
+        <div style="display:flex;align-items:center;gap:26px">
+          <img src="assets/farejo-logo.svg" alt="farejô" style="height:120px;width:auto;display:block">
+        </div>
+        <div style="display:flex;align-items:center;gap:22px;border-top:1px solid #f1efe8;padding-top:22px">
+          <div style="display:flex;align-items:center;gap:11px"><img src="assets/farejo-mark.svg" style="height:40px;width:auto;display:block"><span style="font:700 24px/1 'Hanken Grotesk',sans-serif;letter-spacing:-.02em">farejô</span></div>
+          <div style="width:1px;height:36px;background:#ece9e2"></div>
+          <img src="assets/farejo-favicon.svg" alt="favicon" style="width:44px;height:44px;display:block">
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="background:#0d100e;border-radius:16px;padding:28px 32px;display:flex;align-items:center;gap:22px">
+          <img src="assets/farejo-mark-light.svg" style="height:46px;width:auto;display:block">
+          <span style="font:700 24px/1 'Hanken Grotesk',sans-serif;letter-spacing:-.02em;color:#eef0ea">farejô</span>
+          <span style="margin-left:auto;font:400 12px 'Geist Mono',monospace;color:#7f867c">versão clara</span>
+        </div>
+        <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:26px 32px;font-size:14.5px;line-height:1.55;color:#3d4039">
+          <div style="font-weight:600;margin-bottom:10px;font-size:16px">Assets &amp; uso</div>
+          <ul style="margin:0;padding-left:18px;color:#5b5f56">
+            <li><b>logo</b> (cão + maço + wordmark) — splash e material de marca.</li>
+            <li><b>mark</b> (cão + maço) — nav do site, ao lado do texto.</li>
+            <li><b>favicon</b> (cabeça) — aba do navegador e avatar.</li>
+            <li>Em fundo escuro, usar a <b>versão clara</b>. Wordmark sempre minúsculo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 CORES -->
+  <div style="padding:64px 0 0">
+    <div style="font:500 12px 'Geist Mono',monospace;color:#9a9d94;letter-spacing:.1em;margin-bottom:8px">02</div>
+    <div style="font:700 30px 'Hanken Grotesk',sans-serif;letter-spacing:-.02em;margin-bottom:24px">Cores</div>
+    <div style="font:600 14px 'Hanken Grotesk',sans-serif;color:#5b5f56;margin-bottom:14px">Marca &amp; ações</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:30px">
+      <sc-for list="{{ brand }}" as="c" hint-placeholder-count="4">
+        <div style="border:1px solid #ece9e2;border-radius:14px;overflow:hidden;background:#fff">
+          <div style="height:96px;background:{{ c.hex }}"></div>
+          <div style="padding:13px 15px">
+            <div style="font-weight:600;font-size:14px">{{ c.n }}</div>
+            <div style="font:400 12px 'Geist Mono',monospace;color:#9a9d94;margin-top:3px">{{ c.hex }}</div>
+            <div style="font-size:12px;color:#8a8f84;margin-top:6px;line-height:1.4">{{ c.use }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font:600 14px 'Hanken Grotesk',sans-serif;color:#5b5f56;margin-bottom:14px">Neutros</div>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:14px">
+      <sc-for list="{{ neutrals }}" as="c" hint-placeholder-count="6">
+        <div style="border:1px solid #ece9e2;border-radius:14px;overflow:hidden;background:#fff">
+          <div style="height:72px;background:{{ c.hex }};border-bottom:1px solid #ece9e2"></div>
+          <div style="padding:11px 13px">
+            <div style="font-weight:600;font-size:13px">{{ c.n }}</div>
+            <div style="font:400 11px 'Geist Mono',monospace;color:#9a9d94;margin-top:3px">{{ c.hex }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- 03 TIPOGRAFIA -->
+  <div style="padding:64px 0 0">
+    <div style="font:500 12px 'Geist Mono',monospace;color:#9a9d94;letter-spacing:.1em;margin-bottom:8px">03</div>
+    <div style="font:700 30px 'Hanken Grotesk',sans-serif;letter-spacing:-.02em;margin-bottom:24px">Tipografia</div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:28px 32px;display:flex;align-items:baseline;justify-content:space-between;gap:24px">
+        <div><div style="font:700 44px/1 'Hanken Grotesk',sans-serif;letter-spacing:-.03em">Hanken Grotesk</div><div style="color:#8a8f84;font-size:14px;margin-top:12px">Interface, títulos e nomes de loja · 400–800</div></div>
+        <div style="font:400 13px 'Geist Mono',monospace;color:#9a9d94;text-align:right;white-space:nowrap">Aa Bb 123<br>display / body</div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:28px 32px;display:flex;align-items:baseline;justify-content:space-between;gap:24px">
+        <div><div style="font:600 44px/1 'Space Grotesk',sans-serif;letter-spacing:-.02em;color:#1c7a4d">12,5%  6,5%  240+</div><div style="color:#8a8f84;font-size:14px;margin-top:12px">Space Grotesk · números, percentuais e stats</div></div>
+        <div style="font:400 13px 'Geist Mono',monospace;color:#9a9d94;text-align:right;white-space:nowrap">0123456789<br>números</div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:28px 32px;display:flex;align-items:baseline;justify-content:space-between;gap:24px">
+        <div><div style="font:500 22px/1 'Geist Mono',monospace;letter-spacing:.04em;color:#1c7a4d">COMPARE · ECONOMIZE</div><div style="color:#8a8f84;font-size:14px;margin-top:14px">Geist Mono · eyebrows, labels, tags e código</div></div>
+        <div style="font:400 13px 'Geist Mono',monospace;color:#9a9d94;text-align:right;white-space:nowrap">MELHOR · %<br>mono</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 ICONES DE LOJA -->
+  <div style="padding:64px 0 0">
+    <div style="font:500 12px 'Geist Mono',monospace;color:#9a9d94;letter-spacing:.1em;margin-bottom:8px">04</div>
+    <div style="font:700 30px 'Hanken Grotesk',sans-serif;letter-spacing:-.02em;margin-bottom:8px">Ícones de loja</div>
+    <div style="font-size:15px;color:#5b5f56;margin-bottom:24px;max-width:640px">Tile arredondado com a cor de marca da loja e inicial em branco. É o <i>placeholder</i> — quando houver arquivo de logo, ele entra no lugar da inicial mantendo o tile 12px de raio.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px">
+      <sc-for list="{{ storeBrands }}" as="s" hint-placeholder-count="9">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:9px;width:96px">
+          <span style="width:56px;height:56px;border-radius:15px;background:{{ s.hex }};display:flex;align-items:center;justify-content:center;font:700 23px 'Hanken Grotesk',sans-serif;color:#fff">{{ s.m }}</span>
+          <span style="font-size:12.5px;color:#5b5f56;text-align:center;line-height:1.2">{{ s.n }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- 05 PLATAFORMAS -->
+  <div style="padding:64px 0 0">
+    <div style="font:500 12px 'Geist Mono',monospace;color:#9a9d94;letter-spacing:.1em;margin-bottom:8px">05</div>
+    <div style="font:700 30px 'Hanken Grotesk',sans-serif;letter-spacing:-.02em;margin-bottom:8px">Plataformas de cashback</div>
+    <div style="font-size:15px;color:#5b5f56;margin-bottom:24px;max-width:640px">Tiles menores (7px de raio) com sigla de 2 letras. São as fontes comparadas dentro de cada card de loja.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:16px">
+      <sc-for list="{{ platBrands }}" as="p" hint-placeholder-count="6">
+        <div style="display:flex;align-items:center;gap:11px;background:#fff;border:1px solid #ece9e2;border-radius:12px;padding:12px 18px 12px 12px">
+          <span style="width:34px;height:34px;border-radius:9px;background:{{ p.bg }};display:flex;align-items:center;justify-content:center;font:700 14px 'Hanken Grotesk',sans-serif;color:{{ p.fg }}">{{ p.m }}</span>
+          <span style="font-weight:600;font-size:15px">{{ p.n }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- 06 COMPONENTES -->
+  <div style="padding:64px 0 0">
+    <div style="font:500 12px 'Geist Mono',monospace;color:#9a9d94;letter-spacing:.1em;margin-bottom:8px">06</div>
+    <div style="font:700 30px 'Hanken Grotesk',sans-serif;letter-spacing:-.02em;margin-bottom:24px">Componentes</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <!-- Botões -->
+      <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:28px 30px">
+        <div style="font-weight:600;font-size:16px;margin-bottom:20px">Botões</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+          <span style="background:#1c7a4d;color:#fff;padding:12px 22px;border-radius:10px;font-weight:600;font-size:15px">Buscar</span>
+          <span style="background:#12140f;color:#fff;padding:12px 22px;border-radius:10px;font-weight:600;font-size:15px">Criar conta</span>
+          <span style="background:#fff;color:#12140f;border:1px solid #e0ddd4;padding:11px 22px;border-radius:10px;font-weight:600;font-size:15px">Secundário</span>
+          <span style="color:#5b5f56;font-weight:600;font-size:15px;padding:12px 6px">Entrar</span>
+        </div>
+      </div>
+      <!-- Tags -->
+      <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:28px 30px">
+        <div style="font-weight:600;font-size:16px;margin-bottom:20px">Tags &amp; filtros</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+          <span style="font:500 10px 'Geist Mono',monospace;color:#1c7a4d;background:#e7f4ec;padding:4px 9px;border-radius:6px;letter-spacing:.03em">MELHOR</span>
+          <span style="font-size:14px;color:#12140f;background:#fff;border:1px solid #e0ddd4;padding:8px 16px;border-radius:100px;font-weight:600">Maior cashback</span>
+          <span style="font-size:14px;color:#8a8f84;padding:8px 16px;border-radius:100px">A–Z</span>
+          <span style="font-size:14px;color:#8a8f84;padding:8px 16px;border-radius:100px">Populares</span>
+        </div>
+      </div>
+      <!-- Busca -->
+      <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:28px 30px">
+        <div style="font-weight:600;font-size:16px;margin-bottom:20px">Barra de busca</div>
+        <div style="display:flex;background:#fbfaf7;border:1px solid #e7e5de;border-radius:12px;padding:6px 6px 6px 18px;align-items:center;gap:11px">
+          <span style="width:18px;height:18px;border-radius:50%;border:2.5px solid #9a9d94;display:inline-block;flex:none"></span>
+          <span style="color:#9a9d94;font-size:15px;flex:1">Buscar loja…</span>
+          <span style="background:#1c7a4d;color:#fff;padding:10px 20px;border-radius:9px;font-weight:600;font-size:14px">Buscar</span>
+        </div>
+      </div>
+      <!-- Stat -->
+      <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:28px 30px">
+        <div style="font-weight:600;font-size:16px;margin-bottom:20px">Cartão de stat</div>
+        <div style="display:flex;gap:14px">
+          <div style="background:#fbfaf7;border:1px solid #ece9e2;border-radius:14px;padding:18px 24px;text-align:center;flex:1"><div style="font:600 34px 'Space Grotesk',sans-serif;color:#1c7a4d;letter-spacing:-.02em">240+</div><div style="font-size:13px;color:#8a8f84;margin-top:4px">lojas</div></div>
+          <div style="background:#fbfaf7;border:1px solid #ece9e2;border-radius:14px;padding:18px 24px;text-align:center;flex:1"><div style="font:600 34px 'Space Grotesk',sans-serif;color:#1c7a4d;letter-spacing:-.02em">12</div><div style="font-size:13px;color:#8a8f84;margin-top:4px">plataformas</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card de loja (componente principal) -->
+    <div style="margin-top:20px;background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:28px 30px">
+      <div style="font-weight:600;font-size:16px;margin-bottom:6px">Card de loja <span style="font-weight:400;color:#9a9d94;font-size:13px">· componente central</span></div>
+      <div style="font-size:14px;color:#8a8f84;margin-bottom:22px">Cabeçalho (ícone + nome + melhor %) e a lista de plataformas com a melhor destacada.</div>
+      <div style="max-width:420px">
+        <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:18px 20px">
+          <div style="display:flex;align-items:center;gap:13px;margin-bottom:16px">
+            <span style="width:44px;height:44px;border-radius:12px;background:{{ demo.sc }};display:flex;align-items:center;justify-content:center;font:700 18px 'Hanken Grotesk',sans-serif;color:#fff;flex:none">{{ demo.m }}</span>
+            <div style="flex:1;min-width:0"><div style="font-weight:600;font-size:17px">{{ demo.n }}</div><div style="font-size:12.5px;color:#9a9d94">{{ demo.count }} plataformas</div></div>
+            <div style="text-align:right"><div style="font:600 26px 'Space Grotesk',sans-serif;color:#1c7a4d;letter-spacing:-.02em">{{ demo.bestR }}</div><div style="font-size:11px;color:#9a9d94">melhor</div></div>
+          </div>
+          <sc-for list="{{ demo.provs }}" as="p" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid #f4f2eb">
+              <span style="width:26px;height:26px;border-radius:7px;background:{{ p.bg }};display:flex;align-items:center;justify-content:center;font:700 12px 'Hanken Grotesk',sans-serif;color:{{ p.fg }};flex:none">{{ p.m }}</span>
+              <span style="flex:1;font-size:14.5px;color:#3d4039">{{ p.p }}</span>
+              <sc-if value="{{ p.best }}" hint-placeholder-val="{{ true }}"><span style="font:500 9px 'Geist Mono',monospace;color:#1c7a4d;background:#e7f4ec;padding:2px 6px;border-radius:5px;letter-spacing:.03em">MELHOR</span></sc-if>
+              <span style="font:600 16px 'Space Grotesk',sans-serif;color:{{ p.color }};min-width:52px;text-align:right">{{ p.r }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 SINAIS -->
+  <div style="padding:64px 0 0">
+    <div style="font:500 12px 'Geist Mono',monospace;color:#9a9d94;letter-spacing:.1em;margin-bottom:8px">07</div>
+    <div style="font:700 30px 'Hanken Grotesk',sans-serif;letter-spacing:-.02em;margin-bottom:8px">Sinais de oferta</div>
+    <div style="font-size:15px;color:#5b5f56;margin-bottom:24px;max-width:680px">Selos que explicam por que um valor é o que é. Todos no registro creme/verde/terroso — um único acento quente (terracota) reservado ao boost. Na home (card compacto): no máximo <b>1</b> selo por linha, prioridade <b>boost › condicional › fixo</b>. O detalhe mostra tudo.</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+      <sc-for list="{{ signals }}" as="s" hint-placeholder-count="4">
+        <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:22px 24px">
+          <span style="display:inline-block;font:600 10px 'Geist Mono',monospace;color:{{ s.fg }};background:{{ s.bg }};padding:3px 8px;border-radius:5px;letter-spacing:.03em;margin-bottom:14px">{{ s.label }}</span>
+          <div style="font-size:13.5px;color:#5b5f56;line-height:1.45;margin-bottom:14px">{{ s.desc }}</div>
+          <div style="font:400 11px 'Geist Mono',monospace;color:#9a9d94;line-height:1.7">bg {{ s.bg }}<br>fg {{ s.fg }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- 08 TOKENS -->
+  <div style="padding:64px 0 0">
+    <div style="font:500 12px 'Geist Mono',monospace;color:#9a9d94;letter-spacing:.1em;margin-bottom:8px">08</div>
+    <div style="font:700 30px 'Hanken Grotesk',sans-serif;letter-spacing:-.02em;margin-bottom:24px">Raio &amp; espaçamento</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:28px 30px">
+        <div style="font-weight:600;font-size:16px;margin-bottom:20px">Raio de canto</div>
+        <div style="display:flex;align-items:flex-end;gap:16px">
+          <div style="text-align:center"><div style="width:56px;height:56px;background:#e7f4ec;border:1px solid #cfe7d9;border-radius:7px"></div><div style="font:400 12px 'Geist Mono',monospace;color:#9a9d94;margin-top:8px">7 · plataforma</div></div>
+          <div style="text-align:center"><div style="width:56px;height:56px;background:#e7f4ec;border:1px solid #cfe7d9;border-radius:12px"></div><div style="font:400 12px 'Geist Mono',monospace;color:#9a9d94;margin-top:8px">12 · loja</div></div>
+          <div style="text-align:center"><div style="width:56px;height:56px;background:#e7f4ec;border:1px solid #cfe7d9;border-radius:16px"></div><div style="font:400 12px 'Geist Mono',monospace;color:#9a9d94;margin-top:8px">16 · card</div></div>
+          <div style="text-align:center"><div style="width:56px;height:56px;background:#e7f4ec;border:1px solid #cfe7d9;border-radius:100px"></div><div style="font:400 12px 'Geist Mono',monospace;color:#9a9d94;margin-top:8px">pill · filtro</div></div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #ece9e2;border-radius:16px;padding:28px 30px">
+        <div style="font-weight:600;font-size:16px;margin-bottom:20px">Escala de espaço (px)</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ spacing }}" as="v" hint-placeholder-count="6">
+            <div style="display:flex;align-items:center;gap:14px">
+              <span style="font:400 12px 'Geist Mono',monospace;color:#9a9d94;width:28px">{{ v }}</span>
+              <span style="height:12px;background:#1c7a4d;border-radius:3px;width:{{ v }}px;display:block"></span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const brand = [
+      { n: 'Verde Cashscout', hex: '#1c7a4d', use: 'Primária · CTAs, percentuais, destaques' },
+      { n: 'Verde tint',      hex: '#e7f4ec', use: 'Fundo de badges e estados positivos' },
+      { n: 'Verde-menta',     hex: '#4ade9b', use: 'Acento sobre fundo escuro' },
+      { n: 'Tinta',           hex: '#12140f', use: 'Texto principal e botão escuro' },
+    ];
+    const neutrals = [
+      { n: 'Fundo',      hex: '#fbfaf7' },
+      { n: 'Superfície', hex: '#ffffff' },
+      { n: 'Sutil',      hex: '#f6f5f0' },
+      { n: 'Borda',      hex: '#ece9e2' },
+      { n: 'Secundário', hex: '#5b5f56' },
+      { n: 'Apagado',    hex: '#9a9d94' },
+    ];
+    const storeColorMap = {
+      'Amazon': '#ff9900', 'Shopee': '#ee4d2d', 'Magalu': '#0086ff', 'AliExpress': '#e62e04',
+      'Netshoes': '#1a1a1a', 'Centauro': '#ff5a00', 'Booking': '#003580', 'Nike': '#111111', 'Casas Bahia': '#e30613',
+    };
+    const storeBrands = Object.entries(storeColorMap).map(([n, hex]) => ({ n, hex, m: n[0] }));
+
+    const platMap = {
+      'Méliuz':     { m: 'mz', bg: '#ff2d6b', fg: '#fff' },
+      'Cuponomia':  { m: 'cp', bg: '#0a66ff', fg: '#fff' },
+      'MyCashback': { m: 'my', bg: '#7c3aed', fg: '#fff' },
+      'PicPay':     { m: 'pp', bg: '#11c76f', fg: '#fff' },
+      'Inter Shop': { m: 'in', bg: '#ff6a00', fg: '#fff' },
+      'Ame':        { m: 'am', bg: '#e60050', fg: '#fff' },
+    };
+    const platBrands = Object.entries(platMap).map(([n, b]) => ({ n, ...b }));
+
+    // Card de exemplo
+    const fmt = (v) => (Number.isInteger(v) ? String(v) : String(v).replace('.', ',')) + '%';
+    const dp = { 'Méliuz': 6.5, 'Cuponomia': 5, 'MyCashback': 4, 'Inter Shop': 3.5 };
+    const list = Object.entries(dp).map(([p, r]) => ({ p, r })).sort((a, b) => b.r - a.r);
+    const max = list[0].r;
+    const provs = list.map((x, i) => ({
+      p: x.p, m: platMap[x.p].m, bg: platMap[x.p].bg, fg: platMap[x.p].fg,
+      r: fmt(x.r), best: i === 0, color: i === 0 ? '#1c7a4d' : '#8a8f84',
+    }));
+    const demo = { n: 'Amazon', m: 'A', sc: '#ff9900', count: list.length, bestR: fmt(max), provs };
+
+    const spacing = [4, 8, 12, 16, 24, 40];
+    const signals = [
+      { label: 'MELHOR',      bg: '#e7f4ec', fg: '#1c7a4d', desc: 'Maior cashback da loja no momento. Verde de marca.' },
+      { label: '⚡ BOOST',    bg: '#c05f2b', fg: '#ffffff', desc: 'Taxa turbinada por tempo limitado. Único acento quente — mostrar validade.' },
+      { label: 'CONDICIONAL', bg: '#dcebe3', fg: '#2f6f57', desc: 'Depende de condição (ex: correntista Inter). A toggle global recalcula e reordena.' },
+      { label: 'VALOR FIXO',  bg: '#f0e7d3', fg: '#8a6a33', desc: 'Cashback em R$/US$, não em %. Sempre ordenado por último.' },
+    ];
+    return { brand, neutrals, storeBrands, platBrands, demo, spacing, signals };
+  }
+}
+</script>
+</body>
+</html>

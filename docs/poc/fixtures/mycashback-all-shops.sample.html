@@ -1,0 +1,61 @@
+<!-- FIXTURE RECONSTRUÍDA a partir do DOM real de mycashback.com.br/all-shops em 09/07/2026.
+     Estrutura: div.card > a.info > span.title + span.cbDetails. 468 lojas na página real; 7 aqui.
+     Casos cobertos: "Até X%", "X%", "até x%" minúsculo, decimal, "Até*" com asterisco, loja SEM cashback (deve ser ignorada).
+     Substituir pela captura integral: `npm run capture`. -->
+<div class="row">
+  <div class="col-6"><div class="card border border-light overflow-hidden">
+    <a href="/retailer/aliexpress" class="info">
+      <div class="ret-logo-wrapper"><img src="/img/1.webp" alt="Aliexpress" class="product-logo"></div>
+      <span class="title"> Aliexpress </span>
+      <span class="cbDetails">Até 11% Cashback</span>
+      <span class="preview_text"> Compre produtos de tecnologia </span>
+    </a>
+  </div></div>
+  <div class="col-6"><div class="card border border-light overflow-hidden">
+    <a href="/retailer/paguemenos" class="info">
+      <div class="ret-logo-wrapper"><img src="/img/2.webp" alt="Pague Menos" class="product-logo"></div>
+      <span class="title"> Pague Menos </span>
+      <span class="cbDetails">4% Cashback</span>
+      <span class="preview_text"> Compre remédios </span>
+    </a>
+  </div></div>
+  <div class="col-6"><div class="card border border-light overflow-hidden">
+    <a href="/retailer/ebay" class="info">
+      <div class="ret-logo-wrapper"><img src="/img/3.webp" alt="eBay" class="product-logo"></div>
+      <span class="title"> eBay </span>
+      <span class="cbDetails">até 3% Cashback</span>
+      <span class="preview_text"> Compre e venda eletrônicos </span>
+    </a>
+  </div></div>
+  <div class="col-6"><div class="card border border-light overflow-hidden">
+    <a href="/retailer/drogaria-sao-paulo" class="info">
+      <div class="ret-logo-wrapper"><img src="/img/4.webp" alt="Drogaria São Paulo" class="product-logo"></div>
+      <span class="title"> Drogaria São Paulo </span>
+      <span class="cbDetails">3.5% Cashback</span>
+      <span class="preview_text"> Medicamentos </span>
+    </a>
+  </div></div>
+  <div class="col-6"><div class="card border border-light overflow-hidden">
+    <a href="/retailer/temu" class="info">
+      <div class="ret-logo-wrapper"><img src="/img/5.webp" alt="Temu" class="product-logo"></div>
+      <span class="title"> Temu </span>
+      <span class="cbDetails">Até* 20% Cashback</span>
+      <span class="preview_text"> Direto da China </span>
+    </a>
+  </div></div>
+  <div class="col-6"><div class="card border border-light overflow-hidden">
+    <a href="/retailer/netshoes" class="info">
+      <div class="ret-logo-wrapper"><img src="/img/6.webp" alt="Netshoes" class="product-logo"></div>
+      <span class="title"> Netshoes </span>
+      <span class="cbDetails">7% Cashback</span>
+      <span class="preview_text"> Tênis e roupas </span>
+    </a>
+  </div></div>
+  <div class="col-6"><div class="card border border-light overflow-hidden">
+    <a href="/retailer/loja-sem-cashback" class="info">
+      <div class="ret-logo-wrapper"><img src="/img/7.webp" alt="Loja Sem Cashback" class="product-logo"></div>
+      <span class="title"> Loja Sem Cashback </span>
+      <span class="preview_text"> Card sem cbDetails — não deve virar oferta </span>
+    </a>
+  </div></div>
+</div>
