@@ -44,6 +44,7 @@ async function expectHeading(page: import("@playwright/test").Page, name: string
 }
 
 async function cleanFixtures() {
+  await client.query("delete from public.store_aliases where store_id in (select id from public.stores where slug like $1)", [`${fixturePrefix}%`]);
   await client.query("delete from public.offers where store_id in (select id from public.stores where slug like $1)", [`${fixturePrefix}%`]);
   await client.query("delete from public.stores where slug like $1", [`${fixturePrefix}%`]);
 }
@@ -69,6 +70,16 @@ for (let index = 0; index < 25; index += 1) {
     [store.id],
   );
 }
+const { rows: aliasStores } = await client.query<{ id: number }>(
+  "select id from public.stores where slug = $1",
+  [`${fixturePrefix}00`],
+);
+const aliasStore = aliasStores[0];
+if (!aliasStore) throw new Error("Alias fixture store was not inserted");
+await client.query(
+  "insert into public.store_aliases (platform_id, raw_name, store_id) values ('meliuz', 'Nome alternativo da loja', $1)",
+  [aliasStore.id],
+);
 
 await run(pnpm, ["build"]);
 const server = spawn(pnpm, ["exec", "next", "start", "--port", String(port)], {
@@ -96,6 +107,29 @@ try {
     assert.doesNotMatch(await bundle.text(), /FAREJO_WEB_DATABASE_URL|FAREJO_CATALOG_INVALIDATION_SECRET|postgresql:\/\/|@supabase\/supabase-js/);
   }
 
+  const pageOne = await (await fetch(`${baseUrl}/?page=1`)).text();
+  assert.match(pageOne, /http-equiv="refresh" content="1;url=\/"/);
+  const explicitDefaultSort = await (await fetch(`${baseUrl}/?sort=platforms`)).text();
+  assert.match(explicitDefaultSort, /http-equiv="refresh" content="1;url=\/"/);
+  const indexedSecondPage = await (await fetch(`${baseUrl}/?page=2`)).text();
+  assert.match(indexedSecondPage, /<link rel="canonical" href="https:\/\/farejo\.com\.br\/\?page=2"/);
+  assert.doesNotMatch(indexedSecondPage, /name="robots" content="noindex, follow"/);
+  const outOfRangePage = await (await fetch(`${baseUrl}/?page=999`)).text();
+  assert.match(outOfRangePage, /Esta página não existe/);
+  assert.match(outOfRangePage, /name="robots" content="noindex, follow"/);
+  for (const repeatedParameterUrl of ["?q=loja&q=outra", "?sort=az&sort=cashback", "?page=1&page=2"]) {
+    const repeatedParameter = await (await fetch(`${baseUrl}/${repeatedParameterUrl}`)).text();
+    assert.match(repeatedParameter, /Esta página não existe/);
+    assert.match(repeatedParameter, /name="robots" content="noindex, follow"/);
+  }
+  const searchPage = await (await fetch(`${baseUrl}/?q=Nome+alternativo+da+loja`)).text();
+  assert.match(searchPage, /Loja real sem logo 00/);
+  assert.match(searchPage, /name="robots" content="noindex, follow"/);
+  const sitemap = await (await fetch(`${baseUrl}/sitemap.xml`)).text();
+  assert.match(sitemap, /https:\/\/farejo\.com\.br\/\?page=2/);
+  const robots = await (await fetch(`${baseUrl}/robots.txt`)).text();
+  assert.match(robots, /Disallow: \/go\//);
+
   await client.query(
     "update public.offers set value = 7, raw_text = '7%', updated_at = now() where store_id = (select id from public.stores where slug = $1) and platform_id = 'inter'",
     [`${fixturePrefix}00`],
@@ -120,6 +154,13 @@ try {
   await page.goto(baseUrl);
   await page.goto(`${baseUrl}/?page=2`);
   await page.getByText("Loja real sem logo 24").waitFor();
+  await page.goto(baseUrl);
+  await page.locator("#catalog-search").fill("Nome alternativo da loja");
+  await page.waitForURL(/\?q=Nome\+alternativo\+da\+loja$/);
+  await page.getByText("Loja real sem logo 00").waitFor();
+  await page.locator("#catalog-sort").selectOption("cashback");
+  await page.getByRole("button", { name: "Buscar" }).click();
+  await page.waitForURL(/\?q=Nome\+alternativo\+da\+loja&sort=cashback$/);
   await page.goto(baseUrl);
   await page.getByRole("link", { name: "Pular para o conteúdo" }).focus();
   await page.keyboard.press("Enter");

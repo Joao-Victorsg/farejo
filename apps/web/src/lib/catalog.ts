@@ -3,14 +3,25 @@ import { unstable_cache } from "next/cache";
 import { Pool } from "pg";
 import { z } from "zod";
 import { CATALOG_CACHE_TAG, CATALOG_CACHE_TTL_SECONDS } from "./catalog-cache";
+import { catalogHref, isCatalogSort, type CatalogRequest, type CatalogSort } from "./catalog-url";
+
+export { catalogHref, type CatalogRequest, type CatalogSort } from "./catalog-url";
 
 export const CATALOG_PAGE_SIZE = 24;
 
-const CatalogStoreRow = z.object({
+export type ParsedCatalogRequest = CatalogRequest & {
+  invalidParameters: boolean;
+  invalidPage: boolean;
+  needsCanonicalRedirect: boolean;
+};
+
+const CatalogSearchRow = z.object({
   slug: z.string(),
   name: z.string(),
   logo_url: z.string().url().nullable(),
   platform_count: z.number().int().positive(),
+  relevance: z.number().int().min(0).max(4),
+  total_count: z.number().int().nonnegative(),
 });
 
 const CatalogOfferRow = z.object({
@@ -24,7 +35,11 @@ const CatalogOfferRow = z.object({
   freshness: z.enum(["fresh", "delayed"]),
 });
 
-const CatalogCountRow = z.object({ count: z.number().int().nonnegative() });
+const CatalogSearchParams = z.object({
+  page: z.union([z.string(), z.array(z.string())]).optional(),
+  q: z.union([z.string(), z.array(z.string())]).optional(),
+  sort: z.union([z.string(), z.array(z.string())]).optional(),
+});
 
 type CatalogOfferBase = {
   platformId: string;
@@ -52,6 +67,8 @@ export type CatalogStore = {
 export type CatalogPage = {
   items: CatalogStore[];
   page: number;
+  query: string;
+  sort: CatalogSort;
   total: number;
   totalPages: number;
 };
@@ -68,28 +85,48 @@ function getPool() {
   return pool;
 }
 
-function assertPage(page: number) {
-  if (!Number.isSafeInteger(page) || page < 1) throw new Error("Invalid catalog page");
+function getSingleParameter(value: string | string[] | undefined) {
+  return typeof value === "string" ? value : undefined;
 }
 
-async function getCatalogPageUncached(page: number): Promise<CatalogPage> {
-  const offset = (page - 1) * CATALOG_PAGE_SIZE;
+export function parseCatalogRequest(searchParams: { page?: string | string[]; q?: string | string[]; sort?: string | string[] }): ParsedCatalogRequest {
+  const parsedParams = CatalogSearchParams.parse(searchParams);
+  const invalidParameters = Array.isArray(parsedParams.q) || Array.isArray(parsedParams.sort);
+  const rawPage = getSingleParameter(parsedParams.page);
+  const rawQuery = getSingleParameter(parsedParams.q);
+  const rawSort = getSingleParameter(parsedParams.sort);
+  const query = rawQuery?.trim().slice(0, 100) ?? "";
+  const parsedPage = rawPage === undefined ? 1 : Number(rawPage);
+  const invalidPage = Array.isArray(parsedParams.page) || (rawPage !== undefined && (!Number.isSafeInteger(parsedPage) || parsedPage < 1));
+  const page = invalidPage ? 1 : parsedPage;
+  const sort = rawSort !== undefined && isCatalogSort(rawSort) ? rawSort : "platforms";
+  const needsCanonicalRedirect = !invalidPage && (
+    rawPage === "1"
+    || (rawPage !== undefined && rawPage !== String(page))
+    || (rawQuery !== undefined && rawQuery !== query)
+    || rawSort === "platforms"
+    || (rawSort !== undefined && !isCatalogSort(rawSort))
+  );
+
+  return { page, query, sort, invalidParameters, invalidPage, needsCanonicalRedirect };
+}
+
+function assertRequest(request: CatalogRequest) {
+  if (!Number.isSafeInteger(request.page) || request.page < 1) throw new Error("Invalid catalog page");
+  if (!isCatalogSort(request.sort)) throw new Error("Invalid catalog sort");
+  if (request.query.length > 100) throw new Error("Catalog query is too long");
+}
+
+async function getCatalogPageUncached(request: CatalogRequest): Promise<CatalogPage> {
   const database = getPool();
-
-  const [storesResult, countResult] = await Promise.all([
-    database.query(
-      `select slug, name, logo_url, platform_count
-       from web_read.catalog_stores
-       order by platform_count desc, name asc, slug asc
-       limit $1 offset $2`,
-      [CATALOG_PAGE_SIZE, offset],
-    ),
-    database.query("select count(*)::integer as count from web_read.catalog_stores"),
-  ]);
-
-  const stores = z.array(CatalogStoreRow).parse(storesResult.rows);
-  const count = CatalogCountRow.parse(countResult.rows[0]).count;
-  const slugs = stores.map((store) => store.slug);
+  const search = (page: number) => database.query(
+    "select slug, name, logo_url, platform_count, relevance, total_count from web_read.catalog_search($1, $2, $3)",
+    [request.query, request.sort, page],
+  );
+  const pageResult = await search(request.page);
+  const rows = z.array(CatalogSearchRow).parse(pageResult.rows);
+  const total = rows[0]?.total_count ?? (request.page > 1 ? z.array(CatalogSearchRow).parse((await search(1)).rows)[0]?.total_count ?? 0 : 0);
+  const slugs = rows.map((row) => row.slug);
   const offersResult = slugs.length === 0
     ? { rows: [] }
     : await database.query(
@@ -104,11 +141,7 @@ async function getCatalogPageUncached(page: number): Promise<CatalogPage> {
 
   for (const offer of offers) {
     const storeOffers = offersByStore.get(offer.store_slug) ?? [];
-    const offerBase = {
-      platformId: offer.platform_id,
-      platformName: offer.platform_name,
-      freshness: offer.freshness,
-    };
+    const offerBase = { platformId: offer.platform_id, platformName: offer.platform_name, freshness: offer.freshness };
     const publicOffer = offer.reward_type === "percent"
       ? { ...offerBase, reward: { type: "percent" as const, value: offer.value, valuePartial: offer.value_partial, isUpto: offer.is_upto } }
       : { ...offerBase, reward: { type: "fixed" as const, value: offer.value, currency: "BRL" as const } };
@@ -117,25 +150,27 @@ async function getCatalogPageUncached(page: number): Promise<CatalogPage> {
   }
 
   return {
-    items: stores.map((store) => ({
+    items: rows.map((store) => ({
       slug: store.slug,
       name: store.name,
       logoUrl: store.logo_url,
       platformCount: store.platform_count,
       offers: offersByStore.get(store.slug) ?? [],
     })),
-    page,
-    total: count,
-    totalPages: Math.ceil(count / CATALOG_PAGE_SIZE),
+    page: request.page,
+    query: request.query,
+    sort: request.sort,
+    total,
+    totalPages: Math.ceil(total / CATALOG_PAGE_SIZE),
   };
 }
 
-const getCachedCatalogPage = unstable_cache(getCatalogPageUncached, ["catalog-page"], {
+const getCachedCatalogPage = unstable_cache(getCatalogPageUncached, ["catalog-page-v2"], {
   tags: [CATALOG_CACHE_TAG],
   revalidate: CATALOG_CACHE_TTL_SECONDS,
 });
 
-export async function getCatalogPage(page: number): Promise<CatalogPage> {
-  assertPage(page);
-  return getCachedCatalogPage(page);
+export async function getCatalogPage(request: CatalogRequest): Promise<CatalogPage> {
+  assertRequest(request);
+  return getCachedCatalogPage(request);
 }
