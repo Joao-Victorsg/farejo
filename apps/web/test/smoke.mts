@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { createHmac } from "node:crypto";
 import { once } from "node:events";
+import { delimiter, dirname } from "node:path";
 import { setTimeout as wait } from "node:timers/promises";
 import { chromium } from "@playwright/test";
 import { Client } from "pg";
@@ -15,11 +16,13 @@ const client = new Client({ connectionString: databaseUrl });
 process.env.FAREJO_WEB_DATABASE_URL = databaseUrl;
 process.env.FAREJO_CATALOG_INVALIDATION_SECRET = "issue49-smoke-secret-at-least-32-characters";
 process.env.VERCEL = "1";
+const runtimeEnv = { ...process.env, PATH: [dirname(process.execPath), process.env.PATH].filter(Boolean).join(delimiter) };
 
 function run(command: string, args: string[]) {
   return new Promise<void>((resolve, reject) => {
     const child = spawn(command, args, {
       cwd: process.cwd(),
+      env: runtimeEnv,
       shell: process.platform === "win32",
       stdio: "inherit",
     });
@@ -70,6 +73,36 @@ for (let index = 0; index < 25; index += 1) {
     [store.id],
   );
 }
+
+async function waitForPageText(path: string, expected: string) {
+  for (let attempt = 0; attempt < 40; attempt += 1) {
+    const response = await fetch(new URL(path, baseUrl));
+    const html = await response.text();
+    if (response.ok && html.includes(expected)) return html;
+    await wait(250);
+  }
+  throw new Error(`Page ${path} did not render ${expected}`);
+}
+const { rows: detailStoreRows } = await client.query<{ id: number }>(
+  "select id from public.stores where slug = $1",
+  [`${fixturePrefix}00`],
+);
+const detailStore = detailStoreRows[0];
+if (!detailStore) throw new Error("Detail fixture store was not inserted");
+await client.query(
+  "insert into public.offers (store_id, platform_id, reward_type, value, is_upto, raw_text, url, active, last_seen_at) values ($1, 'meliuz', 'percent', 7, true, 'até 7%', 'https://outside.example.test/meliuz', true, now() - interval '26 hours'), ($1, 'zoom', 'fixed', 30, false, 'R$ 30', 'https://outside.example.test/zoom', true, now())",
+  [detailStore.id],
+);
+const { rows: unavailableStoreRows } = await client.query<{ id: number }>(
+  "insert into public.stores (slug, name) values ($1, $2) returning id",
+  [`${fixturePrefix}indisponivel`, "Loja real indisponível"],
+);
+const unavailableStore = unavailableStoreRows[0];
+if (!unavailableStore) throw new Error("Unavailable fixture store was not inserted");
+await client.query(
+  "insert into public.offers (store_id, platform_id, reward_type, value, raw_text, url, active, last_seen_at) values ($1, 'inter', 'percent', 4, '4%', 'https://outside.example.test/inactive', false, now())",
+  [unavailableStore.id],
+);
 const { rows: aliasStores } = await client.query<{ id: number }>(
   "select id from public.stores where slug = $1",
   [`${fixturePrefix}00`],
@@ -84,6 +117,7 @@ await client.query(
 await run(pnpm, ["build"]);
 const server = spawn(pnpm, ["exec", "next", "start", "--port", String(port)], {
   cwd: process.cwd(),
+  env: runtimeEnv,
   shell: process.platform === "win32",
   stdio: "inherit",
 });
@@ -91,13 +125,24 @@ let browser: import("@playwright/test").Browser | undefined;
 
 try {
   await waitForServer();
-  const home = await fetch(baseUrl);
-  const homeHtml = await home.text();
-  assert.equal(home.status, 200);
+  const initialEvent = signedInvalidation("inter", 50);
+  const initialInvalidation = await fetch(`${baseUrl}/api/internal/catalog-invalidation`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-forwarded-proto": "https",
+      "x-farejo-timestamp": initialEvent.timestamp,
+      "x-farejo-signature": initialEvent.signature,
+    },
+    body: initialEvent.body,
+  });
+  assert.equal(initialInvalidation.status, 204);
+  const homeHtml = await waitForPageText("/", "Loja real sem logo 00");
   assert.match(homeHtml, /<title>farejô/);
   assert.doesNotMatch(homeHtml, /HANDOFF · ESTADOS DO CATÁLOGO/);
   assert.match(homeHtml, /Loja real sem logo 00/);
   assert.match(homeHtml, /5%/);
+  assert.match(homeHtml, new RegExp(`href="/loja/${fixturePrefix}00"`));
   assert.doesNotMatch(homeHtml, /FAREJO_WEB_DATABASE_URL|FAREJO_CATALOG_INVALIDATION_SECRET|postgresql:\/\//);
   const clientBundles = [...homeHtml.matchAll(/<script[^>]+src="([^"]+\.js)"/g)].map((match) => match[1]);
   for (const bundlePath of clientBundles) {
@@ -127,8 +172,34 @@ try {
   assert.match(searchPage, /name="robots" content="noindex, follow"/);
   const sitemap = await (await fetch(`${baseUrl}/sitemap.xml`)).text();
   assert.match(sitemap, /https:\/\/farejo\.com\.br\/\?page=2/);
+  assert.match(sitemap, new RegExp(`https://farejo\\.com\\.br/loja/${fixturePrefix}00`));
+  assert.doesNotMatch(sitemap, new RegExp(`${fixturePrefix}indisponivel`));
   const robots = await (await fetch(`${baseUrl}/robots.txt`)).text();
   assert.match(robots, /Disallow: \/go\//);
+
+  const detail = await fetch(`${baseUrl}/loja/${fixturePrefix}00`);
+  const detailHtml = await detail.text();
+  assert.equal(detail.status, 200);
+  assert.match(detailHtml, /<h1[^>]*>Loja real sem logo 00<\/h1>/);
+  assert.match(detailHtml, new RegExp(`<link rel="canonical" href="https://farejo\\.com\\.br/loja/${fixturePrefix}00"`));
+  assert.ok(detailHtml.indexOf("Até 7%") < detailHtml.indexOf("5%"));
+  assert.ok(detailHtml.indexOf("5%") < detailHtml.indexOf("R$ 30"));
+  assert.match(detailHtml, /Teto anunciado pela plataforma/);
+  assert.doesNotMatch(detailHtml, /https:\/\/outside\.example\.test/);
+
+  const unavailable = await fetch(`${baseUrl}/loja/${fixturePrefix}indisponivel`);
+  const unavailableHtml = await unavailable.text();
+  assert.equal(unavailable.status, 200);
+  assert.match(unavailableHtml, /Nenhum cashback disponível no momento/);
+  assert.match(unavailableHtml, /name="robots" content="noindex, follow"/);
+  assert.doesNotMatch(unavailableHtml, />Ativar</);
+
+  const missing = await fetch(`${baseUrl}/loja/${fixturePrefix}inexistente`);
+  const missingHtml = await missing.text();
+  // App Router streams this route, so Next keeps the already-sent HTTP 200 while
+  // notFound() renders the 404 UI and injects noindex metadata.
+  assert.match(missingHtml, /Loja não encontrada/);
+  assert.match(missingHtml, /name="robots" content="noindex"/);
 
   await client.query(
     "update public.offers set value = 7, raw_text = '7%', updated_at = now() where store_id = (select id from public.stores where slug = $1) and platform_id = 'inter'",
@@ -152,6 +223,12 @@ try {
   browser = await chromium.launch();
   const page = await browser.newPage();
   await page.goto(baseUrl);
+  await page.getByRole("link", { name: "Ver ofertas de Loja real sem logo 00" }).click();
+  await page.waitForURL(`${baseUrl}/loja/${fixturePrefix}00`);
+  await expectHeading(page, "Loja real sem logo 00");
+  await page.goto(`${baseUrl}/loja/${fixturePrefix}01`);
+  await expectHeading(page, "Loja real sem logo 01");
+  await page.getByText("1 plataforma com cashback").waitFor();
   await page.goto(`${baseUrl}/?page=2`);
   await page.getByText("Loja real sem logo 24").waitFor();
   await page.goto(baseUrl);
