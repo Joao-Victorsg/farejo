@@ -1,0 +1,122 @@
+# farejô
+
+Comparador de cashback BR (modelo reward.ist): dada uma loja, mostrar qual plataforma — Méliuz, Cuponomia, MyCashback, Zoom ou Shopping Inter — devolve mais, com link de redirecionamento. Custo zero (free tiers), scraping 2×/dia.
+
+## Estado atual
+
+- `docs/farejo-system-design.md` — arquitetura, modelo e trade-offs. **Migrations são a verdade do schema já implementado; ADRs registram deltas aprovados.**
+- `docs/farejo-recon-e-plano.md` — recon dos 5 sites + plano em fases. ⚠️ Parcialmente desatualizado: ver correções em `docs/poc/README.md`.
+- `docs/farejo-frontend-design.md` — contrato consolidado do frontend após o grill da Fase 3 (16/07/2026). **Fonte da verdade visual = `design_handoff_farejo/`**; comportamento, dados, segurança, cache e SEO ficam no frontend design e nas ADRs. Dados e controles do standalone são demonstrativos.
+- `docs/pendencias-pre-plano.md` — checklist pré-plano + lista de migração p/ o novo repo + inventário de insumos do plano.
+- `docs/poc/` — Fase 0. Validação `--live` feita em 09/07/2026 para **os 5 sites**. Resultados e correções completas em **`docs/poc/README.md`** — leia antes de escrever qualquer adapter.
+- **Fase 1 concluída (12/07/2026)**: monorepo pnpm (`apps/scraper`, `packages/shared`, `packages/test-fixtures`), schema no Supabase (RLS ligado sem policies, escrita atômica via função `pipeline_write_offers`), contrato `ScrapeResult`/`PlatformAdapter` (ADR-0001), shared = domínio puro (ADR-0002), adapters **inter** e **mycashback** com testes de fixture, sanity 4 regras com cold-start, runner com isolamento try/catch por plataforma + exit code + retry/backoff no fetch (T10). Tickets T1–T10 fechados via issues (#1–#11, todas CLOSED).
+- **Fase 2 concluída (14/07/2026)**: CI em push/PR; adapters **zoom**, **cuponomia** e **méliuz**; `crawl_state`, coleta tiered retomável e throttle adaptativo; sanity segmentado por escopo; seed/bootstrap hospedados; e workflow `Scrape cashback` com 7 jobs, cron ativo às 03h/18h UTC e summary isolado. A validação manual hospedada concluiu os 7 jobs e gravou runs `ok` no Supabase. Telegram permanece adiado por decisão de produto; o summary não falha sem seus secrets.
+- **Exceções operacionais pós-Fase 2**: `webfones` (Cuponomia, HTTP 405) na #40 e `cupom-bebrasil` (Méliuz, resposta sem sinal de presença) na #45 ficam vencidos para novas tentativas, sem desfecho artificial. Não bloqueiam o cron nem a fase; qualquer correção futura precisa de fixture que preserve a distinção entre `soft_block` e ausência real de cashback.
+- **Fase 3 planejada, ainda sem implementação (16/07/2026)**: decisões fechadas nas ADRs 0006–0053 para curadoria de aliases no Git, ingestão automática de logos, leitura server-only, cache/invalidação, catálogo, busca, histórico, ativação e frontend público. Handoff desktop atualizado; alta fidelidade mobile fica para entrega posterior, mantendo reflow funcional e acessível nesta fase.
+
+### O que o `--live` revelou (resumo; detalhes no `docs/poc/README.md`)
+
+- **inter**: 374 lojas ✅, mas a página é shell client-side — o `parseInter` devolve **0**. Existe API JSON pública sem auth: `marketplace-api.web.bancointer.com.br/site/affiliate/inter/v1/search/stores?lang=pt-BR&limit=400&offset=0` (1 request, `total:374`). Boost = campo `previousCashback` (opcional; hoje nenhuma loja em boost). `fullCashbackValue:0` = inativa (11 lojas).
+- **mycashback**: 468 cards, sem paginação ✅ — mas 7 são `"Sem  Cashback"` e o parser as emite como ofertas. Reais: **461**.
+- **cuponomia**: **crawl completo (09/07/2026)** — diretório 799 → 798 páginas reais (`viajanet` morreu) → **524 com cashback (65,7%)**, 509 em `%` + **15 em R$**, 28 `up_to`, 38 em boost. A extrapolação antiga (~479) errava p/ menos. Boost = `<del class="rewardsTag-previous">(era 1%)</del>` **e** classe `has-store-boost-cashback` (concordam 38/38). ⚠️ **O site soft-bloqueia: devolve HTTP 200 com a home** — 17% do 1º crawl veio assim e virou "loja sem página" (falso). Um 200 sem `.store_header` é **bloqueio retentável**, nunca "sem cashback". ⚠️ `data-cashback-displayed` traz `"até 4%"` quando `up_to` — normalizar antes do `parseFloat`. `data-conversion-rate` bate com o displayed em 100% das ativas (bom cross-check), mas 29 ativas não têm o `aside.rewardsTag`.
+- **méliuz**: as 21 categorias cobrem só **174** lojas (todas com cashback). O diretório `/desconto` tem **2355 lojas em 1 request, mas sem valores** (cards são só logo+link, sem flag de cashback). A **página de cada loja traz o valor no HTML servido**. **Crawl completo das 2355 (09/07/2026, `docs/poc/src/mel-crawl.ts` → `fixtures/meliuz-crawl.jsonl`):** só **664 têm cashback (28%)**; 1687 são cupom-only; 4 são 404. Hot set (171 ativas) cobre só 26% → **cauda ativa = 493 lojas**. Sinal estável na página: botão `.hero-sec__redirect-btn button` = *"Ativar até X% de cashback"* / *"Ativar R$ Y de cashback"* (tem) vs *"Ativar cupom exclusivo"* (não tem); taxa base em `.hero-sec__cashback-category strong[data-main]`. **42 lojas pagam R$ FIXO** (apostas/educação/antivírus), não %. Dataset: `fixtures/meliuz-active-stores.json` (664 lojas, todas com valor + campo `kind`). **Nome e logo saem do `ld+json @type:Store` da página da loja** — o dataset só tem `slug`, e derivar nome de slug erra ~10%.
+- **zoom**: anti-bot **não bloqueou** o `fetch` com headers (local). Diretório = Next.js App Router: o HTML renderiza só **24 cards**, mas o payload RSC (`self.__next_f`) embute as **212 lojas** — **1 request, sem paginação** (`?page=N` é ignorado). O parser DOM antigo devolvia 20 ofertas *parecendo saudável*, perdendo 88%. Reescrito (`parseZoomSellers`) → **171 ofertas**. Ativa ⇔ `bestFormula > 0` (**não** `allMerchant`: a Continental tem `allMerchant:null`, `bestFormula:0.01`); `is_upto` ⇔ >1 taxa positiva em `[allMerchant, offerRates.min, offerRates.max, ...categories[].cashbackRate]` (port do bundle). Sem boost, sem R$ — só %.
+
+Os cinco adapters foram implementados e operacionalmente validados na Fase 2. Este recon permanece como histórico dos sinais que sustentam seus contratos; não representa pendência de implementação.
+
+## Decisões já tomadas (não rediscutir sem motivo)
+
+- Node/TypeScript em tudo; monorepo pnpm (`apps/scraper`, `apps/web`, `packages/shared`).
+- Supabase Postgres (schema no design doc); sem API própria — Next.js (Vercel) lê o banco direto.
+- `offer_history` delta-based (grava só mudanças); boost = derivado + campo `previous_value` nativo dos sites.
+- Adapters só extraem (`RawOffer` em `docs/poc/src/shared.ts`); parsing/normalização no pipeline compartilhado.
+- Sanity check por run: <60% da média dos últimos 5 runs ok, ou >10% parse errors → não grava, alerta.
+
+### Fase 3 — decisões consolidadas em 16/07/2026
+
+- **Frontend lê Postgres somente no servidor.** Next.js usa Supavisor e a role `farejo_web`, com `SELECT` apenas em views `web_read`; navegador, `anon` e `authenticated` não consultam o catálogo. `service_role` nunca entra na Vercel.
+- **Cache:** toda leitura pública derivada usa a tag `catalog`, TTL de ~1 h e expiração imediata após cada escrita aceita. O sinal é um `POST` interno autenticado por HMAC-SHA-256.
+- **Catálogo:** todas as lojas elegíveis, 24 por página. Padrão “Mais plataformas”; alternativas “Maior cashback” e “A–Z” na URL. Busca prioriza relevância e atua sobre o catálogo inteiro.
+- **Maior cashback:** lojas percentuais antes das exclusivamente fixas; cada grandeza ordena dentro do próprio grupo. Inter usa sempre a taxa de correntista como referência estável.
+- **Inter:** preferência global começa ligada, persiste localmente e aparece na home e no detalhe. Reordena ofertas dentro da loja, nunca lojas ou páginas.
+- **Histórico:** 60 dias, degraus, lacunas em desativação, série parcial do Inter e estado “Histórico sendo construído”. Boost usa mediana ponderada; valor anterior e validade só aparecem com evidência verdadeira.
+- **Frescor:** normal até 24 h, “Atualização atrasada” até 48 h, excluída depois disso.
+- **Ativação:** CTA usa `/go/[storeSlug]/[platformId]`, revalida antes do redirect e nunca usa URL antiga. Oferta encerrada retorna 410; falha temporária, 503.
+- **Aliases:** decisões `merge`/`reject` vivem em manifesto no Git. Trigram e IA geram candidatos; nunca auto-merge. Merge do PR aplica a decisão automaticamente.
+- **Logos:** scrape persiste fontes privadas; Action separada após o scrape publica um único WebP por loja no Supabase Storage. Sem logo, tile e inicial.
+- **Publicação:** um único Supabase de produção; previews sem banco remoto; workflow coordena migrations aditivas, deploy e smoke tests. Usar Node/Next/React estáveis mais recentes compatíveis com Vercel.
+- **Visual:** handoff governa desktop em 1440 px; desktop funcional a partir de 1024 px. Abaixo disso há reflow acessível, sem promessa de alta fidelidade mobile nesta entrega.
+
+### Revisadas em 09/07/2026 pelo `--live`
+
+- ~~`fetch + cheerio` para 4 sites~~ → **inter é API JSON** e **zoom é JSON embutido no payload RSC** (ambos `fetch` + `JSON.parse`, sem cheerio). `fetch + cheerio` vale para mycashback, cuponomia e méliuz. **Playwright não é mais necessário para o zoom** (o fetch passou); fica como plano B se o IP do GitHub Actions for bloqueado — o `parseZoomSellers` roda igual sobre o `page.content()`.
+- ~~"nenhum valor em R$ fixo"~~ → **R$ fixo existe** (cuponomia, méliuz). `parseReward` precisa cobrir; nunca comparar com % na UI. Inter e zoom são só %.
+- **Custo de requests por run** (revisado): inter 1 · **zoom 1** · mycashback 1 · cuponomia **tiered** (524 ativas 2×/dia ~12 min a 1,3s; 274 inativas 1×/5 dias fatiadas ~55/dia) · méliuz **crawl tiered** (ver abaixo).
+- **Nunca confiar na contagem de um parser de DOM sem cruzar com um total declarado pelo site** (`pagination.total` no inter, `"N lojas encontradas"` no zoom). Nos dois sites o HTML servido mente, e o parser "passa" mesmo assim.
+- **`HTTP 200` ≠ "a página que pedi".** Todo parser de página de loja precisa de um **sinal de presença** (`.store_header` no cuponomia, `.hero-sec` no méliuz) e deve tratar a ausência como **erro retentável com backoff**, não como "loja sem cashback". Crawls gravam JSONL append-only e só marcam um slug como feito quando houve desfecho real → retomáveis.
+- **Sanity check por run precisa vigiar a queda de OFERTAS ATIVAS**, não só o total de lojas: o soft-block do cuponomia não some com a loja, ele a transforma em inativa (total idêntico, ofertas somem).
+- **méliuz API é PRIVADA — não usar.** Existe backend (`api-seo.meliuz.com.br`), mas, diferente do inter (endpoint aberto sem auth), exige OAuth `client_credentials` (`client_id=meliuz-client-seo-production` + `client_secret`). Usar exigiria extrair o secret do bundle e se passar pelo frontend deles → API não pensada para terceiros. **Decisão: só HTML público.**
+- **méliuz crawl tiered** (em vez de 2355×2/dia): **tier ativo** 664 lojas com cashback → 2×/dia (~1330 req/dia, ~17 min a 1,5s); **tier inativo** 1687 cupom-only → 1×/5 dias, **fatiado** ~337/dia (flagra quem ganhou cashback). ~1670 req/dia, sem rajada grande. Custo: loja da cauda que ganha cashback aparece em ≤5 dias (aceitável p/ long tail; hot set via 21 categorias fica sempre fresco).
+
+### Decisões de produto (09/07/2026, com o João)
+
+- **Ordenação:** ofertas em `%` SEMPRE antes de valores fixos (`R$`/`$`), em toda ordenação. `order by (reward_type='percent') desc, value desc`.
+- **Inter correntista:** guardar `value` (correntista) e `value_partial` (não-correntista) desde o v1; UI tem toggle "sou correntista Inter", default ligado.
+- **Cuponomia tiered:** 524 ativas 2×/dia; 274 inativas re-checadas 1×/5 dias, fatiadas (~55/dia).
+- **Site aberto na internet, sem login.** Repo público.
+- **Handoff (atualizado em 16/07/2026):** estrutura visual desktop = `design_handoff_farejo/` (card → detalhe; “Ativar” no ranking = redirect). **Dark mode fora por hora.** Páginas /plataformas, /como-funciona e /faq entram no escopo. Plataformas = as 5 do recon; números, lojas e plataformas demonstrativas do standalone não ampliam o produto.
+- **Alertas: Telegram (resumo por site a cada run) + e-mail automático do Actions em falha.** João precisa criar o bot (5 min) e pôr o token em GitHub Secrets.
+
+### Normalização de nomes (POC em `docs/poc/src/normalize.ts`, 09/07/2026)
+
+- **Chave canônica = L2**: lowercase → sem acento → `+`→`plus`, `&`→`e` → tira domínio (`.com.br`) → tira pontuação → **junta os tokens** (sem espaço). Mede 0 colisão intra-site em 1853 nomes.
+- **NÃO remover palavras "de ruído"** (`loja/store/shop/brasil`): quebra `Fast Shop`×`Fastshop` (ali `Shop` é marca) e um dia funde `Disney+` com `Disney Store`. Vale +11 matches e não compensa.
+- **Assimetria que guia tudo**: merge falso ⇒ cashback **errado** na tela; merge perdido ⇒ só não compara. Por isso chave conservadora + `store_aliases` **curada**.
+- L3 (remove decorador) + Levenshtein ≥0,88 servem como **gerador de candidatos** p/ revisão humana, nunca como chave → `docs/poc/fixtures/alias-candidates.json` (45 pares cross-site).
+- `store_aliases` aponta p/ um `store_id` canônico (**union-find**): existem clusters transitivos (`brinox`~`brinoxshop`~`lojaoficialbrinox`).
+- **Só 42% das lojas (443/1063) existem em ≥2 plataformas.** A UI tem de tratar "uma plataforma só" como caso normal.
+- ⚠️ **`\b` não funciona depois de letra acentuada em JS**: `/\bat[ée]\b/` dá false em `"Ativar até 10%"`. Tirar acento **antes** do limite de palavra. Vale p/ o `parseReward` compartilhado.
+
+### Logos e ícones (POC em `docs/poc/src/assets.ts`, 09/07/2026)
+
+- **Auto-hospedar os logos de loja**, não hotlinkar. Nenhuma das 5 plataformas bloqueia hotlink hoje, mas: quebra tudo de uma vez com uma regra de `Referer` (e falha em silêncio), inter/zoom mandam `octet-stream` (o `next/image` recusa), inter não manda `cache-control`, méliuz manda `private`. E puxar banda de quem estamos comparando é hostil.
+- **Custo medido**: ~4,2 KB/logo × ~1063 lojas canônicas ≈ **4,4 MB**. Irrelevante no free tier do Supabase Storage.
+- **1 logo por loja canônica** (não por oferta). Normalizar p/ **webp quadrado ~128px**; preferir fonte quadrada (zoom 200×200 > méliuz > cuponomia) — **mycashback é banner 250×80**, só fallback.
+- **Action separada, automática após o scrape**: processa apenas fontes novas/alteradas/pendentes, guarda `logo_hash` e não bloqueia o resultado da coleta.
+- Sem logo → avatar com a inicial (o zoom faz isso).
+- **Ícones das 5 plataformas = 5 assets fixos versionados** em `apps/web/public/portals/*.svg`. Não raspar. Uso nominativo p/ comparação, marcas inalteradas.
+- 🐛 mycashback: `img.product-logo[src]` é **sempre** `/img/noimage.jpg` (lazysizes) — o logo real está em `data-src`. Corrigido.
+
+## Próximos passos (em ordem)
+
+1. Encerrar a documentação do grill da **Fase 3** e manter ADRs, `CONTEXT.md`, system design, frontend design e handoff sem contradições.
+2. Implementar posteriormente a Fase 3 conforme o contrato documentado, sem reabrir scraping, cron, CI ou Telegram.
+3. Configurar Telegram quando o bot e os secrets estiverem disponíveis; é melhoria operacional, não bloqueio da Fase 2 nem da Fase 3.
+4. Investigar as exceções #40 e #45 somente em escopo próprio e com fixture/captura segura.
+
+### Verificações operacionais antes do primeiro lançamento público
+
+- **inter**: a API JSON (`marketplace-api.web.bancointer.com.br/.../search/stores`) não traz URL de loja. O adapter (`apps/scraper/src/inter.ts`, T5/#6) monta `RawOffer.url` como `https://shopping.inter.co/site-parceiro/lojas/{slug}`, inferido do `href` observado no DOM renderizado (`docs/poc/fixtures/inter-lojas.sample.html`, capturado 09/07/2026) — **nunca confirmado contra uma navegação real**. **Confirmar ao vivo (abrir o link de uma loja e checar que redireciona certo) antes de ir para produção**; se o padrão mudou, corrigir o adapter antes do primeiro run.
+- Lançamento exige coleta recente das cinco plataformas, curadoria inicial de aliases concluída, tentativa de logo para todas as lojas elegíveis, pelo menos 95% de logos finais e smoke tests públicos aprovados.
+- As exceções #40/#45 permanecem seguras e não são convertidas em desfechos artificiais para satisfazer o lançamento.
+
+## Convenções
+
+- Fixtures `.sample.html` são reconstruídas (parciais, anotadas no cabeçalho); as integrais capturadas via `--live` substituem-nas nos testes de contrato.
+- Rate limit: ≥1s entre requests do mesmo site; User-Agent de browser real (ver `docs/poc/src/shared.ts`).
+- Nunca comparar % com R$ fixo diretamente na UI; "até X%" guarda `is_upto=true`.
+- Segredos (Supabase, Telegram) só em env/GitHub Secrets — o repo será público.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in the `Joao-Victorsg/farejo` GitHub repo (GitHub Issues, via the `gh` CLI). See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five canonical labels (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context — one `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agents/domain.md`.

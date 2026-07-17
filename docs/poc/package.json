@@ -1,0 +1,26 @@
+{
+  "name": "cashscout-poc",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "inter": "tsx src/inter.ts",
+    "mycashback": "tsx src/mycashback.ts",
+    "cuponomia": "tsx src/cuponomia.ts",
+    "meliuz": "tsx src/meliuz.ts",
+    "zoom": "tsx src/zoom.ts",
+    "normalize": "tsx src/normalize.ts",
+    "assets": "tsx src/assets.ts",
+    "mel-store-page": "tsx src/mel-store-page.ts",
+    "mel-dataset": "tsx src/mel-dataset.ts",
+    "cup-crawl": "tsx src/cup-crawl.ts",
+    "cup-analyze": "tsx src/cup-analyze.ts"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "@types/node": "^22.0.0"
+  }
+}
