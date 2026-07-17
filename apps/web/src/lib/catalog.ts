@@ -33,7 +33,17 @@ const CatalogOfferRow = z.object({
   value_partial: z.number().nonnegative().nullable(),
   is_upto: z.boolean(),
   freshness: z.enum(["fresh", "delayed"]),
+  last_seen_at: z.coerce.date(),
 });
+
+const StoreDetailRow = z.object({
+  slug: z.string(),
+  name: z.string(),
+  logo_url: z.string().url().nullable(),
+  platform_count: z.number().int().nonnegative(),
+});
+
+const StoreSlugRow = z.object({ slug: z.string() });
 
 const CatalogSearchParams = z.object({
   page: z.union([z.string(), z.array(z.string())]).optional(),
@@ -45,6 +55,7 @@ type CatalogOfferBase = {
   platformId: string;
   platformName: string;
   freshness: "fresh" | "delayed";
+  lastSeenAt: string;
 };
 
 export type CatalogOffer = CatalogOfferBase & (
@@ -72,6 +83,8 @@ export type CatalogPage = {
   total: number;
   totalPages: number;
 };
+
+export type StoreDetail = CatalogStore;
 
 let pool: Pool | undefined;
 
@@ -130,24 +143,14 @@ async function getCatalogPageUncached(request: CatalogRequest): Promise<CatalogP
   const offersResult = slugs.length === 0
     ? { rows: [] }
     : await database.query(
-      `select store_slug, platform_id, platform_name, reward_type, value, value_partial, is_upto, freshness
+      `select store_slug, platform_id, platform_name, reward_type, value, value_partial, is_upto, freshness, last_seen_at
        from web_read.catalog_offers
        where store_slug = any($1::text[])
        order by store_slug asc, platform_name asc, platform_id asc`,
       [slugs],
-    );
+  );
   const offers = z.array(CatalogOfferRow).parse(offersResult.rows);
-  const offersByStore = new Map<string, CatalogOffer[]>();
-
-  for (const offer of offers) {
-    const storeOffers = offersByStore.get(offer.store_slug) ?? [];
-    const offerBase = { platformId: offer.platform_id, platformName: offer.platform_name, freshness: offer.freshness };
-    const publicOffer = offer.reward_type === "percent"
-      ? { ...offerBase, reward: { type: "percent" as const, value: offer.value, valuePartial: offer.value_partial, isUpto: offer.is_upto } }
-      : { ...offerBase, reward: { type: "fixed" as const, value: offer.value, currency: "BRL" as const } };
-    storeOffers.push(publicOffer);
-    offersByStore.set(offer.store_slug, storeOffers);
-  }
+  const offersByStore = mapCatalogOffers(offers);
 
   return {
     items: rows.map((store) => ({
@@ -165,7 +168,77 @@ async function getCatalogPageUncached(request: CatalogRequest): Promise<CatalogP
   };
 }
 
-const getCachedCatalogPage = unstable_cache(getCatalogPageUncached, ["catalog-page-v2"], {
+function mapCatalogOffers(offers: z.infer<typeof CatalogOfferRow>[]) {
+  const offersByStore = new Map<string, CatalogOffer[]>();
+
+  for (const offer of offers) {
+    const storeOffers = offersByStore.get(offer.store_slug) ?? [];
+    const offerBase = {
+      platformId: offer.platform_id,
+      platformName: offer.platform_name,
+      freshness: offer.freshness,
+      lastSeenAt: offer.last_seen_at.toISOString(),
+    };
+    const publicOffer = offer.reward_type === "percent"
+      ? { ...offerBase, reward: { type: "percent" as const, value: offer.value, valuePartial: offer.value_partial, isUpto: offer.is_upto } }
+      : { ...offerBase, reward: { type: "fixed" as const, value: offer.value, currency: "BRL" as const } };
+    storeOffers.push(publicOffer);
+    offersByStore.set(offer.store_slug, storeOffers);
+  }
+
+  return offersByStore;
+}
+
+async function getStoreDetailUncached(slug: string): Promise<StoreDetail | null> {
+  const database = getPool();
+  const storeResult = await database.query(
+    "select slug, name, logo_url, platform_count from web_read.store_details where slug = $1",
+    [slug],
+  );
+  const store = StoreDetailRow.nullable().parse(storeResult.rows[0] ?? null);
+  if (!store) return null;
+
+  const offersResult = await database.query(
+    `select store_slug, platform_id, platform_name, reward_type, value, value_partial, is_upto, freshness, last_seen_at
+     from web_read.catalog_offers
+     where store_slug = $1
+     order by platform_name asc, platform_id asc`,
+    [slug],
+  );
+  const offers = z.array(CatalogOfferRow).parse(offersResult.rows);
+  return {
+    slug: store.slug,
+    name: store.name,
+    logoUrl: store.logo_url,
+    platformCount: store.platform_count,
+    offers: mapCatalogOffers(offers).get(store.slug) ?? [],
+  };
+}
+
+const getCachedStoreDetail = unstable_cache(getStoreDetailUncached, ["catalog-store-detail-v1"], {
+  tags: [CATALOG_CACHE_TAG],
+  revalidate: CATALOG_CACHE_TTL_SECONDS,
+});
+
+export async function getStoreDetail(slug: string): Promise<StoreDetail | null> {
+  return getCachedStoreDetail(slug);
+}
+
+async function getEligibleStoreSlugsUncached() {
+  const result = await getPool().query("select slug from web_read.catalog_stores order by slug asc");
+  return z.array(StoreSlugRow).parse(result.rows).map((row) => row.slug);
+}
+
+const getCachedEligibleStoreSlugs = unstable_cache(getEligibleStoreSlugsUncached, ["catalog-eligible-store-slugs-v1"], {
+  tags: [CATALOG_CACHE_TAG],
+  revalidate: CATALOG_CACHE_TTL_SECONDS,
+});
+
+export async function getEligibleStoreSlugs() {
+  return getCachedEligibleStoreSlugs();
+}
+
+const getCachedCatalogPage = unstable_cache(getCatalogPageUncached, ["catalog-page-v3"], {
   tags: [CATALOG_CACHE_TAG],
   revalidate: CATALOG_CACHE_TTL_SECONDS,
 });

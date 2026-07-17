@@ -5,8 +5,9 @@ import { ArrowLeft, ArrowRight, Search } from "lucide-react";
 import { PageFrame } from "@/components/page-frame";
 import { CatalogControls } from "@/components/catalog-controls";
 import { Button } from "@/components/ui/button";
-import { CATALOG_PAGE_SIZE, catalogHref, getCatalogPage, parseCatalogRequest, type CatalogOffer, type CatalogRequest, type CatalogStore } from "@/lib/catalog";
+import { CATALOG_PAGE_SIZE, catalogHref, getCatalogPage, parseCatalogRequest, type CatalogRequest, type CatalogStore } from "@/lib/catalog";
 import { editorial } from "@/lib/content";
+import { formatReward, rankOffers } from "@/lib/offer-ranking";
 
 export const dynamic = "force-dynamic";
 
@@ -19,29 +20,18 @@ function formatHeroStoreCount(total: number) {
   return `${new Intl.NumberFormat("pt-BR").format(Math.floor(total / 100) * 100)}+`;
 }
 
-function formatReward(offer: CatalogOffer) {
-  if (offer.reward.type === "percent") return `${offer.reward.isUpto ? "Até " : ""}${offer.reward.value.toLocaleString("pt-BR")}%`;
-  return offer.reward.value.toLocaleString("pt-BR", { style: "currency", currency: offer.reward.currency });
-}
-
-function sortOffers(offers: CatalogOffer[]) {
-  return [...offers].sort((left, right) => {
-    if (left.reward.type !== right.reward.type) return left.reward.type === "percent" ? -1 : 1;
-    return right.reward.value - left.reward.value;
-  });
-}
-
 function CatalogCard({ store }: { store: CatalogStore }) {
-  const offers = sortOffers(store.offers);
+  const offers = rankOffers(store.offers);
   const initial = store.name.trim().charAt(0).toLocaleUpperCase("pt-BR") || "L";
 
   return (
-    <article className="rounded-2xl border border-[#ece9e2] bg-white p-5 shadow-[0_10px_30px_-18px_rgba(0,0,0,.25)]">
+    <article className="rounded-2xl border border-[#ece9e2] bg-white shadow-[0_10px_30px_-18px_rgba(0,0,0,.25)]">
+      <Link aria-label={`Ver ofertas de ${store.name}`} className="block rounded-2xl p-5 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#1c7a4d]" href={`/loja/${store.slug}`}>
       <div className="flex items-start gap-3">
         {store.logoUrl ? (
-          <img alt={`Logo da ${store.name}`} className="size-12 rounded-xl border border-[#ece9e2] object-contain p-1" height={48} src={store.logoUrl} width={48} />
+          <img alt="" aria-hidden="true" className="size-12 rounded-xl border border-[#ece9e2] object-contain p-1" height={48} src={store.logoUrl} width={48} />
         ) : (
-          <span aria-label={`Logo indisponível para ${store.name}`} className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[#e7f4ec] font-mono text-lg font-semibold text-[#1c7a4d]">{initial}</span>
+          <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[#e7f4ec] font-mono text-lg font-semibold text-[#1c7a4d]">{initial}</span>
         )}
         <div className="min-w-0"><h3 className="truncate text-lg font-bold tracking-[-0.03em]">{store.name}</h3><p className="mt-1 text-sm text-[#5b5f56]">{store.platformCount} {store.platformCount === 1 ? "plataforma" : "plataformas"}</p></div>
       </div>
@@ -53,6 +43,7 @@ function CatalogCard({ store }: { store: CatalogStore }) {
           </li>
         ))}
       </ul>
+      </Link>
     </article>
   );
 }

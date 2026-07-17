@@ -57,12 +57,12 @@ afterAll(async () => {
 });
 
 describe("web_read catalog", () => {
-  it("exposes only the catalog allowlist", async () => {
+  it("exposes only the catalog and detail allowlist", async () => {
     const columns = await client.query<{ table_name: string; column_name: string }>(
       `select table_name, column_name
        from information_schema.columns
        where table_schema = 'web_read'
-         and table_name in ('catalog_offers', 'catalog_stores')
+         and table_name in ('catalog_offers', 'catalog_stores', 'store_details')
        order by table_name, ordinal_position`,
     );
 
@@ -75,10 +75,15 @@ describe("web_read catalog", () => {
       { table_name: "catalog_offers", column_name: "value_partial" },
       { table_name: "catalog_offers", column_name: "is_upto" },
       { table_name: "catalog_offers", column_name: "freshness" },
+      { table_name: "catalog_offers", column_name: "last_seen_at" },
       { table_name: "catalog_stores", column_name: "slug" },
       { table_name: "catalog_stores", column_name: "name" },
       { table_name: "catalog_stores", column_name: "logo_url" },
       { table_name: "catalog_stores", column_name: "platform_count" },
+      { table_name: "store_details", column_name: "slug" },
+      { table_name: "store_details", column_name: "name" },
+      { table_name: "store_details", column_name: "logo_url" },
+      { table_name: "store_details", column_name: "platform_count" },
     ]);
   });
 
