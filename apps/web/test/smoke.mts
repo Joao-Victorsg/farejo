@@ -14,6 +14,8 @@ const databaseUrl = "postgresql://postgres:postgres@127.0.0.1:55322/postgres";
 const fixturePrefix = "issue48-smoke-";
 const client = new Client({ connectionString: databaseUrl });
 process.env.FAREJO_WEB_DATABASE_URL = databaseUrl;
+process.env.FAREJO_ACTIVATION_DATABASE_URL = `${databaseUrl}?options=-c%20role%3Dfarejo_activation`;
+process.env.FAREJO_METRICS_DATABASE_URL = `${databaseUrl}?options=-c%20role%3Dfarejo_metrics`;
 process.env.FAREJO_CATALOG_INVALIDATION_SECRET = "issue49-smoke-secret-at-least-32-characters";
 process.env.VERCEL = "1";
 const runtimeEnv = { ...process.env, PATH: [dirname(process.execPath), process.env.PATH].filter(Boolean).join(delimiter) };
@@ -48,6 +50,7 @@ async function expectHeading(page: import("@playwright/test").Page, name: string
 
 async function cleanFixtures() {
   await client.query("delete from public.store_aliases where store_id in (select id from public.stores where slug like $1)", [`${fixturePrefix}%`]);
+  await client.query("delete from public.activation_metrics where store_id in (select id from public.stores where slug like $1)", [`${fixturePrefix}%`]);
   await client.query("delete from public.offers where store_id in (select id from public.stores where slug like $1)", [`${fixturePrefix}%`]);
   await client.query("delete from public.stores where slug like $1", [`${fixturePrefix}%`]);
 }
@@ -69,7 +72,7 @@ for (let index = 0; index < 25; index += 1) {
   const store = rows[0];
   if (!store) throw new Error("Smoke fixture store was not inserted");
   await client.query(
-    "insert into public.offers (store_id, platform_id, reward_type, value, raw_text, url, active, last_seen_at) values ($1, 'inter', 'percent', 5, '5%', 'https://example.test/inter', true, now())",
+    "insert into public.offers (store_id, platform_id, reward_type, value, raw_text, url, active, last_seen_at) values ($1, 'inter', 'percent', 5, '5%', 'https://shopping.inter.co/site-parceiro/lojas/issue48', true, now())",
     [store.id],
   );
 }
@@ -90,7 +93,7 @@ const { rows: detailStoreRows } = await client.query<{ id: number }>(
 const detailStore = detailStoreRows[0];
 if (!detailStore) throw new Error("Detail fixture store was not inserted");
 await client.query(
-  "insert into public.offers (store_id, platform_id, reward_type, value, is_upto, raw_text, url, active, last_seen_at) values ($1, 'meliuz', 'percent', 7, true, 'até 7%', 'https://outside.example.test/meliuz', true, now() - interval '26 hours'), ($1, 'zoom', 'fixed', 30, false, 'R$ 30', 'https://outside.example.test/zoom', true, now())",
+  "insert into public.offers (store_id, platform_id, reward_type, value, is_upto, raw_text, url, active, last_seen_at) values ($1, 'meliuz', 'percent', 7, true, 'até 7%', 'https://www.meliuz.com.br/desconto/issue48', true, now() - interval '26 hours'), ($1, 'zoom', 'fixed', 30, false, 'R$ 30', 'https://www.zoom.com.br/issue48', true, now())",
   [detailStore.id],
 );
 const { rows: unavailableStoreRows } = await client.query<{ id: number }>(
@@ -185,7 +188,32 @@ try {
   assert.ok(detailHtml.indexOf("Até 7%") < detailHtml.indexOf("5%"));
   assert.ok(detailHtml.indexOf("5%") < detailHtml.indexOf("R$ 30"));
   assert.match(detailHtml, /Teto anunciado pela plataforma/);
-  assert.doesNotMatch(detailHtml, /https:\/\/outside\.example\.test/);
+  assert.match(detailHtml, new RegExp(`href="/go/${fixturePrefix}00/inter"`));
+  assert.match(detailHtml, /target="_blank"/);
+  assert.match(detailHtml, /rel="noopener noreferrer"/);
+  assert.doesNotMatch(detailHtml, /https:\/\/(shopping\.inter\.co|www\.meliuz\.com\.br|www\.zoom\.com\.br)/);
+
+  const activationStartedAt = performance.now();
+  const activation = await fetch(`${baseUrl}/go/${fixturePrefix}00/inter`, { redirect: "manual" });
+  assert.equal(activation.status, 307);
+  assert.equal(activation.headers.get("location"), "https://shopping.inter.co/site-parceiro/lojas/issue48");
+  assert.ok(performance.now() - activationStartedAt < 1_500, "cold activation must respect the total timeout");
+  const warmDurations: number[] = [];
+  for (let attempt = 0; attempt < 10; attempt += 1) {
+    const startedAt = performance.now();
+    const warmActivation = await fetch(`${baseUrl}/go/${fixturePrefix}00/inter`, { redirect: "manual" });
+    assert.equal(warmActivation.status, 307);
+    warmDurations.push(performance.now() - startedAt);
+  }
+  warmDurations.sort((left, right) => left - right);
+  const p95 = warmDurations[Math.ceil(warmDurations.length * 0.95) - 1];
+  assert.ok(p95 !== undefined && p95 < 500, `warm activation p95 was ${String(p95)}ms`);
+  const inactiveActivation = await fetch(`${baseUrl}/go/${fixturePrefix}indisponivel/inter`, { redirect: "manual" });
+  assert.equal(inactiveActivation.status, 410);
+  assert.match(await inactiveActivation.text(), /Esta oferta não está mais disponível/);
+  const forgedActivation = await fetch(`${baseUrl}/go/${fixturePrefix}forjada/portal-forjado`, { redirect: "manual" });
+  assert.equal(forgedActivation.status, 410);
+  assert.doesNotMatch(await forgedActivation.text(), /shopping\.inter\.co/);
 
   const unavailable = await fetch(`${baseUrl}/loja/${fixturePrefix}indisponivel`);
   const unavailableHtml = await unavailable.text();
@@ -226,6 +254,13 @@ try {
   await page.getByRole("link", { name: "Ver ofertas de Loja real sem logo 00" }).click();
   await page.waitForURL(`${baseUrl}/loja/${fixturePrefix}00`);
   await expectHeading(page, "Loja real sem logo 00");
+  await page.context().route("https://shopping.inter.co/**", (route) => route.fulfill({ body: "Ativação redirecionada" }));
+  const [activationTab] = await Promise.all([
+    page.context().waitForEvent("page"),
+    page.getByRole("link", { name: "Ativar cashback pela Shopping Inter (abre em nova aba)" }).click(),
+  ]);
+  await activationTab.waitForLoadState();
+  await activationTab.close();
   await page.goto(`${baseUrl}/loja/${fixturePrefix}01`);
   await expectHeading(page, "Loja real sem logo 01");
   await page.getByText("1 plataforma com cashback").waitFor();
