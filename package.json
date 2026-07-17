@@ -4,11 +4,12 @@
   "type": "module",
   "packageManager": "pnpm@11.11.0",
   "engines": {
-    "node": ">=22"
+    "node": "24.x"
   },
   "scripts": {
     "typecheck": "pnpm -r typecheck",
-    "test": "vitest run",
+    "build": "pnpm --filter @farejo/web build",
+    "test": "vitest run && pnpm --filter @farejo/web test:smoke",
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
