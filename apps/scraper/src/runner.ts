@@ -10,11 +10,12 @@ import { type CrawlTier, loadCrawlStateSlugs, loadUnvisitedCrawlStateSlugs } fro
 import { loadThrottleMultiplier, updateThrottleMultiplier } from "./pipeline/platformThrottle.js";
 import { runPlatformScrape } from "./pipeline/scrapeRun.js";
 import { insertScrapeRun } from "./pipeline/scrapeRunsTable.js";
+import type { CatalogInvalidator } from "./catalogInvalidation.js";
 import type { SupabaseClient } from "./supabaseClient.js";
 
 export interface PlatformRunResult {
   platformId: string;
-  status: "ok" | "suspicious" | "failed";
+  status: "ok" | "suspicious" | "failed" | "invalidation_failed";
   offersWritten: number;
   parseErrors: number;
   error: string | null;
@@ -31,8 +32,9 @@ export interface PlatformRunResult {
 export async function runAllPlatforms(
   supabase: SupabaseClient,
   adapters: PlatformAdapter[],
+  invalidateCatalog: CatalogInvalidator = async () => {},
 ): Promise<PlatformRunResult[]> {
-  return Promise.all(adapters.map((adapter) => runOnePlatform(supabase, adapter)));
+  return Promise.all(adapters.map((adapter) => runOnePlatform(supabase, adapter, invalidateCatalog)));
 }
 
 /** Exit code do processo (T10): 0 só se toda plataforma terminou `ok`. */
@@ -44,8 +46,8 @@ export function exitCodeFor(results: PlatformRunResult[]): number {
 // (ADR-0005 — "sites de 1 request recebem target:{kind:'full'} e ignoram throttleMultiplier").
 const FULL_SCRAPE_INSTRUCTION: ScrapeInstruction = { throttleMultiplier: 1, target: { kind: "full" } };
 
-function runOnePlatform(supabase: SupabaseClient, adapter: PlatformAdapter): Promise<PlatformRunResult> {
-  return runPlatform(supabase, adapter, "full", () => FULL_SCRAPE_INSTRUCTION);
+function runOnePlatform(supabase: SupabaseClient, adapter: PlatformAdapter, invalidateCatalog: CatalogInvalidator): Promise<PlatformRunResult> {
+  return runPlatform(supabase, adapter, "full", () => FULL_SCRAPE_INSTRUCTION, invalidateCatalog);
 }
 
 /**
@@ -62,6 +64,7 @@ export function runTieredPlatform(
   adapter: PlatformAdapter,
   tier: CrawlTier,
   limit: number,
+  invalidateCatalog: CatalogInvalidator = async () => {},
 ): Promise<PlatformRunResult> {
   return runPlatform(supabase, adapter, tier, async () => {
     const [throttleMultiplier, slugs] = await Promise.all([
@@ -69,7 +72,7 @@ export function runTieredPlatform(
       loadCrawlStateSlugs(supabase, adapter.platformId, tier, limit),
     ]);
     return { throttleMultiplier, target: { kind: "slugs", slugs } };
-  });
+  }, invalidateCatalog);
 }
 
 /**
@@ -81,6 +84,7 @@ export async function runBootstrapPlatform(
   supabase: SupabaseClient,
   adapter: PlatformAdapter,
   limit: number,
+  invalidateCatalog: CatalogInvalidator = async () => {},
 ): Promise<PlatformRunResult> {
   const [slugs, throttleMultiplier] = await Promise.all([
     loadUnvisitedCrawlStateSlugs(supabase, adapter.platformId, limit),
@@ -93,7 +97,7 @@ export async function runBootstrapPlatform(
   return runPlatform(supabase, adapter, "bootstrap", () => ({
     throttleMultiplier,
     target: { kind: "slugs", slugs },
-  }));
+  }), invalidateCatalog);
 }
 
 /**
@@ -110,6 +114,7 @@ async function runPlatform(
   adapter: PlatformAdapter,
   scope: RunScopeLabel,
   buildInstruction: () => ScrapeInstruction | Promise<ScrapeInstruction>,
+  invalidateCatalog: CatalogInvalidator,
 ): Promise<PlatformRunResult> {
   const runStartedAt = new Date();
   try {
@@ -120,6 +125,20 @@ async function runPlatform(
       aborted: false,
       ratio: softBlockRatio(scrapeResult.softBlocks, scrapeResult.rawCount),
     });
+    if (outcome.status === "ok") {
+      try {
+        await invalidateCatalog({ platformId: adapter.platformId, runId: outcome.runId, timestamp: new Date() });
+      } catch {
+        console.error(`[catalog-invalidation] failed after committed run ${outcome.runId} for ${adapter.platformId}; retry the job`);
+        return {
+          platformId: adapter.platformId,
+          status: "invalidation_failed",
+          offersWritten: outcome.offersWritten,
+          parseErrors: outcome.parseErrors,
+          error: "Catalog invalidation failed after the scrape was committed",
+        };
+      }
+    }
     return {
       platformId: adapter.platformId,
       status: outcome.status,

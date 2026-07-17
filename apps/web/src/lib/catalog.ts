@@ -1,6 +1,8 @@
 import "server-only";
+import { unstable_cache } from "next/cache";
 import { Pool } from "pg";
 import { z } from "zod";
+import { CATALOG_CACHE_TAG, CATALOG_CACHE_TTL_SECONDS } from "./catalog-cache";
 
 export const CATALOG_PAGE_SIZE = 24;
 
@@ -70,8 +72,7 @@ function assertPage(page: number) {
   if (!Number.isSafeInteger(page) || page < 1) throw new Error("Invalid catalog page");
 }
 
-export async function getCatalogPage(page: number): Promise<CatalogPage> {
-  assertPage(page);
+async function getCatalogPageUncached(page: number): Promise<CatalogPage> {
   const offset = (page - 1) * CATALOG_PAGE_SIZE;
   const database = getPool();
 
@@ -127,4 +128,14 @@ export async function getCatalogPage(page: number): Promise<CatalogPage> {
     total: count,
     totalPages: Math.ceil(count / CATALOG_PAGE_SIZE),
   };
+}
+
+const getCachedCatalogPage = unstable_cache(getCatalogPageUncached, ["catalog-page"], {
+  tags: [CATALOG_CACHE_TAG],
+  revalidate: CATALOG_CACHE_TTL_SECONDS,
+});
+
+export async function getCatalogPage(page: number): Promise<CatalogPage> {
+  assertPage(page);
+  return getCachedCatalogPage(page);
 }

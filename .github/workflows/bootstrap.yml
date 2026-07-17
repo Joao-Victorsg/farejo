@@ -37,6 +37,8 @@ jobs:
     env:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      CATALOG_INVALIDATION_URL: ${{ secrets.CATALOG_INVALIDATION_URL }}
+      CATALOG_INVALIDATION_SECRET: ${{ secrets.CATALOG_INVALIDATION_SECRET }}
       BOOTSTRAP_PLATFORM: ${{ inputs.platform }}
       BOOTSTRAP_BATCH_SIZE: ${{ inputs.batch_size }}
     steps:

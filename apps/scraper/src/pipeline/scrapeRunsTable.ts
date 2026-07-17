@@ -1,4 +1,5 @@
 import type { RunScopeLabel } from "@farejo/shared";
+import { z } from "zod";
 import type { SupabaseClient } from "../supabaseClient.js";
 
 export interface ScrapeRunRow {
@@ -16,8 +17,8 @@ export interface ScrapeRunRow {
 }
 
 /** Única forma de gravar em `scrape_runs` — usada pelo gate de sanity (T9, `pipeline/scrapeRun.ts`) e pelo caminho `failed` do runner (T10). */
-export async function insertScrapeRun(supabase: SupabaseClient, row: ScrapeRunRow): Promise<void> {
-  const { error } = await supabase.from("scrape_runs").insert({
+export async function insertScrapeRun(supabase: SupabaseClient, row: ScrapeRunRow): Promise<number> {
+  const { data, error } = await supabase.from("scrape_runs").insert({
     platform_id: row.platformId,
     started_at: row.startedAt.toISOString(),
     finished_at: row.finishedAt.toISOString(),
@@ -28,6 +29,7 @@ export async function insertScrapeRun(supabase: SupabaseClient, row: ScrapeRunRo
     soft_blocks: row.softBlocks,
     notes: row.notes,
     scope: row.scope ?? "full",
-  });
+  }).select("id").single();
   if (error) throw error;
+  return z.object({ id: z.number().int().positive() }).parse(data).id;
 }

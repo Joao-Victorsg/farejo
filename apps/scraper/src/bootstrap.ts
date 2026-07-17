@@ -2,6 +2,7 @@ import "dotenv/config";
 import { createClient, type PlatformAdapter } from "@farejo/shared";
 import { pathToFileURL } from "node:url";
 import { z } from "zod";
+import { createCatalogInvalidator } from "./catalogInvalidation.js";
 import { cuponomiaAdapter } from "./cuponomia.js";
 import { resolveSupabaseCredentials } from "./localDb.js";
 import { meliuzAdapter } from "./meliuz.js";
@@ -21,7 +22,7 @@ const TIERED_ADAPTERS: Record<TieredPlatformId, PlatformAdapter> = {
 async function main(): Promise<void> {
   const { BOOTSTRAP_PLATFORM: platformId, BOOTSTRAP_BATCH_SIZE: batchSize } = BootstrapEnvironment.parse(process.env);
   const { url, key } = resolveSupabaseCredentials();
-  const result = await runBootstrapPlatform(createClient(url, key), TIERED_ADAPTERS[platformId], batchSize);
+  const result = await runBootstrapPlatform(createClient(url, key), TIERED_ADAPTERS[platformId], batchSize, createCatalogInvalidator());
   const suffix = result.error ? ` — ${result.error}` : "";
 
   console.log(
