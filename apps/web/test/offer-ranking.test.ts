@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import type { CatalogOffer } from "../src/lib/catalog";
+import type { CatalogOffer, PlatformStat } from "../src/lib/catalog";
 import { NO_OFFER_SIGNALS, type OfferSignals } from "../src/lib/history";
-import { effectiveSignals, formatPreviousValue, formatReward, isInterCorrentistaOffer, rankOffers } from "../src/lib/offer-ranking";
+import { effectiveSignals, formatPreviousValue, formatReward, isAnomalousPlatformCoverage, isInterCorrentistaOffer, rankOffers } from "../src/lib/offer-ranking";
 
 type PlatformOverrides = { platformId?: string; platformName?: string };
 
@@ -97,5 +97,23 @@ describe("rankOffers and formatReward — unaffected by the new signals (regress
 
   it("still preserves 'Até' formatting", () => {
     expect(formatReward(percentOffer({ isUpto: true, value: 8 }))).toBe("Até 8%");
+  });
+});
+
+function statOf(overrides: Partial<PlatformStat> = {}): PlatformStat {
+  return { platformId: "meliuz", platformName: "Méliuz", storeCount: 0, percentAverage: null, percentPeak: null, percentPeakIsUpto: false, ...overrides };
+}
+
+describe("isAnomalousPlatformCoverage", () => {
+  it("flags every platform having zero coverage as an anomaly, not a legitimate empty state", () => {
+    expect(isAnomalousPlatformCoverage([statOf({ storeCount: 0 }), statOf({ storeCount: 0 })])).toBe(true);
+  });
+
+  it("does not flag a single platform without coverage while others have real coverage", () => {
+    expect(isAnomalousPlatformCoverage([statOf({ storeCount: 0 }), statOf({ storeCount: 12 })])).toBe(false);
+  });
+
+  it("treats an empty stats list as anomalous too", () => {
+    expect(isAnomalousPlatformCoverage([])).toBe(true);
   });
 });

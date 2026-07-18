@@ -1,7 +1,15 @@
-import type { CatalogOffer } from "./catalog";
+import type { CatalogOffer, PlatformStat } from "./catalog";
 import { NO_OFFER_SIGNALS, type OfferSignals } from "./history";
 
 export const INTER_PLATFORM_ID = "inter";
+
+/**
+ * `/plataformas` (ADR-0025): todas as 5 plataformas com cobertura zero ao mesmo tempo é uma
+ * anomalia de dados, não o vazio legítimo de uma única plataforma sem lojas ainda.
+ */
+export function isAnomalousPlatformCoverage(stats: PlatformStat[]) {
+  return stats.length === 0 || stats.every((stat) => stat.storeCount === 0);
+}
 
 export function isInterCorrentistaOffer(offer: CatalogOffer) {
   return offer.platformId === INTER_PLATFORM_ID && offer.reward.type === "percent" && offer.reward.valuePartial !== null;

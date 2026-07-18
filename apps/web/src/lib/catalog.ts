@@ -58,6 +58,15 @@ const StoreDetailRow = z.object({
 
 const StoreSlugRow = z.object({ slug: z.string() });
 
+const PlatformStatsRow = z.object({
+  platform_id: z.string(),
+  platform_name: z.string(),
+  store_count: z.number().int().nonnegative(),
+  percent_avg: z.number().nonnegative().nullable(),
+  percent_max: z.number().nonnegative().nullable(),
+  percent_max_is_upto: z.boolean().nullable(),
+});
+
 const StoreHistoryDbRow = z.object({
   platform_id: z.string(),
   platform_name: z.string(),
@@ -107,6 +116,15 @@ export type CatalogPage = {
 };
 
 export type StoreDetail = CatalogStore & { history: StoreHistoryRow[] };
+
+export type PlatformStat = {
+  platformId: string;
+  platformName: string;
+  storeCount: number;
+  percentAverage: number | null;
+  percentPeak: number | null;
+  percentPeakIsUpto: boolean;
+};
 
 let pool: Pool | undefined;
 
@@ -350,4 +368,35 @@ const getCachedCatalogPage = unstable_cache(getCatalogPageUncached, ["catalog-pa
 export async function getCatalogPage(request: CatalogRequest): Promise<CatalogPage> {
   assertRequest(request);
   return getCachedCatalogPage(request);
+}
+
+/**
+ * `/plataformas` (ADR-0019/ADR-0020): cobertura conta ofertas percent+fixed elegíveis; média
+ * e pico usam só `percent`, peso igual por loja, e nunca convertem valor fixo. O Inter usa a
+ * taxa de correntista sempre — o mesmo `value` das outras plataformas, sem `value_partial`.
+ */
+async function getPlatformStatsUncached(): Promise<PlatformStat[]> {
+  const database = getPool();
+  const result = await database.query(
+    "select platform_id, platform_name, store_count, percent_avg, percent_max, percent_max_is_upto from web_read.platform_stats()",
+  );
+  const rows = z.array(PlatformStatsRow).parse(result.rows);
+
+  return rows.map((row) => ({
+    platformId: row.platform_id,
+    platformName: row.platform_name,
+    storeCount: row.store_count,
+    percentAverage: row.percent_avg,
+    percentPeak: row.percent_max,
+    percentPeakIsUpto: row.percent_max_is_upto ?? false,
+  }));
+}
+
+const getCachedPlatformStats = unstable_cache(getPlatformStatsUncached, ["platform-stats-v1"], {
+  tags: [CATALOG_CACHE_TAG],
+  revalidate: CATALOG_CACHE_TTL_SECONDS,
+});
+
+export async function getPlatformStats(): Promise<PlatformStat[]> {
+  return getCachedPlatformStats();
 }
