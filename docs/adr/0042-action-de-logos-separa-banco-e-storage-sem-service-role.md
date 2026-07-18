@@ -34,6 +34,14 @@ Downloads do bucket são públicos. Upload, substituição de ponteiro e estado 
 restritos à Action. Não se cria uma conta técnica no Supabase Auth apenas para obter um JWT com RLS,
 pois o ciclo de login e sessão adicionaria complexidade desproporcional neste MVP.
 
+## Nota (18/07/2026)
+
+A implementação do provisionamento do bucket (T14, #60) revalidou esta decisão contra o stack
+local (`@aws-sdk/client-s3` apontando para `supabase start`) e contra a documentação vigente do
+Supabase (`guides/storage/s3/authentication`): a chave de acesso S3 continua concedendo acesso a
+todas as operações e buckets do projeto e ignorando RLS, sem escopo por bucket disponível na
+plataforma atual. Nada mudou desde a decisão original; nenhuma revisão de escopo é necessária.
+
 ## Consequências
 
 - Comprometer a credencial de imagem não permite alterar cashback, aliases ou histórico.
