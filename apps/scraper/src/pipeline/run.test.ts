@@ -206,6 +206,77 @@ describe("runPipeline (Postgres local)", () => {
     expect(history!.value_partial).toBe(4.9);
   });
 
+  it("persists a valid native previous value as a snapshot on offers (ADR-0013/#55)", async () => {
+    const runStartedAt = new Date("2026-07-09T03:00:00Z");
+    const storeName = "Previous T8 Run";
+
+    await runPipeline(
+      client,
+      PLATFORM_ID,
+      scrapeResult([offer(storeName, "10% cashback", { previousRewardText: "era 7%" })]),
+      runStartedAt,
+    );
+
+    const storeId = await storeIdFor(storeName);
+    const { data: offerRow } = await client
+      .from("offers")
+      .select("previous_reward_type, previous_value, previous_raw_text")
+      .eq("store_id", storeId)
+      .eq("platform_id", PLATFORM_ID)
+      .single();
+    expect(offerRow).toMatchObject({ previous_reward_type: "percent", previous_value: 7, previous_raw_text: "era 7%" });
+  });
+
+  it("does not count an unparseable previous reward text as a parse error, and stores no snapshot", async () => {
+    const runStartedAt = new Date("2026-07-09T09:00:00Z");
+    const storeName = "Previous Broken T8 Run";
+
+    const result = await runPipeline(
+      client,
+      PLATFORM_ID,
+      scrapeResult([offer(storeName, "10% cashback", { previousRewardText: "promoção antiga" })]),
+      runStartedAt,
+    );
+    expect(result).toMatchObject({ offersWritten: 1, parseErrors: 0 });
+
+    const storeId = await storeIdFor(storeName);
+    const { data: offerRow } = await client
+      .from("offers")
+      .select("previous_reward_type, previous_value, previous_raw_text")
+      .eq("store_id", storeId)
+      .eq("platform_id", PLATFORM_ID)
+      .single();
+    expect(offerRow).toMatchObject({ previous_reward_type: null, previous_value: null, previous_raw_text: null });
+  });
+
+  it("clears a stale native previous value once a later successful scrape stops reporting it (ADR-0013)", async () => {
+    const run1 = new Date("2026-07-09T15:00:00Z");
+    const run2 = new Date("2026-07-09T21:00:00Z");
+    const storeName = "Previous Clears T8 Run";
+
+    await runPipeline(client, PLATFORM_ID, scrapeResult([offer(storeName, "10% cashback", { previousRewardText: "era 7%" })]), run1);
+    // regra 5: mesmo value e reward_type, mas sem previousRewardText desta vez — o snapshot
+    // nativo não pode sobreviver como se ainda estivesse sendo reportado.
+    await runPipeline(client, PLATFORM_ID, scrapeResult([offer(storeName, "10% cashback")]), run2);
+
+    const storeId = await storeIdFor(storeName);
+    const { data: offerRow } = await client
+      .from("offers")
+      .select("previous_reward_type, previous_value, previous_raw_text")
+      .eq("store_id", storeId)
+      .eq("platform_id", PLATFORM_ID)
+      .single();
+    expect(offerRow).toMatchObject({ previous_reward_type: null, previous_value: null, previous_raw_text: null });
+
+    const { data: history } = await client
+      .from("offer_history")
+      .select("value")
+      .eq("store_id", storeId)
+      .eq("platform_id", PLATFORM_ID);
+    // regra 5 continua sem criar linha nova em offer_history — só o snapshot em offers muda.
+    expect(history).toHaveLength(1);
+  });
+
   it("counts a zod-invalid raw offer as a parse error instead of crashing", async () => {
     const runStartedAt = new Date("2026-07-07T03:00:00Z");
     const badOffer = fromPartial<RawOffer>({ storeName: "Missing Url T8 Run", rewardText: "5% Cashback" });

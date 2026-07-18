@@ -76,6 +76,8 @@ describe("web_read catalog", () => {
       { table_name: "catalog_offers", column_name: "is_upto" },
       { table_name: "catalog_offers", column_name: "freshness" },
       { table_name: "catalog_offers", column_name: "last_seen_at" },
+      { table_name: "catalog_offers", column_name: "previous_reward_type" },
+      { table_name: "catalog_offers", column_name: "previous_value" },
       { table_name: "catalog_stores", column_name: "slug" },
       { table_name: "catalog_stores", column_name: "name" },
       { table_name: "catalog_stores", column_name: "logo_url" },

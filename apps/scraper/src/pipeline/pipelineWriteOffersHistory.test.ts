@@ -20,6 +20,9 @@ function row(storeId: number, extra: Partial<PreparedOfferRow> = {}): PreparedOf
     is_upto: false,
     raw_text: "5%",
     url: `https://example.test/${storeId}`,
+    previous_reward_type: null,
+    previous_value: null,
+    previous_raw_text: null,
     ...extra,
   };
 }

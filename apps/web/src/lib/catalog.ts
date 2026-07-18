@@ -4,7 +4,7 @@ import { Pool } from "pg";
 import { z } from "zod";
 import { CATALOG_CACHE_TAG, CATALOG_CACHE_TTL_SECONDS } from "./catalog-cache";
 import { catalogHref, isCatalogSort, type CatalogRequest, type CatalogSort } from "./catalog-url";
-import type { StoreHistoryRow } from "./history";
+import { composeStoreHistory, deriveOfferSignals, type OfferSignals, type StoreHistoryRow, type StoreHistorySeries } from "./history";
 
 export { catalogHref, type CatalogRequest, type CatalogSort } from "./catalog-url";
 
@@ -35,6 +35,18 @@ const CatalogOfferRow = z.object({
   is_upto: z.boolean(),
   freshness: z.enum(["fresh", "delayed"]),
   last_seen_at: z.coerce.date(),
+  previous_reward_type: z.enum(["percent", "fixed"]).nullable(),
+  previous_value: z.number().nonnegative().nullable(),
+});
+
+const CatalogHistoryDbRow = z.object({
+  store_slug: z.string(),
+  platform_id: z.string(),
+  platform_name: z.string(),
+  reward_type: z.enum(["percent", "fixed"]),
+  value: z.number().nullable(),
+  value_partial: z.number().nullable(),
+  changed_at: z.coerce.date(),
 });
 
 const StoreDetailRow = z.object({
@@ -70,10 +82,10 @@ type CatalogOfferBase = {
 
 export type CatalogOffer = CatalogOfferBase & (
   | {
-      reward: { type: "percent"; value: number; valuePartial: number | null; isUpto: boolean };
+      reward: { type: "percent"; value: number; valuePartial: number | null; isUpto: boolean; partial: OfferSignals | null } & OfferSignals;
     }
   | {
-      reward: { type: "fixed"; value: number; currency: "BRL" };
+      reward: { type: "fixed"; value: number; currency: "BRL" } & OfferSignals;
     }
 );
 
@@ -150,17 +162,28 @@ async function getCatalogPageUncached(request: CatalogRequest): Promise<CatalogP
   const rows = z.array(CatalogSearchRow).parse(pageResult.rows);
   const total = rows[0]?.total_count ?? (request.page > 1 ? z.array(CatalogSearchRow).parse((await search(1)).rows)[0]?.total_count ?? 0 : 0);
   const slugs = rows.map((row) => row.slug);
-  const offersResult = slugs.length === 0
-    ? { rows: [] }
-    : await database.query(
-      `select store_slug, platform_id, platform_name, reward_type, value, value_partial, is_upto, freshness, last_seen_at
-       from web_read.catalog_offers
-       where store_slug = any($1::text[])
-       order by store_slug asc, platform_name asc, platform_id asc`,
-      [slugs],
-  );
+  const [offersResult, historyResult] = await Promise.all([
+    slugs.length === 0
+      ? Promise.resolve({ rows: [] })
+      : database.query(
+        `select store_slug, platform_id, platform_name, reward_type, value, value_partial, is_upto, freshness, last_seen_at,
+                previous_reward_type, previous_value
+         from web_read.catalog_offers
+         where store_slug = any($1::text[])
+         order by store_slug asc, platform_name asc, platform_id asc`,
+        [slugs],
+      ),
+    slugs.length === 0
+      ? Promise.resolve({ rows: [] })
+      : database.query(
+        `select store_slug, platform_id, platform_name, reward_type, value, value_partial, changed_at
+         from web_read.catalog_history($1::text[])`,
+        [slugs],
+      ),
+  ]);
   const offers = z.array(CatalogOfferRow).parse(offersResult.rows);
-  const offersByStore = mapCatalogOffers(offers);
+  const seriesIndex = buildSeriesIndex(z.array(CatalogHistoryDbRow).parse(historyResult.rows), new Date());
+  const offersByStore = mapCatalogOffers(offers, seriesIndex);
 
   return {
     items: rows.map((store) => ({
@@ -178,10 +201,58 @@ async function getCatalogPageUncached(request: CatalogRequest): Promise<CatalogP
   };
 }
 
-function mapCatalogOffers(offers: z.infer<typeof CatalogOfferRow>[]) {
+const EMPTY_SERIES: StoreHistorySeries["primary"] = { sufficient: false, segments: [] };
+
+/**
+ * Agrupa linhas cruas de `catalog_history`/`store_history` por loja e recompõe a série de cada
+ * plataforma (ADR-0010/ADR-0011), indexando por `"${storeSlug}:${platformId}"` — chave que
+ * `mapCatalogOffers` usa para casar cada oferta com sua própria baseline de boost (F3/T9/#55).
+ */
+function buildSeriesIndex(rows: z.infer<typeof CatalogHistoryDbRow>[], now: Date): Map<string, StoreHistorySeries> {
+  const rowsByStore = new Map<string, StoreHistoryRow[]>();
+  for (const row of rows) {
+    const list = rowsByStore.get(row.store_slug) ?? [];
+    list.push({
+      platformId: row.platform_id,
+      platformName: row.platform_name,
+      rewardType: row.reward_type,
+      value: row.value,
+      valuePartial: row.value_partial,
+      changedAt: row.changed_at.toISOString(),
+    });
+    rowsByStore.set(row.store_slug, list);
+  }
+
+  const index = new Map<string, StoreHistorySeries>();
+  for (const [storeSlug, storeRows] of rowsByStore) {
+    for (const series of composeStoreHistory(storeRows, now)) {
+      index.set(`${storeSlug}:${series.platformId}`, series);
+    }
+  }
+  return index;
+}
+
+/**
+ * Boost/valor típico/valor anterior (ADR-0012/ADR-0013) são derivados aqui, nunca persistidos:
+ * cada oferta busca sua série já composta em `seriesIndex` e reaplica `deriveOfferSignals` — a
+ * mesma função usada pelo gráfico de histórico, para as duas superfícies nunca divergirem.
+ */
+function mapCatalogOffers(offers: z.infer<typeof CatalogOfferRow>[], seriesIndex: Map<string, StoreHistorySeries>) {
   const offersByStore = new Map<string, CatalogOffer[]>();
 
   for (const offer of offers) {
+    const series = seriesIndex.get(`${offer.store_slug}:${offer.platform_id}`);
+    const nativePrevious = offer.previous_reward_type !== null && offer.previous_value !== null
+      ? { rewardType: offer.previous_reward_type, value: offer.previous_value }
+      : null;
+
+    const primarySignals = deriveOfferSignals(series?.primary ?? EMPTY_SERIES, { rewardType: offer.reward_type, value: offer.value }, nativePrevious);
+    // Sem sinal nativo de "valor anterior" para a taxa não-correntista do Inter (docs/poc):
+    // a modalidade parcial só tem o fallback histórico (ADR-0013 regra 2).
+    const partialSignals = offer.reward_type === "percent" && offer.value_partial !== null && series?.partial
+      ? deriveOfferSignals(series.partial, { rewardType: "percent", value: offer.value_partial }, null)
+      : null;
+
     const storeOffers = offersByStore.get(offer.store_slug) ?? [];
     const offerBase = {
       platformId: offer.platform_id,
@@ -190,8 +261,8 @@ function mapCatalogOffers(offers: z.infer<typeof CatalogOfferRow>[]) {
       lastSeenAt: offer.last_seen_at.toISOString(),
     };
     const publicOffer = offer.reward_type === "percent"
-      ? { ...offerBase, reward: { type: "percent" as const, value: offer.value, valuePartial: offer.value_partial, isUpto: offer.is_upto } }
-      : { ...offerBase, reward: { type: "fixed" as const, value: offer.value, currency: "BRL" as const } };
+      ? { ...offerBase, reward: { type: "percent" as const, value: offer.value, valuePartial: offer.value_partial, isUpto: offer.is_upto, partial: partialSignals, ...primarySignals } }
+      : { ...offerBase, reward: { type: "fixed" as const, value: offer.value, currency: "BRL" as const, ...primarySignals } };
     storeOffers.push(publicOffer);
     offersByStore.set(offer.store_slug, storeOffers);
   }
@@ -209,7 +280,8 @@ async function getStoreDetailUncached(slug: string): Promise<StoreDetail | null>
   if (!store) return null;
 
   const offersResult = await database.query(
-    `select store_slug, platform_id, platform_name, reward_type, value, value_partial, is_upto, freshness, last_seen_at
+    `select store_slug, platform_id, platform_name, reward_type, value, value_partial, is_upto, freshness, last_seen_at,
+            previous_reward_type, previous_value
      from web_read.catalog_offers
      where store_slug = $1
      order by platform_name asc, platform_id asc`,
@@ -230,17 +302,24 @@ async function getStoreDetailUncached(slug: string): Promise<StoreDetail | null>
     changedAt: row.changed_at.toISOString(),
   }));
 
+  // Reaproveita a mesma leitura de histórico do gráfico (ADR-0010) para derivar boost/valor
+  // típico/valor anterior — o detalhe não precisa de uma segunda ida ao banco (F3/T9/#55).
+  const seriesIndex = new Map<string, StoreHistorySeries>();
+  for (const series of composeStoreHistory(history, new Date())) {
+    seriesIndex.set(`${store.slug}:${series.platformId}`, series);
+  }
+
   return {
     slug: store.slug,
     name: store.name,
     logoUrl: store.logo_url,
     platformCount: store.platform_count,
-    offers: mapCatalogOffers(offers).get(store.slug) ?? [],
+    offers: mapCatalogOffers(offers, seriesIndex).get(store.slug) ?? [],
     history,
   };
 }
 
-const getCachedStoreDetail = unstable_cache(getStoreDetailUncached, ["catalog-store-detail-v2"], {
+const getCachedStoreDetail = unstable_cache(getStoreDetailUncached, ["catalog-store-detail-v3"], {
   tags: [CATALOG_CACHE_TAG],
   revalidate: CATALOG_CACHE_TTL_SECONDS,
 });
@@ -263,7 +342,7 @@ export async function getEligibleStoreSlugs() {
   return getCachedEligibleStoreSlugs();
 }
 
-const getCachedCatalogPage = unstable_cache(getCatalogPageUncached, ["catalog-page-v3"], {
+const getCachedCatalogPage = unstable_cache(getCatalogPageUncached, ["catalog-page-v4"], {
   tags: [CATALOG_CACHE_TAG],
   revalidate: CATALOG_CACHE_TTL_SECONDS,
 });
