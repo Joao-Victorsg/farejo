@@ -1,17 +1,32 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { execFileSync } from "node:child_process";
 import { Client } from "pg";
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 // F3/T14 (#60, ADR-0038/ADR-0042): fronteira de Storage para logos finais.
 //
-// Credenciais fixas do stack local (`supabase start`): JWT/S3 keys demo do Supabase CLI,
-// idênticas em todo projeto local, nunca usadas em produção (mesmo padrão de
-// apps/scraper/src/localDb.ts).
-const databaseUrl = "postgresql://postgres:postgres@127.0.0.1:55322/postgres";
-const storageApiUrl = "http://127.0.0.1:55321";
-const s3Endpoint = `${storageApiUrl}/storage/v1/s3`;
-const s3AccessKeyId = "625729a08b95bf1b7ff351a663f3a23c";
-const s3SecretAccessKey = "850181e4652dd023b7a98c58ae0d2d34bd487ee0cc3254aed6eda37307425907";
+// Credenciais do stack local (`supabase start`) lidas em tempo de execução via
+// `supabase status`, nunca fixadas no código-fonte: mesmo sendo os valores demo fixos do
+// Supabase CLI (iguais em todo projeto local, nunca usados em produção), gravá-los como
+// string dispara scanners de segredo (GitGuardian) sem necessidade — a CLI já expõe tudo
+// que o teste precisa.
+type SupabaseStatus = {
+  DB_URL: string;
+  API_URL: string;
+  STORAGE_S3_URL: string;
+  S3_PROTOCOL_ACCESS_KEY_ID: string;
+  S3_PROTOCOL_ACCESS_KEY_SECRET: string;
+  S3_PROTOCOL_REGION: string;
+};
+
+const status: SupabaseStatus = JSON.parse(execFileSync("supabase", ["status", "-o", "json"], { encoding: "utf-8" }));
+
+const databaseUrl = status.DB_URL;
+const storageApiUrl = status.API_URL;
+const s3Endpoint = status.STORAGE_S3_URL;
+const s3AccessKeyId = status.S3_PROTOCOL_ACCESS_KEY_ID;
+const s3SecretAccessKey = status.S3_PROTOCOL_ACCESS_KEY_SECRET;
+const s3Region = status.S3_PROTOCOL_REGION;
 
 const fixturePrefix = "issue60-store-logos-";
 const client = new Client({ connectionString: databaseUrl });
@@ -19,7 +34,7 @@ const client = new Client({ connectionString: databaseUrl });
 function makeS3(credentials: { accessKeyId: string; secretAccessKey: string }) {
   return new S3Client({
     endpoint: s3Endpoint,
-    region: "local",
+    region: s3Region,
     forcePathStyle: true,
     credentials,
   });
