@@ -5,15 +5,16 @@ import { effectiveSignals, formatPreviousValue, formatReward, isInterCorrentista
 
 const NO_SIGNALS: OfferSignals = { isBoost: false, typicalValue: null, previousValue: null, validUntil: null };
 
-function percentOffer(overrides: Partial<Extract<CatalogOffer["reward"], { type: "percent" }>> = {}, base: Partial<CatalogOffer> = {}): CatalogOffer {
+type PlatformOverrides = { platformId?: string; platformName?: string };
+
+function percentOffer(overrides: Partial<Extract<CatalogOffer["reward"], { type: "percent" }>> = {}, base: PlatformOverrides = {}): CatalogOffer {
   return {
-    platformId: "meliuz",
-    platformName: "Méliuz",
+    platformId: base.platformId ?? "meliuz",
+    platformName: base.platformName ?? "Méliuz",
     freshness: "fresh",
     lastSeenAt: "2026-07-18T00:00:00.000Z",
-    ...base,
     reward: { type: "percent", value: 5, valuePartial: null, isUpto: false, partial: null, ...NO_SIGNALS, ...overrides },
-  } as CatalogOffer;
+  };
 }
 
 function fixedOffer(overrides: Partial<Extract<CatalogOffer["reward"], { type: "fixed" }>> = {}): CatalogOffer {
@@ -23,7 +24,7 @@ function fixedOffer(overrides: Partial<Extract<CatalogOffer["reward"], { type: "
     freshness: "fresh",
     lastSeenAt: "2026-07-18T00:00:00.000Z",
     reward: { type: "fixed", value: 20, currency: "BRL", ...NO_SIGNALS, ...overrides },
-  } as CatalogOffer;
+  };
 }
 
 describe("effectiveSignals", () => {
