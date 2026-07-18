@@ -1,5 +1,12 @@
 # Action de logos separa banco e Storage sem service_role
 
+> **Atualização (18/07/2026, F3/T14/#60):** o provisionamento do bucket revalidou esta
+> decisão contra o stack local (`@aws-sdk/client-s3` apontando para `supabase start`) e
+> contra a documentação vigente do Supabase (`guides/storage/s3/authentication`): a chave
+> de acesso S3 continua concedendo acesso a todas as operações e buckets do projeto e
+> ignorando RLS, sem escopo por bucket disponível na plataforma atual. Nada mudou desde a
+> decisão original; nenhuma revisão de escopo é necessária.
+
 ## Contexto
 
 A Action automática de logos precisa ler fontes privadas, publicar arquivos no Supabase Storage e
