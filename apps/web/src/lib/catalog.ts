@@ -4,6 +4,7 @@ import { Pool } from "pg";
 import { z } from "zod";
 import { CATALOG_CACHE_TAG, CATALOG_CACHE_TTL_SECONDS } from "./catalog-cache";
 import { catalogHref, isCatalogSort, type CatalogRequest, type CatalogSort } from "./catalog-url";
+import type { StoreHistoryRow } from "./history";
 
 export { catalogHref, type CatalogRequest, type CatalogSort } from "./catalog-url";
 
@@ -45,6 +46,15 @@ const StoreDetailRow = z.object({
 
 const StoreSlugRow = z.object({ slug: z.string() });
 
+const StoreHistoryDbRow = z.object({
+  platform_id: z.string(),
+  platform_name: z.string(),
+  reward_type: z.enum(["percent", "fixed"]),
+  value: z.number().nullable(),
+  value_partial: z.number().nullable(),
+  changed_at: z.coerce.date(),
+});
+
 const CatalogSearchParams = z.object({
   page: z.union([z.string(), z.array(z.string())]).optional(),
   q: z.union([z.string(), z.array(z.string())]).optional(),
@@ -84,7 +94,7 @@ export type CatalogPage = {
   totalPages: number;
 };
 
-export type StoreDetail = CatalogStore;
+export type StoreDetail = CatalogStore & { history: StoreHistoryRow[] };
 
 let pool: Pool | undefined;
 
@@ -206,16 +216,31 @@ async function getStoreDetailUncached(slug: string): Promise<StoreDetail | null>
     [slug],
   );
   const offers = z.array(CatalogOfferRow).parse(offersResult.rows);
+
+  const historyResult = await database.query(
+    "select platform_id, platform_name, reward_type, value, value_partial, changed_at from web_read.store_history($1)",
+    [slug],
+  );
+  const history: StoreHistoryRow[] = z.array(StoreHistoryDbRow).parse(historyResult.rows).map((row) => ({
+    platformId: row.platform_id,
+    platformName: row.platform_name,
+    rewardType: row.reward_type,
+    value: row.value,
+    valuePartial: row.value_partial,
+    changedAt: row.changed_at.toISOString(),
+  }));
+
   return {
     slug: store.slug,
     name: store.name,
     logoUrl: store.logo_url,
     platformCount: store.platform_count,
     offers: mapCatalogOffers(offers).get(store.slug) ?? [],
+    history,
   };
 }
 
-const getCachedStoreDetail = unstable_cache(getStoreDetailUncached, ["catalog-store-detail-v1"], {
+const getCachedStoreDetail = unstable_cache(getStoreDetailUncached, ["catalog-store-detail-v2"], {
   tags: [CATALOG_CACHE_TAG],
   revalidate: CATALOG_CACHE_TTL_SECONDS,
 });

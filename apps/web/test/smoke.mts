@@ -59,6 +59,7 @@ async function waitForSwitchState(switchLocator: import("@playwright/test").Loca
 async function cleanFixtures() {
   await client.query("delete from public.store_aliases where store_id in (select id from public.stores where slug like $1)", [`${fixturePrefix}%`]);
   await client.query("delete from public.activation_metrics where store_id in (select id from public.stores where slug like $1)", [`${fixturePrefix}%`]);
+  await client.query("delete from public.offer_history where store_id in (select id from public.stores where slug like $1)", [`${fixturePrefix}%`]);
   await client.query("delete from public.offers where store_id in (select id from public.stores where slug like $1)", [`${fixturePrefix}%`]);
   await client.query("delete from public.stores where slug like $1", [`${fixturePrefix}%`]);
 }
@@ -138,6 +139,18 @@ await client.query(
     ($1, 'zoom', 'percent', 4, null, '4%', 'https://outside.example.test/zoom-toggle', true, now())`,
   [toggleStore.id],
 );
+// Issue54: histórico real — correntista Inter e Méliuz têm uma mudança real (sufficient);
+// o não correntista Inter só tem uma leitura de value_partial (2), sem mudança — o toggle
+// para "não correntista" precisa mostrar "sendo construído" para o Inter em vez de cair
+// para a série de correntista.
+await client.query(
+  `insert into public.offer_history (store_id, platform_id, reward_type, value, value_partial, changed_at) values
+    ($1, 'inter', 'percent', 8, 2, now() - interval '10 days'),
+    ($1, 'inter', 'percent', 10, 2, now() - interval '2 days'),
+    ($1, 'meliuz', 'percent', 6, null, now() - interval '10 days'),
+    ($1, 'meliuz', 'percent', 8, null, now() - interval '2 days')`,
+  [toggleStore.id],
+);
 
 await run(pnpm, ["build"]);
 const server = spawn(pnpm, ["exec", "next", "start", "--port", String(port)], {
@@ -214,6 +227,17 @@ try {
   assert.match(detailHtml, /target="_blank"/);
   assert.match(detailHtml, /rel="noopener noreferrer"/);
   assert.doesNotMatch(detailHtml, /https:\/\/(shopping\.inter\.co|www\.meliuz\.com\.br|www\.zoom\.com\.br)/);
+  assert.match(detailHtml, /Histórico de cashback/);
+  assert.match(detailHtml, /HISTÓRICO SENDO CONSTRUÍDO/);
+  assert.match(detailHtml, /Ainda não observamos mudanças suficientes/);
+
+  // Renderização inicial do servidor assume correntista=true (ADR-0034/ADR-0046) — a
+  // modalidade não correntista só aparece depois do toggle no cliente (coberto abaixo, via
+  // Playwright, junto com a troca real de estado).
+  const toggleDetailHtml = await waitForPageText(`/loja/${fixturePrefix}toggle`, "Shopping Inter (correntista): variou entre 8% e 10%");
+  assert.doesNotMatch(toggleDetailHtml, /HISTÓRICO SENDO CONSTRUÍDO/);
+  assert.match(toggleDetailHtml, /Méliuz: variou entre 6% e 8%/);
+  assert.doesNotMatch(toggleDetailHtml, /não correntista/);
 
   const activationStartedAt = performance.now();
   const activation = await fetch(`${baseUrl}/go/${fixturePrefix}00/inter`, { redirect: "manual" });
@@ -345,6 +369,14 @@ try {
   assert.match(interRowText, /TAXA NÃO CORRENTISTA/);
   assert.match(interRowText, /2%/);
 
+  // Issue54: o histórico segue o toggle — a modalidade não correntista do Inter não tem
+  // mudança real (só uma leitura de value_partial) e nunca cai para a série correntista.
+  const historySection = page.getByRole("region", { name: "Histórico de cashback" });
+  let historyText = await historySection.innerText();
+  assert.match(historyText, /Shopping Inter \(não correntista\): histórico sendo construído\./);
+  assert.doesNotMatch(historyText, /Shopping Inter \(correntista\): variou/);
+  assert.match(historyText, /Méliuz: variou entre 6% e 8%/);
+
   await detailSwitch.click();
   await waitForSwitchState(detailSwitch, "true");
   firstItemText = await rankingItems.first().innerText();
@@ -354,6 +386,10 @@ try {
   assert.match(interRowText, /TAXA CORRENTISTA/);
   assert.doesNotMatch(interRowText, /NÃO CORRENTISTA/);
   assert.match(interRowText, /10%/);
+
+  historyText = await historySection.innerText();
+  assert.match(historyText, /Shopping Inter \(correntista\): variou entre 8% e 10%/);
+  assert.doesNotMatch(historyText, /Shopping Inter \(não correntista\): variou/);
 
   await page.getByRole("link", { name: "Voltar para todas as lojas" }).click();
   await page.waitForURL(`${baseUrl}/#catalogo`);
