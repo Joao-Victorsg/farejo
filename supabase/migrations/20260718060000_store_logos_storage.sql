@@ -22,6 +22,12 @@
 -- all buckets and bypass[es] RLS policies" — sem escopo por bucket disponível na
 -- plataforma atual. A limitação já registrada na ADR-0042 permanece válida nesta data;
 -- nada a corrigir na decisão.
+--
+-- Caminho por hash (ADR-0042: "Objetos usam caminhos por hash"): esta migration não impõe
+-- isso via constraint/policy — a chave S3 ignora RLS (nota acima), então nenhuma regra de
+-- banco alcançaria a escrita de qualquer forma. A convenção de nomear objetos pelo hash do
+-- conteúdo (nunca por um nome derivado da URL de origem) é responsabilidade da Action de
+-- ingestão ainda não implementada; esta migration só documenta a intenção, não a garante.
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('store-logos', 'store-logos', true, 2097152, array['image/webp'])
 on conflict (id) do update set
@@ -33,9 +39,9 @@ do $$
 begin
   if not exists (
     select 1 from pg_policies
-    where schemaname = 'storage' and tablename = 'objects' and policyname = 'store_logos_public_read'
+    where schemaname = 'storage' and tablename = 'objects' and policyname = 'store_logos_select_objects'
   ) then
-    create policy store_logos_public_read on storage.objects
+    create policy store_logos_select_objects on storage.objects
       for select
       using (bucket_id = 'store-logos');
   end if;

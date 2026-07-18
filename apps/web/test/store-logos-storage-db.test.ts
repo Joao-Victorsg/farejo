@@ -160,6 +160,17 @@ describe("store-logos bucket", () => {
       await client.query("set role farejo_web");
       try {
         await expect(client.query("select * from storage.objects where bucket_id = 'store-logos'")).rejects.toThrow(/permission denied/i);
+        // farejo_web nunca teve GRANT em storage.objects (só lê o catálogo via web_read) —
+        // toda escrita falha antes mesmo de qualquer policy entrar em jogo.
+        await expect(
+          client.query("insert into storage.objects (bucket_id, name) values ('store-logos', $1)", [`${fixturePrefix}farejo-web-insert.webp`]),
+        ).rejects.toThrow(/permission denied/i);
+        await expect(
+          client.query("update storage.objects set name = $1 where bucket_id = 'store-logos' and name = $2", ["renamed.webp", existingKey]),
+        ).rejects.toThrow(/permission denied/i);
+        await expect(client.query("delete from storage.objects where bucket_id = 'store-logos' and name = $1", [existingKey])).rejects.toThrow(
+          /permission denied/i,
+        );
       } finally {
         await client.query("reset role");
       }
