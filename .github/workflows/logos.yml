@@ -1,0 +1,48 @@
+name: Ingest store logos
+
+# F3/T15 (#61, ADR-0014/ADR-0038/ADR-0042): roda depois de um scrape bem-sucedido — as fontes
+# que alimentam este passo (`store_logo_sources`) só existem depois de um run aceito pelo
+# sanity check. workflow_dispatch existe para recuperação/reexecução manual excepcional.
+on:
+  workflow_run:
+    workflows: [Scrape cashback]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: logos-ingest
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # ADR-0042: credenciais de banco (farejo_logo_writer) e de Storage (chave S3) ficam num
+    # GitHub Environment dedicado — nunca reaproveitam os secrets de scrape/curadoria
+    # (service_role, farejo_curation) nem chegam à Vercel. O Environment "logos" precisa ser
+    # criado manualmente no repo antes do primeiro run real (mesma pendência operacional já
+    # registrada para o bot do Telegram).
+    environment: logos
+    env:
+      FAREJO_LOGO_WRITER_DATABASE_URL: ${{ secrets.FAREJO_LOGO_WRITER_DATABASE_URL }}
+      FAREJO_LOGO_S3_ENDPOINT: ${{ secrets.FAREJO_LOGO_S3_ENDPOINT }}
+      FAREJO_LOGO_S3_ACCESS_KEY_ID: ${{ secrets.FAREJO_LOGO_S3_ACCESS_KEY_ID }}
+      FAREJO_LOGO_S3_SECRET_ACCESS_KEY: ${{ secrets.FAREJO_LOGO_S3_SECRET_ACCESS_KEY }}
+      FAREJO_LOGO_S3_REGION: ${{ secrets.FAREJO_LOGO_S3_REGION }}
+      FAREJO_LOGO_PUBLIC_BASE_URL: ${{ secrets.FAREJO_LOGO_PUBLIC_BASE_URL }}
+      CATALOG_INVALIDATION_URL: ${{ secrets.CATALOG_INVALIDATION_URL }}
+      CATALOG_INVALIDATION_SECRET: ${{ secrets.CATALOG_INVALIDATION_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @farejo/scraper logos:ingest

@@ -10,12 +10,16 @@
     "seed": "tsx src/seed.ts",
     "bootstrap": "tsx src/bootstrap.ts",
     "curate:apply": "tsx src/curation/apply.ts",
-    "curate:propose": "tsx src/curation/proposeCandidates.ts"
+    "curate:propose": "tsx src/curation/proposeCandidates.ts",
+    "logos:ingest": "tsx src/logos/ingest.ts"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1090.0",
     "@farejo/shared": "workspace:*",
     "cheerio": "^1.0.0",
     "pg": "8.16.3",
+    "sharp": "^0.34.0",
+    "undici": "^7.0.0",
     "zod": "^3.24.0"
   },
   "devDependencies": {

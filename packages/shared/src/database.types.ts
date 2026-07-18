@@ -1,6 +1,3 @@
-// Gerado por `pnpm db:types` (supabase gen types typescript --local). Não editar à mão —
-// regenerar após qualquer migration em supabase/migrations.
-
 export type Json =
   | string
   | number
@@ -338,22 +335,43 @@ export type Database = {
       }
       store_logo_sources: {
         Row: {
+          content_hash: string | null
+          height: number | null
           last_seen_at: string
           platform_id: string
+          rejection_reason: string | null
           store_id: number
           url: string
+          verified_at: string | null
+          verified_status: string | null
+          verified_url: string | null
+          width: number | null
         }
         Insert: {
+          content_hash?: string | null
+          height?: number | null
           last_seen_at: string
           platform_id: string
+          rejection_reason?: string | null
           store_id: number
           url: string
+          verified_at?: string | null
+          verified_status?: string | null
+          verified_url?: string | null
+          width?: number | null
         }
         Update: {
+          content_hash?: string | null
+          height?: number | null
           last_seen_at?: string
           platform_id?: string
+          rejection_reason?: string | null
           store_id?: number
           url?: string
+          verified_at?: string | null
+          verified_status?: string | null
+          verified_url?: string | null
+          width?: number | null
         }
         Relationships: [
           {
@@ -366,6 +384,32 @@ export type Database = {
           {
             foreignKeyName: "store_logo_sources_store_id_fkey"
             columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      store_slug_redirects: {
+        Row: {
+          created_at: string
+          from_slug: string
+          to_store_id: number
+        }
+        Insert: {
+          created_at?: string
+          from_slug: string
+          to_store_id: number
+        }
+        Update: {
+          created_at?: string
+          from_slug?: string
+          to_store_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "store_slug_redirects_to_store_id_fkey"
+            columns: ["to_store_id"]
             isOneToOne: false
             referencedRelation: "stores"
             referencedColumns: ["id"]
