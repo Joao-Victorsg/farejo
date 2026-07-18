@@ -1,4 +1,9 @@
 import { Pool } from "pg";
+import { z } from "zod";
+
+const LogoWriterEnvironment = z.object({
+  FAREJO_LOGO_WRITER_DATABASE_URL: z.string().min(1),
+});
 
 let pool: Pool | undefined;
 
@@ -10,9 +15,7 @@ let pool: Pool | undefined;
 export function getLogoWriterPool(): Pool {
   if (pool) return pool;
 
-  const connectionString = process.env.FAREJO_LOGO_WRITER_DATABASE_URL;
-  if (!connectionString) throw new Error("FAREJO_LOGO_WRITER_DATABASE_URL is not configured");
-
-  pool = new Pool({ connectionString, max: 1 });
+  const { FAREJO_LOGO_WRITER_DATABASE_URL } = LogoWriterEnvironment.parse(process.env);
+  pool = new Pool({ connectionString: FAREJO_LOGO_WRITER_DATABASE_URL, max: 1 });
   return pool;
 }

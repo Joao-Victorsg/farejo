@@ -294,6 +294,20 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
     const store = await fetchStore(storeId);
     expect(store.logo_hash).toBe("previous-hash"); // ponteiro anterior nunca foi tocado
     expect(store.logo_url).toBe("https://example.test/previous.webp");
+
+    // O diagnóstico de verificação NÃO foi persistido (de propósito — ver processStore): a
+    // fonte continua com verified_url divergente de url, então a loja segue candidata e o
+    // próximo run tenta de novo, em vez de ficar presa achando que já processou.
+    const source = await fetchSource(storeId, "zoom");
+    expect(source.verified_url).toBeNull();
+
+    const retryCandidates = await selectCandidateStores(writerPool, { storeIds: [storeId] });
+    expect(retryCandidates.map((c) => c.storeId)).toContain(storeId);
+
+    const retryResult = await processStore(writerPool, storage, retryCandidates[0]!, fetchOptions);
+    expect(retryResult.changed).toBe(true);
+    const storeAfterRetry = await fetchStore(storeId);
+    expect(storeAfterRetry.logo_hash).toBe(expected.contentHash);
   });
 
   it("does not re-upload or invalidate the catalog when re-verification yields byte-identical content (content-based dedup)", async () => {

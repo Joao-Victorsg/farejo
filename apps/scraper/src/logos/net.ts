@@ -48,7 +48,9 @@ function stripBrackets(hostname: string): string {
 function isPublicIPv4(ip: string): boolean {
   const parts = ip.split(".").map(Number);
   if (parts.length !== 4 || parts.some((p) => !Number.isInteger(p) || p < 0 || p > 255)) return false;
-  const [a, b, c] = parts as [number, number, number, number];
+  const a = parts[0]!;
+  const b = parts[1]!;
+  const c = parts[2]!;
   if (a === 0) return false; // "esta rede" (RFC 791)
   if (a === 10) return false; // RFC 1918
   if (a === 127) return false; // loopback

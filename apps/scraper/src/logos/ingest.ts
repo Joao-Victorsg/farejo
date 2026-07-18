@@ -101,21 +101,29 @@ async function verifySource(source: LogoSourceRow, fetchOptions: SafeFetchOption
   }
 }
 
+function verificationColumns(outcome: SourceOutcome): {
+  status: SourceOutcome["status"];
+  reason: string | null;
+  contentHash: string | null;
+  width: number | null;
+  height: number | null;
+} {
+  switch (outcome.status) {
+    case "accepted":
+      return { status: "accepted", reason: null, contentHash: outcome.contentHash, width: outcome.width, height: outcome.height };
+    case "rejected":
+      return { status: "rejected", reason: outcome.reason, contentHash: null, width: null, height: null };
+  }
+}
+
 async function persistVerification(pool: LogoWriterPool, storeId: number, outcome: SourceOutcome): Promise<void> {
+  const columns = verificationColumns(outcome);
   await pool.query(
     `update store_logo_sources
      set verified_url = url, verified_at = now(), verified_status = $3,
          rejection_reason = $4, content_hash = $5, width = $6, height = $7
      where store_id = $1 and platform_id = $2`,
-    [
-      storeId,
-      outcome.platformId,
-      outcome.status,
-      outcome.status === "rejected" ? outcome.reason : null,
-      outcome.status === "accepted" ? outcome.contentHash : null,
-      outcome.status === "accepted" ? outcome.width : null,
-      outcome.status === "accepted" ? outcome.height : null,
-    ],
+    [storeId, outcome.platformId, columns.status, columns.reason, columns.contentHash, columns.width, columns.height],
   );
 }
 
@@ -126,11 +134,18 @@ export interface StoreResult {
 
 /**
  * Verifica TODAS as fontes da loja (não só as que mudaram — a seleção "nova/alterada" é por
- * LOJA, não por fonte: a fonte perdedora de hoje pode ganhar amanhã se uma melhor sumir), grava
- * o diagnóstico de cada uma, e só troca o ponteiro se a vencedora produzir um hash diferente do
- * logo atual — upload primeiro, ponteiro depois (ADR-0014): uma falha no upload nunca chega a
- * tocar `stores`, e uma falha no update do ponteiro (após upload OK) deixa o objeto órfão mas
- * inofensivo — o ponteiro anterior continua válido.
+ * LOJA, não por fonte: a fonte perdedora de hoje pode ganhar amanhã se uma melhor sumir), e só
+ * troca o ponteiro se a vencedora produzir um hash diferente do logo atual — upload primeiro,
+ * ponteiro depois (ADR-0014): uma falha no upload nunca chega a tocar `stores`.
+ *
+ * O diagnóstico de verificação (`persistVerification`) só é gravado DEPOIS que a parte
+ * arriscada (upload + troca de ponteiro) já terminou com sucesso — ou quando não havia nada
+ * arriscado a fazer (sem vencedor, ou vencedor já é o ponteiro atual). Se o upload ou o update
+ * do ponteiro falhar, a verificação fica de fora de propósito: gravar `verified_url = url` ali
+ * faria a loja parecer "já processada" (url == verified_url) mesmo com `stores.logo_hash`
+ * continuando desatualizado — presa para sempre, sem `selectCandidateStores` nunca mais
+ * escolhê-la de novo. Deixando a verificação por gravar, a loja continua candidata e o próximo
+ * run tenta tudo de novo.
  */
 export async function processStore(
   pool: LogoWriterPool,
@@ -139,24 +154,23 @@ export async function processStore(
   fetchOptions: SafeFetchOptions = {},
 ): Promise<StoreResult> {
   const outcomes = await Promise.all(store.sources.map((source) => verifySource(source, fetchOptions)));
-  for (const outcome of outcomes) {
-    await persistVerification(pool, store.storeId, outcome);
-  }
 
   const accepted = outcomes.filter((o): o is Extract<SourceOutcome, { status: "accepted" }> => o.status === "accepted");
   const winner = pickBestLogoSource(accepted.map((a) => ({ platformId: a.platformId, width: a.width, height: a.height })));
-  if (!winner) return { storeId: store.storeId, changed: false };
+  const winningOutcome = winner ? accepted.find((a) => a.platformId === winner.platformId)! : null;
 
-  const winningOutcome = accepted.find((a) => a.platformId === winner.platformId)!;
-  if (winningOutcome.contentHash === store.logoHash) return { storeId: store.storeId, changed: false };
+  if (winningOutcome && winningOutcome.contentHash !== store.logoHash) {
+    const key = logoObjectKey(store.storeId, winningOutcome.contentHash);
+    await storage.upload(key, winningOutcome.webp);
+    const publicUrl = storage.publicUrlFor(key);
+    await pool.query("update stores set logo_url = $2, logo_hash = $3 where id = $1", [store.storeId, publicUrl, winningOutcome.contentHash]);
 
-  const key = logoObjectKey(store.storeId, winningOutcome.contentHash);
-  await storage.upload(key, winningOutcome.webp);
-  const publicUrl = storage.publicUrlFor(key);
+    for (const outcome of outcomes) await persistVerification(pool, store.storeId, outcome);
+    return { storeId: store.storeId, changed: true };
+  }
 
-  await pool.query("update stores set logo_url = $2, logo_hash = $3 where id = $1", [store.storeId, publicUrl, winningOutcome.contentHash]);
-
-  return { storeId: store.storeId, changed: true };
+  for (const outcome of outcomes) await persistVerification(pool, store.storeId, outcome);
+  return { storeId: store.storeId, changed: false };
 }
 
 export interface IngestSummary {
