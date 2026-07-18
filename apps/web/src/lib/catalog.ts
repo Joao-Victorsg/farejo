@@ -58,6 +58,8 @@ const StoreDetailRow = z.object({
 
 const StoreSlugRow = z.object({ slug: z.string() });
 
+const StoreRedirectRow = z.object({ to_slug: z.string() });
+
 const PlatformStatsRow = z.object({
   platform_id: z.string(),
   platform_name: z.string(),
@@ -344,6 +346,23 @@ const getCachedStoreDetail = unstable_cache(getStoreDetailUncached, ["catalog-st
 
 export async function getStoreDetail(slug: string): Promise<StoreDetail | null> {
   return getCachedStoreDetail(slug);
+}
+
+async function getStoreRedirectUncached(slug: string): Promise<string | null> {
+  const database = getPool();
+  const result = await database.query("select to_slug from web_read.store_redirects where from_slug = $1", [slug]);
+  const redirect = StoreRedirectRow.nullable().parse(result.rows[0] ?? null);
+  return redirect?.to_slug ?? null;
+}
+
+const getCachedStoreRedirect = unstable_cache(getStoreRedirectUncached, ["catalog-store-redirect-v1"], {
+  tags: [CATALOG_CACHE_TAG],
+  revalidate: CATALOG_CACHE_TTL_SECONDS,
+});
+
+/** Slug absorvido por um merge de aliases (F3/T12, ADR-0006) — redirect permanente pro canônico. */
+export async function getStoreRedirect(slug: string): Promise<string | null> {
+  return getCachedStoreRedirect(slug);
 }
 
 async function getEligibleStoreSlugsUncached() {

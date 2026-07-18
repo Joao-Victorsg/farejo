@@ -7,8 +7,10 @@ const MAX_BODY_BYTES = 4 * 1024;
 const MAX_EVENT_AGE_MS = 5 * 60 * 1_000;
 
 const InvalidationEvent = z.object({
-  platform_id: z.enum(["inter", "meliuz", "cuponomia", "mycashback", "zoom"]),
-  run_id: z.number().int().positive(),
+  // "curation" (F3/T12, #58): aplicação do manifesto de aliases também invalida o catálogo
+  // quando muda estado público, mas não tem scrape_runs.id nem plataforma associada.
+  platform_id: z.enum(["inter", "meliuz", "cuponomia", "mycashback", "zoom", "curation"]),
+  run_id: z.number().int().nonnegative(),
   timestamp: z.number().int().nonnegative(),
 });
 

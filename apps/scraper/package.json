@@ -8,17 +8,20 @@
     "scrape": "tsx src/index.ts",
     "summary": "tsx src/summary.ts",
     "seed": "tsx src/seed.ts",
-    "bootstrap": "tsx src/bootstrap.ts"
+    "bootstrap": "tsx src/bootstrap.ts",
+    "curate:apply": "tsx src/curation/apply.ts"
   },
   "dependencies": {
     "@farejo/shared": "workspace:*",
     "cheerio": "^1.0.0",
+    "pg": "8.16.3",
     "zod": "^3.24.0"
   },
   "devDependencies": {
     "@farejo/test-fixtures": "workspace:*",
     "@total-typescript/shoehorn": "^0.1.0",
     "@types/node": "^22.0.0",
+    "@types/pg": "8.15.5",
     "dotenv": "^16.4.0",
     "tsx": "^4.19.0",
     "typescript": "^5.7.0",

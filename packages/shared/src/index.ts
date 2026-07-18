@@ -10,3 +10,5 @@ export { evaluateSanity, SANITY_THRESHOLDS } from "./sanity.js";
 export type { RunScopeLabel, SanityActual, SanityBaseline, SanityTrip, SanityVerdict } from "./sanity.js";
 export { nextThrottleMultiplier, THROTTLE_THRESHOLDS } from "./throttle.js";
 export type { ThrottleMultiplier, ThrottleRunOutcome } from "./throttle.js";
+export { AliasManifestSchema, AliasMergeDecisionSchema, AliasRefSchema, AliasRejectDecisionSchema, parseAliasManifest, validateManifestInvariants } from "./curation.js";
+export type { AliasManifest, AliasMergeDecision, AliasRef, AliasRejectDecision, ManifestInvariantViolation } from "./curation.js";
