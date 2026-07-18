@@ -9,7 +9,8 @@
     "summary": "tsx src/summary.ts",
     "seed": "tsx src/seed.ts",
     "bootstrap": "tsx src/bootstrap.ts",
-    "curate:apply": "tsx src/curation/apply.ts"
+    "curate:apply": "tsx src/curation/apply.ts",
+    "curate:propose": "tsx src/curation/proposeCandidates.ts"
   },
   "dependencies": {
     "@farejo/shared": "workspace:*",

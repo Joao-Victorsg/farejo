@@ -4,11 +4,29 @@ export { createClient } from "./db.js";
 export type { Database, Tables, TablesInsert, TablesUpdate } from "./database.types.js";
 export { ParseError, parseReward } from "./reward.js";
 export type { Reward } from "./reward.js";
-export { l2Key } from "./normalize.js";
+export { l2Key, l3Key } from "./normalize.js";
+export { levenshteinDistance, levenshteinRatio } from "./similarity.js";
 export { RetryableError, NotFoundError, CircuitBreakerError } from "./errors.js";
 export { evaluateSanity, SANITY_THRESHOLDS } from "./sanity.js";
 export type { RunScopeLabel, SanityActual, SanityBaseline, SanityTrip, SanityVerdict } from "./sanity.js";
 export { nextThrottleMultiplier, THROTTLE_THRESHOLDS } from "./throttle.js";
 export type { ThrottleMultiplier, ThrottleRunOutcome } from "./throttle.js";
-export { AliasManifestSchema, AliasMergeDecisionSchema, AliasRefSchema, AliasRejectDecisionSchema, parseAliasManifest, validateManifestInvariants } from "./curation.js";
-export type { AliasManifest, AliasMergeDecision, AliasRef, AliasRejectDecision, ManifestInvariantViolation } from "./curation.js";
+export {
+  AliasManifestSchema,
+  AliasMergeDecisionSchema,
+  AliasRefSchema,
+  AliasRejectDecisionSchema,
+  generateAliasCandidates,
+  parseAliasManifest,
+  validateManifestInvariants,
+} from "./curation.js";
+export type {
+  AliasCandidate,
+  AliasCandidateSignal,
+  AliasManifest,
+  AliasMergeDecision,
+  AliasRef,
+  AliasRejectDecision,
+  CanonicalStoreView,
+  ManifestInvariantViolation,
+} from "./curation.js";

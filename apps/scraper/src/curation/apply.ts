@@ -34,11 +34,25 @@ export async function applyManifest(manifestPath?: string): Promise<DecisionOutc
       const row = result.rows[0];
       const reason = row?.reason;
       const kind = reason === "merged" || reason === "noop" || reason === "canonical_not_found" ? reason : "error";
-      outcomes.push(
-        kind === "error"
-          ? { canonicalSlug: merge.canonicalSlug, kind, message: `resposta inesperada de apply_alias_merge: ${JSON.stringify(row)}` }
-          : { canonicalSlug: merge.canonicalSlug, kind },
-      );
+
+      if (kind === "error") {
+        outcomes.push({ canonicalSlug: merge.canonicalSlug, kind, message: `resposta inesperada de apply_alias_merge: ${JSON.stringify(row)}` });
+        continue;
+      }
+      if (kind === "canonical_not_found") {
+        outcomes.push({ canonicalSlug: merge.canonicalSlug, kind });
+        continue;
+      }
+
+      // ADR-0035 passo 4: verificação pós-apply independente, além do outcome que a
+      // própria apply_alias_merge devolveu — ver curation.verify_alias_merge.
+      const verified = await pool.query<{ verify_alias_merge: boolean }>("select curation.verify_alias_merge($1, $2)", [merge.canonicalSlug, JSON.stringify(merge.aliases)]);
+      if (verified.rows[0]?.verify_alias_merge !== true) {
+        outcomes.push({ canonicalSlug: merge.canonicalSlug, kind: "error", message: "estado materializado não corresponde ao manifesto após o apply (drift detectado por verify_alias_merge)" });
+        continue;
+      }
+
+      outcomes.push({ canonicalSlug: merge.canonicalSlug, kind });
     } catch (error) {
       outcomes.push({ canonicalSlug: merge.canonicalSlug, kind: "error", message: error instanceof Error ? error.message : String(error) });
     }

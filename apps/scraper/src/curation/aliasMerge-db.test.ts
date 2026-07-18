@@ -69,6 +69,16 @@ async function applyMerge(canonicalSlug: string, aliases: { platformId: string; 
   }
 }
 
+async function verifyMerge(canonicalSlug: string, aliases: { platformId: string; rawName: string }[]) {
+  await client.query("set role farejo_curation");
+  try {
+    const result = await client.query<{ verify_alias_merge: boolean }>("select curation.verify_alias_merge($1, $2)", [canonicalSlug, JSON.stringify(aliases)]);
+    return result.rows[0]?.verify_alias_merge;
+  } finally {
+    await client.query("reset role");
+  }
+}
+
 beforeAll(async () => {
   await client.connect();
 });
@@ -224,5 +234,44 @@ describe("curation.apply_alias_merge", () => {
     await expect(
       client.query("select has_function_privilege('farejo_curation', 'curation.apply_alias_merge(text, jsonb)', 'execute') as can_apply"),
     ).resolves.toMatchObject({ rows: [{ can_apply: true }] });
+  });
+});
+
+describe("curation.verify_alias_merge (F3/T13, #59, ADR-0035 passo 4)", () => {
+  it("returns true right after a successful apply — materialized state matches the manifest decision", async () => {
+    const canonical = await createStore(`${fixturePrefix}verify-canonical`, "Verify Canonical");
+    const absorbed = await createStore(`${fixturePrefix}verify-absorbed`, "Verify Absorbed");
+    await createAlias("meliuz", "Verify Canonical Raw", canonical.id);
+    await createAlias("cuponomia", "Verify Absorbed Raw", absorbed.id);
+
+    const aliases = [
+      { platformId: "meliuz", rawName: "Verify Canonical Raw" },
+      { platformId: "cuponomia", rawName: "Verify Absorbed Raw" },
+    ];
+    await applyMerge(canonical.slug, aliases);
+
+    await expect(verifyMerge(canonical.slug, aliases)).resolves.toBe(true);
+  });
+
+  it("returns true (nothing to verify yet) when the canonical store hasn't been scraped — same semantics as canonical_not_found", async () => {
+    await expect(verifyMerge(`${fixturePrefix}verify-never-scraped`, [{ platformId: "meliuz", rawName: "Whatever" }])).resolves.toBe(true);
+  });
+
+  it("returns false when an alias in the decision does not resolve to the canonical store (drift)", async () => {
+    const canonical = await createStore(`${fixturePrefix}verify-drift-canonical`, "Verify Drift Canonical");
+    const elsewhere = await createStore(`${fixturePrefix}verify-drift-elsewhere`, "Verify Drift Elsewhere");
+    // Alias nunca foi movido pro canônico (apply nunca rodou pra esse par) — a decisão do
+    // manifesto e o estado materializado divergem de propósito, simulando drift real.
+    await createAlias("cuponomia", "Verify Drift Raw", elsewhere.id);
+
+    await expect(
+      verifyMerge(canonical.slug, [{ platformId: "cuponomia", rawName: "Verify Drift Raw" }]),
+    ).resolves.toBe(false);
+  });
+
+  it("lets farejo_curation execute the verification but not read operational tables directly", async () => {
+    await expect(
+      client.query("select has_function_privilege('farejo_curation', 'curation.verify_alias_merge(text, jsonb)', 'execute') as can_verify"),
+    ).resolves.toMatchObject({ rows: [{ can_verify: true }] });
   });
 });

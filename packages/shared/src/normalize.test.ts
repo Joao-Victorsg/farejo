@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { l2Key } from "./normalize.js";
+import { l2Key, l3Key } from "./normalize.js";
 
 describe("l2Key", () => {
   it("lowercases", () => {
@@ -62,5 +62,26 @@ describe("l2Key", () => {
     expect(l2Key("Nike Store")).toBe("nikestore");
     expect(l2Key("Loja Oficial Nike")).toBe("lojaoficialnike");
     expect(l2Key("Nike BR")).toBe("nikebr");
+  });
+});
+
+describe("l3Key", () => {
+  it("strips decorator words that l2Key keeps", () => {
+    expect(l3Key("Nike Store")).toBe("nike");
+    expect(l3Key("Loja Oficial Nike")).toBe("nike");
+    expect(l3Key("Nike BR")).toBe("nike");
+  });
+
+  it("collapses a decorator-only difference to the same key", () => {
+    expect(l3Key("Clinique")).toBe(l3Key("Clinique Brasil"));
+    expect(l3Key("Umbro")).toBe(l3Key("Umbro Store"));
+  });
+
+  it("falls back to the full token list when every token is a decorator", () => {
+    expect(l3Key("Loja Oficial")).toBe("lojaoficial");
+  });
+
+  it("still differs for genuinely different brands", () => {
+    expect(l3Key("Nike")).not.toBe(l3Key("Adidas"));
   });
 });

@@ -1,0 +1,36 @@
+name: Apply alias curation
+
+# F3/T13 (#59, ADR-0035): o merge de um PR que altera o manifesto é a autorização humana.
+# Esta Action projeta a decisão já revisada no Supabase — não há um segundo disparo manual
+# obrigatório. workflow_dispatch existe só para repetição/recuperação operacional excepcional.
+on:
+  push:
+    branches: [master]
+    paths:
+      - curation/aliases-manifest.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: curation-apply
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      FAREJO_CURATION_DATABASE_URL: ${{ secrets.FAREJO_CURATION_DATABASE_URL }}
+      CATALOG_INVALIDATION_URL: ${{ secrets.CATALOG_INVALIDATION_URL }}
+      CATALOG_INVALIDATION_SECRET: ${{ secrets.CATALOG_INVALIDATION_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @farejo/scraper curate:apply

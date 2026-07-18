@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { AliasManifestSchema, parseAliasManifest, validateManifestInvariants, type AliasManifest, type AliasRef } from "./curation.js";
+import {
+  AliasManifestSchema,
+  generateAliasCandidates,
+  parseAliasManifest,
+  validateManifestInvariants,
+  type AliasManifest,
+  type AliasRef,
+  type CanonicalStoreView,
+} from "./curation.js";
 
 const alias = (platformId: string, rawName: string): AliasRef => ({ platformId, rawName });
 
@@ -116,5 +124,109 @@ describe("validateManifestInvariants", () => {
       rejects: [{ a: alias("meliuz", "Fast Shop"), b: alias("cuponomia", "Nike Brasil") }],
     };
     expect(validateManifestInvariants(manifest)).toEqual([]);
+  });
+});
+
+const store = (canonicalSlug: string, name: string, aliases: AliasRef[]): CanonicalStoreView => ({ canonicalSlug, name, aliases });
+
+describe("generateAliasCandidates", () => {
+  it("proposes a decorator-only pair as l3_exact with similarity 1", () => {
+    const clinique = store("clinique", "Clinique", [alias("inter", "Clinique")]);
+    const cliniqueBrasil = store("cliniquebrasil", "Clinique Brasil", [alias("cuponomia", "Clinique Brasil")]);
+
+    const candidates = generateAliasCandidates([clinique, cliniqueBrasil], emptyManifest);
+
+    expect(candidates).toEqual([
+      expect.objectContaining({
+        signal: "l3_exact",
+        similarity: 1,
+        normalizedKeyA: "clinique",
+        normalizedKeyB: "clinique",
+      }),
+    ]);
+  });
+
+  it("proposes a near-typo pair as levenshtein with the slugs as normalized keys", () => {
+    const tanara = store("tanara", "Tanara", [alias("inter", "Tanara")]);
+    const tanaraBrasil = store("tanarabrasil", "Tanara Brasil", [alias("cuponomia", "Tanara Brasil")]);
+
+    const candidates = generateAliasCandidates([tanara, tanaraBrasil], emptyManifest);
+
+    // "tanara" x "tanarabrasil" também bate o sinal l3_exact (mesmo l3Key) — o par
+    // aparece uma única vez no resultado, não duplicado por sinal.
+    expect(candidates).toHaveLength(1);
+    expect(candidates[0]?.signal).toBe("l3_exact");
+  });
+
+  it("does not propose two unrelated brands", () => {
+    const nike = store("nike", "Nike", [alias("inter", "Nike")]);
+    const adidas = store("adidas", "Adidas", [alias("inter", "Adidas")]);
+
+    expect(generateAliasCandidates([nike, adidas], emptyManifest)).toEqual([]);
+  });
+
+  it("suppresses a pair already rejected in the manifest (falso positivo rejeitado)", () => {
+    const nike = store("nike", "Nike", [alias("inter", "Nike")]);
+    const nikeStore = store("nikestore", "Nike Store", [alias("cuponomia", "Nike Store")]);
+    const manifest: AliasManifest = {
+      version: 1,
+      merges: [],
+      rejects: [{ a: alias("inter", "Nike"), b: alias("cuponomia", "Nike Store") }],
+    };
+
+    expect(generateAliasCandidates([nike, nikeStore], manifest)).toEqual([]);
+  });
+
+  it("does not re-propose a pair already covered by a pending merge decision", () => {
+    const umbro = store("umbro", "Umbro", [alias("inter", "Umbro")]);
+    const umbroStore = store("umbrostore", "Umbro Store", [alias("cuponomia", "Umbro Store")]);
+    const manifest: AliasManifest = {
+      version: 1,
+      merges: [{ canonicalSlug: "umbro", aliases: [alias("inter", "Umbro"), alias("cuponomia", "Umbro Store")] }],
+      rejects: [],
+    };
+
+    expect(generateAliasCandidates([umbro, umbroStore], manifest)).toEqual([]);
+  });
+
+  it("does not propose two single-alias stores from the same platform (a site never lists the same store twice)", () => {
+    const a = store("nike", "Nike", [alias("cuponomia", "Nike")]);
+    const b = store("nikestore", "Nike Store", [alias("cuponomia", "Nike Store")]);
+
+    expect(generateAliasCandidates([a, b], emptyManifest)).toEqual([]);
+  });
+
+  it("carries every alias of an already-merged (transitive) cluster as evidence on the candidate", () => {
+    // brinox já é o resultado de um merge transitivo aplicado anteriormente (brinox ~
+    // brinoxshop ~ lojaoficialbrinox): a store canônica traz aliases das 3 plataformas.
+    const brinox = store("brinox", "Brinox", [
+      alias("inter", "Brinox"),
+      alias("zoom", "BrinoxShop"),
+      alias("meliuz", "Loja Oficial Brinox"),
+    ]);
+    const brinoxx = store("brinoxoficial", "Brinox Oficial", [alias("cuponomia", "Brinox Oficial")]);
+
+    const candidates = generateAliasCandidates([brinox, brinoxx], emptyManifest);
+
+    expect(candidates).toHaveLength(1);
+    expect(candidates[0]?.storeA.aliases).toHaveLength(3);
+    expect(candidates[0]?.storeA.aliases).toEqual(
+      expect.arrayContaining([alias("inter", "Brinox"), alias("zoom", "BrinoxShop"), alias("meliuz", "Loja Oficial Brinox")]),
+    );
+  });
+
+  it("is deterministic: same input, same output, same order, across repeated calls", () => {
+    const stores = [
+      store("clinique", "Clinique", [alias("inter", "Clinique")]),
+      store("cliniquebrasil", "Clinique Brasil", [alias("cuponomia", "Clinique Brasil")]),
+      store("umbro", "Umbro", [alias("inter", "Umbro")]),
+      store("umbrostore", "Umbro Store", [alias("zoom", "Umbro Store")]),
+      store("tanara", "Tanara", [alias("mycashback", "Tanara")]),
+    ];
+
+    const first = generateAliasCandidates(stores, emptyManifest);
+    const second = generateAliasCandidates([...stores].reverse(), emptyManifest);
+
+    expect(first).toEqual(second);
   });
 });
