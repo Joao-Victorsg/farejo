@@ -4,6 +4,12 @@ import { createCatalogInvalidator } from "../catalogInvalidation.js";
 import { getCurationPool } from "./curationDb.js";
 import { loadAliasManifest } from "./manifest.js";
 
+/**
+ * `merged`/`noop`/`canonical_not_found` são desfechos estruturalmente esperados (a loja
+ * canônica pode simplesmente não ter sido raspada ainda). `error` é sempre uma exceção real
+ * do Postgres (ex.: conflito de ofertas na mesma plataforma) capturada aqui só para não
+ * abortar as demais decisões — nunca confundir os dois: `error` é falha, os outros três não.
+ */
 export type DecisionOutcome =
   | { canonicalSlug: string; kind: "merged" | "noop" | "canonical_not_found" }
   | { canonicalSlug: string; kind: "error"; message: string };
