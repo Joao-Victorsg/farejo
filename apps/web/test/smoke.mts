@@ -190,6 +190,23 @@ try {
     assert.doesNotMatch(await bundle.text(), /FAREJO_WEB_DATABASE_URL|FAREJO_CATALOG_INVALIDATION_SECRET|postgresql:\/\/|@supabase\/supabase-js/);
   }
 
+  // Issue56: `/plataformas` lê o mesmo web_read via getPlatformStats(). mycashback nunca
+  // recebe oferta nas fixtures acima, então cobre o estado "sem lojas elegíveis" de uma
+  // plataforma isolada (distinto da anomalia de todas zeradas).
+  const platformsHtml = await (await fetch(`${baseUrl}/plataformas`)).text();
+  assert.match(platformsHtml, /<h1[^>]*>Plataformas de cashback<\/h1>/);
+  assert.match(platformsHtml, /Méliuz/);
+  assert.match(platformsHtml, /Cuponomia/);
+  assert.match(platformsHtml, /MyCashback/);
+  assert.match(platformsHtml, /Zoom/);
+  assert.match(platformsHtml, /Shopping Inter/);
+  assert.match(platformsHtml, /em \d+ lojas/);
+  assert.match(platformsHtml, /Ainda sem lojas elegíveis/);
+  assert.match(platformsHtml, /PARA CORRENTISTAS/);
+  assert.match(platformsHtml, /média por loja/);
+  assert.match(platformsHtml, /pico anunciado/);
+  assert.doesNotMatch(platformsHtml, /FAREJO_WEB_DATABASE_URL|FAREJO_CATALOG_INVALIDATION_SECRET|postgresql:\/\//);
+
   const pageOne = await (await fetch(`${baseUrl}/?page=1`)).text();
   assert.match(pageOne, /http-equiv="refresh" content="1;url=\/"/);
   const explicitDefaultSort = await (await fetch(`${baseUrl}/?sort=platforms`)).text();
