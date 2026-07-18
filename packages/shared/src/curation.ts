@@ -1,0 +1,82 @@
+import { z } from "zod";
+
+/**
+ * Manifesto de curadoria de aliases (ADR-0006): decisões humanas versionadas no Git,
+ * identificadas por plataforma + nome cru + slug canônico — nunca por `stores.id`, que
+ * pode variar entre ambientes. `merge` associa nomes crus a uma loja canônica explícita;
+ * `reject` memoriza que um par já foi revisado e não deve ser reproposto pelo fuzzy/IA.
+ */
+export const AliasRefSchema = z.object({
+  platformId: z.string().min(1),
+  rawName: z.string().min(1),
+});
+export type AliasRef = z.infer<typeof AliasRefSchema>;
+
+export const AliasMergeDecisionSchema = z.object({
+  canonicalSlug: z.string().min(1),
+  aliases: z.array(AliasRefSchema).min(1),
+});
+export type AliasMergeDecision = z.infer<typeof AliasMergeDecisionSchema>;
+
+export const AliasRejectDecisionSchema = z.object({
+  a: AliasRefSchema,
+  b: AliasRefSchema,
+});
+export type AliasRejectDecision = z.infer<typeof AliasRejectDecisionSchema>;
+
+export const AliasManifestSchema = z.object({
+  version: z.literal(1),
+  merges: z.array(AliasMergeDecisionSchema).default([]),
+  rejects: z.array(AliasRejectDecisionSchema).default([]),
+});
+export type AliasManifest = z.infer<typeof AliasManifestSchema>;
+
+export function parseAliasManifest(json: unknown): AliasManifest {
+  return AliasManifestSchema.parse(json);
+}
+
+export type ManifestInvariantViolation =
+  | { kind: "duplicate_canonical_slug"; canonicalSlug: string }
+  | { kind: "duplicate_alias_claim"; alias: AliasRef; canonicalSlugs: [string, string] }
+  | { kind: "reject_merge_contradiction"; pair: [AliasRef, AliasRef]; canonicalSlug: string };
+
+function aliasKey(ref: AliasRef): string {
+  return `${ref.platformId} ${ref.rawName}`;
+}
+
+/**
+ * Invariantes checáveis só a partir do texto do manifesto, sem consultar o Postgres —
+ * a checagem que precisa do estado real (ex.: duas ofertas da mesma plataforma após o
+ * merge) é responsabilidade de `curation.apply_alias_merge`, não desta função.
+ */
+export function validateManifestInvariants(manifest: AliasManifest): ManifestInvariantViolation[] {
+  const violations: ManifestInvariantViolation[] = [];
+  const claimedBy = new Map<string, { alias: AliasRef; canonicalSlug: string }>();
+  const seenCanonicalSlugs = new Set<string>();
+
+  for (const merge of manifest.merges) {
+    if (seenCanonicalSlugs.has(merge.canonicalSlug)) {
+      violations.push({ kind: "duplicate_canonical_slug", canonicalSlug: merge.canonicalSlug });
+    }
+    seenCanonicalSlugs.add(merge.canonicalSlug);
+
+    for (const alias of merge.aliases) {
+      const key = aliasKey(alias);
+      const existing = claimedBy.get(key);
+      if (existing && existing.canonicalSlug !== merge.canonicalSlug) {
+        violations.push({ kind: "duplicate_alias_claim", alias, canonicalSlugs: [existing.canonicalSlug, merge.canonicalSlug] });
+      }
+      claimedBy.set(key, { alias, canonicalSlug: merge.canonicalSlug });
+    }
+  }
+
+  for (const reject of manifest.rejects) {
+    const claimA = claimedBy.get(aliasKey(reject.a));
+    const claimB = claimedBy.get(aliasKey(reject.b));
+    if (claimA && claimB && claimA.canonicalSlug === claimB.canonicalSlug) {
+      violations.push({ kind: "reject_merge_contradiction", pair: [reject.a, reject.b], canonicalSlug: claimA.canonicalSlug });
+    }
+  }
+
+  return violations;
+}

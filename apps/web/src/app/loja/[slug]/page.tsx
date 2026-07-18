@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { PageFrame } from "@/components/page-frame";
 import { StoreHistory } from "@/components/store-history";
 import { StoreRanking } from "@/components/store-ranking";
-import { getStoreDetail } from "@/lib/catalog";
+import { getStoreDetail, getStoreRedirect } from "@/lib/catalog";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const dynamic = "force-dynamic";
@@ -20,6 +20,8 @@ function storeHref(slug: string) {
 
 export async function generateMetadata({ params }: StorePageProps): Promise<Metadata> {
   const { slug } = await params;
+  const redirectSlug = await getStoreRedirect(slug);
+  if (redirectSlug) permanentRedirect(`/loja/${encodeURIComponent(redirectSlug)}`);
   const store = await getStoreDetail(slug);
   if (!store) notFound();
 
@@ -35,6 +37,8 @@ export async function generateMetadata({ params }: StorePageProps): Promise<Meta
 
 export default async function StorePage({ params }: StorePageProps) {
   const { slug } = await params;
+  const redirectSlug = await getStoreRedirect(slug);
+  if (redirectSlug) permanentRedirect(`/loja/${encodeURIComponent(redirectSlug)}`);
   const store = await getStoreDetail(slug);
   if (!store) notFound();
 

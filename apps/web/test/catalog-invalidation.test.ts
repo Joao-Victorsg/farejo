@@ -77,6 +77,14 @@ describe("POST /api/internal/catalog-invalidation", () => {
     expect(revalidateTag).not.toHaveBeenCalled();
   });
 
+  it("accepts a curation invalidation event with run_id 0 (F3/T12, no scrape_runs.id)", async () => {
+    const body = JSON.stringify({ platform_id: "curation", run_id: 0, timestamp: now });
+    const response = await POST(signedRequest(body));
+
+    expect(response.status).toBe(204);
+    expect(revalidateTag).toHaveBeenCalledWith("catalog", { expire: 0 });
+  });
+
   it("accepts a replay inside the short validity window as an idempotent invalidation", async () => {
     const body = payload();
     const requestOne = signedRequest(body);
