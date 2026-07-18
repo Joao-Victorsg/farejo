@@ -24,6 +24,8 @@ export interface PreparedOfferRow {
   previous_reward_type: Reward["type"] | null;
   previous_value: number | null;
   previous_raw_text: string | null;
+  /** F3/T11 (#57, ADR-0038): fonte de logo observada nesta leitura; ausente não apaga a anterior. */
+  logo_url: string | null;
 }
 
 /**
@@ -130,6 +132,7 @@ export async function prepareOffers(
       previous_reward_type: previous?.type ?? null,
       previous_value: previous?.value ?? null,
       previous_raw_text: previousRawText,
+      logo_url: rawOffer.logoUrl ?? null,
     });
 
     return storeId;

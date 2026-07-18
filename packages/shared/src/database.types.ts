@@ -1,6 +1,3 @@
-// Gerado por `pnpm db:types` (supabase gen types typescript --local). Não editar à mão —
-// regenerar após qualquer migration em supabase/migrations.
-
 export type Json =
   | string
   | number
@@ -169,6 +166,9 @@ export type Database = {
           is_upto: boolean | null
           last_seen_at: string
           platform_id: string
+          previous_raw_text: string | null
+          previous_reward_type: string | null
+          previous_value: number | null
           raw_text: string
           reward_type: string
           store_id: number
@@ -182,6 +182,9 @@ export type Database = {
           is_upto?: boolean | null
           last_seen_at: string
           platform_id: string
+          previous_raw_text?: string | null
+          previous_reward_type?: string | null
+          previous_value?: number | null
           raw_text: string
           reward_type: string
           store_id: number
@@ -195,6 +198,9 @@ export type Database = {
           is_upto?: boolean | null
           last_seen_at?: string
           platform_id?: string
+          previous_raw_text?: string | null
+          previous_reward_type?: string | null
+          previous_value?: number | null
           raw_text?: string
           reward_type?: string
           store_id?: number
@@ -320,6 +326,42 @@ export type Database = {
           },
           {
             foreignKeyName: "store_aliases_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      store_logo_sources: {
+        Row: {
+          last_seen_at: string
+          platform_id: string
+          store_id: number
+          url: string
+        }
+        Insert: {
+          last_seen_at: string
+          platform_id: string
+          store_id: number
+          url: string
+        }
+        Update: {
+          last_seen_at?: string
+          platform_id?: string
+          store_id?: number
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "store_logo_sources_platform_id_fkey"
+            columns: ["platform_id"]
+            isOneToOne: false
+            referencedRelation: "platforms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "store_logo_sources_store_id_fkey"
             columns: ["store_id"]
             isOneToOne: false
             referencedRelation: "stores"

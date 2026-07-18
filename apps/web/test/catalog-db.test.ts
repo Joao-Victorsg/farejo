@@ -120,25 +120,48 @@ describe("web_read catalog", () => {
       offers: boolean;
       scrape_runs: boolean;
       crawl_state: boolean;
+      store_logo_sources: boolean;
       pipeline_write_offers: boolean;
     }>(
       `select
         has_table_privilege('farejo_web', 'public.offers', 'select') as offers,
         has_table_privilege('farejo_web', 'public.scrape_runs', 'select') as scrape_runs,
         has_table_privilege('farejo_web', 'public.crawl_state', 'select') as crawl_state,
+        has_table_privilege('farejo_web', 'public.store_logo_sources', 'select') as store_logo_sources,
         has_function_privilege('farejo_web', procedures.oid, 'execute') as pipeline_write_offers
        from pg_proc as procedures
        join pg_namespace as namespaces on namespaces.oid = procedures.pronamespace
        where namespaces.nspname = 'public'
          and procedures.proname = 'pipeline_write_offers'`,
     );
-    expect(privileges.rows).toEqual([{ offers: false, scrape_runs: false, crawl_state: false, pipeline_write_offers: false }]);
+    expect(privileges.rows).toEqual([
+      { offers: false, scrape_runs: false, crawl_state: false, store_logo_sources: false, pipeline_write_offers: false },
+    ]);
+
+    // F3/T11 (#57, ADR-0038): store_logo_sources é alcançável só por service_role —
+    // nenhuma outra role do produto (nem farejo_web_read_owner, dona de web_read) recebe grant.
+    const logoSourcesPrivileges = await client.query<{
+      service_role: boolean;
+      farejo_web_read_owner: boolean;
+      anon: boolean;
+      authenticated: boolean;
+    }>(
+      `select
+        has_table_privilege('service_role', 'public.store_logo_sources', 'select') as service_role,
+        has_table_privilege('farejo_web_read_owner', 'public.store_logo_sources', 'select') as farejo_web_read_owner,
+        has_table_privilege('anon', 'public.store_logo_sources', 'select') as anon,
+        has_table_privilege('authenticated', 'public.store_logo_sources', 'select') as authenticated`,
+    );
+    expect(logoSourcesPrivileges.rows).toEqual([
+      { service_role: true, farejo_web_read_owner: false, anon: false, authenticated: false },
+    ]);
 
     await client.query("set role farejo_web");
     try {
       const catalog = await client.query("select slug, platform_count from web_read.catalog_stores where slug = $1", [`${fixturePrefix}00`]);
       expect(catalog.rows).toHaveLength(1);
       await expect(client.query("select * from public.offers")).rejects.toThrow(/permission denied/i);
+      await expect(client.query("select * from public.store_logo_sources")).rejects.toThrow(/permission denied/i);
     } finally {
       await client.query("reset role");
     }
@@ -147,6 +170,7 @@ describe("web_read catalog", () => {
       await client.query(`set role ${roleName}`);
       try {
         await expect(client.query("select * from web_read.catalog_stores")).rejects.toThrow(/permission denied/i);
+        await expect(client.query("select * from public.store_logo_sources")).rejects.toThrow(/permission denied/i);
       } finally {
         await client.query("reset role");
       }

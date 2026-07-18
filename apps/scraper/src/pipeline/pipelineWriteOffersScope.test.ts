@@ -24,6 +24,7 @@ function row(storeId: number, rawText: string, extra: Partial<PreparedOfferRow> 
     previous_reward_type: null,
     previous_value: null,
     previous_raw_text: null,
+    logo_url: null,
     ...extra,
   };
 }
