@@ -37,6 +37,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      activation_metrics: {
+        Row: {
+          activations: number
+          day: string
+          platform_id: string
+          store_id: number
+        }
+        Insert: {
+          activations?: number
+          day?: string
+          platform_id: string
+          store_id: number
+        }
+        Update: {
+          activations?: number
+          day?: string
+          platform_id?: string
+          store_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activation_metrics_platform_id_fkey"
+            columns: ["platform_id"]
+            isOneToOne: false
+            referencedRelation: "platforms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activation_metrics_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       crawl_state: {
         Row: {
           last_checked_at: string | null
@@ -88,6 +124,7 @@ export type Database = {
           reward_type: string
           store_id: number
           value: number | null
+          value_partial: number | null
         }
         Insert: {
           changed_at?: string
@@ -97,6 +134,7 @@ export type Database = {
           reward_type: string
           store_id: number
           value?: number | null
+          value_partial?: number | null
         }
         Update: {
           changed_at?: string
@@ -106,6 +144,7 @@ export type Database = {
           reward_type?: string
           store_id?: number
           value?: number | null
+          value_partial?: number | null
         }
         Relationships: [
           {

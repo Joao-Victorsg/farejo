@@ -1,6 +1,6 @@
 import type { CatalogOffer } from "./catalog";
 
-const INTER_PLATFORM_ID = "inter";
+export const INTER_PLATFORM_ID = "inter";
 
 export function isInterCorrentistaOffer(offer: CatalogOffer) {
   return offer.platformId === INTER_PLATFORM_ID && offer.reward.type === "percent" && offer.reward.valuePartial !== null;

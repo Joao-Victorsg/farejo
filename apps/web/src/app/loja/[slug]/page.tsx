@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { PageFrame } from "@/components/page-frame";
+import { StoreHistory } from "@/components/store-history";
 import { StoreRanking } from "@/components/store-ranking";
 import { getStoreDetail } from "@/lib/catalog";
 import { getSiteUrl } from "@/lib/site-url";
@@ -59,6 +60,7 @@ export default async function StorePage({ params }: StorePageProps) {
           ) : (
             <StoreRanking store={store} />
           )}
+          <StoreHistory store={store} />
         </section>
       </main>
     </PageFrame>

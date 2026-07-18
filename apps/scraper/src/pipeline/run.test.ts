@@ -177,7 +177,7 @@ describe("runPipeline (Postgres local)", () => {
     expect(history!.map((h) => h.value)).toEqual([4, null, 9]);
   });
 
-  it("stores value_partial as a plain number, outside the history table", async () => {
+  it("stores value_partial as a plain number, and mirrors it into the history table (ADR-0011/#54)", async () => {
     const runStartedAt = new Date("2026-07-06T03:00:00Z");
     const storeName = "Partial T8 Run";
 
@@ -199,11 +199,11 @@ describe("runPipeline (Postgres local)", () => {
 
     const { data: history } = await client
       .from("offer_history")
-      .select("*")
+      .select("value_partial")
       .eq("store_id", storeId)
       .eq("platform_id", PLATFORM_ID)
       .single();
-    expect(history).not.toHaveProperty("value_partial");
+    expect(history!.value_partial).toBe(4.9);
   });
 
   it("counts a zod-invalid raw offer as a parse error instead of crashing", async () => {
