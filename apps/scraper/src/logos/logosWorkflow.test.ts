@@ -1,0 +1,31 @@
+import { readFile } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { describe, expect, it } from "vitest";
+
+const WORKFLOW_PATH = resolve(dirname(fileURLToPath(import.meta.url)), "../../../../.github/workflows/logos.yml");
+
+describe("logos workflow (F3/T15, #61, ADR-0042)", () => {
+  it("never touches service_role, farejo_web or curation secrets", async () => {
+    const workflow = await readFile(WORKFLOW_PATH, "utf8");
+
+    expect(workflow).not.toMatch(/SUPABASE_SERVICE_ROLE_KEY/);
+    expect(workflow).not.toMatch(/FAREJO_CURATION_DATABASE_URL/);
+    expect(workflow).not.toMatch(/FAREJO_WEB/);
+  });
+
+  it("uses a dedicated database role and S3 credential, separate from the rest of the pipeline", async () => {
+    const workflow = await readFile(WORKFLOW_PATH, "utf8");
+
+    expect(workflow).toMatch(/FAREJO_LOGO_WRITER_DATABASE_URL/);
+    expect(workflow).toMatch(/FAREJO_LOGO_S3_ACCESS_KEY_ID/);
+    expect(workflow).toMatch(/FAREJO_LOGO_S3_SECRET_ACCESS_KEY/);
+  });
+
+  it("runs after a successful scrape and offers a manual recovery trigger", async () => {
+    const workflow = await readFile(WORKFLOW_PATH, "utf8");
+
+    expect(workflow).toMatch(/workflows:\s*\[Scrape cashback\]/);
+    expect(workflow).toMatch(/workflow_dispatch:/);
+  });
+});
