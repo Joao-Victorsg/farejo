@@ -48,6 +48,14 @@ async function expectHeading(page: import("@playwright/test").Page, name: string
   await page.getByRole("heading", { name, level: 1 }).waitFor();
 }
 
+async function waitForSwitchState(switchLocator: import("@playwright/test").Locator, expected: "true" | "false") {
+  for (let attempt = 0; attempt < 40; attempt += 1) {
+    if ((await switchLocator.getAttribute("aria-checked")) === expected) return;
+    await wait(250);
+  }
+  throw new Error(`Switch did not reach aria-checked="${expected}"`);
+}
+
 async function cleanFixtures() {
   await client.query("delete from public.store_aliases where store_id in (select id from public.stores where slug like $1)", [`${fixturePrefix}%`]);
   await client.query("delete from public.activation_metrics where store_id in (select id from public.stores where slug like $1)", [`${fixturePrefix}%`]);
@@ -115,6 +123,20 @@ if (!aliasStore) throw new Error("Alias fixture store was not inserted");
 await client.query(
   "insert into public.store_aliases (platform_id, raw_name, store_id) values ('meliuz', 'Nome alternativo da loja', $1)",
   [aliasStore.id],
+);
+const { rows: toggleStoreRows } = await client.query<{ id: number }>(
+  "insert into public.stores (slug, name) values ($1, $2) returning id",
+  [`${fixturePrefix}toggle`, "Loja real alterna correntista"],
+);
+const toggleStore = toggleStoreRows[0];
+if (!toggleStore) throw new Error("Toggle fixture store was not inserted");
+await client.query(
+  `insert into public.offers (store_id, platform_id, reward_type, value, value_partial, raw_text, url, active, last_seen_at) values
+    ($1, 'inter', 'percent', 10, 2, '10%', 'https://outside.example.test/inter-toggle', true, now()),
+    ($1, 'meliuz', 'percent', 8, null, '8%', 'https://outside.example.test/meliuz-toggle', true, now()),
+    ($1, 'cuponomia', 'percent', 6, null, '6%', 'https://outside.example.test/cuponomia-toggle', true, now()),
+    ($1, 'zoom', 'percent', 4, null, '4%', 'https://outside.example.test/zoom-toggle', true, now())`,
+  [toggleStore.id],
 );
 
 await run(pnpm, ["build"]);
@@ -273,6 +295,88 @@ try {
   await page.locator("#catalog-sort").selectOption("cashback");
   await page.getByRole("button", { name: "Buscar" }).click();
   await page.waitForURL(/\?q=Nome\+alternativo\+da\+loja&sort=cashback$/);
+
+  await page.goto(baseUrl);
+  const interSwitch = page.getByRole("switch", { name: "Sou correntista Inter" });
+  await interSwitch.waitFor();
+  assert.equal(await interSwitch.getAttribute("aria-checked"), "true");
+  const toggleCardLink = page.getByRole("link", { name: "Ver ofertas de Loja real alterna correntista" });
+  const toggleCard = page.locator("article", { has: toggleCardLink });
+  await toggleCard.waitFor();
+  let toggleCardText = await toggleCard.innerText();
+  assert.match(toggleCardText, /Shopping Inter/);
+  assert.match(toggleCardText, /MELHOR/);
+  assert.doesNotMatch(toggleCardText, /Zoom/);
+  assert.match(toggleCardText, /\+1 outra plataforma/);
+  assert.ok(toggleCardText.indexOf("Shopping Inter") < toggleCardText.indexOf("Méliuz"));
+  const unaffectedCardTextBeforeToggle = await page.locator("article", { has: page.getByRole("link", { name: "Ver ofertas de Loja real sem logo 01" }) }).innerText();
+  assert.match(unaffectedCardTextBeforeToggle, /5%/);
+
+  await interSwitch.click();
+  await waitForSwitchState(interSwitch, "false");
+  toggleCardText = await toggleCard.innerText();
+  assert.match(toggleCardText, /Méliuz/);
+  assert.match(toggleCardText, /MELHOR/);
+  assert.doesNotMatch(toggleCardText, /Shopping Inter/);
+  assert.match(toggleCardText, /\+1 outra plataforma/);
+  assert.ok(toggleCardText.indexOf("Méliuz") < toggleCardText.indexOf("Cuponomia"));
+  assert.ok(toggleCardText.indexOf("Cuponomia") < toggleCardText.indexOf("Zoom"));
+  const unaffectedCardTextAfterToggle = await page.locator("article", { has: page.getByRole("link", { name: "Ver ofertas de Loja real sem logo 01" }) }).innerText();
+  assert.equal(unaffectedCardTextBeforeToggle, unaffectedCardTextAfterToggle);
+
+  await page.reload();
+  await interSwitch.waitFor();
+  assert.equal(await interSwitch.getAttribute("aria-checked"), "false");
+  toggleCardText = await toggleCard.innerText();
+  assert.match(toggleCardText, /Méliuz/);
+  assert.doesNotMatch(toggleCardText, /Shopping Inter/);
+
+  await toggleCardLink.click();
+  await page.waitForURL(`${baseUrl}/loja/${fixturePrefix}toggle`);
+  await expectHeading(page, "Loja real alterna correntista");
+  const detailSwitch = page.getByRole("switch", { name: "Sou correntista Inter" });
+  await detailSwitch.waitFor();
+  assert.equal(await detailSwitch.getAttribute("aria-checked"), "false");
+  const rankingItems = page.locator(`ol[aria-label="Ranking de cashback de Loja real alterna correntista"] li`);
+  let firstItemText = await rankingItems.first().innerText();
+  assert.match(firstItemText, /Méliuz/);
+  assert.match(firstItemText, /MELHOR/);
+  let interRowText = await rankingItems.filter({ hasText: "Shopping Inter" }).innerText();
+  assert.match(interRowText, /TAXA NÃO CORRENTISTA/);
+  assert.match(interRowText, /2%/);
+
+  await detailSwitch.click();
+  await waitForSwitchState(detailSwitch, "true");
+  firstItemText = await rankingItems.first().innerText();
+  assert.match(firstItemText, /Shopping Inter/);
+  assert.match(firstItemText, /MELHOR/);
+  interRowText = await rankingItems.filter({ hasText: "Shopping Inter" }).innerText();
+  assert.match(interRowText, /TAXA CORRENTISTA/);
+  assert.doesNotMatch(interRowText, /NÃO CORRENTISTA/);
+  assert.match(interRowText, /10%/);
+
+  await page.getByRole("link", { name: "Voltar para todas as lojas" }).click();
+  await page.waitForURL(`${baseUrl}/#catalogo`);
+  await interSwitch.waitFor();
+  assert.equal(await interSwitch.getAttribute("aria-checked"), "true");
+  toggleCardText = await toggleCard.innerText();
+  assert.match(toggleCardText, /Shopping Inter/);
+  assert.match(toggleCardText, /MELHOR/);
+
+  const freshContext = await browser.newContext();
+  try {
+    const freshPage = await freshContext.newPage();
+    await freshPage.goto(baseUrl);
+    const freshSwitch = freshPage.getByRole("switch", { name: "Sou correntista Inter" });
+    await freshSwitch.waitFor();
+    assert.equal(await freshSwitch.getAttribute("aria-checked"), "true");
+    const freshCardText = await freshPage.locator("article", { has: freshPage.getByRole("link", { name: "Ver ofertas de Loja real alterna correntista" }) }).innerText();
+    assert.match(freshCardText, /Shopping Inter/);
+    assert.match(freshCardText, /MELHOR/);
+  } finally {
+    await freshContext.close();
+  }
+
   await page.goto(baseUrl);
   await page.getByRole("link", { name: "Pular para o conteúdo" }).focus();
   await page.keyboard.press("Enter");

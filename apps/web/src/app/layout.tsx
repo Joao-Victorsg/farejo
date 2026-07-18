@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@fontsource-variable/hanken-grotesk";
 import "@fontsource-variable/space-grotesk";
 import "./globals.css";
+import { InterPreferenceProvider } from "@/lib/inter-preference";
 import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
@@ -11,5 +12,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="pt-BR"><body><a className="skip-link" href="#conteudo">Pular para o conteúdo</a>{children}</body></html>;
+  return <html lang="pt-BR"><body><a className="skip-link" href="#conteudo">Pular para o conteúdo</a><InterPreferenceProvider>{children}</InterPreferenceProvider></body></html>;
 }
