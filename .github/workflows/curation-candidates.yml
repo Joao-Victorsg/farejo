@@ -1,0 +1,61 @@
+name: Propose alias candidates
+
+# F3/T13 (#59, ADR-0006/ADR-0039): heurísticas (L3/Levenshtein) e IA best-effort geram só
+# CANDIDATOS. Esta Action nunca escreve no Supabase e nunca mergea sozinha — ela só
+# abre/atualiza um pull request propondo merge/reject no manifesto; a revisão e o merge
+# humano continuam sendo a única autorização (curation-apply.yml projeta depois no banco).
+# Sem cron: disparo manual, quando o mantenedor quiser revisar novos candidatos.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: curation-candidates
+  cancel-in-progress: false
+
+jobs:
+  propose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Generate candidates
+        run: pnpm --filter @farejo/scraper curate:propose
+
+      - name: Open or update the review pull request
+        run: |
+          set -euo pipefail
+          BRANCH="curation/auto-candidates"
+
+          if git status --porcelain -- curation/aliases-manifest.json | grep -q .; then
+            git config user.name "farejo-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git checkout -B "$BRANCH"
+            git add curation/aliases-manifest.json curation/candidates-report.md
+            git commit -m "curation: candidatos automáticos de alias (T13, #59)"
+            git push --force-with-lease origin "$BRANCH"
+
+            if gh pr view "$BRANCH" --json state --jq .state 2>/dev/null | grep -q OPEN; then
+              gh pr edit "$BRANCH" --body-file curation/candidates-report.md
+            else
+              gh pr create --base master --head "$BRANCH" \
+                --title "Curadoria: candidatos de alias propostos automaticamente" \
+                --body-file curation/candidates-report.md
+            fi
+          else
+            echo "Nenhuma proposta nova — manifesto sem alteração."
+          fi

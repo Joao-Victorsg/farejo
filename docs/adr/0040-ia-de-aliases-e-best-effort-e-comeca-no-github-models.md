@@ -1,5 +1,14 @@
 # IA de aliases é best-effort e começa no GitHub Models
 
+> **Atualização (18/07/2026, F3/T13/#59):** a GitHub anunciou em 16/06/2026 a retirada
+> completa do GitHub Models — inclusive a API de inferência — em 30/07/2026. A decisão
+> abaixo não é mais executável no primeiro provedor escolhido. O classificador foi
+> implementado atrás da interface best-effort já prevista aqui (`AliasClassifier` em
+> `apps/scraper/src/curation/aiClassifier.ts`), mas sem nenhum provedor conectado
+> (`disabledClassifier`): heurísticas determinísticas (L3/Levenshtein) continuam
+> propondo candidatos normalmente, e a escolha do próximo provedor gratuito fica para
+> quando surgir uma opção viável, sem mudar o manifesto nem a regra de aprovação humana.
+
 ## Contexto
 
 A IA pode reduzir o trabalho de revisar candidatos de alias, mas o farejô mantém custo zero e não
