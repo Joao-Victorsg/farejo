@@ -28,4 +28,19 @@ describe("logos workflow (F3/T15, #61, ADR-0042)", () => {
     expect(workflow).toMatch(/workflows:\s*\[Scrape cashback\]/);
     expect(workflow).toMatch(/workflow_dispatch:/);
   });
+
+  it("measures the 95% coverage target with its own credential, always after ingestion (F3/T16, #62, ADR-0054)", async () => {
+    const workflow = await readFile(WORKFLOW_PATH, "utf8");
+
+    expect(workflow).toMatch(/FAREJO_LOGO_COVERAGE_DATABASE_URL/);
+    expect(workflow).toMatch(/logos:coverage/);
+    expect(workflow).toMatch(
+      /if:\s*always\(\)\s*\n\s*continue-on-error:\s*true\s*\n\s*run:\s*pnpm --filter @farejo\/scraper logos:coverage/,
+    );
+
+    const ingestIndex = workflow.indexOf("logos:ingest");
+    const coverageIndex = workflow.indexOf("logos:coverage");
+    expect(ingestIndex).toBeGreaterThan(-1);
+    expect(coverageIndex).toBeGreaterThan(ingestIndex);
+  });
 });

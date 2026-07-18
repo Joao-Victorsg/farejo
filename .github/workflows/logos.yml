@@ -37,6 +37,11 @@ jobs:
       FAREJO_LOGO_PUBLIC_BASE_URL: ${{ secrets.FAREJO_LOGO_PUBLIC_BASE_URL }}
       CATALOG_INVALIDATION_URL: ${{ secrets.CATALOG_INVALIDATION_URL }}
       CATALOG_INVALIDATION_SECRET: ${{ secrets.CATALOG_INVALIDATION_SECRET }}
+      # ADR-0054 (#62): credencial própria, só leitura, restrita ao agregado
+      # `web_read.logo_coverage` — nunca a mesma conexão de `farejo_logo_writer` e nunca
+      # `service_role`. Ausente = passo abaixo avisa e não falha (mesma pendência
+      # operacional já registrada para o Environment "logos").
+      FAREJO_LOGO_COVERAGE_DATABASE_URL: ${{ secrets.FAREJO_LOGO_COVERAGE_DATABASE_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -46,3 +51,11 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @farejo/scraper logos:ingest
+      # F3/T16 (#62, ADR-0043/ADR-0054): diagnóstico da meta de 95%, sempre depois da
+      # ingestão — mesmo se ela falhar, para que a cobertura continue observável — mas
+      # nunca decide o resultado do job (sem impedir o fallback visual honesto).
+      # `continue-on-error`: mesmo uma falha real do passo (não só secret ausente, ex.:
+      # banco fora do ar) fica visível no run sem derrubar o job de ingestão.
+      - if: always()
+        continue-on-error: true
+        run: pnpm --filter @farejo/scraper logos:coverage

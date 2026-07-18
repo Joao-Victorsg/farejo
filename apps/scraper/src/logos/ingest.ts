@@ -2,9 +2,9 @@ import "dotenv/config";
 import { pathToFileURL } from "node:url";
 import { pickBestLogoSource } from "@farejo/shared";
 import { createCatalogInvalidator, type CatalogInvalidator } from "../catalogInvalidation.js";
-import { normalizeLogoImage } from "./image.js";
+import { InvalidImageError, normalizeLogoImage } from "./image.js";
 import { getLogoWriterPool } from "./logoWriterDb.js";
-import { safeFetchBytes, type SafeFetchOptions } from "./net.js";
+import { DownloadTooLargeError, safeFetchBytes, UnsafeUrlError, type SafeFetchOptions } from "./net.js";
 import { createLogoStorage, logoObjectKey, type LogoStorage } from "./storage.js";
 
 /**
@@ -82,7 +82,21 @@ export async function selectCandidateStores(pool: LogoWriterPool, options: Selec
 
 type SourceOutcome =
   | { platformId: string; status: "accepted"; width: number; height: number; contentHash: string; webp: Buffer }
-  | { platformId: string; status: "rejected"; reason: string };
+  | { platformId: string; status: "rejected"; reason: string; errorClass: RejectionClass };
+
+/**
+ * Classe do diagnóstico privado por falha (F3/T16/#62): nunca sai do log/console da Action
+ * (`store_logo_sources.rejection_reason` já guarda a mensagem completa) — aqui é só um rótulo
+ * agregável para o resumo do run, sem URL nem stack trace.
+ */
+export type RejectionClass = "unsafe_url" | "download_too_large" | "invalid_image" | "network_or_http";
+
+function classifyRejection(error: unknown): RejectionClass {
+  if (error instanceof UnsafeUrlError) return "unsafe_url";
+  if (error instanceof DownloadTooLargeError) return "download_too_large";
+  if (error instanceof InvalidImageError) return "invalid_image";
+  return "network_or_http";
+}
 
 async function verifySource(source: LogoSourceRow, fetchOptions: SafeFetchOptions): Promise<SourceOutcome> {
   try {
@@ -97,7 +111,12 @@ async function verifySource(source: LogoSourceRow, fetchOptions: SafeFetchOption
       webp: normalized.webp,
     };
   } catch (error) {
-    return { platformId: source.platformId, status: "rejected", reason: error instanceof Error ? error.message : String(error) };
+    return {
+      platformId: source.platformId,
+      status: "rejected",
+      reason: error instanceof Error ? error.message : String(error),
+      errorClass: classifyRejection(error),
+    };
   }
 }
 
@@ -130,6 +149,9 @@ async function persistVerification(pool: LogoWriterPool, storeId: number, outcom
 export interface StoreResult {
   storeId: number;
   changed: boolean;
+  /** Falso quando a loja termina o run sem nenhum logo final — segue no fallback visual. */
+  hasFinalLogo: boolean;
+  rejections: Array<{ platformId: string; errorClass: RejectionClass }>;
 }
 
 /**
@@ -156,6 +178,9 @@ export async function processStore(
   const outcomes = await Promise.all(store.sources.map((source) => verifySource(source, fetchOptions)));
 
   const accepted = outcomes.filter((o): o is Extract<SourceOutcome, { status: "accepted" }> => o.status === "accepted");
+  const rejections = outcomes
+    .filter((o): o is Extract<SourceOutcome, { status: "rejected" }> => o.status === "rejected")
+    .map((o) => ({ platformId: o.platformId, errorClass: o.errorClass }));
   const winner = pickBestLogoSource(accepted.map((a) => ({ platformId: a.platformId, width: a.width, height: a.height })));
   const winningOutcome = winner ? accepted.find((a) => a.platformId === winner.platformId)! : null;
 
@@ -166,17 +191,22 @@ export async function processStore(
     await pool.query("update stores set logo_url = $2, logo_hash = $3 where id = $1", [store.storeId, publicUrl, winningOutcome.contentHash]);
 
     for (const outcome of outcomes) await persistVerification(pool, store.storeId, outcome);
-    return { storeId: store.storeId, changed: true };
+    return { storeId: store.storeId, changed: true, hasFinalLogo: true, rejections };
   }
 
   for (const outcome of outcomes) await persistVerification(pool, store.storeId, outcome);
-  return { storeId: store.storeId, changed: false };
+  const hasFinalLogo = winningOutcome !== null || store.logoHash !== null;
+  return { storeId: store.storeId, changed: false, hasFinalLogo, rejections };
 }
 
 export interface IngestSummary {
   storesConsidered: number;
   storesChanged: number;
   storesFailed: number;
+  /** Candidatas que terminaram o run ainda sem logo final — seguem no avatar de fallback. */
+  storesFallback: number;
+  /** Diagnóstico privado por classe de falha (F3/T16/#62) — só contagens, nunca URL/reason cru. */
+  rejectionsByClass: Record<RejectionClass, number>;
   errors: Array<{ storeId: number; message: string }>;
 }
 
@@ -196,12 +226,21 @@ export async function ingestLogos(
   const candidates = await selectCandidateStores(pool, selectOptions);
   let changed = 0;
   let failed = 0;
+  let fallback = 0;
+  const rejectionsByClass: IngestSummary["rejectionsByClass"] = {
+    unsafe_url: 0,
+    download_too_large: 0,
+    invalid_image: 0,
+    network_or_http: 0,
+  };
   const errors: IngestSummary["errors"] = [];
 
   for (const store of candidates) {
     try {
       const result = await processStore(pool, storage, store, fetchOptions);
       if (result.changed) changed++;
+      if (!result.hasFinalLogo) fallback++;
+      for (const rejection of result.rejections) rejectionsByClass[rejection.errorClass]++;
     } catch (error) {
       failed++;
       errors.push({ storeId: store.storeId, message: error instanceof Error ? error.message : String(error) });
@@ -212,7 +251,7 @@ export async function ingestLogos(
     await invalidateCatalog({ platformId: "logos", runId: 0, timestamp: new Date() });
   }
 
-  return { storesConsidered: candidates.length, storesChanged: changed, storesFailed: failed, errors };
+  return { storesConsidered: candidates.length, storesChanged: changed, storesFailed: failed, storesFallback: fallback, rejectionsByClass, errors };
 }
 
 async function main(): Promise<void> {
@@ -220,7 +259,14 @@ async function main(): Promise<void> {
   const storage = createLogoStorage();
   const summary = await ingestLogos(pool, storage, createCatalogInvalidator());
 
-  console.log(`[logos] ${summary.storesConsidered} candidatas, ${summary.storesChanged} atualizadas, ${summary.storesFailed} falharam`);
+  console.log(
+    `[logos] ${summary.storesConsidered} candidatas, ${summary.storesChanged} atualizadas, ${summary.storesFailed} falharam, ${summary.storesFallback} seguem no fallback visual`,
+  );
+  const rejectionBreakdown = Object.entries(summary.rejectionsByClass)
+    .filter(([, count]) => count > 0)
+    .map(([errorClass, count]) => `${errorClass}=${count}`)
+    .join(", ");
+  if (rejectionBreakdown) console.log(`[logos] fontes rejeitadas por classe: ${rejectionBreakdown}`);
   for (const err of summary.errors) {
     console.error(`[logos] loja ${err.storeId}: ${err.message}`);
   }
