@@ -1,7 +1,6 @@
 import "dotenv/config";
 import { pathToFileURL } from "node:url";
 import { pickBestLogoSource } from "@farejo/shared";
-import type { Pool } from "pg";
 import { createCatalogInvalidator, type CatalogInvalidator } from "../catalogInvalidation.js";
 import { normalizeLogoImage } from "./image.js";
 import { getLogoWriterPool } from "./logoWriterDb.js";
@@ -205,7 +204,7 @@ export async function ingestLogos(
 async function main(): Promise<void> {
   const pool = getLogoWriterPool();
   const storage = createLogoStorage();
-  const summary = await ingestLogos(pool as unknown as Pool, storage, createCatalogInvalidator());
+  const summary = await ingestLogos(pool, storage, createCatalogInvalidator());
 
   console.log(`[logos] ${summary.storesConsidered} candidatas, ${summary.storesChanged} atualizadas, ${summary.storesFailed} falharam`);
   for (const err of summary.errors) {

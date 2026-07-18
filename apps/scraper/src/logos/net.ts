@@ -1,6 +1,6 @@
 import dns from "node:dns/promises";
 import net from "node:net";
-import { Agent, fetch as undiciFetch } from "undici";
+import { Agent, fetch as undiciFetch, type Response as UndiciResponse } from "undici";
 
 /**
  * SSRF-safe download (F3/T15/#61, ADR-0014). Toda fonte de logo é uma URL descoberta em
@@ -119,7 +119,7 @@ export async function resolveValidatedAddress(hostname: string): Promise<Validat
   return { address: chosen.address, family: chosen.family === 6 ? 6 : 4 };
 }
 
-async function readBoundedBody(response: Response, maxBytes: number): Promise<Buffer> {
+async function readBoundedBody(response: UndiciResponse, maxBytes: number): Promise<Buffer> {
   const reader = response.body?.getReader();
   if (!reader) return Buffer.alloc(0);
 
@@ -185,7 +185,7 @@ export async function safeFetchBytes(url: string, options: SafeFetchOptions = {}
         throw new DownloadTooLargeError(`Content-Length ${contentLength} excede o limite de ${maxBytes} bytes`);
       }
 
-      const bytes = await readBoundedBody(response as unknown as Response, maxBytes);
+      const bytes = await readBoundedBody(response, maxBytes);
       return { bytes, contentType: response.headers.get("content-type"), finalUrl: currentUrl };
     } finally {
       // `destroy` (não `close`): o agent é de uso único por hop — `close` esperaria a
