@@ -249,6 +249,8 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
     const result = await processStore(writerPool, storage, candidate!, fetchOptions);
 
     expect(result.changed).toBe(false);
+    expect(result.hasFinalLogo).toBe(false);
+    expect(result.rejections).toEqual([{ platformId: "meliuz", errorClass: "invalid_image" }]);
     const store = await fetchStore(storeId);
     expect(store.logo_url).toBeNull();
     expect(store.logo_hash).toBeNull();
@@ -267,6 +269,8 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
     const result = await processStore(writerPool, storage, candidate!, fetchOptions);
 
     expect(result.changed).toBe(false);
+    expect(result.hasFinalLogo).toBe(false);
+    expect(result.rejections).toEqual([{ platformId: "inter", errorClass: "unsafe_url" }]);
     const store = await fetchStore(storeId);
     expect(store.logo_url).toBeNull();
 
@@ -350,5 +354,47 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
 
     expect(summary.storesChanged).toBe(0);
     expect(invalidations).toBe(0);
+  });
+
+  it("reports an empty, no-op summary when there are no candidate stores to process (F3/T16/#62)", async () => {
+    let invalidations = 0;
+    const summary = await ingestLogos(writerPool, storage, async () => void invalidations++, fetchOptions, { storeIds: [] });
+
+    expect(summary).toEqual({
+      storesConsidered: 0,
+      storesChanged: 0,
+      storesFailed: 0,
+      storesFallback: 0,
+      rejectionsByClass: { unsafe_url: 0, download_too_large: 0, invalid_image: 0, network_or_http: 0 },
+      errors: [],
+    });
+    expect(invalidations).toBe(0);
+  });
+
+  it("aggregates fallback and rejection-class diagnostics across a mixed partial batch (F3/T16/#62)", async () => {
+    const succeeds = await insertStore("batch-succeeds");
+    await insertSource(succeeds, "zoom", `${baseUrl}/square-big.webp`);
+
+    const staysFallback = await insertStore("batch-fallback");
+    await insertSource(staysFallback, "meliuz", `${baseUrl}/invalid`);
+
+    const blocked = await insertStore("batch-ssrf");
+    await insertSource(blocked, "inter", "http://10.0.0.5:1/logo.png");
+
+    const summary = await ingestLogos(writerPool, storage, async () => {}, fetchOptions, {
+      storeIds: [succeeds, staysFallback, blocked],
+    });
+    trackUploads(`${succeeds}/${(await fetchStore(succeeds)).logo_hash}.webp`);
+
+    expect(summary.storesConsidered).toBe(3);
+    expect(summary.storesChanged).toBe(1);
+    expect(summary.storesFailed).toBe(0);
+    expect(summary.storesFallback).toBe(2);
+    expect(summary.rejectionsByClass).toEqual({
+      unsafe_url: 1,
+      download_too_large: 0,
+      invalid_image: 1,
+      network_or_http: 0,
+    });
   });
 });
