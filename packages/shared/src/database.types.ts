@@ -1,3 +1,6 @@
+// Gerado por `pnpm db:types` (supabase gen types typescript --local). Não editar à mão —
+// regenerar após qualquer migration em supabase/migrations.
+
 export type Json =
   | string
   | number
