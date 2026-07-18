@@ -133,6 +133,71 @@ export function composeStoreHistory(rows: StoreHistoryRow[], now: Date): StoreHi
   return result.sort((left, right) => left.platformName.localeCompare(right.platformName, "pt-BR"));
 }
 
+export interface OfferSignals {
+  isBoost: boolean;
+  typicalValue: number | null;
+  previousValue: number | null;
+  /** Sempre `null` hoje: nenhuma fonte fornece prazo explícito verdadeiro (ADR-0013). */
+  validUntil: null;
+}
+
+const BOOST_MIN_ACTIVE_DAYS = 30;
+const BOOST_MIN_ACTIVE_MS = BOOST_MIN_ACTIVE_DAYS * 24 * 60 * 60 * 1000;
+const BOOST_FACTOR = 1.3;
+
+const INSUFFICIENT_SIGNALS: OfferSignals = { isBoost: false, typicalValue: null, previousValue: null, validUntil: null };
+
+function segmentDurationMs(segment: HistorySegment): number {
+  return new Date(segment.to).getTime() - new Date(segment.from).getTime();
+}
+
+/** Mediana ponderada pela duração real de cada valor (ADR-0012) — não a mediana simples dos valores distintos. */
+function weightedMedian(items: { value: number; weightMs: number }[]): number {
+  const sorted = [...items].sort((left, right) => left.value - right.value);
+  const total = sorted.reduce((sum, item) => sum + item.weightMs, 0);
+  let cumulative = 0;
+  for (const item of sorted) {
+    cumulative += item.weightMs;
+    if (cumulative >= total / 2) return item.value;
+  }
+  return sorted.at(-1)!.value;
+}
+
+/**
+ * Deriva boost, valor típico e valor anterior de uma série já composta (ADR-0012/ADR-0013).
+ * Nunca é persistido — recalculado a cada leitura a partir dos mesmos trechos em degraus do
+ * gráfico de histórico. `series` pode conter trechos de outro `rewardType` (ex.: uma loja que
+ * trocou de `%` para `R$`); só os trechos do `current.rewardType` entram na baseline — a
+ * mediana ponderada nunca mistura escalas.
+ */
+export function deriveOfferSignals(
+  series: ComposedSeries,
+  current: { rewardType: RewardType; value: number },
+  nativePrevious: { rewardType: RewardType; value: number } | null,
+): OfferSignals {
+  const matching = series.segments.filter((segment) => segment.rewardType === current.rewardType);
+  const totalActiveMs = matching.reduce((sum, segment) => sum + segmentDurationMs(segment), 0);
+  if (totalActiveMs < BOOST_MIN_ACTIVE_MS) return INSUFFICIENT_SIGNALS;
+
+  const typicalValue = weightedMedian(matching.map((segment) => ({ value: segment.value, weightMs: segmentDurationMs(segment) })));
+  const isBoost = current.value >= typicalValue * BOOST_FACTOR;
+  if (!isBoost) return { isBoost: false, typicalValue, previousValue: null, validUntil: null };
+
+  let previousValue: number | null = null;
+  if (nativePrevious && nativePrevious.rewardType === current.rewardType) {
+    previousValue = nativePrevious.value;
+  } else {
+    const last = series.segments.at(-1);
+    const prev = series.segments.at(-2);
+    const contiguous = last && prev && new Date(prev.to).getTime() === new Date(last.from).getTime();
+    if (contiguous && last.rewardType === current.rewardType && prev.rewardType === current.rewardType) {
+      previousValue = prev.value;
+    }
+  }
+
+  return { isBoost: true, typicalValue, previousValue, validUntil: null };
+}
+
 /** Trechos de uma série, agrupados por `rewardType` — percentual e valor fixo nunca compartilham escala (ADR-0010). */
 export function groupSegmentsByRewardType(segments: HistorySegment[]): Record<RewardType, HistorySegment[]> {
   const grouped: Record<RewardType, HistorySegment[]> = { percent: [], fixed: [] };

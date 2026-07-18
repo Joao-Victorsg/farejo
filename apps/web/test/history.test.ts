@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { composeHistorySeries, composeStoreHistory, groupSegmentsByRewardType, summarizeSeries, type StoreHistoryRow } from "../src/lib/history";
+import {
+  composeHistorySeries,
+  composeStoreHistory,
+  deriveOfferSignals,
+  groupSegmentsByRewardType,
+  summarizeSeries,
+  type ComposedSeries,
+  type StoreHistoryRow,
+} from "../src/lib/history";
 
 const NOW = new Date("2026-07-18T12:00:00Z");
 const WINDOW_START = new Date("2026-05-19T12:00:00Z"); // NOW - 60d
@@ -196,5 +204,149 @@ describe("summarizeSeries", () => {
       ],
     };
     expect(summarizeSeries("Cuponomia", series)).toBe("Cuponomia: variou entre 4% e 8% nos últimos 60 dias, com 1 mudança. Valor atual: 8%.");
+  });
+});
+
+describe("deriveOfferSignals — boost, valor típico e valor anterior (ADR-0012/ADR-0013)", () => {
+  function series(segments: ComposedSeries["segments"]): ComposedSeries {
+    return { sufficient: segments.length >= 2, segments };
+  }
+
+  const DAY_MS = 24 * 60 * 60 * 1000;
+  const iso = (offsetDaysFromNow: number) => new Date(NOW.getTime() - offsetDaysFromNow * DAY_MS).toISOString();
+
+  it("shows neither boost nor typical value when active coverage is below 30 days", () => {
+    // Only 10 active days in the window — below the ADR-0012 minimum.
+    const result = deriveOfferSignals(
+      series([{ rewardType: "percent", from: iso(10), to: iso(0), value: 20 }]),
+      { rewardType: "percent", value: 20 },
+      null,
+    );
+    expect(result).toEqual({ isBoost: false, typicalValue: null, previousValue: null, validUntil: null });
+  });
+
+  it("exposes typicalValue with a sufficient baseline even when the current value does not trigger boost", () => {
+    // 45 active days, unchanged at 5% the whole time. 5 < 5 * 1.3, so no boost.
+    const result = deriveOfferSignals(
+      series([{ rewardType: "percent", from: iso(45), to: iso(0), value: 5 }]),
+      { rewardType: "percent", value: 5 },
+      null,
+    );
+    expect(result).toEqual({ isBoost: false, typicalValue: 5, previousValue: null, validUntil: null });
+  });
+
+  it("weights the median by interval duration, so a short spike never outweighs a long-standing baseline", () => {
+    // 50 days at 5%, then a 10-day spike to 50%. Naive unweighted median of {5,50} would be
+    // 27.5 — the weighted median must stay 5, driven by which value covered more real time.
+    const result = deriveOfferSignals(
+      series([
+        { rewardType: "percent", from: iso(60), to: iso(10), value: 5 },
+        { rewardType: "percent", from: iso(10), to: iso(0), value: 50 },
+      ]),
+      { rewardType: "percent", value: 50 },
+      null,
+    );
+    expect(result.typicalValue).toBe(5);
+    expect(result.isBoost).toBe(true);
+  });
+
+  it("requires the current value to reach 130% of the typical value to qualify as boost", () => {
+    const segments: ComposedSeries["segments"] = [
+      { rewardType: "percent", from: iso(40), to: iso(20), value: 5 },
+      { rewardType: "percent", from: iso(20), to: iso(0), value: 6.4 }, // just under 5 * 1.3 = 6.5
+    ];
+    const belowThreshold = deriveOfferSignals(series(segments), { rewardType: "percent", value: 6.4 }, null);
+    expect(belowThreshold.isBoost).toBe(false);
+
+    const atThreshold = deriveOfferSignals(
+      series([segments[0]!, { rewardType: "percent", from: iso(20), to: iso(0), value: 6.5 }]),
+      { rewardType: "percent", value: 6.5 },
+      null,
+    );
+    expect(atThreshold.isBoost).toBe(true);
+  });
+
+  it("only counts intervals of the current rewardType toward the 30-day minimum — percent and fixed never share a baseline", () => {
+    // 10 active percent days + 50 active fixed days: mixing them would clear 30 days, but
+    // ADR-0012 requires the coverage to come from the SAME reward_type as the current offer.
+    const result = deriveOfferSignals(
+      series([
+        { rewardType: "percent", from: iso(60), to: iso(50), value: 5 },
+        { rewardType: "fixed", from: iso(50), to: iso(0), value: 20 },
+      ]),
+      { rewardType: "percent", value: 5 },
+      null,
+    );
+    expect(result).toEqual({ isBoost: false, typicalValue: null, previousValue: null, validUntil: null });
+  });
+
+  it("prefers a valid native previous value over the historical interval, once the offer qualifies as boost", () => {
+    const result = deriveOfferSignals(
+      series([
+        { rewardType: "percent", from: iso(40), to: iso(20), value: 5 },
+        { rewardType: "percent", from: iso(20), to: iso(0), value: 10 },
+      ]),
+      { rewardType: "percent", value: 10 },
+      { rewardType: "percent", value: 7 },
+    );
+    expect(result).toMatchObject({ isBoost: true, previousValue: 7 });
+  });
+
+  it("ignores a native previous value of a different rewardType and falls back to the historical interval", () => {
+    const result = deriveOfferSignals(
+      series([
+        { rewardType: "percent", from: iso(40), to: iso(20), value: 5 },
+        { rewardType: "percent", from: iso(20), to: iso(0), value: 10 },
+      ]),
+      { rewardType: "percent", value: 10 },
+      { rewardType: "fixed", value: 20 },
+    );
+    expect(result).toMatchObject({ isBoost: true, previousValue: 5 });
+  });
+
+  it("falls back to null when the immediately preceding interval is separated by an inactivity gap", () => {
+    const result = deriveOfferSignals(
+      series([
+        { rewardType: "percent", from: iso(60), to: iso(25), value: 5 }, // ends at day 25...
+        { rewardType: "percent", from: iso(10), to: iso(0), value: 10 }, // ...but this starts at day 10: a gap
+      ]),
+      { rewardType: "percent", value: 10 },
+      null,
+    );
+    expect(result).toMatchObject({ isBoost: true, previousValue: null });
+  });
+
+  it("falls back to null when the immediately preceding interval has a different rewardType (no gap, but not comparable)", () => {
+    const result = deriveOfferSignals(
+      series([
+        { rewardType: "percent", from: iso(59), to: iso(24), value: 5 },
+        { rewardType: "fixed", from: iso(24), to: iso(23), value: 20 }, // contiguous, but a different unit
+        { rewardType: "percent", from: iso(23), to: iso(0), value: 10 },
+      ]),
+      { rewardType: "percent", value: 10 },
+      null,
+    );
+    expect(result).toMatchObject({ isBoost: true, previousValue: null });
+  });
+
+  it("never shows previousValue when the offer does not qualify as boost, even with a valid native previous", () => {
+    const result = deriveOfferSignals(
+      series([{ rewardType: "percent", from: iso(45), to: iso(0), value: 5 }]),
+      { rewardType: "percent", value: 5 },
+      { rewardType: "percent", value: 4 },
+    );
+    expect(result).toMatchObject({ isBoost: false, previousValue: null });
+  });
+
+  it("never returns a non-null validUntil — no current source provides a verifiable expiry (ADR-0013)", () => {
+    const result = deriveOfferSignals(
+      series([
+        { rewardType: "percent", from: iso(40), to: iso(20), value: 5 },
+        { rewardType: "percent", from: iso(20), to: iso(0), value: 10 },
+      ]),
+      { rewardType: "percent", value: 10 },
+      { rewardType: "percent", value: 7 },
+    );
+    expect(result.validUntil).toBeNull();
   });
 });

@@ -16,11 +16,20 @@ async function insertStore(name: string, suffix: string) {
   return { id: store.id, slug };
 }
 
-async function insertOffer(storeId: number, platformId: string, rewardType: "percent" | "fixed", value: number, options: { isUpto?: boolean; active?: boolean; hoursOld?: number } = {}) {
+async function insertOffer(
+  storeId: number,
+  platformId: string,
+  rewardType: "percent" | "fixed",
+  value: number,
+  options: { isUpto?: boolean; active?: boolean; hoursOld?: number; previousRewardType?: "percent" | "fixed"; previousValue?: number } = {},
+) {
   await client.query(
-    `insert into public.offers (store_id, platform_id, reward_type, value, is_upto, raw_text, url, active, last_seen_at)
-     values ($1, $2, $3, $4, $5, $6, $7, $8, now() - ($9::text || ' hours')::interval)`,
-    [storeId, platformId, rewardType, value, options.isUpto ?? false, `${value}`, `https://example.test/${platformId}`, options.active ?? true, String(options.hoursOld ?? 0)],
+    `insert into public.offers (store_id, platform_id, reward_type, value, is_upto, raw_text, url, active, last_seen_at, previous_reward_type, previous_value, previous_raw_text)
+     values ($1, $2, $3, $4, $5, $6, $7, $8, now() - ($9::text || ' hours')::interval, $10, $11, $12)`,
+    [
+      storeId, platformId, rewardType, value, options.isUpto ?? false, `${value}`, `https://example.test/${platformId}`, options.active ?? true, String(options.hoursOld ?? 0),
+      options.previousRewardType ?? null, options.previousValue ?? null, options.previousValue != null ? `era ${options.previousValue}` : null,
+    ],
   );
 }
 
@@ -38,6 +47,9 @@ beforeAll(async () => {
   await insertOffer(mixed.id, "inter", "percent", 3, { isUpto: true });
   await insertOffer(mixed.id, "meliuz", "percent", 5, { hoursOld: 26 });
   await insertOffer(mixed.id, "zoom", "fixed", 30);
+
+  const withPrevious = await insertStore("Issue55 Valor anterior", "previous");
+  await insertOffer(withPrevious.id, "cuponomia", "percent", 10, { previousRewardType: "percent", previousValue: 7 });
 
   const single = await insertStore("Issue51 Uma plataforma", "single");
   await insertOffer(single.id, "cuponomia", "percent", 2);
@@ -76,6 +88,20 @@ describe("web_read.store_details", () => {
     expect(result.rows.find((row) => row.platform_id === "inter")).toMatchObject({ reward_type: "percent", value: 3, is_upto: true, freshness: "fresh" });
     expect(result.rows.find((row) => row.platform_id === "meliuz")).toMatchObject({ reward_type: "percent", value: 5, freshness: "delayed" });
     expect(result.rows.every((row) => row.last_seen_at instanceof Date)).toBe(true);
+  });
+
+  it("exposes the native previous-value snapshot, or null when the platform never reported one (F3/T9/#55)", async () => {
+    const result = await client.query<{ platform_id: string; previous_reward_type: string | null; previous_value: number | null }>(
+      "select platform_id, previous_reward_type, previous_value from web_read.catalog_offers where store_slug = $1 order by platform_id",
+      [`${fixturePrefix}previous`],
+    );
+    expect(result.rows).toEqual([{ platform_id: "cuponomia", previous_reward_type: "percent", previous_value: 7 }]);
+
+    const withoutPrevious = await client.query<{ previous_reward_type: string | null; previous_value: number | null }>(
+      "select previous_reward_type, previous_value from web_read.catalog_offers where store_slug = $1 and platform_id = 'inter'",
+      [`${fixturePrefix}mixed`],
+    );
+    expect(withoutPrevious.rows).toEqual([{ previous_reward_type: null, previous_value: null }]);
   });
 
   it("lets farejo_web read detail views but never operational offers", async () => {

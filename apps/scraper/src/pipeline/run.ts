@@ -21,6 +21,9 @@ export interface PreparedOfferRow {
   is_upto: boolean;
   raw_text: string;
   url: string;
+  previous_reward_type: Reward["type"] | null;
+  previous_value: number | null;
+  previous_raw_text: string | null;
 }
 
 /**
@@ -100,6 +103,11 @@ export async function prepareOffers(
       valuePartial = partial.value;
     }
 
+    // "era 2%"/`previousCashback` é apoio de apresentação (ADR-0013), não um dado
+    // essencial da oferta: um texto que não parseia vira ausência, nunca um parse_error
+    // que descartaria a oferta inteira por causa de um snapshot acessório.
+    const previous = rawOffer.previousRewardText !== undefined ? safeParseReward(rawOffer.previousRewardText) : null;
+
     const { storeId, anomaly } = await findOrCreateStore(supabase, platformId, rawOffer.storeName);
     if (anomaly) anomalies.push(anomaly);
 
@@ -111,6 +119,9 @@ export async function prepareOffers(
       is_upto: reward.type === "percent" ? reward.isUpto : false,
       raw_text: rawOffer.rewardText,
       url: rawOffer.url,
+      previous_reward_type: previous?.type ?? null,
+      previous_value: previous?.value ?? null,
+      previous_raw_text: previous ? (rawOffer.previousRewardText as string) : null,
     });
 
     return storeId;
