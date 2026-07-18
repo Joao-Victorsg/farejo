@@ -75,6 +75,46 @@ describe("web_read.platform_stats", () => {
     expect(meliuz.percent_max_is_upto).toBe(false);
   });
 
+  it("keeps a store with offers on multiple platforms from leaking into another platform's stats", async () => {
+    const storeMulti = await insertStore("multi", "Issue56 Loja Multiplataforma");
+    await insertOffer(storeMulti.id, "meliuz", { rewardType: "percent", value: 6 });
+    await insertOffer(storeMulti.id, "zoom", { rewardType: "percent", value: 40 });
+    await insertOffer(storeMulti.id, "inter", { rewardType: "fixed", value: 25 });
+
+    const result = await client.query<PlatformStatsRow>(
+      "select platform_id, store_count, percent_avg, percent_max from web_read.platform_stats($1)",
+      [[storeMulti.slug]],
+    );
+
+    const meliuz = statFor(result.rows, "meliuz");
+    expect(meliuz.store_count).toBe(1);
+    expect(meliuz.percent_avg).toBe(6);
+    const zoom = statFor(result.rows, "zoom");
+    expect(zoom.store_count).toBe(1);
+    expect(zoom.percent_avg).toBe(40);
+    const inter = statFor(result.rows, "inter");
+    expect(inter.store_count).toBe(1);
+    expect(inter.percent_avg).toBeNull();
+    expect(inter.percent_max).toBeNull();
+    const cuponomia = statFor(result.rows, "cuponomia");
+    expect(cuponomia.store_count).toBe(0);
+  });
+
+  it("shows real coverage with a null (never zero) percent average/peak for a platform with only fixed offers", async () => {
+    const storeFixedOnly = await insertStore("mycashback-fixed", "Issue56 MyCashback Só Fixo");
+    await insertOffer(storeFixedOnly.id, "mycashback", { rewardType: "fixed", value: 50 });
+
+    const result = await client.query<PlatformStatsRow>(
+      "select platform_id, store_count, percent_avg, percent_max from web_read.platform_stats($1)",
+      [[storeFixedOnly.slug]],
+    );
+
+    const mycashback = statFor(result.rows, "mycashback");
+    expect(mycashback.store_count).toBe(1);
+    expect(mycashback.percent_avg).toBeNull();
+    expect(mycashback.percent_max).toBeNull();
+  });
+
   it("breaks a peak tie in favor of the guaranteed rate over an up-to ceiling", async () => {
     const storeF = await insertStore("cuponomia-f", "Issue56 Cuponomia F");
     const storeG = await insertStore("cuponomia-g", "Issue56 Cuponomia G");
