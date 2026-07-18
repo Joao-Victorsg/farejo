@@ -1,9 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { CatalogOffer } from "../src/lib/catalog";
-import type { OfferSignals } from "../src/lib/history";
+import { NO_OFFER_SIGNALS, type OfferSignals } from "../src/lib/history";
 import { effectiveSignals, formatPreviousValue, formatReward, isInterCorrentistaOffer, rankOffers } from "../src/lib/offer-ranking";
-
-const NO_SIGNALS: OfferSignals = { isBoost: false, typicalValue: null, previousValue: null, validUntil: null };
 
 type PlatformOverrides = { platformId?: string; platformName?: string };
 
@@ -13,7 +11,7 @@ function percentOffer(overrides: Partial<Extract<CatalogOffer["reward"], { type:
     platformName: base.platformName ?? "Méliuz",
     freshness: "fresh",
     lastSeenAt: "2026-07-18T00:00:00.000Z",
-    reward: { type: "percent", value: 5, valuePartial: null, isUpto: false, partial: null, ...NO_SIGNALS, ...overrides },
+    reward: { type: "percent", value: 5, valuePartial: null, isUpto: false, partial: null, ...NO_OFFER_SIGNALS, ...overrides },
   };
 }
 
@@ -23,7 +21,7 @@ function fixedOffer(overrides: Partial<Extract<CatalogOffer["reward"], { type: "
     platformName: "Cuponomia",
     freshness: "fresh",
     lastSeenAt: "2026-07-18T00:00:00.000Z",
-    reward: { type: "fixed", value: 20, currency: "BRL", ...NO_SIGNALS, ...overrides },
+    reward: { type: "fixed", value: 20, currency: "BRL", ...NO_OFFER_SIGNALS, ...overrides },
   };
 }
 
@@ -52,7 +50,7 @@ describe("effectiveSignals", () => {
     );
 
     // partial is null (insufficient history) — não-correntista nunca herda a leitura de correntista.
-    expect(effectiveSignals(offer, false)).toEqual(NO_SIGNALS);
+    expect(effectiveSignals(offer, false)).toEqual(NO_OFFER_SIGNALS);
   });
 });
 

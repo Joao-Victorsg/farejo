@@ -145,7 +145,8 @@ const BOOST_MIN_ACTIVE_DAYS = 30;
 const BOOST_MIN_ACTIVE_MS = BOOST_MIN_ACTIVE_DAYS * 24 * 60 * 60 * 1000;
 const BOOST_FACTOR = 1.3;
 
-const INSUFFICIENT_SIGNALS: OfferSignals = { isBoost: false, typicalValue: null, previousValue: null, validUntil: null };
+/** Nem "sem baseline" nem "modalidade parcial sem histórico próprio" viram valores sintéticos. */
+export const NO_OFFER_SIGNALS: OfferSignals = { isBoost: false, typicalValue: null, previousValue: null, validUntil: null };
 
 function segmentDurationMs(segment: HistorySegment): number {
   return new Date(segment.to).getTime() - new Date(segment.from).getTime();
@@ -177,7 +178,7 @@ export function deriveOfferSignals(
 ): OfferSignals {
   const matching = series.segments.filter((segment) => segment.rewardType === current.rewardType);
   const totalActiveMs = matching.reduce((sum, segment) => sum + segmentDurationMs(segment), 0);
-  if (totalActiveMs < BOOST_MIN_ACTIVE_MS) return INSUFFICIENT_SIGNALS;
+  if (totalActiveMs < BOOST_MIN_ACTIVE_MS) return NO_OFFER_SIGNALS;
 
   const typicalValue = weightedMedian(matching.map((segment) => ({ value: segment.value, weightMs: segmentDurationMs(segment) })));
   const isBoost = current.value >= typicalValue * BOOST_FACTOR;

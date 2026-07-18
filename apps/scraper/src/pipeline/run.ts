@@ -106,7 +106,15 @@ export async function prepareOffers(
     // "era 2%"/`previousCashback` é apoio de apresentação (ADR-0013), não um dado
     // essencial da oferta: um texto que não parseia vira ausência, nunca um parse_error
     // que descartaria a oferta inteira por causa de um snapshot acessório.
-    const previous = rawOffer.previousRewardText !== undefined ? safeParseReward(rawOffer.previousRewardText) : null;
+    let previous: Reward | null = null;
+    let previousRawText: string | null = null;
+    if (rawOffer.previousRewardText !== undefined) {
+      const parsedPrevious = safeParseReward(rawOffer.previousRewardText);
+      if (parsedPrevious) {
+        previous = parsedPrevious;
+        previousRawText = rawOffer.previousRewardText;
+      }
+    }
 
     const { storeId, anomaly } = await findOrCreateStore(supabase, platformId, rawOffer.storeName);
     if (anomaly) anomalies.push(anomaly);
@@ -121,7 +129,7 @@ export async function prepareOffers(
       url: rawOffer.url,
       previous_reward_type: previous?.type ?? null,
       previous_value: previous?.value ?? null,
-      previous_raw_text: previous ? (rawOffer.previousRewardText as string) : null,
+      previous_raw_text: previousRawText,
     });
 
     return storeId;

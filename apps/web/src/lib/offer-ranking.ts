@@ -1,5 +1,5 @@
 import type { CatalogOffer } from "./catalog";
-import type { OfferSignals } from "./history";
+import { NO_OFFER_SIGNALS, type OfferSignals } from "./history";
 
 export const INTER_PLATFORM_ID = "inter";
 
@@ -12,12 +12,10 @@ export function isInterCorrentistaOffer(offer: CatalogOffer) {
  * toggle desligado, isso é a baseline independente de `value_partial` — nunca a de `value`
  * como fallback (mesma regra de `effectiveValue`, ADR-0011).
  */
-const NO_SIGNALS: OfferSignals = { isBoost: false, typicalValue: null, previousValue: null, validUntil: null };
-
 export function effectiveSignals(offer: CatalogOffer, isCorrentista: boolean): OfferSignals {
   if (offer.reward.type === "percent" && !isCorrentista && isInterCorrentistaOffer(offer)) {
     // `partial` ausente (baseline própria insuficiente) nunca reaproveita a de correntista.
-    return offer.reward.partial ?? NO_SIGNALS;
+    return offer.reward.partial ?? NO_OFFER_SIGNALS;
   }
   return { isBoost: offer.reward.isBoost, typicalValue: offer.reward.typicalValue, previousValue: offer.reward.previousValue, validUntil: offer.reward.validUntil };
 }
