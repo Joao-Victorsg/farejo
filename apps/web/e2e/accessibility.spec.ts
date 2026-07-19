@@ -31,6 +31,9 @@ for (const route of ROUTES) {
 
 test("navegação por teclado: skip link, nav e busca sem armadilha de foco", async ({ page }) => {
   await page.goto("/");
+  // Aguarda o conteúdo real (pós-streaming do skeleton em loading.tsx) antes de exercitar o skip
+  // link — ver responsive.spec.ts para o mesmo cuidado.
+  await expect(page.locator("#catalog-search")).toBeVisible();
 
   await page.getByRole("link", { name: "Pular para o conteúdo" }).focus();
   await page.keyboard.press("Enter");

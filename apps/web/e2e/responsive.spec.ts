@@ -37,6 +37,10 @@ for (const viewport of [{ width: 640, height: 900 }, { width: 375, height: 800 }
 
     test("catálogo: sem rolagem horizontal, skip link e busca continuam operáveis", async ({ page }) => {
       await page.goto("/");
+      // Aguarda o conteúdo real (pós-streaming do skeleton em loading.tsx) antes de exercitar o
+      // skip link: focar/ativar antes disso testaria um estado transitório de Suspense, não a
+      // navegação por teclado que o usuário de fato encontra.
+      await expect(page.getByRole("link", { name: "Ver ofertas de Loja Alfa Cashback" })).toBeVisible();
       await expectNoHorizontalOverflow(page);
 
       const skipLink = page.getByRole("link", { name: "Pular para o conteúdo" });
@@ -45,7 +49,6 @@ for (const viewport of [{ width: 640, height: 900 }, { width: 375, height: 800 }
       await expect(page.locator("#conteudo")).toBeFocused();
 
       await expect(page.locator("#catalog-search")).toBeVisible();
-      await expect(page.getByRole("link", { name: "Ver ofertas de Loja Alfa Cashback" })).toBeVisible();
     });
 
     test("detalhe da loja: sem rolagem horizontal e CTA acessível", async ({ page }) => {
