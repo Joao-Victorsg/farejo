@@ -1,6 +1,7 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import {
+  checkNoLeakedSecrets,
   extractActivationLink,
   extractStoreSlugsFromSitemap,
   formatSmokeReport,
@@ -43,6 +44,29 @@ describe("signInvalidation", () => {
     const body = JSON.stringify({ platform_id: "curation", run_id: 0, timestamp: 1737331200000 });
     const expected = createHmac("sha256", secret).update(timestamp).update(body).digest("hex");
     expect(signInvalidation(secret, timestamp, body)).toBe(expected);
+  });
+});
+
+describe("checkNoLeakedSecrets", () => {
+  it("passes ordinary rendered HTML with no secret-shaped substring", () => {
+    const check = checkNoLeakedSecrets("GET / (sem segredo vazado)", "<html><body>Fast Shop — 8% de cashback</body></html>");
+    expect(check.ok).toBe(true);
+  });
+
+  it("flags a leaked database connection string", () => {
+    const check = checkNoLeakedSecrets("GET / (sem segredo vazado)", "<script>window.__ENV__={url:'postgresql://user:pw@host/db'}</script>");
+    expect(check.ok).toBe(false);
+    expect(check.detail).toContain("postgresql://");
+  });
+
+  it("flags a leaked FAREJO_*_DATABASE_URL env var name regardless of which one", () => {
+    const check = checkNoLeakedSecrets("GET / (sem segredo vazado)", "oops FAREJO_LOGO_WRITER_DATABASE_URL leaked");
+    expect(check.ok).toBe(false);
+  });
+
+  it("flags a leaked service_role mention", () => {
+    const check = checkNoLeakedSecrets("GET / (sem segredo vazado)", "service_role key exposed in a stack trace");
+    expect(check.ok).toBe(false);
   });
 });
 

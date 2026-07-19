@@ -19,6 +19,14 @@ const STORE_URL_PATTERN = /\/loja\/([^<"&]+)</;
 const ACTIVATION_HREF_PATTERN = /href="\/go\/([^/"]+)\/([^/"]+)"/;
 const SAMPLE_STORE_LOOKUPS = 10;
 const WARM_REQUESTS = 4;
+const FETCH_TIMEOUT_MS = 10_000;
+// Mesmo padrão do scan local (`test/smoke.mts`), mas contra o HTML já publicado: nenhuma
+// credencial de banco, `service_role` ou o segredo HMAC pode escapar para o bundle/HTML.
+const SECRET_LEAK_PATTERN = /FAREJO_[A-Z_]*DATABASE_URL|FAREJO_CATALOG_INVALIDATION_SECRET|service_role|postgres(?:ql)?:\/\//;
+
+function smokeFetch(url: URL, init: RequestInit = {}): Promise<Response> {
+  return fetch(url, { ...init, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+}
 
 export interface SmokeCheck {
   name: string;
@@ -53,11 +61,21 @@ async function timed<T>(run: () => Promise<T>): Promise<{ value: T; durationMs: 
   return { value, durationMs: performance.now() - startedAt };
 }
 
-async function checkPage(baseUrl: URL, path: string, expectStatus: number, mustInclude?: string): Promise<SmokeCheck> {
-  const response = await fetch(new URL(path, baseUrl));
-  const body = mustInclude ? await response.text() : "";
+export function checkNoLeakedSecrets(name: string, body: string): SmokeCheck {
+  const leaked = SECRET_LEAK_PATTERN.exec(body);
+  return { name, ok: !leaked, detail: leaked ? `padrão vazado: ${JSON.stringify(leaked[0])}` : "sem padrão de segredo no corpo" };
+}
+
+async function checkPage(baseUrl: URL, path: string, expectStatus: number, mustInclude?: string): Promise<SmokeCheck[]> {
+  const response = await smokeFetch(new URL(path, baseUrl));
+  const body = await response.text();
   const ok = response.status === expectStatus && (!mustInclude || body.includes(mustInclude));
-  return { name: `GET ${path}`, ok, detail: `status=${response.status}${mustInclude ? ` includes(${JSON.stringify(mustInclude)})=${body.includes(mustInclude)}` : ""}` };
+  const statusCheck: SmokeCheck = {
+    name: `GET ${path}`,
+    ok,
+    detail: `status=${response.status}${mustInclude ? ` includes(${JSON.stringify(mustInclude)})=${body.includes(mustInclude)}` : ""}`,
+  };
+  return [statusCheck, checkNoLeakedSecrets(`GET ${path} (sem segredo vazado)`, body)];
 }
 
 async function checkActivation(baseUrl: URL, storeSlug: string, platformId: string): Promise<{ checks: SmokeCheck[]; samplesMs: number[] }> {
@@ -65,7 +83,7 @@ async function checkActivation(baseUrl: URL, storeSlug: string, platformId: stri
   const samplesMs: number[] = [];
   const checks: SmokeCheck[] = [];
 
-  const cold = await timed(() => fetch(new URL(path, baseUrl), { redirect: "manual" }));
+  const cold = await timed(() => smokeFetch(new URL(path, baseUrl), { redirect: "manual" }));
   samplesMs.push(cold.durationMs);
   const validStatuses = new Set([307, 410, 503]);
   checks.push({
@@ -75,7 +93,7 @@ async function checkActivation(baseUrl: URL, storeSlug: string, platformId: stri
   });
 
   for (let attempt = 0; attempt < WARM_REQUESTS; attempt += 1) {
-    const warm = await timed(() => fetch(new URL(path, baseUrl), { redirect: "manual" }));
+    const warm = await timed(() => smokeFetch(new URL(path, baseUrl), { redirect: "manual" }));
     samplesMs.push(warm.durationMs);
     checks.push({
       name: `GET ${path} (warm ${attempt + 1}/${WARM_REQUESTS})`,
@@ -89,7 +107,7 @@ async function checkActivation(baseUrl: URL, storeSlug: string, platformId: stri
 
 async function checkInvalidation(baseUrl: URL, secret: string): Promise<SmokeCheck[]> {
   const url = new URL("/api/internal/catalog-invalidation", baseUrl);
-  const rejected = await fetch(url, {
+  const rejected = await smokeFetch(url, {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ platform_id: "curation", run_id: 0, timestamp: Date.now() }),
@@ -99,7 +117,7 @@ async function checkInvalidation(baseUrl: URL, secret: string): Promise<SmokeChe
   const timestamp = String(Date.now());
   const body = JSON.stringify({ platform_id: "curation", run_id: 0, timestamp: Number(timestamp) });
   const signature = signInvalidation(secret, timestamp, body);
-  const accepted = await fetch(url, {
+  const accepted = await smokeFetch(url, {
     method: "POST",
     headers: { "content-type": "application/json", "x-farejo-timestamp": timestamp, "x-farejo-signature": signature },
     body,
@@ -111,11 +129,11 @@ async function checkInvalidation(baseUrl: URL, secret: string): Promise<SmokeChe
 
 export async function runProductionSmoke(baseUrl: URL, invalidationSecret: string): Promise<{ checks: SmokeCheck[]; activationSamplesMs: number[] }> {
   const checks: SmokeCheck[] = [];
-  checks.push(await checkPage(baseUrl, "/", 200));
-  checks.push(await checkPage(baseUrl, "/?q=a", 200));
-  checks.push(await checkPage(baseUrl, "/robots.txt", 200, "Disallow: /go/"));
+  checks.push(...(await checkPage(baseUrl, "/", 200)));
+  checks.push(...(await checkPage(baseUrl, "/?q=a", 200)));
+  checks.push(...(await checkPage(baseUrl, "/robots.txt", 200, "Disallow: /go/")));
 
-  const sitemapResponse = await fetch(new URL("/sitemap.xml", baseUrl));
+  const sitemapResponse = await smokeFetch(new URL("/sitemap.xml", baseUrl));
   const sitemapXml = await sitemapResponse.text();
   checks.push({ name: "GET /sitemap.xml", ok: sitemapResponse.status === 200 && sitemapXml.includes("<urlset"), detail: `status=${sitemapResponse.status}` });
 
@@ -127,9 +145,10 @@ export async function runProductionSmoke(baseUrl: URL, invalidationSecret: strin
   } else {
     let found: { storeSlug: string; platformId: string } | null = null;
     for (const slug of storeSlugs) {
-      const detailResponse = await fetch(new URL(`/loja/${encodeURIComponent(slug)}`, baseUrl));
+      const detailResponse = await smokeFetch(new URL(`/loja/${encodeURIComponent(slug)}`, baseUrl));
       const detailHtml = await detailResponse.text();
       checks.push({ name: `GET /loja/${slug}`, ok: detailResponse.status === 200, detail: `status=${detailResponse.status}` });
+      checks.push(checkNoLeakedSecrets(`GET /loja/${slug} (sem segredo vazado)`, detailHtml));
       const link = extractActivationLink(detailHtml);
       if (link) {
         found = link;

@@ -99,9 +99,12 @@ jobs:
       - name: Verify production schema
         run: pnpm --filter @farejo/web verify:schema
 
-      # ADR-0041 passo 4: publica exatamente o artefato já construído e validado acima — a
-      # Vercel não faz um segundo build divergente. `vercel pull`/`build` leem VERCEL_ORG_ID e
-      # VERCEL_PROJECT_ID do ambiente.
+      # ADR-0041 passo 4: `vercel build` roda aqui, no mesmo job, sobre o mesmo checkout que
+      # acabou de passar em typecheck/build/test — não é o auto-deploy da Vercel reconstruindo
+      # de forma independente (esse fica desabilitado por `apps/web/vercel.json`). `--prebuilt`
+      # faz `vercel deploy` publicar exatamente esse artefato, sem a Vercel rodar um segundo
+      # build remoto divergente. `vercel pull`/`build` leem VERCEL_ORG_ID e VERCEL_PROJECT_ID do
+      # ambiente.
       - name: Capture current production deployment (rollback target)
         id: previous
         run: |
