@@ -34,10 +34,10 @@ export function CatalogCard({ store }: { store: CatalogStore }) {
                 <span className="min-w-0 truncate font-medium">{offer.platformName}{isInterCorrentistaOffer(offer) ? <span className="ml-2 text-xs font-normal text-[#5b5f56]">{isCorrentista ? "(correntista)" : "(não correntista)"}</span> : null}</span>
                 <span className="flex shrink-0 items-center gap-2 font-semibold text-[#1c7a4d]">
                   {index === 0 ? <span className="rounded-full bg-[#e7f4ec] px-2 py-0.5 font-mono text-[10px] font-medium text-[#1c7a4d]">MELHOR</span> : null}
-                  {signals.isBoost ? <span className="rounded-full bg-[#fdece0] px-2 py-0.5 font-mono text-[10px] font-medium text-[#b5541c]">BOOST</span> : null}
+                  {signals.isBoost ? <span className="rounded-full bg-[#fdece0] px-2 py-0.5 font-mono text-[10px] font-medium text-[#aa4a14]">BOOST</span> : null}
                   {formatReward(offer, isCorrentista)}
                   {previousText ? <span className="text-xs font-normal text-[#5b5f56]">(era {previousText})</span> : null}
-                  {offer.freshness === "delayed" ? <span className="rounded-full bg-[#f0e7d3] px-2 py-0.5 font-mono text-[10px] font-medium text-[#8a6a33]">Atualização atrasada</span> : null}
+                  {offer.freshness === "delayed" ? <span className="rounded-full bg-[#f0e7d3] px-2 py-0.5 font-mono text-[10px] font-medium text-[#805e26]">Atualização atrasada</span> : null}
                 </span>
               </li>
             );

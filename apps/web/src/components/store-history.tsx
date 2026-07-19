@@ -79,7 +79,7 @@ function HistoryChart({
       <p className="font-mono text-xs font-medium tracking-[0.13em] text-[#1c7a4d]">
         {rewardType === "percent" ? "PERCENTUAL" : "VALOR FIXO"}
       </p>
-      <svg aria-hidden="true" className="mt-3 h-auto w-full" role="img" viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}>
+      <svg aria-hidden="true" className="mt-3 h-auto w-full" viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}>
         <line stroke="#e0ddd4" strokeWidth={1} x1={CHART_PADDING} x2={CHART_WIDTH - CHART_PADDING} y1={CHART_HEIGHT - CHART_PADDING} y2={CHART_HEIGHT - CHART_PADDING} />
         {lines.map((line, index) => (
           <path
@@ -155,7 +155,7 @@ export function StoreHistory({ store }: { store: StoreDetail }) {
 
       {percentLines.length === 0 && fixedLines.length === 0 ? (
         <div className="mt-5 rounded-2xl border border-[#e0ddd4] bg-[#faf9f5] p-6 text-center">
-          <p className="font-mono text-xs font-medium tracking-[0.13em] text-[#8a6a33]">HISTÓRICO SENDO CONSTRUÍDO</p>
+          <p className="font-mono text-xs font-medium tracking-[0.13em] text-[#805e26]">HISTÓRICO SENDO CONSTRUÍDO</p>
           <p className="mt-2 text-sm text-[#5b5f56]">Ainda não observamos mudanças suficientes nos últimos 60 dias para mostrar um gráfico.</p>
         </div>
       ) : (

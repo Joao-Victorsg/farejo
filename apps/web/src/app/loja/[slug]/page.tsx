@@ -57,7 +57,7 @@ export default async function StorePage({ params }: StorePageProps) {
           </header>
           {store.offers.length === 0 ? (
             <section className="mt-8 rounded-2xl border border-[#e0ddd4] bg-[#faf9f5] p-6" aria-labelledby="unavailable-heading">
-              <p className="font-mono text-xs font-medium tracking-[0.13em] text-[#8a6a33]">INDISPONÍVEL NO MOMENTO</p>
+              <p className="font-mono text-xs font-medium tracking-[0.13em] text-[#805e26]">INDISPONÍVEL NO MOMENTO</p>
               <h2 className="mt-3 text-2xl font-bold" id="unavailable-heading">Nenhum cashback disponível no momento</h2>
               <p className="mt-3 max-w-2xl leading-7 text-[#5b5f56]">Esta loja continua cadastrada, mas não há uma oferta pública elegível para comparar agora. Volte mais tarde para conferir novas atualizações.</p>
             </section>
