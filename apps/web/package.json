@@ -9,7 +9,9 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test:smoke": "tsx test/smoke.mts",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "verify:schema": "tsx test/verify-production-schema.mts",
+    "test:smoke:production": "tsx test/smoke-production.mts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.2.4",
@@ -26,17 +28,18 @@
     "zod": "3.25.76"
   },
   "devDependencies": {
-    "@axe-core/playwright": "4.12.1",
     "@aws-sdk/client-s3": "3.1090.0",
+    "@axe-core/playwright": "4.12.1",
     "@fontsource-variable/hanken-grotesk": "5.2.6",
     "@fontsource-variable/space-grotesk": "5.2.6",
     "@playwright/test": "1.61.1",
     "@tailwindcss/postcss": "4.3.3",
+    "@types/pg": "8.15.5",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
-    "@types/pg": "8.15.5",
     "tailwindcss": "4.3.3",
     "tsx": "4.21.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vercel": "56.3.1"
   }
 }

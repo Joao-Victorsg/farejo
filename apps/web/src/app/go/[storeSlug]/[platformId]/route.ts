@@ -4,6 +4,11 @@ import { recordActivation, resolveActivation } from "../../../../lib/activation"
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+// ADR-0032: a validação no caminho crítico precisa da Function na região mais próxima do
+// Postgres (Supavisor). `pg` exige o runtime Node.js — nunca Edge, mesmo que vire o padrão do
+// framework no futuro.
+export const runtime = "nodejs";
+export const preferredRegion = "gru1";
 
 interface ActivationRouteContext {
   params: Promise<{ storeSlug: string; platformId: string }>;
