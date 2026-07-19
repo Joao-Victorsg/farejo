@@ -1,0 +1,138 @@
+name: Deploy production
+
+# F3/T18 (#64, ADR-0041): único caminho de publicação. O auto-deploy da integração Git da
+# Vercel para `master` fica desabilitado por `apps/web/vercel.json` (`git.deploymentEnabled`);
+# só este workflow publica em produção, e sempre na ordem migration -> verificação -> deploy do
+# artefato já construído -> smoke. Previews continuam fora deste workflow e sem banco remoto
+# (ADR-0037) — só master aciona esta publicação.
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # cancel-in-progress: false — uma publicação em andamento nunca é cancelada por outra; a
+  # próxima fica na fila e roda depois, preservando a ordem migration -> deploy -> smoke.
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: production
+    env:
+      # Migrations aditivas + verificação de schema (roles, views, funções, RLS, bucket de
+      # logos) usam a mesma credencial privilegiada, direta (não via Supavisor pooled), restrita
+      # a este Environment. Nunca reaproveita as credenciais de scrape/curadoria/logos nem chega
+      # à Vercel.
+      FAREJO_DEPLOY_DATABASE_URL: ${{ secrets.FAREJO_DEPLOY_DATABASE_URL }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      FAREJO_SITE_URL: ${{ secrets.FAREJO_SITE_URL }}
+      FAREJO_CATALOG_INVALIDATION_SECRET: ${{ secrets.FAREJO_CATALOG_INVALIDATION_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Falha rápido se o Environment "production" ainda não tem os secrets configurados —
+      # pendência operacional (mesmo padrão do Environment "logos") — em vez de gastar os ~30 min
+      # de testes/build abaixo só para bloquear na migration de qualquer forma.
+      - name: Guard production secrets
+        run: |
+          missing=()
+          [ -z "$FAREJO_DEPLOY_DATABASE_URL" ] && missing+=("FAREJO_DEPLOY_DATABASE_URL")
+          [ -z "$VERCEL_TOKEN" ] && missing+=("VERCEL_TOKEN")
+          [ -z "$VERCEL_ORG_ID" ] && missing+=("VERCEL_ORG_ID")
+          [ -z "$VERCEL_PROJECT_ID" ] && missing+=("VERCEL_PROJECT_ID")
+          [ -z "$FAREJO_SITE_URL" ] && missing+=("FAREJO_SITE_URL")
+          [ -z "$FAREJO_CATALOG_INVALIDATION_SECRET" ] && missing+=("FAREJO_CATALOG_INVALIDATION_SECRET")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::GitHub Environment \"production\" está sem os secrets: ${missing[*]}. Pendência operacional (mesmo padrão do Environment \"logos\"); publicação bloqueada até serem configurados."
+            exit 1
+          fi
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: 2.109.1
+
+      # ADR-0041 passo 1: testes, typecheck e build com as versões fixadas pelo monorepo, antes
+      # de qualquer coisa tocar produção. Usa o Supabase local — nunca o de produção.
+      - name: Start local Supabase stack
+        run: supabase start
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+
+      - name: Install Chromium for browser smoke tests
+        run: pnpm --filter @farejo/web exec playwright install --with-deps chromium
+
+      - name: Test
+        run: pnpm test
+
+      - name: Stop local Supabase stack
+        if: always()
+        run: supabase stop
+
+      # ADR-0041 passos 2-3: migrations aditivas contra o Postgres de produção, depois
+      # verificação de que o estado materializado bate com o que as migrations mescladas
+      # declaram. Falha em qualquer um dos dois bloqueia o deploy — nada abaixo roda.
+      - name: Apply production migrations
+        run: supabase db push --db-url "$FAREJO_DEPLOY_DATABASE_URL" --yes
+
+      - name: Verify production schema
+        run: pnpm --filter @farejo/web verify:schema
+
+      # ADR-0041 passo 4: publica exatamente o artefato já construído e validado acima — a
+      # Vercel não faz um segundo build divergente. `vercel pull`/`build` leem VERCEL_ORG_ID e
+      # VERCEL_PROJECT_ID do ambiente.
+      - name: Capture current production deployment (rollback target)
+        id: previous
+        run: |
+          previous_url=$(curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v6/deployments?projectId=${VERCEL_PROJECT_ID}&target=production&limit=1&state=READY" \
+            | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{try{const j=JSON.parse(d);const u=j.deployments?.[0]?.url;if(u)process.stdout.write(u);}catch{}})")
+          echo "url=${previous_url}" >> "$GITHUB_OUTPUT"
+
+      - name: Pull Vercel project settings
+        working-directory: apps/web
+        run: pnpm exec vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Build Vercel artifact
+        working-directory: apps/web
+        run: pnpm exec vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy prebuilt artifact
+        id: deploy
+        working-directory: apps/web
+        run: |
+          url=$(pnpm exec vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN")
+          echo "url=${url}" >> "$GITHUB_OUTPUT"
+
+      # ADR-0041 passo 5: smoke pós-deploy nas rotas públicas contra o artefato recém-publicado.
+      - name: Smoke test production
+        id: smoke
+        run: pnpm --filter @farejo/web test:smoke:production
+
+      # Falha durante ou depois do deploy permite rollback do frontend; as migrations aditivas
+      # permanecem (compatíveis com o frontend anterior, ADR-0041).
+      - name: Roll back on smoke failure
+        if: failure() && steps.smoke.outcome == 'failure' && steps.previous.outputs.url != ''
+        working-directory: apps/web
+        run: pnpm exec vercel rollback "https://${{ steps.previous.outputs.url }}" --token="$VERCEL_TOKEN" --yes
