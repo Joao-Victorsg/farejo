@@ -47,22 +47,22 @@ function PlatformCard({ stat }: { stat: PlatformStat }) {
         <Image alt="" aria-hidden="true" className="rounded-xl border border-[#ece9e2] p-1.5" height={46} src={PLATFORM_ICONS[stat.platformId] ?? "/portals/mycashback.svg"} width={46} />
         <div className="min-w-0">
           <h2 className="truncate text-lg font-bold tracking-[-0.03em]">{stat.platformName}</h2>
-          <p className="text-[12.5px] text-[#9a9d94]">{stat.storeCount === 0 ? "Ainda sem lojas elegíveis" : `em ${stat.storeCount.toLocaleString("pt-BR")} ${stat.storeCount === 1 ? "loja" : "lojas"}`}</p>
+          <p className="text-[12.5px] text-[#70736a]">{stat.storeCount === 0 ? "Ainda sem lojas elegíveis" : `em ${stat.storeCount.toLocaleString("pt-BR")} ${stat.storeCount === 1 ? "loja" : "lojas"}`}</p>
         </div>
       </div>
       <div className="mt-5 flex gap-2.5">
         <div className="flex-1 rounded-xl border border-[#f1efe8] bg-[#faf9f5] p-3.5">
           <p className="font-numbers text-xl font-semibold tracking-[-0.02em]">{stat.percentAverage === null ? "—" : formatPercent(stat.percentAverage)}</p>
-          <p className="mt-1 text-[11px] text-[#9a9d94]">média por loja</p>
+          <p className="mt-1 text-[11px] text-[#70736a]">média por loja</p>
         </div>
         <div className="flex-1 rounded-xl border border-[#cfe7d9] bg-[#f2f9f5] p-3.5">
           <p className="font-numbers text-xl font-semibold tracking-[-0.02em] text-[#1c7a4d]">{stat.percentPeak === null ? "—" : `${stat.percentPeakIsUpto ? "Até " : ""}${formatPercent(stat.percentPeak)}`}</p>
-          <p className="mt-1 text-[11px] text-[#8a8f84]">pico anunciado</p>
+          <p className="mt-1 text-[11px] text-[#686c60]">pico anunciado</p>
         </div>
       </div>
-      {stat.percentAverage === null ? <p className="mt-3 text-xs text-[#8a6a33]">Sem taxa percentual disponível no momento.</p> : null}
+      {stat.percentAverage === null ? <p className="mt-3 text-xs text-[#805e26]">Sem taxa percentual disponível no momento.</p> : null}
       {isInter ? (
-        <div className="mt-4 inline-flex items-center gap-1.5 rounded-md bg-[#f6ece2] px-2.5 py-1 font-mono text-[10px] font-semibold tracking-[0.03em] text-[#c05f2b]">
+        <div className="mt-4 inline-flex items-center gap-1.5 rounded-md bg-[#f6ece2] px-2.5 py-1 font-mono text-[10px] font-semibold tracking-[0.03em] text-[#a34e22]">
           <span aria-hidden="true" className="size-[5px] rounded-full bg-[#c05f2b]" />
           PARA CORRENTISTAS
         </div>

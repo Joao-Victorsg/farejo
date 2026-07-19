@@ -32,9 +32,9 @@ export function StoreRanking({ store }: { store: StoreDetail }) {
                 <p className="font-semibold">{offer.platformName}</p>
                 <div className="mt-1 flex flex-wrap gap-2 text-xs">
                   {index === 0 ? <span className="rounded-full bg-[#e7f4ec] px-2 py-1 font-mono font-medium text-[#1c7a4d]">MELHOR</span> : null}
-                  {signals.isBoost ? <span className="rounded-full bg-[#fdece0] px-2 py-1 font-mono font-medium text-[#b5541c]">BOOST</span> : null}
-                  {offer.reward.type === "fixed" ? <span className="rounded-full bg-[#f0e7d3] px-2 py-1 font-mono font-medium text-[#8a6a33]">VALOR FIXO</span> : null}
-                  {offer.freshness === "delayed" ? <span className="rounded-full bg-[#f0e7d3] px-2 py-1 font-mono font-medium text-[#8a6a33]">ATUALIZAÇÃO ATRASADA</span> : null}
+                  {signals.isBoost ? <span className="rounded-full bg-[#fdece0] px-2 py-1 font-mono font-medium text-[#aa4a14]">BOOST</span> : null}
+                  {offer.reward.type === "fixed" ? <span className="rounded-full bg-[#f0e7d3] px-2 py-1 font-mono font-medium text-[#805e26]">VALOR FIXO</span> : null}
+                  {offer.freshness === "delayed" ? <span className="rounded-full bg-[#f0e7d3] px-2 py-1 font-mono font-medium text-[#805e26]">ATUALIZAÇÃO ATRASADA</span> : null}
                   {isInterCorrentistaOffer(offer) ? <span className="rounded-full bg-[#eef1ec] px-2 py-1 font-mono font-medium text-[#5b5f56]">{isCorrentista ? "TAXA CORRENTISTA" : "TAXA NÃO CORRENTISTA"}</span> : null}
                 </div>
               </div>
