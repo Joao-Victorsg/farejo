@@ -349,12 +349,12 @@ try {
   await page.goto(`${baseUrl}/?page=2`);
   await page.getByText("Loja real sem logo 24").waitFor();
   await page.goto(baseUrl);
-  await page.locator("#catalog-search").fill("Nome alternativo da loja");
-  await page.waitForURL(/\?q=Nome\+alternativo\+da\+loja$/);
+  await page.locator("#hero-search").fill("Nome alternativo da loja");
+  await page.locator("#hero-search").press("Enter");
+  await page.waitForURL(/\?q=Nome\+alternativo\+da\+loja(?:#catalogo)?$/);
   await page.getByText("Loja real sem logo 00").waitFor();
-  await page.locator("#catalog-sort").selectOption("cashback");
-  await page.getByRole("button", { name: "Buscar" }).click();
-  await page.waitForURL(/\?q=Nome\+alternativo\+da\+loja&sort=cashback$/);
+  await page.getByRole("link", { name: "Maior cashback" }).click();
+  await page.waitForURL(/\?q=Nome\+alternativo\+da\+loja&sort=cashback(?:#catalogo)?$/);
 
   await page.goto(baseUrl);
   const interSwitch = page.getByRole("switch", { name: "Sou correntista Inter" });
@@ -453,7 +453,7 @@ try {
   // Mesma corrida do skeleton em loading.tsx que 8243f11 corrigiu nos specs e2e (T17): o skip
   // link existe tanto no skeleton quanto no conteúdo real, mas só o conteúdo real tem
   // id="conteudo" como alvo — sem esperar por ele, o foco pode não ir para lugar nenhum.
-  await page.locator("#catalog-search").waitFor();
+  await page.locator("#hero-search").waitFor();
   await page.getByRole("link", { name: "Pular para o conteúdo" }).focus();
   await page.keyboard.press("Enter");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "conteudo");
