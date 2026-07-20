@@ -119,31 +119,37 @@ jobs:
             | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{try{const j=JSON.parse(d);const u=j.deployments?.[0]?.url;if(u)process.stdout.write(u);}catch{}})")
           echo "url=${previous_url}" >> "$GITHUB_OUTPUT"
 
+      # Vercel CLI monorepo requirement (see https://vercel.com/docs/monorepos#add-a-monorepo-through-vercel-cli):
+      # "Vercel CLI should not be invoked from the subdirectory" — it must run from the repo root
+      # so it can see the full workspace (pnpm-hoisted node_modules included), letting the
+      # project's own "Root Directory" setting (apps/web) tell it which app to build/deploy.
+      # Running it from apps/web while Root Directory is also apps/web makes the CLI look for
+      # apps/web/apps/web; running it from the root while Root Directory is empty builds apps/web
+      # as if it were a standalone package, missing monorepo-hoisted deps at deploy time. The
+      # `vercel` binary itself is only a devDependency of apps/web, so it's invoked by path rather
+      # than `pnpm exec` (which resolves bins relative to the package that declares the dep).
       - name: Pull Vercel project settings
-        working-directory: apps/web
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: pnpm exec vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+        run: apps/web/node_modules/.bin/vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
 
       - name: Build Vercel artifact
-        working-directory: apps/web
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: pnpm exec vercel build --prod --token="$VERCEL_TOKEN"
+        run: apps/web/node_modules/.bin/vercel build --prod --token="$VERCEL_TOKEN"
 
       - name: Deploy prebuilt artifact
         id: deploy
-        working-directory: apps/web
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          url=$(pnpm exec vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN")
+          url=$(apps/web/node_modules/.bin/vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN")
           echo "url=${url}" >> "$GITHUB_OUTPUT"
 
       # ADR-0041 passo 5: smoke pós-deploy nas rotas públicas contra o artefato recém-publicado.
@@ -158,7 +164,6 @@ jobs:
       # permanecem (compatíveis com o frontend anterior, ADR-0041).
       - name: Roll back on smoke failure
         if: failure() && steps.smoke.outcome == 'failure' && steps.previous.outputs.url != ''
-        working-directory: apps/web
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: pnpm exec vercel rollback "https://${{ steps.previous.outputs.url }}" --token="$VERCEL_TOKEN" --yes
+        run: apps/web/node_modules/.bin/vercel rollback "https://${{ steps.previous.outputs.url }}" --token="$VERCEL_TOKEN" --yes
