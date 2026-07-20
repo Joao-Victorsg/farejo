@@ -11,10 +11,10 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Plataformas" };
 
 const PLATFORM_ICONS: Record<string, string> = {
-  meliuz: "/portals/meliuz.svg",
-  cuponomia: "/portals/cupons.svg",
-  mycashback: "/portals/mycashback.svg",
-  zoom: "/portals/zoom.svg",
+  meliuz: "/portals/meliuz.png",
+  cuponomia: "/portals/cuponomia.png",
+  mycashback: "/portals/mycashback.png",
+  zoom: "/portals/zoom.png",
   inter: "/portals/inter.svg",
 };
 
@@ -44,7 +44,7 @@ function PlatformCard({ stat }: { stat: PlatformStat }) {
     <li className="rounded-2xl border border-[#ece9e2] bg-white p-6">
       <div className="flex items-center gap-3.5">
         {/* fallback nunca deveria disparar: platform_stats só retorna as 5 plataformas canônicas do mapa acima */}
-        <Image alt="" aria-hidden="true" className="rounded-xl border border-[#ece9e2] p-1.5" height={46} src={PLATFORM_ICONS[stat.platformId] ?? "/portals/mycashback.svg"} width={46} />
+        <Image alt="" aria-hidden="true" className="rounded-xl border border-[#ece9e2] p-1.5" height={46} src={PLATFORM_ICONS[stat.platformId] ?? "/portals/mycashback.png"} width={46} />
         <div className="min-w-0">
           <h2 className="truncate text-lg font-bold tracking-[-0.03em]">{stat.platformName}</h2>
           <p className="text-[12.5px] text-[#70736a]">{stat.storeCount === 0 ? "Ainda sem lojas elegíveis" : `em ${stat.storeCount.toLocaleString("pt-BR")} ${stat.storeCount === 1 ? "loja" : "lojas"}`}</p>
