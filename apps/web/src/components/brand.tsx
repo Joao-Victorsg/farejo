@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Percent } from "lucide-react";
 
 interface BrandProps {
   inverse?: boolean;
@@ -8,9 +7,8 @@ interface BrandProps {
 export function Brand({ inverse = false }: BrandProps) {
   return (
     <Link aria-label="farejô — ir para lojas" className="inline-flex items-center gap-2.5" href="/">
-      <span className="flex size-9 items-center justify-center rounded-[11px] bg-[#1c7a4d] text-white" aria-hidden="true">
-        <Percent size={19} strokeWidth={3} />
-      </span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img alt="" aria-hidden="true" className="h-9 w-auto" src={inverse ? "/brand-mark-light.svg" : "/brand-mark.svg"} />
       <span className={inverse ? "text-xl font-bold tracking-[-0.04em] text-[#eef0ea]" : "text-xl font-bold tracking-[-0.04em] text-[#12140f]"}>farejô</span>
     </Link>
   );
