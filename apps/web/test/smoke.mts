@@ -367,7 +367,7 @@ try {
   assert.match(toggleCardText, /Shopping Inter/);
   assert.match(toggleCardText, /MELHOR/);
   assert.doesNotMatch(toggleCardText, /Zoom/);
-  assert.match(toggleCardText, /\+1 outra plataforma/);
+  assert.match(toggleCardText, /mais 1 plataforma/);
   assert.ok(toggleCardText.indexOf("Shopping Inter") < toggleCardText.indexOf("Méliuz"));
   const unaffectedCardTextBeforeToggle = await page.locator("article", { has: page.getByRole("link", { name: "Ver ofertas de Loja real sem logo 01" }) }).innerText();
   assert.match(unaffectedCardTextBeforeToggle, /5%/);
@@ -378,7 +378,7 @@ try {
   assert.match(toggleCardText, /Méliuz/);
   assert.match(toggleCardText, /MELHOR/);
   assert.doesNotMatch(toggleCardText, /Shopping Inter/);
-  assert.match(toggleCardText, /\+1 outra plataforma/);
+  assert.match(toggleCardText, /mais 1 plataforma/);
   assert.ok(toggleCardText.indexOf("Méliuz") < toggleCardText.indexOf("Cuponomia"));
   assert.ok(toggleCardText.indexOf("Cuponomia") < toggleCardText.indexOf("Zoom"));
   const unaffectedCardTextAfterToggle = await page.locator("article", { has: page.getByRole("link", { name: "Ver ofertas de Loja real sem logo 01" }) }).innerText();
