@@ -450,6 +450,10 @@ try {
   }
 
   await page.goto(baseUrl);
+  // Mesma corrida do skeleton em loading.tsx que 8243f11 corrigiu nos specs e2e (T17): o skip
+  // link existe tanto no skeleton quanto no conteúdo real, mas só o conteúdo real tem
+  // id="conteudo" como alvo — sem esperar por ele, o foco pode não ir para lugar nenhum.
+  await page.locator("#catalog-search").waitFor();
   await page.getByRole("link", { name: "Pular para o conteúdo" }).focus();
   await page.keyboard.press("Enter");
   assert.equal(await page.evaluate(() => document.activeElement?.id), "conteudo");
