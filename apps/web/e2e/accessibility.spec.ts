@@ -33,16 +33,16 @@ test("navegação por teclado: skip link, nav e busca sem armadilha de foco", as
   await page.goto("/");
   // Aguarda o conteúdo real (pós-streaming do skeleton em loading.tsx) antes de exercitar o skip
   // link — ver responsive.spec.ts para o mesmo cuidado.
-  await expect(page.locator("#catalog-search")).toBeVisible();
+  await expect(page.locator("#hero-search")).toBeVisible();
 
   await page.getByRole("link", { name: "Pular para o conteúdo" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.locator("#conteudo")).toBeFocused();
 
-  await page.locator("#catalog-search").focus();
-  await expect(page.locator("#catalog-search")).toBeFocused();
+  await page.locator("#hero-search").focus();
+  await expect(page.locator("#hero-search")).toBeFocused();
   await page.keyboard.press("Tab");
-  await expect(page.locator("#catalog-sort")).toBeFocused();
+  await expect(page.getByRole("button", { name: "Buscar" })).toBeFocused();
 });
 
 test("navegação por teclado: ranking da loja ativa sem abrir nova aba sem aviso", async ({ page }) => {

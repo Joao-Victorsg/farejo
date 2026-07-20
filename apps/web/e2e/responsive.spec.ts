@@ -15,7 +15,7 @@ for (const viewport of [{ width: 1024, height: 900 }, { width: 1280, height: 900
     test("catálogo: navegação, busca e grade continuam utilizáveis", async ({ page }) => {
       await page.goto("/");
       await expect(page.getByRole("navigation", { name: "Navegação principal" })).toBeVisible();
-      await expect(page.locator("#catalog-search")).toBeVisible();
+      await expect(page.locator("#hero-search")).toBeVisible();
       await expect(page.getByRole("link", { name: "Ver ofertas de Loja Alfa Cashback" })).toBeVisible();
       await expectNoHorizontalOverflow(page);
     });
@@ -48,7 +48,7 @@ for (const viewport of [{ width: 640, height: 900 }, { width: 375, height: 800 }
       await page.keyboard.press("Enter");
       await expect(page.locator("#conteudo")).toBeFocused();
 
-      await expect(page.locator("#catalog-search")).toBeVisible();
+      await expect(page.locator("#hero-search")).toBeVisible();
     });
 
     test("detalhe da loja: sem rolagem horizontal e CTA acessível", async ({ page }) => {
