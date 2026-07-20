@@ -15,7 +15,7 @@ interface CatalogControlsProps {
 export function CatalogControls({ query, sort }: CatalogControlsProps) {
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="mr-1 font-mono text-[11px] tracking-[0.12em] text-[#9a9d94]">ORDENAR POR</span>
+      <span className="mr-1 font-mono text-[11px] tracking-[0.12em] text-[#5b5f56]">ORDENAR POR</span>
       {SORTS.map((option) => {
         const active = option.value === sort;
         return (

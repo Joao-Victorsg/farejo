@@ -29,7 +29,7 @@ export function CatalogCard({ store }: { store: CatalogStore }) {
             )}
             <div className="min-w-0"><h3 className="truncate text-lg font-bold tracking-[-0.03em]">{store.name}</h3><p className="mt-1 text-sm text-[#5b5f56]">{store.platformCount} {store.platformCount === 1 ? "plataforma" : "plataformas"}</p></div>
           </div>
-          {bestReward ? <div className="shrink-0 text-right"><p className="font-numbers text-2xl font-bold leading-none text-[#1c7a4d]">{bestReward}</p><p className="mt-1 font-mono text-[10px] tracking-[0.12em] text-[#9a9d94]">MELHOR</p></div> : null}
+          {bestReward ? <div className="shrink-0 text-right"><p className="font-numbers text-2xl font-bold leading-none text-[#1c7a4d]">{bestReward}</p><p className="mt-1 font-mono text-[10px] tracking-[0.12em] text-[#5b5f56]">MELHOR</p></div> : null}
         </div>
         <ul className="mt-5 space-y-2" aria-label={`Ofertas de ${store.name}`}>
           {visibleOffers.map((offer, index) => {
