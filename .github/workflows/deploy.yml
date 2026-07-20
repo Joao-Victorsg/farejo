@@ -24,24 +24,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     environment: production
-    env:
-      # Migrations aditivas + verificação de schema (roles, views, funções, RLS, bucket de
-      # logos) usam a mesma credencial privilegiada, direta (não via Supavisor pooled), restrita
-      # a este Environment. Nunca reaproveita as credenciais de scrape/curadoria/logos nem chega
-      # à Vercel.
-      FAREJO_DEPLOY_DATABASE_URL: ${{ secrets.FAREJO_DEPLOY_DATABASE_URL }}
-      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-      FAREJO_SITE_URL: ${{ secrets.FAREJO_SITE_URL }}
-      FAREJO_CATALOG_INVALIDATION_SECRET: ${{ secrets.FAREJO_CATALOG_INVALIDATION_SECRET }}
     steps:
       - uses: actions/checkout@v4
 
       # Falha rápido se o Environment "production" ainda não tem os secrets configurados —
       # pendência operacional (mesmo padrão do Environment "logos") — em vez de gastar os ~30 min
-      # de testes/build abaixo só para bloquear na migration de qualquer forma.
+      # de testes/build abaixo só para bloquear na migration de qualquer forma. Os secrets NÃO
+      # são env de job: `pnpm test` abaixo builda e sobe a app localmente com dados fictícios, e
+      # se `FAREJO_SITE_URL`/`FAREJO_CATALOG_INVALIDATION_SECRET` de produção vazassem para esse
+      # passo, o teste local usaria o domínio/segredo errado — cada passo declara só o que usa.
       - name: Guard production secrets
+        env:
+          FAREJO_DEPLOY_DATABASE_URL: ${{ secrets.FAREJO_DEPLOY_DATABASE_URL }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          FAREJO_SITE_URL: ${{ secrets.FAREJO_SITE_URL }}
+          FAREJO_CATALOG_INVALIDATION_SECRET: ${{ secrets.FAREJO_CATALOG_INVALIDATION_SECRET }}
         run: |
           missing=()
           [ -z "$FAREJO_DEPLOY_DATABASE_URL" ] && missing+=("FAREJO_DEPLOY_DATABASE_URL")
@@ -94,9 +93,13 @@ jobs:
       # verificação de que o estado materializado bate com o que as migrations mescladas
       # declaram. Falha em qualquer um dos dois bloqueia o deploy — nada abaixo roda.
       - name: Apply production migrations
+        env:
+          FAREJO_DEPLOY_DATABASE_URL: ${{ secrets.FAREJO_DEPLOY_DATABASE_URL }}
         run: supabase db push --db-url "$FAREJO_DEPLOY_DATABASE_URL" --yes
 
       - name: Verify production schema
+        env:
+          FAREJO_DEPLOY_DATABASE_URL: ${{ secrets.FAREJO_DEPLOY_DATABASE_URL }}
         run: pnpm --filter @farejo/web verify:schema
 
       # ADR-0041 passo 4: `vercel build` roda aqui, no mesmo job, sobre o mesmo checkout que
@@ -107,6 +110,9 @@ jobs:
       # ambiente.
       - name: Capture current production deployment (rollback target)
         id: previous
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           previous_url=$(curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" \
             "https://api.vercel.com/v6/deployments?projectId=${VERCEL_PROJECT_ID}&target=production&limit=1&state=READY" \
@@ -115,15 +121,27 @@ jobs:
 
       - name: Pull Vercel project settings
         working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: pnpm exec vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
 
       - name: Build Vercel artifact
         working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: pnpm exec vercel build --prod --token="$VERCEL_TOKEN"
 
       - name: Deploy prebuilt artifact
         id: deploy
         working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           url=$(pnpm exec vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN")
           echo "url=${url}" >> "$GITHUB_OUTPUT"
@@ -131,6 +149,9 @@ jobs:
       # ADR-0041 passo 5: smoke pós-deploy nas rotas públicas contra o artefato recém-publicado.
       - name: Smoke test production
         id: smoke
+        env:
+          FAREJO_SITE_URL: ${{ secrets.FAREJO_SITE_URL }}
+          FAREJO_CATALOG_INVALIDATION_SECRET: ${{ secrets.FAREJO_CATALOG_INVALIDATION_SECRET }}
         run: pnpm --filter @farejo/web test:smoke:production
 
       # Falha durante ou depois do deploy permite rollback do frontend; as migrations aditivas
@@ -138,4 +159,6 @@ jobs:
       - name: Roll back on smoke failure
         if: failure() && steps.smoke.outcome == 'failure' && steps.previous.outputs.url != ''
         working-directory: apps/web
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: pnpm exec vercel rollback "https://${{ steps.previous.outputs.url }}" --token="$VERCEL_TOKEN" --yes

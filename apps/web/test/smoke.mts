@@ -86,6 +86,26 @@ for (let index = 0; index < 25; index += 1) {
   );
 }
 
+// T18 CI fix: force-dynamic pages stream an implicit `loading.tsx` fallback (never carries
+// `id="conteudo"`, see app/loading.tsx) before the real content swaps in within the same
+// response. Under CI's CPU contention that swap sometimes isn't done by the time the response
+// closes (same race class as 8243f11's skip-link fix, T17), so a bare fetch can observe the
+// fallback instead of the rendered page. Every real content branch renders a literal
+// `<main id="conteudo"` tag — checked as a rendered tag, not a bare substring, because Next also
+// embeds a JSON-escaped preview of the deferred content (`\"id\":\"conteudo\"`, for client
+// hydration) inside the shell response's `self.__next_f.push(...)` payload, which would
+// otherwise false-positive as "ready" while the visible HTML is still the skeleton.
+const RENDERED_MARKER = /<main[^>]* id="conteudo"/;
+async function fetchRendered(path: string) {
+  for (let attempt = 0; attempt < 40; attempt += 1) {
+    const response = await fetch(new URL(path, baseUrl));
+    const html = await response.text();
+    if (RENDERED_MARKER.test(html)) return { status: response.status, html };
+    await wait(250);
+  }
+  throw new Error(`Page ${path} never rendered past the loading fallback`);
+}
+
 async function waitForPageText(path: string, expected: string) {
   for (let attempt = 0; attempt < 40; attempt += 1) {
     const response = await fetch(new URL(path, baseUrl));
@@ -193,7 +213,7 @@ try {
   // Issue56: `/plataformas` lê o mesmo web_read via getPlatformStats(). mycashback nunca
   // recebe oferta nas fixtures acima, então cobre o estado "sem lojas elegíveis" de uma
   // plataforma isolada (distinto da anomalia de todas zeradas).
-  const platformsHtml = await (await fetch(`${baseUrl}/plataformas`)).text();
+  const { html: platformsHtml } = await fetchRendered("/plataformas");
   assert.match(platformsHtml, /<h1[^>]*>Plataformas de cashback<\/h1>/);
   assert.match(platformsHtml, /Méliuz/);
   assert.match(platformsHtml, /Cuponomia/);
@@ -211,10 +231,10 @@ try {
   assert.match(pageOne, /http-equiv="refresh" content="1;url=\/"/);
   const explicitDefaultSort = await (await fetch(`${baseUrl}/?sort=platforms`)).text();
   assert.match(explicitDefaultSort, /http-equiv="refresh" content="1;url=\/"/);
-  const indexedSecondPage = await (await fetch(`${baseUrl}/?page=2`)).text();
+  const { html: indexedSecondPage } = await fetchRendered("/?page=2");
   assert.match(indexedSecondPage, /<link rel="canonical" href="https:\/\/farejo\.com\.br\/\?page=2"/);
   assert.doesNotMatch(indexedSecondPage, /name="robots" content="noindex, follow"/);
-  const outOfRangePage = await (await fetch(`${baseUrl}/?page=999`)).text();
+  const { html: outOfRangePage } = await fetchRendered("/?page=999");
   assert.match(outOfRangePage, /Esta página não existe/);
   assert.match(outOfRangePage, /name="robots" content="noindex, follow"/);
   for (const repeatedParameterUrl of ["?q=loja&q=outra", "?sort=az&sort=cashback", "?page=1&page=2"]) {
@@ -222,7 +242,7 @@ try {
     assert.match(repeatedParameter, /Esta página não existe/);
     assert.match(repeatedParameter, /name="robots" content="noindex, follow"/);
   }
-  const searchPage = await (await fetch(`${baseUrl}/?q=Nome+alternativo+da+loja`)).text();
+  const { html: searchPage } = await fetchRendered("/?q=Nome+alternativo+da+loja");
   assert.match(searchPage, /Loja real sem logo 00/);
   assert.match(searchPage, /name="robots" content="noindex, follow"/);
   const sitemap = await (await fetch(`${baseUrl}/sitemap.xml`)).text();
@@ -232,9 +252,8 @@ try {
   const robots = await (await fetch(`${baseUrl}/robots.txt`)).text();
   assert.match(robots, /Disallow: \/go\//);
 
-  const detail = await fetch(`${baseUrl}/loja/${fixturePrefix}00`);
-  const detailHtml = await detail.text();
-  assert.equal(detail.status, 200);
+  const { status: detailStatus, html: detailHtml } = await fetchRendered(`/loja/${fixturePrefix}00`);
+  assert.equal(detailStatus, 200);
   assert.match(detailHtml, /<h1[^>]*>Loja real sem logo 00<\/h1>/);
   assert.match(detailHtml, new RegExp(`<link rel="canonical" href="https://farejo\\.com\\.br/loja/${fixturePrefix}00"`));
   assert.ok(detailHtml.indexOf("Até 7%") < detailHtml.indexOf("5%"));
