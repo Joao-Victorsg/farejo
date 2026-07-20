@@ -13,7 +13,7 @@ export function InterToggle({ compact = false }: InterToggleProps) {
     <button
       aria-checked={isCorrentista}
       aria-label="Sou correntista Inter"
-      className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#1c7a4d] ${isCorrentista ? "bg-[#12140f]" : "bg-[#d8d4c8]"}`}
+      className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#1c7a4d] ${isCorrentista ? "bg-[#1c7a4d]" : "bg-[#d8d4c8]"}`}
       onClick={() => setIsCorrentista(!isCorrentista)}
       role="switch"
       type="button"
@@ -26,7 +26,7 @@ export function InterToggle({ compact = false }: InterToggleProps) {
     return (
       <div className="flex items-center gap-2">
         {button}
-        <span className="text-sm font-medium">Correntista Inter</span>
+        <span className="text-sm font-medium text-[#1c7a4d]">Correntista Inter</span>
       </div>
     );
   }

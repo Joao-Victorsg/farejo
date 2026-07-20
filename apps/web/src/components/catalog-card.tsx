@@ -27,16 +27,16 @@ export function CatalogCard({ store }: { store: CatalogStore }) {
             ) : (
               <span aria-hidden="true" className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[#e7f4ec] font-mono text-lg font-semibold text-[#1c7a4d]">{initial}</span>
             )}
-            <div className="min-w-0"><h3 className="truncate text-lg font-bold tracking-[-0.03em]">{store.name}</h3><p className="mt-1 text-sm text-[#5b5f56]">{store.platformCount} {store.platformCount === 1 ? "plataforma" : "plataformas"}</p></div>
+            <div className="min-w-0"><h3 className="truncate text-lg font-bold tracking-[-0.03em]">{store.name}</h3><p className="mt-0.5 text-xs text-[#5b5f56]">{store.platformCount} {store.platformCount === 1 ? "plataforma" : "plataformas"}</p></div>
           </div>
-          {bestReward ? <div className="shrink-0 text-right"><p className="font-numbers text-2xl font-bold leading-none text-[#1c7a4d]">{bestReward}</p><p className="mt-1 font-mono text-[10px] tracking-[0.12em] text-[#5b5f56]">MELHOR</p></div> : null}
+          {bestReward ? <div className="shrink-0 text-right"><p className="font-numbers text-2xl font-bold leading-none text-[#1c7a4d]">{bestReward}</p><p className="mt-1 text-[11px] text-[#5b5f56]">melhor</p></div> : null}
         </div>
-        <ul className="mt-5 space-y-2" aria-label={`Ofertas de ${store.name}`}>
+        <ul className="mt-4 border-t border-[#f1efe9] divide-y divide-[#f1efe9]" aria-label={`Ofertas de ${store.name}`}>
           {visibleOffers.map((offer, index) => {
             const signals = effectiveSignals(offer, isCorrentista);
             const previousText = formatPreviousValue(offer, isCorrentista);
             return (
-              <li className="flex items-center justify-between gap-3 rounded-lg bg-[#faf9f5] px-3 py-2 text-sm" key={offer.platformId}>
+              <li className="flex items-center justify-between gap-3 py-2.5 text-sm" key={offer.platformId}>
                 <span className="flex min-w-0 items-center gap-2">
                   <PlatformIcon platformId={offer.platformId} />
                   <span className="min-w-0 truncate font-medium">{offer.platformName}{isInterCorrentistaOffer(offer) ? <span className="ml-1 text-xs font-normal text-[#5b5f56]">{isCorrentista ? "(correntista)" : "(não correntista)"}</span> : null}</span>
@@ -52,8 +52,8 @@ export function CatalogCard({ store }: { store: CatalogStore }) {
             );
           })}
         </ul>
-        <div className="mt-3 flex items-center justify-between gap-3">
-          {remaining > 0 ? <p className="text-xs font-medium text-[#5b5f56]">+{remaining} {remaining === 1 ? "outra plataforma" : "outras plataformas"}</p> : <span />}
+        <div className="mt-3 flex items-center justify-between gap-3 border-t border-[#f1efe9] pt-3">
+          {remaining > 0 ? <span className="flex items-center gap-1.5 text-xs text-[#5b5f56]"><span className="rounded-md bg-[#f1efe9] px-1.5 py-0.5 text-[11px] font-medium text-[#5b5f56]">+{remaining}</span>mais {remaining} {remaining === 1 ? "plataforma" : "plataformas"}</span> : <span />}
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#1c7a4d]">Ver todas<ArrowRight aria-hidden="true" size={13} /></span>
         </div>
       </Link>
