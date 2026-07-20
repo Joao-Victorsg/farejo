@@ -38,7 +38,7 @@ export function CatalogCard({ store }: { store: CatalogStore }) {
             return (
               <li className="flex items-center justify-between gap-3 rounded-lg bg-[#faf9f5] px-3 py-2 text-sm" key={offer.platformId}>
                 <span className="flex min-w-0 items-center gap-2">
-                  <PlatformIcon platformId={offer.platformId} platformName={offer.platformName} />
+                  <PlatformIcon platformId={offer.platformId} />
                   <span className="min-w-0 truncate font-medium">{offer.platformName}{isInterCorrentistaOffer(offer) ? <span className="ml-1 text-xs font-normal text-[#5b5f56]">{isCorrentista ? "(correntista)" : "(não correntista)"}</span> : null}</span>
                 </span>
                 <span className="flex shrink-0 items-center gap-2 font-numbers font-semibold text-[#1c7a4d]">

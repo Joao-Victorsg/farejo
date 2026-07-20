@@ -1,24 +1,18 @@
+import Image from "next/image";
+
 /**
- * Ícone nominativo das plataformas comparadas. Cores e códigos de duas letras vêm do handoff
- * (`docs/design_handoff_farejo`). Plataforma desconhecida cai num neutro em vez de sumir.
+ * Ícone nominativo da plataforma numa linha de oferta. Reusa os cinco assets fixos de
+ * `public/portals` (mesma fonte da página `/plataformas`): como são imagens, a marca colorida
+ * não dispara a regra de contraste do axe que texto branco sobre a cor da marca dispararia.
  */
-const PLATFORM_BADGE: Record<string, { color: string; code: string }> = {
-  meliuz: { color: "#ff2d6b", code: "mz" },
-  cuponomia: { color: "#0a66ff", code: "cp" },
-  mycashback: { color: "#7c3aed", code: "my" },
-  zoom: { color: "#4163f1", code: "zm" },
-  inter: { color: "#ff6a00", code: "in" },
+const PLATFORM_ICONS: Record<string, string> = {
+  meliuz: "/portals/meliuz.svg",
+  cuponomia: "/portals/cupons.svg",
+  mycashback: "/portals/mycashback.svg",
+  zoom: "/portals/zoom.svg",
+  inter: "/portals/inter.svg",
 };
 
-export function PlatformIcon({ platformId, platformName }: { platformId: string; platformName: string }) {
-  const badge = PLATFORM_BADGE[platformId] ?? { color: "#5b5f56", code: platformName.trim().slice(0, 2).toLowerCase() || "•" };
-  return (
-    <span
-      aria-hidden="true"
-      className="flex size-6 shrink-0 items-center justify-center rounded-[7px] font-mono text-[10px] font-medium lowercase text-white"
-      style={{ backgroundColor: badge.color }}
-    >
-      {badge.code}
-    </span>
-  );
+export function PlatformIcon({ platformId }: { platformId: string }) {
+  return <Image alt="" aria-hidden="true" className="size-6 shrink-0 rounded-[7px]" height={24} src={PLATFORM_ICONS[platformId] ?? "/portals/mycashback.svg"} width={24} />;
 }
