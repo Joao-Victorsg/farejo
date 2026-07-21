@@ -29,7 +29,7 @@ test.describe("regressão visual @ 1440px", () => {
   test("loja com ranking completo e histórico construído (boost)", async ({ page }) => {
     await page.goto(`/loja/${alphaSlug}`);
     await expect(page.getByRole("heading", { name: "Loja Alfa Cashback", level: 1 })).toBeVisible();
-    await expect(page.getByText("Histórico de cashback")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Histórico", exact: true })).toBeVisible();
     await expect(page).toHaveScreenshot("store-detail-full-ranking-boost.png", { fullPage: true });
   });
 
@@ -42,14 +42,14 @@ test.describe("regressão visual @ 1440px", () => {
   test("loja indisponível (sem oferta elegível) com histórico sendo construído", async ({ page }) => {
     await page.goto(`/loja/${gammaSlug}`);
     await expect(page.getByRole("heading", { name: "Sem ofertas no momento" })).toBeVisible();
-    await expect(page.getByText("HISTÓRICO SENDO CONSTRUÍDO")).toBeVisible();
+    await expect(page.getByText("Ainda estamos coletando os valores de cashback desta loja.")).toBeVisible();
     await expect(page).toHaveScreenshot("store-detail-unavailable.png", { fullPage: true });
   });
 
   test("loja disponível com histórico sendo construído", async ({ page }) => {
     await page.goto(`/loja/${deltaSlug}`);
     await expect(page.getByRole("heading", { name: "Loja Delta Sem Histórico", level: 1 })).toBeVisible();
-    await expect(page.getByText("HISTÓRICO SENDO CONSTRUÍDO")).toBeVisible();
+    await expect(page.getByText("Ainda estamos coletando os valores de cashback desta loja.")).toBeVisible();
     await expect(page).toHaveScreenshot("store-detail-history-building.png", { fullPage: true });
   });
 

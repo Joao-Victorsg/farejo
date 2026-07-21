@@ -263,15 +263,15 @@ try {
   assert.match(detailHtml, /target="_blank"/);
   assert.match(detailHtml, /rel="noopener noreferrer"/);
   assert.doesNotMatch(detailHtml, /https:\/\/(shopping\.inter\.co|www\.meliuz\.com\.br|www\.zoom\.com\.br)/);
-  assert.match(detailHtml, /Histórico de cashback/);
-  assert.match(detailHtml, /HISTÓRICO SENDO CONSTRUÍDO/);
-  assert.match(detailHtml, /Ainda não observamos mudanças suficientes/);
+  assert.match(detailHtml, />Histórico</);
+  assert.match(detailHtml, /Histórico sendo construído/);
+  assert.match(detailHtml, /Ainda estamos coletando os valores de cashback desta loja/);
 
   // Renderização inicial do servidor assume correntista=true (ADR-0034/ADR-0046) — a
   // modalidade não correntista só aparece depois do toggle no cliente (coberto abaixo, via
   // Playwright, junto com a troca real de estado).
   const toggleDetailHtml = await waitForPageText(`/loja/${fixturePrefix}toggle`, "Shopping Inter (correntista): variou entre 8% e 10%");
-  assert.doesNotMatch(toggleDetailHtml, /HISTÓRICO SENDO CONSTRUÍDO/);
+  assert.doesNotMatch(toggleDetailHtml, /Ainda estamos coletando os valores de cashback desta loja/);
   assert.match(toggleDetailHtml, /Méliuz: variou entre 6% e 8%/);
   assert.doesNotMatch(toggleDetailHtml, /não correntista/);
 
@@ -407,7 +407,7 @@ try {
 
   // Issue54: o histórico segue o toggle — a modalidade não correntista do Inter não tem
   // mudança real (só uma leitura de value_partial) e nunca cai para a série correntista.
-  const historySection = page.getByRole("region", { name: "Histórico de cashback" });
+  const historySection = page.getByRole("region", { name: "Histórico", exact: true });
   let historyText = await historySection.innerText();
   assert.match(historyText, /Shopping Inter \(não correntista\): histórico sendo construído\./);
   assert.doesNotMatch(historyText, /Shopping Inter \(correntista\): variou/);

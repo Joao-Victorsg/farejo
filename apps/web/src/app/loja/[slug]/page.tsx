@@ -15,6 +15,18 @@ interface StorePageProps {
   params: Promise<{ slug: string }>;
 }
 
+/**
+ * Os três passos do handoff, nomeando a loja atual. Descrevem só o que o farejô de fato faz:
+ * quem credita, com que prazo e por qual meio é sempre regra da plataforma escolhida (FAQ).
+ */
+function storeSteps(storeName: string) {
+  return [
+    { number: "01", title: "Escolha a plataforma", description: "Compare o cashback de cada plataforma e toque em Ativar na que pagar mais." },
+    { number: "02", title: "Compre normalmente", description: `Você é redirecionado à ${storeName} pela plataforma escolhida. Compre como sempre.` },
+    { number: "03", title: "Receba de volta", description: "O cashback é creditado na plataforma escolhida, seguindo os prazos e as formas de resgate dela." },
+  ];
+}
+
 function storeHref(slug: string) {
   return new URL(`/loja/${encodeURIComponent(slug)}`, getSiteUrl()).toString();
 }
@@ -61,6 +73,20 @@ export default async function StorePage({ params }: StorePageProps) {
             <StoreRanking store={store} />
           )}
           <StoreHistory store={store} />
+          {store.offers.length > 0 ? (
+            <section aria-labelledby="steps-heading" className="mt-11">
+              <h2 className="mb-3.5 text-[15px] font-semibold text-[#5b5f56]" id="steps-heading">Como funciona</h2>
+              <ol className="grid gap-4 sm:grid-cols-3">
+                {storeSteps(store.name).map((step) => (
+                  <li className="rounded-2xl border border-[#ece9e2] bg-white px-6 py-[22px]" key={step.number}>
+                    <p className="font-mono text-xs font-medium tracking-[0.06em] text-[#1c7a4d]">{step.number}</p>
+                    <h3 className="mt-3 text-[17px] font-semibold">{step.title}</h3>
+                    <p className="mt-2 text-sm leading-[1.5] text-[#5b5f56]">{step.description}</p>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          ) : null}
         </section>
       </main>
     </PageFrame>
