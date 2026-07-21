@@ -21,13 +21,13 @@ export interface SafeFetchOptions {
   maxRedirects?: number;
   userAgent?: string;
   /**
-   * Default: `resolveValidatedAddress` real. Testes injetam um resolver que trata o
+   * Default: `resolveValidatedAddresses` real. Testes injetam um resolver que trata o
    * servidor local (normalmente loopback, sempre bloqueado pela regra real) como o único
    * endereço confiável do cenário — a mesma forma de negar tudo mais, só trocando "IP
    * público" por "IP do servidor controlado do teste". A lógica de redirect/tamanho/tempo
    * exercitada continua sendo a de produção; só a fonte de confiança do endereço muda.
    */
-  resolveAddress?: (hostname: string) => Promise<{ address: string; family: 4 | 6 }>;
+  resolveAddress?: (hostname: string) => Promise<ValidatedAddress[]>;
 }
 
 export interface SafeFetchResult {
@@ -92,7 +92,7 @@ export function isPublicRoutableAddress(ip: string): boolean {
   return false;
 }
 
-interface ValidatedAddress {
+export interface ValidatedAddress {
   address: string;
   family: 4 | 6;
 }
@@ -101,8 +101,14 @@ interface ValidatedAddress {
  * Resolve o host e recusa a URL inteira se QUALQUER endereço retornado não for público —
  * nunca "escolhe em volta" de um registro privado (isso reabriria o truque de múltiplos
  * registros A/AAAA para SSRF). Endereço literal na URL pula o DNS e é validado direto.
+ *
+ * Devolve TODOS os endereços validados, não só o primeiro: como a validação é tudo-ou-nada,
+ * o conjunto inteiro é tão confiável quanto qualquer elemento dele, e entregá-lo completo ao
+ * `connect` deixa o Node escolher um endereço com rota (Happy Eyeballs). Fixar `records[0]`
+ * quebrava host cujo primeiro registro é AAAA em runner sem rota IPv6 — como o do GitHub
+ * Actions, onde este ingestor roda.
  */
-export async function resolveValidatedAddress(hostname: string): Promise<ValidatedAddress> {
+export async function resolveValidatedAddresses(hostname: string): Promise<ValidatedAddress[]> {
   const bareHost = stripBrackets(hostname);
   const literalFamily = net.isIP(bareHost);
 
@@ -117,8 +123,7 @@ export async function resolveValidatedAddress(hostname: string): Promise<Validat
     throw new UnsafeUrlError(`Endereço não roteável publicamente resolvido para ${hostname}: ${unsafe.address}`);
   }
 
-  const chosen = records[0]!;
-  return { address: chosen.address, family: chosen.family === 6 ? 6 : 4 };
+  return records.map((r) => ({ address: r.address, family: r.family === 6 ? 6 : (4 as const) }));
 }
 
 async function readBoundedBody(response: UndiciResponse, maxBytes: number): Promise<Buffer> {
@@ -147,7 +152,7 @@ export async function safeFetchBytes(url: string, options: SafeFetchOptions = {}
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   const maxRedirects = options.maxRedirects ?? DEFAULT_MAX_REDIRECTS;
   const userAgent = options.userAgent ?? DEFAULT_USER_AGENT;
-  const resolveAddress = options.resolveAddress ?? resolveValidatedAddress;
+  const resolveAddress = options.resolveAddress ?? resolveValidatedAddresses;
 
   let currentUrl = url;
 
@@ -160,7 +165,20 @@ export async function safeFetchBytes(url: string, options: SafeFetchOptions = {}
     const validated = await resolveAddress(parsed.hostname);
     const agent = new Agent({
       connect: {
-        lookup: (_hostname, _opts, callback) => callback(null, validated.address, validated.family),
+        // O `lookup` do Node tem DUAS formas de resposta e a escolha é de quem chama, não
+        // nossa: com `autoSelectFamily` (padrão desde o Node 20) ele pede `{ all: true }` e
+        // espera um ARRAY de `{ address, family }`; sem isso, espera a tripla
+        // `(err, address, family)`. Responder a tripla para um pedido `all` faz o Node ler
+        // `addresses[0].address` como `undefined` e abortar com ERR_INVALID_IP_ADDRESS —
+        // foi o que reprovou 100% dos downloads de logo em produção (F3/T15, ADR-0057).
+        lookup: (_hostname, opts, callback) => {
+          if (opts?.all) {
+            callback(null, validated);
+            return;
+          }
+          const first = validated[0]!;
+          callback(null, first.address, first.family);
+        },
       },
     });
 

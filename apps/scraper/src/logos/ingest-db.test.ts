@@ -142,12 +142,15 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
       res.writeHead(404).end();
     });
     await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
-    baseUrl = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+    // Host por NOME, nunca IP literal — com IP literal o Node conecta direto e o `lookup`
+    // fixado do agent nunca roda, escondendo regressões no caminho de rede real (ADR-0057).
+    const testHost = "logo-cdn.test";
+    baseUrl = `http://${testHost}:${(server.address() as AddressInfo).port}`;
 
     fetchOptions = {
       allowedProtocols: ["http:"],
       resolveAddress: async (hostname) => {
-        if (hostname === "127.0.0.1") return { address: "127.0.0.1", family: 4 as const };
+        if (hostname === testHost) return [{ address: "127.0.0.1", family: 4 as const }];
         throw new UnsafeUrlError(`endereço não confiável no cenário de teste: ${hostname}`);
       },
     };
