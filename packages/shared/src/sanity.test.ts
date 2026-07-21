@@ -23,10 +23,39 @@ describe("evaluateSanity", () => {
   });
 
   it("trips rule 2 when activeOffers falls below 60% of the baseline average (the soft-block signal)", () => {
-    const actual: SanityActual = { ...okActual, activeOffers: 200 }; // 200/390 < 60%
+    const actual: SanityActual = { ...okActual, activeOffers: 200, scope: "active" }; // 200/390 < 60%
     expect(evaluateSanity(actual, okBaseline)).toMatchObject({
       verdict: "suspicious",
       tripped: "rule2_active_offers",
+    });
+  });
+
+  it("accepts a stable tail batch with zero newly active offers", () => {
+    const baseline: SanityBaseline = { n: 5, avgOffersFound: 337, avgActiveOffers: 2 };
+    const actual: SanityActual = {
+      offersFound: 337,
+      activeOffers: 0,
+      parseErrors: 0,
+      declaredTotal: null,
+      scope: "tail",
+    };
+
+    expect(evaluateSanity(actual, baseline)).toEqual({ verdict: "ok", tripped: null, coldStart: false });
+  });
+
+  it("still rejects a raw-count collapse in scope='tail'", () => {
+    const baseline: SanityBaseline = { n: 5, avgOffersFound: 337, avgActiveOffers: 2 };
+    const actual: SanityActual = {
+      offersFound: 100,
+      activeOffers: 0,
+      parseErrors: 0,
+      declaredTotal: null,
+      scope: "tail",
+    };
+
+    expect(evaluateSanity(actual, baseline)).toMatchObject({
+      verdict: "suspicious",
+      tripped: "rule1_offers_found",
     });
   });
 

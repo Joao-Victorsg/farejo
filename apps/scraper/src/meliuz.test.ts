@@ -52,6 +52,13 @@ describe("parseMeliuzStorePage", () => {
     });
   });
 
+  it("reports no_cashback for the hosted BeBrasil coupon-only page even without ld+json Store", () => {
+    expect(parseMeliuzStorePage(loadFixture("meliuz-bebrasil-coupon-only.sample.html"), "cupom-bebrasil")).toEqual({
+      slug: "cupom-bebrasil",
+      outcome: "no_cashback",
+    });
+  });
+
   it("reports soft_block when the page has no .hero-sec (presence signal missing)", () => {
     expect(parseMeliuzStorePage(SOFT_BLOCKED_HTML, "some-slug")).toEqual({
       slug: "some-slug",
@@ -61,6 +68,21 @@ describe("parseMeliuzStorePage", () => {
 
   it("reports soft_block when .hero-sec is present but the ld+json Store name is missing", () => {
     const html = storeFixture({ name: undefined, button: "Ativar 10% de cashback" });
+    expect(parseMeliuzStorePage(html, "loja-x")).toEqual({ slug: "loja-x", outcome: "soft_block" });
+  });
+
+  it("reports soft_block when the presence signal has an unknown redirect button", () => {
+    const html = storeFixture({ name: "LojaX", button: "Continuar" });
+    expect(parseMeliuzStorePage(html, "loja-x")).toEqual({ slug: "loja-x", outcome: "soft_block" });
+  });
+
+  it("reports soft_block when an unknown redirect button merely mentions cashback", () => {
+    const html = storeFixture({ name: "LojaX", button: "Ver regras de cashback" });
+    expect(parseMeliuzStorePage(html, "loja-x")).toEqual({ slug: "loja-x", outcome: "soft_block" });
+  });
+
+  it("reports soft_block when an activation CTA has no parseable reward value", () => {
+    const html = storeFixture({ name: "LojaX", button: "Ativar regras de cashback" });
     expect(parseMeliuzStorePage(html, "loja-x")).toEqual({ slug: "loja-x", outcome: "soft_block" });
   });
 

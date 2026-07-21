@@ -27,6 +27,9 @@ Duas regras de uso:
   interrupção, chunking variável) — comparar um contra o outro não tem o mesmo significado que
   comparar runs regulares do mesmo tier. Bootstrap só avalia a regra 3 (parse errors); a regra 4 não
   se aplica de qualquer forma (cuponomia/méliuz não têm `declaredTotal`).
+- **Tail não aciona a regra 2 de ofertas ativas**: a fatia contém lojas sem cashback e pode
+  legitimamente encontrar zero promoções. A regra 1 continua protegendo o tamanho bruto do lote;
+  parse errors, `soft_block`, backoff e circuit breaker preservam suas responsabilidades próprias.
 
 ## Decisão 2 — `crawl_state.store_id` como ponte + `p_scope_store_ids` explícito
 

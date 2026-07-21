@@ -4,7 +4,7 @@
  * decide se escreve é o pipeline em apps/scraper.
  */
 export const SANITY_THRESHOLDS = {
-  /** Regras 1/2: suspicious se < 60% da média dos últimos runs `ok`. */
+  /** Regras relativas: suspicious se < 60% da média dos últimos runs `ok`. */
   relativeFloor: 0.6,
   /** Regra 3: suspicious se parse_errors / offersFound > 10%. */
   parseErrorCeiling: 0.1,
@@ -59,8 +59,9 @@ export interface SanityVerdict {
 /**
  * As quatro regras, nessa ordem de precedência (a primeira que disparar vence).
  * 1/2 são relativas ao baseline e ficam de fora no cold-start (ou em `scope='bootstrap'`,
- * ADR-0004); 3/4 são absolutas e sempre avaliadas — é o que deixa o primeiro run nascer
- * o baseline.
+ * ADR-0004). A regra 2 também não se aplica a `tail`: uma fatia de lojas inativas pode
+ * legitimamente promover zero ofertas. 3/4 são absolutas e sempre avaliadas — é o que
+ * deixa o primeiro run nascer o baseline.
  */
 export function evaluateSanity(actual: SanityActual, baseline: SanityBaseline): SanityVerdict {
   const coldStart = baseline.n < SANITY_THRESHOLDS.minBaselineRuns;
@@ -71,6 +72,7 @@ export function evaluateSanity(actual: SanityActual, baseline: SanityBaseline): 
       return { verdict: "suspicious", tripped: "rule1_offers_found", coldStart };
     }
     if (
+      actual.scope !== "tail" &&
       baseline.avgActiveOffers != null &&
       actual.activeOffers < baseline.avgActiveOffers * SANITY_THRESHOLDS.relativeFloor
     ) {
