@@ -21,5 +21,6 @@ describe("Scrape cashback workflow", () => {
     expect(workflow).toMatch(/webfones-metadata\.json/u);
     expect(workflow).toMatch(/webfones\.html/u);
     expect(workflow).toMatch(/actions\/upload-artifact@v4/u);
+    expect(workflow).toMatch(/pnpm --filter @farejo\/scraper exec playwright install chromium --with-deps/u);
   });
 });

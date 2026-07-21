@@ -198,6 +198,8 @@ jobs:
           path: .artifacts/cuponomia-webfones
           if-no-files-found: warn
           retention-days: 7
+      - name: Install Chromium for the restricted Webfones fallback
+        run: pnpm --filter @farejo/scraper exec playwright install chromium --with-deps
       - run: pnpm --filter @farejo/scraper scrape
 
   meliuz-active:

@@ -1,7 +1,12 @@
 import { CircuitBreakerError, NotFoundError, RetryableError } from "@farejo/shared";
 import { loadFixture } from "@farejo/test-fixtures";
 import { describe, expect, it, vi } from "vitest";
-import { parseCuponomiaDirectory, parseCuponomiaStorePage, scrapeCuponomiaSlugs } from "./cuponomia.js";
+import {
+  fetchCuponomiaPageWithFallback,
+  parseCuponomiaDirectory,
+  parseCuponomiaStorePage,
+  scrapeCuponomiaSlugs,
+} from "./cuponomia.js";
 
 const SOFT_BLOCKED_HTML = "<html><body><div class=\"home\">bem-vindo ao cuponomia</div></body></html>";
 
@@ -73,6 +78,74 @@ describe("parseCuponomiaStorePage", () => {
   it("does not prefix 'até' when displayed carries no up-to marker", () => {
     const outcome = parseCuponomiaStorePage(upToFixture("4%"), "loja-x");
     expect(outcome).toMatchObject({ outcome: "offer", offer: { rewardText: "4% de cashback" } });
+  });
+});
+
+describe("fetchCuponomiaPageWithFallback", () => {
+  it("uses Chromium for Webfones only after the normal fetch exhausts an HTTP 405", async () => {
+    const html = loadFixture("cuponomia-webfones.sample.html");
+    const fetchNormally = vi.fn().mockRejectedValue(
+      new RetryableError("HTTP 405 em https://www.cuponomia.com.br/desconto/webfones"),
+    );
+    const fetchWithChromium = vi.fn().mockResolvedValue(html);
+
+    const result = await fetchCuponomiaPageWithFallback("webfones", { fetchNormally, fetchWithChromium });
+
+    expect(fetchNormally).toHaveBeenCalledOnce();
+    expect(fetchWithChromium).toHaveBeenCalledWith(
+      "https://www.cuponomia.com.br/desconto/webfones",
+      "webfones",
+    );
+    expect(parseCuponomiaStorePage(result, "webfones")).toMatchObject({ outcome: "offer" });
+  });
+
+  it("rejects a Chromium response without a store header valid for Webfones", async () => {
+    const fetchNormally = vi.fn().mockRejectedValue(
+      new RetryableError("HTTP 405 em https://www.cuponomia.com.br/desconto/webfones"),
+    );
+    const fetchWithChromium = vi.fn().mockResolvedValue(SOFT_BLOCKED_HTML);
+
+    await expect(fetchCuponomiaPageWithFallback("webfones", { fetchNormally, fetchWithChromium })).rejects.toThrow(
+      /Chromium.*store_header.*webfones/iu,
+    );
+  });
+
+  it("keeps Webfones as soft_block when every Chromium fallback lacks the presence signal", async () => {
+    const fetchNormally = vi.fn().mockRejectedValue(
+      new RetryableError("HTTP 405 em https://www.cuponomia.com.br/desconto/webfones"),
+    );
+    const fetchWithChromium = vi.fn().mockResolvedValue(SOFT_BLOCKED_HTML);
+    const sleep = vi.fn(async () => undefined);
+
+    const result = await scrapeCuponomiaSlugs(
+      { throttleMultiplier: 1, target: { kind: "slugs", slugs: ["webfones"] } },
+      {
+        fetchPage: (slug) => fetchCuponomiaPageWithFallback(slug, { fetchNormally, fetchWithChromium }),
+        sleep,
+      },
+    );
+
+    expect(result.outcomes).toEqual([{ slug: "webfones", outcome: "soft_block" }]);
+    expect(fetchWithChromium).toHaveBeenCalledTimes(4);
+    expect(sleep).toHaveBeenCalledTimes(3);
+  });
+
+  it("does not start Chromium for a 405 on any slug other than Webfones", async () => {
+    const error = new RetryableError("HTTP 405 em https://www.cuponomia.com.br/desconto/outra-loja");
+    const fetchNormally = vi.fn().mockRejectedValue(error);
+    const fetchWithChromium = vi.fn();
+
+    await expect(fetchCuponomiaPageWithFallback("outra-loja", { fetchNormally, fetchWithChromium })).rejects.toBe(error);
+    expect(fetchWithChromium).not.toHaveBeenCalled();
+  });
+
+  it("keeps 404 terminal without starting Chromium", async () => {
+    const error = new NotFoundError("HTTP 404 em https://www.cuponomia.com.br/desconto/webfones");
+    const fetchNormally = vi.fn().mockRejectedValue(error);
+    const fetchWithChromium = vi.fn();
+
+    await expect(fetchCuponomiaPageWithFallback("webfones", { fetchNormally, fetchWithChromium })).rejects.toBe(error);
+    expect(fetchWithChromium).not.toHaveBeenCalled();
   });
 });
 
