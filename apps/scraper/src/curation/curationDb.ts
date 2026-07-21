@@ -1,4 +1,5 @@
-import { Pool } from "pg";
+import type { Pool } from "pg";
+import { createPostgresPool } from "../postgresPool.js";
 
 let pool: Pool | undefined;
 
@@ -13,6 +14,6 @@ export function getCurationPool(): Pool {
   const connectionString = process.env.FAREJO_CURATION_DATABASE_URL;
   if (!connectionString) throw new Error("FAREJO_CURATION_DATABASE_URL is not configured");
 
-  pool = new Pool({ connectionString, max: 1 });
+  pool = createPostgresPool(connectionString, { max: 1 });
   return pool;
 }

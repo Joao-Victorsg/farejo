@@ -1,6 +1,7 @@
 import "server-only";
-import { Pool } from "pg";
+import type { Pool } from "pg";
 import { z } from "zod";
+import { createPostgresPool } from "./postgres-pool";
 
 const ActivationDestinationRow = z.object({
   store_id: z.coerce.number().int().positive(),
@@ -15,8 +16,7 @@ function getPool(environmentName: "FAREJO_ACTIVATION_DATABASE_URL" | "FAREJO_MET
 
   const connectionString = z.string().url().parse(process.env[environmentName]);
 
-  return new Pool({
-    connectionString,
+  return createPostgresPool(connectionString, {
     max: 1,
     connectionTimeoutMillis: 1_500,
     query_timeout: 1_500,

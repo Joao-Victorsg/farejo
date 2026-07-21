@@ -41,6 +41,7 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           FAREJO_SITE_URL: ${{ secrets.FAREJO_SITE_URL }}
           FAREJO_CATALOG_INVALIDATION_SECRET: ${{ secrets.FAREJO_CATALOG_INVALIDATION_SECRET }}
+          FAREJO_SUPABASE_CA_CERT: ${{ secrets.FAREJO_SUPABASE_CA_CERT }}
         run: |
           missing=()
           [ -z "$FAREJO_DEPLOY_DATABASE_URL" ] && missing+=("FAREJO_DEPLOY_DATABASE_URL")
@@ -49,6 +50,7 @@ jobs:
           [ -z "$VERCEL_PROJECT_ID" ] && missing+=("VERCEL_PROJECT_ID")
           [ -z "$FAREJO_SITE_URL" ] && missing+=("FAREJO_SITE_URL")
           [ -z "$FAREJO_CATALOG_INVALIDATION_SECRET" ] && missing+=("FAREJO_CATALOG_INVALIDATION_SECRET")
+          [ -z "$FAREJO_SUPABASE_CA_CERT" ] && missing+=("FAREJO_SUPABASE_CA_CERT")
           if [ ${#missing[@]} -gt 0 ]; then
             echo "::error::GitHub Environment \"production\" está sem os secrets: ${missing[*]}. Pendência operacional (mesmo padrão do Environment \"logos\"); publicação bloqueada até serem configurados."
             exit 1
@@ -100,6 +102,10 @@ jobs:
       - name: Verify production schema
         env:
           FAREJO_DEPLOY_DATABASE_URL: ${{ secrets.FAREJO_DEPLOY_DATABASE_URL }}
+          # ADR-0055: o certificado do Postgres do Supabase não encadeia até uma CA pública,
+          # então toda conexão `pg` precisa do CA do projeto. O `supabase db push` acima não
+          # usa isto — a CLI traz o próprio trust store.
+          FAREJO_SUPABASE_CA_CERT: ${{ secrets.FAREJO_SUPABASE_CA_CERT }}
         run: pnpm --filter @farejo/web verify:schema
 
       # ADR-0041 passo 4: `vercel build` roda aqui, no mesmo job, sobre o mesmo checkout que

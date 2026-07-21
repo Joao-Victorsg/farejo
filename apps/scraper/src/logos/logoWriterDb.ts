@@ -1,5 +1,6 @@
-import { Pool } from "pg";
+import type { Pool } from "pg";
 import { z } from "zod";
+import { createPostgresPool } from "../postgresPool.js";
 
 const LogoWriterEnvironment = z.object({
   FAREJO_LOGO_WRITER_DATABASE_URL: z.string().min(1),
@@ -16,6 +17,6 @@ export function getLogoWriterPool(): Pool {
   if (pool) return pool;
 
   const { FAREJO_LOGO_WRITER_DATABASE_URL } = LogoWriterEnvironment.parse(process.env);
-  pool = new Pool({ connectionString: FAREJO_LOGO_WRITER_DATABASE_URL, max: 1 });
+  pool = createPostgresPool(FAREJO_LOGO_WRITER_DATABASE_URL, { max: 1 });
   return pool;
 }
