@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GeistMono } from "geist/font/mono";
 import "@fontsource-variable/hanken-grotesk";
 import "@fontsource-variable/space-grotesk";
@@ -13,5 +15,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="pt-BR" className={GeistMono.variable}><body><a className="skip-link" href="#conteudo">Pular para o conteúdo</a><InterPreferenceProvider>{children}</InterPreferenceProvider></body></html>;
+  return <html lang="pt-BR" className={GeistMono.variable}><body><a className="skip-link" href="#conteudo">Pular para o conteúdo</a><InterPreferenceProvider>{children}</InterPreferenceProvider><Analytics /><SpeedInsights /></body></html>;
 }
