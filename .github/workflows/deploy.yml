@@ -31,26 +31,29 @@ jobs:
       # pendência operacional (mesmo padrão do Environment "logos") — em vez de gastar os ~30 min
       # de testes/build abaixo só para bloquear na migration de qualquer forma. Os secrets NÃO
       # são env de job: `pnpm test` abaixo builda e sobe a app localmente com dados fictícios, e
-      # se `FAREJO_SITE_URL`/`FAREJO_CATALOG_INVALIDATION_SECRET` de produção vazassem para esse
-      # passo, o teste local usaria o domínio/segredo errado — cada passo declara só o que usa.
+      # se `FAREJO_CATALOG_INVALIDATION_SECRET` de produção vazasse para esse passo, o teste local
+      # usaria o segredo errado — cada passo declara só o que usa.
+      # `FAREJO_SITE_URL` saiu daqui na ADR-0056: o smoke passou a mirar a URL do deployment
+      # encenado, e o domínio público só é lido pela app em runtime (env var da Vercel). Guardar
+      # aqui um secret que nenhum passo lê faria o deploy falhar por uma exigência inexistente.
       - name: Guard production secrets
         env:
           FAREJO_DEPLOY_DATABASE_URL: ${{ secrets.FAREJO_DEPLOY_DATABASE_URL }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          FAREJO_SITE_URL: ${{ secrets.FAREJO_SITE_URL }}
           FAREJO_CATALOG_INVALIDATION_SECRET: ${{ secrets.FAREJO_CATALOG_INVALIDATION_SECRET }}
           FAREJO_SUPABASE_CA_CERT: ${{ secrets.FAREJO_SUPABASE_CA_CERT }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: |
           missing=()
           [ -z "$FAREJO_DEPLOY_DATABASE_URL" ] && missing+=("FAREJO_DEPLOY_DATABASE_URL")
           [ -z "$VERCEL_TOKEN" ] && missing+=("VERCEL_TOKEN")
           [ -z "$VERCEL_ORG_ID" ] && missing+=("VERCEL_ORG_ID")
           [ -z "$VERCEL_PROJECT_ID" ] && missing+=("VERCEL_PROJECT_ID")
-          [ -z "$FAREJO_SITE_URL" ] && missing+=("FAREJO_SITE_URL")
           [ -z "$FAREJO_CATALOG_INVALIDATION_SECRET" ] && missing+=("FAREJO_CATALOG_INVALIDATION_SECRET")
           [ -z "$FAREJO_SUPABASE_CA_CERT" ] && missing+=("FAREJO_SUPABASE_CA_CERT")
+          [ -z "$VERCEL_AUTOMATION_BYPASS_SECRET" ] && missing+=("VERCEL_AUTOMATION_BYPASS_SECRET")
           if [ ${#missing[@]} -gt 0 ]; then
             echo "::error::GitHub Environment \"production\" está sem os secrets: ${missing[*]}. Pendência operacional (mesmo padrão do Environment \"logos\"); publicação bloqueada até serem configurados."
             exit 1
@@ -114,17 +117,6 @@ jobs:
       # faz `vercel deploy` publicar exatamente esse artefato, sem a Vercel rodar um segundo
       # build remoto divergente. `vercel pull`/`build` leem VERCEL_ORG_ID e VERCEL_PROJECT_ID do
       # ambiente.
-      - name: Capture current production deployment (rollback target)
-        id: previous
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: |
-          previous_url=$(curl -sS -H "Authorization: Bearer $VERCEL_TOKEN" \
-            "https://api.vercel.com/v6/deployments?projectId=${VERCEL_PROJECT_ID}&target=production&limit=1&state=READY" \
-            | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{try{const j=JSON.parse(d);const u=j.deployments?.[0]?.url;if(u)process.stdout.write(u);}catch{}})")
-          echo "url=${previous_url}" >> "$GITHUB_OUTPUT"
-
       # Vercel CLI monorepo requirement (see https://vercel.com/docs/monorepos#add-a-monorepo-through-vercel-cli):
       # "Vercel CLI should not be invoked from the subdirectory" — it must run from the repo root
       # so it can see the full workspace (pnpm-hoisted node_modules included), letting the
@@ -148,28 +140,41 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: apps/web/node_modules/.bin/vercel build --prod --token="$VERCEL_TOKEN"
 
-      - name: Deploy prebuilt artifact
+      # ADR-0056: `--skip-domain` cria o deployment de produção SEM mover o domínio. Produção
+      # continua servindo o artefato anterior enquanto o smoke roda contra o novo, e só uma
+      # publicação aprovada chega ao público. Substitui o desenho deploy->smoke->rollback, que
+      # expunha o artefato não verificado e dependia de um rollback que o plano gratuito da
+      # Vercel recusa depois do primeiro passo (HTTP 402).
+      - name: Deploy prebuilt artifact (staged, no domain)
         id: deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
-          url=$(apps/web/node_modules/.bin/vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN")
+          url=$(apps/web/node_modules/.bin/vercel deploy --prebuilt --prod --skip-domain --token="$VERCEL_TOKEN")
           echo "url=${url}" >> "$GITHUB_OUTPUT"
 
-      # ADR-0041 passo 5: smoke pós-deploy nas rotas públicas contra o artefato recém-publicado.
-      - name: Smoke test production
+      # ADR-0041 passo 5, corrigido pela ADR-0056: o alvo é a URL do deployment recém-criado, e
+      # NUNCA o domínio de produção. Testar o domínio media o artefato antigo sempre que ele
+      # estivesse fixado (por rollback ou promoção pendente) — o smoke aprovava ou reprovava algo
+      # que não era o que acabou de ser publicado.
+      - name: Smoke test the staged deployment
         id: smoke
         env:
-          FAREJO_SITE_URL: ${{ secrets.FAREJO_SITE_URL }}
+          FAREJO_SITE_URL: ${{ steps.deploy.outputs.url }}
           FAREJO_CATALOG_INVALIDATION_SECRET: ${{ secrets.FAREJO_CATALOG_INVALIDATION_SECRET }}
+          # A Deployment Protection responde 302 para URLs de deployment; só o domínio de
+          # produção é público. Sem este bypass o smoke mede a tela de login, não o site.
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: pnpm --filter @farejo/web test:smoke:production
 
-      # Falha durante ou depois do deploy permite rollback do frontend; as migrations aditivas
-      # permanecem (compatíveis com o frontend anterior, ADR-0041).
-      - name: Roll back on smoke failure
-        if: failure() && steps.smoke.outcome == 'failure' && steps.previous.outputs.url != ''
+      # Só aqui o público passa a ver o artefato novo. Falha em qualquer passo acima deixa a
+      # produção intacta no deployment anterior — não há o que reverter, e as migrations aditivas
+      # permanecem compatíveis com ele (ADR-0041).
+      - name: Promote to production
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: apps/web/node_modules/.bin/vercel rollback "https://${{ steps.previous.outputs.url }}" --token="$VERCEL_TOKEN" --yes
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: apps/web/node_modules/.bin/vercel promote "${{ steps.deploy.outputs.url }}" --token="$VERCEL_TOKEN" --yes

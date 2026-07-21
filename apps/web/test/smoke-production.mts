@@ -13,6 +13,10 @@ import { z } from "zod";
 const SmokeEnvironment = z.object({
   FAREJO_SITE_URL: z.string().url(),
   FAREJO_CATALOG_INVALIDATION_SECRET: z.string().min(32),
+  // ADR-0056: no deploy encenado o alvo é a URL do deployment recém-criado, e a Deployment
+  // Protection da Vercel responde 302 para ela (só o domínio de produção é público). Opcional
+  // porque o script continua servindo para apontar direto para um domínio público.
+  VERCEL_AUTOMATION_BYPASS_SECRET: z.string().min(1).optional(),
 });
 
 const STORE_URL_PATTERN = /\/loja\/([^<"&]+)</;
@@ -24,8 +28,24 @@ const FETCH_TIMEOUT_MS = 10_000;
 // credencial de banco, `service_role` ou o segredo HMAC pode escapar para o bundle/HTML.
 const SECRET_LEAK_PATTERN = /FAREJO_[A-Z_]*DATABASE_URL|FAREJO_CATALOG_INVALIDATION_SECRET|service_role|postgres(?:ql)?:\/\//;
 
+/**
+ * Header de bypass da Deployment Protection (ADR-0056). `x-vercel-set-bypass-cookie: false`
+ * mantém o bypass restrito a esta requisição — sem cookie, nada do que o smoke faz deixa uma
+ * sessão autenticada para trás.
+ */
+export function protectionBypassHeaders(secret: string | undefined): Record<string, string> {
+  if (!secret) return {};
+  return { "x-vercel-protection-bypass": secret, "x-vercel-set-bypass-cookie": "false" };
+}
+
+let bypassHeaders: Record<string, string> = {};
+
 function smokeFetch(url: URL, init: RequestInit = {}): Promise<Response> {
-  return fetch(url, { ...init, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+  return fetch(url, {
+    ...init,
+    headers: { ...bypassHeaders, ...(init.headers as Record<string, string> | undefined) },
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+  });
 }
 
 export interface SmokeCheck {
@@ -187,6 +207,8 @@ async function main(): Promise<void> {
     process.exitCode = 1;
     return;
   }
+
+  bypassHeaders = protectionBypassHeaders(environment.data.VERCEL_AUTOMATION_BYPASS_SECRET);
 
   const baseUrl = new URL(environment.data.FAREJO_SITE_URL);
   const { checks, activationSamplesMs } = await runProductionSmoke(baseUrl, environment.data.FAREJO_CATALOG_INVALIDATION_SECRET);
