@@ -35,16 +35,26 @@ export function CatalogCard({ store }: { store: CatalogStore }) {
           {visibleOffers.map((offer, index) => {
             const signals = effectiveSignals(offer, isCorrentista);
             const previousText = formatPreviousValue(offer, isCorrentista);
+            const isBest = index === 0;
+            // Na home cabe no máximo um sinal secundário por linha (handoff), além do MELHOR.
+            const secondary = offer.freshness === "delayed"
+              ? { label: "ATRASADO", cls: "bg-[#f0e7d3] text-[#805e26]", title: "Atualização atrasada" }
+              : signals.isBoost
+              ? { label: "BOOST", cls: "bg-[#fdece0] text-[#aa4a14]", title: undefined }
+              : offer.reward.type === "fixed"
+              ? { label: "VALOR FIXO", cls: "bg-[#f0e7d3] text-[#8a6a33]", title: "Cashback em reais, não em porcentagem" }
+              : isInterCorrentistaOffer(offer)
+              ? { label: "CONDICIONAL", cls: "bg-[#dcebe3] text-[#2f6f57]", title: "Taxa condicionada a ser correntista Inter" }
+              : null;
             return (
               <li className="flex items-center justify-between gap-3 py-2.5 text-sm" key={offer.platformId}>
                 <span className="flex min-w-0 items-center gap-2">
                   <PlatformIcon platformId={offer.platformId} />
-                  <span className="min-w-0 truncate font-medium">{offer.platformName}{isInterCorrentistaOffer(offer) ? <span className="ml-1 text-xs font-normal text-[#5b5f56]">{isCorrentista ? "(correntista)" : "(não correntista)"}</span> : null}</span>
+                  <span className="min-w-0 truncate font-medium">{offer.platformName}</span>
                 </span>
-                <span className="flex shrink-0 items-center gap-2 font-numbers font-semibold text-[#1c7a4d]">
-                  {index === 0 ? <span className="rounded-full bg-[#e7f4ec] px-2 py-0.5 font-mono text-[10px] font-medium text-[#1c7a4d]">MELHOR</span> : null}
-                  {signals.isBoost ? <span className="rounded-full bg-[#fdece0] px-2 py-0.5 font-mono text-[10px] font-medium text-[#aa4a14]">BOOST</span> : null}
-                  {offer.freshness === "delayed" ? <span title="Atualização atrasada" className="rounded-full bg-[#f0e7d3] px-2 py-0.5 font-mono text-[10px] font-medium text-[#805e26]">ATRASADO</span> : null}
+                <span className={`flex shrink-0 items-center gap-2 font-numbers font-semibold ${isBest ? "text-[#1c7a4d]" : "text-[#12140f]"}`}>
+                  {isBest ? <span className="rounded-full bg-[#e7f4ec] px-2 py-0.5 font-mono text-[10px] font-medium text-[#1c7a4d]">MELHOR</span> : null}
+                  {secondary ? <span title={secondary.title} className={`rounded-full px-2 py-0.5 font-mono text-[10px] font-medium ${secondary.cls}`}>{secondary.label}</span> : null}
                   {formatReward(offer, isCorrentista)}
                   {previousText ? <span className="font-sans text-xs font-normal text-[#5b5f56]">(era {previousText})</span> : null}
                 </span>
@@ -53,7 +63,7 @@ export function CatalogCard({ store }: { store: CatalogStore }) {
           })}
         </ul>
         <div className="mt-3 flex items-center justify-between gap-3 border-t border-[#f1efe9] pt-3">
-          {remaining > 0 ? <span className="flex items-center gap-1.5 text-xs text-[#5b5f56]"><span className="rounded-md bg-[#f1efe9] px-1.5 py-0.5 text-[11px] font-medium text-[#5b5f56]">+{remaining}</span>mais {remaining} {remaining === 1 ? "plataforma" : "plataformas"}</span> : <span />}
+          {remaining > 0 ? <span className="flex items-center gap-2 text-xs text-[#5b5f56]"><span className="rounded-full border border-dashed border-[#cfccc0] px-2 py-0.5 text-xs font-medium text-[#5b5f56]">+{remaining}</span>mais {remaining} {remaining === 1 ? "plataforma" : "plataformas"}</span> : <span />}
           <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#1c7a4d]">Ver todas<ArrowRight aria-hidden="true" size={13} /></span>
         </div>
       </Link>
