@@ -19,6 +19,20 @@ describe("parseCuponomiaStorePage", () => {
     });
   });
 
+  it("extracts the current Webfones offer from the sanitized public capture", () => {
+    expect(parseCuponomiaStorePage(loadFixture("cuponomia-webfones.sample.html"), "webfones")).toEqual({
+      slug: "webfones",
+      outcome: "offer",
+      offer: {
+        storeName: "Webfones",
+        rewardText: "até 3% de cashback",
+        previousRewardText: undefined,
+        url: "https://www.cuponomia.com.br/desconto/webfones",
+        logoUrl: "https://assets.cuponomia.com.br/img/stores/medium/webfones-638131949380037187.png?v4",
+      },
+    });
+  });
+
   it("detects boost via del.rewardsTag-previous + has-store-boost-cashback, not header text", () => {
     const outcome = parseCuponomiaStorePage(loadFixture("cuponomia-loja-boost.html"), "iplace");
     expect(outcome.outcome).toBe("offer");
