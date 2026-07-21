@@ -16,7 +16,8 @@ const BADGE = "rounded-[5px] px-[7px] py-[3px] font-mono text-[10px] tracking-[0
 function secondaryBadge(offer: CatalogOffer, isCorrentista: boolean) {
   if (effectiveSignals(offer, isCorrentista).isBoost) return { label: "BOOST", cls: "bg-[#aa4a14] font-semibold text-white", title: "Cashback acima do valor típico dos últimos 60 dias" };
   if (isInterCorrentistaOffer(offer)) return { label: "CONDICIONAL", cls: "bg-[#dcebe3] font-semibold text-[#2f6f57]", title: "Taxa condicionada a ser correntista Inter" };
-  if (offer.reward.type === "fixed") return { label: "VALOR FIXO", cls: "bg-[#f0e7d3] font-semibold text-[#8a6a33]", title: "Cashback em reais, não em porcentagem" };
+  // #8a6a33 (handoff) sobre #f0e7d3 fica em 4,07:1 — abaixo do mínimo AA para texto pequeno.
+  if (offer.reward.type === "fixed") return { label: "VALOR FIXO", cls: "bg-[#f0e7d3] font-semibold text-[#805e26]", title: "Cashback em reais, não em porcentagem" };
   return null;
 }
 

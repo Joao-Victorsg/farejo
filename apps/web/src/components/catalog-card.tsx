@@ -42,7 +42,7 @@ export function CatalogCard({ store }: { store: CatalogStore }) {
               : signals.isBoost
               ? { label: "BOOST", cls: "bg-[#fdece0] text-[#aa4a14]", title: undefined }
               : offer.reward.type === "fixed"
-              ? { label: "VALOR FIXO", cls: "bg-[#f0e7d3] text-[#8a6a33]", title: "Cashback em reais, não em porcentagem" }
+              ? { label: "VALOR FIXO", cls: "bg-[#f0e7d3] text-[#805e26]", title: "Cashback em reais, não em porcentagem" }
               : isInterCorrentistaOffer(offer)
               ? { label: "CONDICIONAL", cls: "bg-[#dcebe3] text-[#2f6f57]", title: "Taxa condicionada a ser correntista Inter" }
               : null;
