@@ -2,7 +2,13 @@ import { createHmac } from "node:crypto";
 import { z } from "zod";
 
 const InvalidationEnvironment = z.object({
-  CATALOG_INVALIDATION_URL: z.string().url().refine((url) => new URL(url).protocol === "https"),
+  CATALOG_INVALIDATION_URL: z.string().url().refine((url) => {
+    try {
+      return new URL(url).protocol === "https:";
+    } catch {
+      return false;
+    }
+  }),
   CATALOG_INVALIDATION_SECRET: z.string().min(32),
 });
 
@@ -17,7 +23,13 @@ export type CatalogInvalidator = (event: CatalogInvalidationEvent) => Promise<vo
 export function createCatalogInvalidator(environment: Record<string, string | undefined> = process.env): CatalogInvalidator {
   return async (event) => {
     const configuration = InvalidationEnvironment.safeParse(environment);
-    if (!configuration.success) throw new Error("Catalog invalidation is not configured");
+    if (!configuration.success) {
+      const invalidKeys = [...new Set(configuration.error.issues.flatMap((issue) => {
+        const key = issue.path[0];
+        return typeof key === "string" ? [key] : [];
+      }))];
+      throw new Error(`Catalog invalidation is not configured: ${invalidKeys.join(", ")}`);
+    }
 
     const timestamp = String(event.timestamp.getTime());
     const body = JSON.stringify({

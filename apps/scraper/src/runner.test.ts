@@ -104,7 +104,7 @@ describe("runAllPlatforms (Postgres local)", () => {
       status: "invalidation_failed",
       offersWritten: 1,
       parseErrors: 0,
-      error: "Catalog invalidation failed after the scrape was committed",
+      error: "Catalog invalidation failed after the scrape was committed: simulated invalidation outage",
     }]);
     expect(exitCodeFor(results)).toBe(1);
 

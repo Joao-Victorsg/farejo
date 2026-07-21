@@ -128,14 +128,15 @@ async function runPlatform(
     if (outcome.status === "ok") {
       try {
         await invalidateCatalog({ platformId: adapter.platformId, runId: outcome.runId, timestamp: new Date() });
-      } catch {
-        console.error(`[catalog-invalidation] failed after committed run ${outcome.runId} for ${adapter.platformId}; retry the job`);
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : "Unknown catalog invalidation error";
+        console.error(`[catalog-invalidation] failed after committed run ${outcome.runId} for ${adapter.platformId}: ${reason}; retry the job`);
         return {
           platformId: adapter.platformId,
           status: "invalidation_failed",
           offersWritten: outcome.offersWritten,
           parseErrors: outcome.parseErrors,
-          error: "Catalog invalidation failed after the scrape was committed",
+          error: `Catalog invalidation failed after the scrape was committed: ${reason}`,
         };
       }
     }
