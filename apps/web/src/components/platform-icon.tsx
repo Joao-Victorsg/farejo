@@ -14,5 +14,5 @@ const PLATFORM_ICONS: Record<string, string> = {
 };
 
 export function PlatformIcon({ platformId }: { platformId: string }) {
-  return <Image alt="" aria-hidden="true" className="size-6 shrink-0 rounded-[7px] border border-[#ece9e2] bg-white object-contain p-[3px]" height={24} src={PLATFORM_ICONS[platformId] ?? "/portals/mycashback.png"} width={24} />;
+  return <Image alt="" aria-hidden="true" className="size-6 shrink-0 rounded-[6px] object-contain" height={24} src={PLATFORM_ICONS[platformId] ?? "/portals/mycashback.png"} width={24} />;
 }
