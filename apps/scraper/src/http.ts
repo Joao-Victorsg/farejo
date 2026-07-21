@@ -14,6 +14,17 @@ export interface FetchedText {
   finalUrl: string;
 }
 
+/** Erro HTTP retentável interno, com status estruturado para fallbacks específicos. */
+export class HttpStatusError extends RetryableError {
+  constructor(
+    public readonly status: number,
+    public readonly url: string,
+  ) {
+    super(`HTTP ${status} em ${url}`);
+    this.name = "HttpStatusError";
+  }
+}
+
 /** Casca fina de fetch: 404 = desfecho terminal; falhas transitórias são retentáveis. */
 export async function fetchTextResponse(url: string, extraHeaders: Record<string, string> = {}): Promise<FetchedText> {
   return withRetry(
@@ -28,7 +39,7 @@ export async function fetchTextResponse(url: string, extraHeaders: Record<string
           signal: AbortSignal.timeout(10_000),
         });
         if (res.status === 404) throw new NotFoundError(`HTTP 404 em ${url}`);
-        if (!res.ok) throw new RetryableError(`HTTP ${res.status} em ${url}`);
+        if (!res.ok) throw new HttpStatusError(res.status, url);
         return { text: await res.text(), finalUrl: res.url || url };
       } catch (error) {
         if (error instanceof RetryableError || error instanceof NotFoundError) throw error;

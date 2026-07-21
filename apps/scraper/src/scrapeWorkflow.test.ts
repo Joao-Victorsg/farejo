@@ -21,6 +21,16 @@ describe("Scrape cashback workflow", () => {
     expect(workflow).toMatch(/webfones-metadata\.json/u);
     expect(workflow).toMatch(/webfones\.html/u);
     expect(workflow).toMatch(/actions\/upload-artifact@v4/u);
-    expect(workflow).toMatch(/pnpm --filter @farejo\/scraper exec playwright install chromium --with-deps/u);
+    expect(workflow).not.toMatch(/\.artifacts\/cuponomia-webfones/u);
+    expect(workflow).toMatch(/AbortSignal\.timeout\(10_000\)/u);
+
+    const browserInstalls = workflow.match(/pnpm --filter @farejo\/scraper exec playwright install chromium --with-deps/gu);
+    expect(browserInstalls).toHaveLength(2);
+    expect(workflow.match(/  cuponomia-active:[\s\S]*?\n  cuponomia-tail:/u)?.[0]).toMatch(
+      /playwright install chromium --with-deps/u,
+    );
+    expect(workflow.match(/  cuponomia-tail:[\s\S]*?\n  meliuz-active:/u)?.[0]).toMatch(
+      /playwright install chromium --with-deps/u,
+    );
   });
 });

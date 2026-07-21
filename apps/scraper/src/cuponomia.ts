@@ -10,7 +10,7 @@ import {
 } from "@farejo/shared";
 import * as cheerio from "cheerio";
 import { z } from "zod";
-import { fetchText } from "./http.js";
+import { HttpStatusError, fetchText } from "./http.js";
 
 const BASE = "https://www.cuponomia.com.br";
 const WEBFONES_SLUG = "webfones";
@@ -139,8 +139,9 @@ export async function fetchCuponomiaPageWithFallback(
   } catch (error) {
     const exhaustedWebfones405 =
       slug === WEBFONES_SLUG &&
-      error instanceof RetryableError &&
-      error.message === `HTTP 405 em ${url}`;
+      error instanceof HttpStatusError &&
+      error.status === 405 &&
+      error.url === url;
     if (!exhaustedWebfones405) throw error;
 
     const html = await deps.fetchWithChromium(url, slug);

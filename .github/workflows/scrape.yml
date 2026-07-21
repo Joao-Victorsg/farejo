@@ -122,6 +122,8 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Install Chromium for the restricted Webfones fallback
+        run: pnpm --filter @farejo/scraper exec playwright install chromium --with-deps
       - run: pnpm --filter @farejo/scraper scrape
 
   cuponomia-tail:
@@ -150,15 +152,16 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.target == 'cuponomia-tail' }}
         shell: bash
         run: |
-          mkdir -p .artifacts/cuponomia-webfones
+          mkdir -p artifacts/cuponomia-webfones
           node --input-type=module <<'NODE'
           import { createHash } from "node:crypto";
           import { writeFile } from "node:fs/promises";
 
-          const directory = ".artifacts/cuponomia-webfones";
+          const directory = "artifacts/cuponomia-webfones";
           const url = "https://www.cuponomia.com.br/desconto/webfones";
           try {
             const response = await fetch(url, {
+              signal: AbortSignal.timeout(10_000),
               headers: {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
                 "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
@@ -195,7 +198,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cuponomia-webfones-${{ github.run_id }}
-          path: .artifacts/cuponomia-webfones
+          path: artifacts/cuponomia-webfones
           if-no-files-found: warn
           retention-days: 7
       - name: Install Chromium for the restricted Webfones fallback

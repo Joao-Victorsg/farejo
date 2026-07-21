@@ -7,6 +7,7 @@ import {
   parseCuponomiaStorePage,
   scrapeCuponomiaSlugs,
 } from "./cuponomia.js";
+import { HttpStatusError } from "./http.js";
 
 const SOFT_BLOCKED_HTML = "<html><body><div class=\"home\">bem-vindo ao cuponomia</div></body></html>";
 
@@ -85,7 +86,7 @@ describe("fetchCuponomiaPageWithFallback", () => {
   it("uses Chromium for Webfones only after the normal fetch exhausts an HTTP 405", async () => {
     const html = loadFixture("cuponomia-webfones.sample.html");
     const fetchNormally = vi.fn().mockRejectedValue(
-      new RetryableError("HTTP 405 em https://www.cuponomia.com.br/desconto/webfones"),
+      new HttpStatusError(405, "https://www.cuponomia.com.br/desconto/webfones"),
     );
     const fetchWithChromium = vi.fn().mockResolvedValue(html);
 
@@ -101,7 +102,7 @@ describe("fetchCuponomiaPageWithFallback", () => {
 
   it("rejects a Chromium response without a store header valid for Webfones", async () => {
     const fetchNormally = vi.fn().mockRejectedValue(
-      new RetryableError("HTTP 405 em https://www.cuponomia.com.br/desconto/webfones"),
+      new HttpStatusError(405, "https://www.cuponomia.com.br/desconto/webfones"),
     );
     const fetchWithChromium = vi.fn().mockResolvedValue(SOFT_BLOCKED_HTML);
 
@@ -112,7 +113,7 @@ describe("fetchCuponomiaPageWithFallback", () => {
 
   it("keeps Webfones as soft_block when every Chromium fallback lacks the presence signal", async () => {
     const fetchNormally = vi.fn().mockRejectedValue(
-      new RetryableError("HTTP 405 em https://www.cuponomia.com.br/desconto/webfones"),
+      new HttpStatusError(405, "https://www.cuponomia.com.br/desconto/webfones"),
     );
     const fetchWithChromium = vi.fn().mockResolvedValue(SOFT_BLOCKED_HTML);
     const sleep = vi.fn(async () => undefined);
@@ -131,7 +132,7 @@ describe("fetchCuponomiaPageWithFallback", () => {
   });
 
   it("does not start Chromium for a 405 on any slug other than Webfones", async () => {
-    const error = new RetryableError("HTTP 405 em https://www.cuponomia.com.br/desconto/outra-loja");
+    const error = new HttpStatusError(405, "https://www.cuponomia.com.br/desconto/outra-loja");
     const fetchNormally = vi.fn().mockRejectedValue(error);
     const fetchWithChromium = vi.fn();
 

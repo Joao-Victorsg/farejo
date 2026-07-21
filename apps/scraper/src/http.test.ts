@@ -1,6 +1,6 @@
 import { NotFoundError, RetryableError } from "@farejo/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { fetchText, fetchTextResponse } from "./http.js";
+import { HttpStatusError, fetchText, fetchTextResponse } from "./http.js";
 
 describe("fetchText", () => {
   beforeEach(() => {
@@ -59,6 +59,22 @@ describe("fetchText", () => {
 
     const result = fetchText("https://example.test");
     const assertion = expect(result).rejects.toThrow("HTTP 500");
+    await vi.runAllTimersAsync();
+    await assertion;
+
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it("preserves the exhausted HTTP status and URL as structured internal data", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response("", { status: 405 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = fetchText("https://example.test/method-blocked");
+    const assertion = expect(result).rejects.toMatchObject({
+      name: "HttpStatusError",
+      status: 405,
+      url: "https://example.test/method-blocked",
+    } satisfies Partial<HttpStatusError>);
     await vi.runAllTimersAsync();
     await assertion;
 
