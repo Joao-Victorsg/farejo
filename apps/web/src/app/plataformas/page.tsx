@@ -44,19 +44,19 @@ function PlatformCard({ stat }: { stat: PlatformStat }) {
     <li className="rounded-2xl border border-[#ece9e2] bg-white p-6">
       <div className="flex items-center gap-3.5">
         {/* fallback nunca deveria disparar: platform_stats só retorna as 5 plataformas canônicas do mapa acima */}
-        <Image alt="" aria-hidden="true" className="rounded-xl border border-[#ece9e2] p-1.5" height={46} src={PLATFORM_ICONS[stat.platformId] ?? "/portals/mycashback.png"} width={46} />
+        <Image alt="" aria-hidden="true" className="shrink-0 rounded-xl object-contain" height={46} src={PLATFORM_ICONS[stat.platformId] ?? "/portals/mycashback.png"} width={46} />
         <div className="min-w-0">
-          <h2 className="truncate text-lg font-bold tracking-[-0.03em]">{stat.platformName}</h2>
+          <h2 className="truncate text-lg font-semibold tracking-[-0.03em]">{stat.platformName}</h2>
           <p className="text-[12.5px] text-[#70736a]">{stat.storeCount === 0 ? "Ainda sem lojas elegíveis" : `em ${stat.storeCount.toLocaleString("pt-BR")} ${stat.storeCount === 1 ? "loja" : "lojas"}`}</p>
         </div>
       </div>
       <div className="mt-5 flex gap-2.5">
         <div className="flex-1 rounded-xl border border-[#f1efe8] bg-[#faf9f5] p-3.5">
-          <p className="font-numbers text-xl font-semibold tracking-[-0.02em]">{stat.percentAverage === null ? "—" : formatPercent(stat.percentAverage)}</p>
+          <p className="font-numbers text-[22px] font-semibold tracking-[-0.02em]">{stat.percentAverage === null ? "—" : formatPercent(stat.percentAverage)}</p>
           <p className="mt-1 text-[11px] text-[#70736a]">média por loja</p>
         </div>
         <div className="flex-1 rounded-xl border border-[#cfe7d9] bg-[#f2f9f5] p-3.5">
-          <p className="font-numbers text-xl font-semibold tracking-[-0.02em] text-[#1c7a4d]">{stat.percentPeak === null ? "—" : `${stat.percentPeakIsUpto ? "Até " : ""}${formatPercent(stat.percentPeak)}`}</p>
+          <p className="font-numbers text-[22px] font-semibold tracking-[-0.02em] text-[#1c7a4d]">{stat.percentPeak === null ? "—" : `${stat.percentPeakIsUpto ? "Até " : ""}${formatPercent(stat.percentPeak)}`}</p>
           <p className="mt-1 text-[11px] text-[#686c60]">pico anunciado</p>
         </div>
       </div>
