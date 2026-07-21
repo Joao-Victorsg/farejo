@@ -14,6 +14,8 @@ import { fetchTextResponse } from "./http.js";
 
 const BASE = "https://www.meliuz.com.br";
 const DELAY_BASE_MS = 1500;
+const CASHBACK_CTA_RE =
+  /^ativar\s+(?:at[ée]\*?\s+)?(?:\d+(?:[.,]\d+)?\s*%|R\$\s*\d+(?:[.,]\d+)?)\s+de cashback$/iu;
 // Méliuz não confirmou soft-block ao vivo (CLAUDE.md: "por precaução") — reusa o mesmo
 // backoff do cuponomia até haver sinal real que justifique números próprios.
 const SOFT_BLOCK_BACKOFFS_MS = [8000, 16000, 24000];
@@ -75,9 +77,10 @@ function findLdJsonStore($: cheerio.CheerioAPI): z.infer<typeof LdJsonStore> | u
  * Parse puro: HTML de página de loja do méliuz → desfecho do slug. Sem I/O.
  *
  * Ausência de `.hero-sec` (sinal de presença da página) é `soft_block`, nunca
- * "sem cashback" — quem chama decide se retenta. Nome ausente apesar do `.hero-sec`
- * presente também é `soft_block`: o ld+json Store é metadado de SEO, sempre presente
- * numa página bem servida, independente de a loja ter cashback ou não.
+ * "sem cashback" — quem chama decide se retenta. Dentro de uma hero válida, o CTA
+ * explícito "Ativar cupom exclusivo" conclui `no_cashback` sem depender do ld+json
+ * Store; para uma oferta, nome ausente continua `soft_block`, pois não há como montar
+ * o `RawOffer` com segurança.
  *
  * O botão já traz o texto pronto ("Ativar até 10% de cashback" / "Ativar R$ 25,00 de
  * cashback") — o adapter só tira o verbo de ação, nunca reextrai valor/is_upto daqui
@@ -90,13 +93,14 @@ export function parseMeliuzStorePage(html: string, slug: string): SlugOutcome {
   const $ = cheerio.load(html);
   if ($(".hero-sec").length === 0) return { slug, outcome: "soft_block" };
 
+  const btnText = $(".hero-sec__redirect-btn button").first().text().replace(/\s+/g, " ").trim();
+  if (/^ativar cupom exclusivo$/iu.test(btnText)) return { slug, outcome: "no_cashback" };
+  if (!CASHBACK_CTA_RE.test(btnText)) return { slug, outcome: "soft_block" };
+
   const store = findLdJsonStore($);
   const name = store?.name;
   if (!name) return { slug, outcome: "soft_block" };
   const logoUrl = typeof store?.image === "string" ? store.image : store?.image?.url;
-
-  const btnText = $(".hero-sec__redirect-btn button").first().text().replace(/\s+/g, " ").trim();
-  if (!/de cashback/i.test(btnText)) return { slug, outcome: "no_cashback" };
 
   const offer: RawOffer = {
     storeName: name,

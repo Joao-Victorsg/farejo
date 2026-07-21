@@ -254,7 +254,8 @@ O modo mais perigoso de falha não é o crash — é o scraper que roda "com suc
 ```
 regra 1: offers_found < 60% da média dos últimos 5 runs ok  → 'suspicious', NÃO grava
 regra 2: ACTIVE_OFFERS < 60% da média dos últimos 5 runs ok → 'suspicious', NÃO grava
-         (pega o soft-block: o total de lojas fica idêntico, as ofertas somem)
+         (pega o soft-block: o total de lojas fica idêntico, as ofertas somem;
+          não se aplica ao scope tail, onde zero promoções é um resultado legítimo)
 regra 3: parse_errors / offers_found > 10%                  → 'suspicious', NÃO grava
 regra 4: declaredTotal ≠ rawCount                            → 'suspicious', NÃO grava
          (compara o total que o site DECLARA com os itens RECEBIDOS — não com offers.length,
@@ -262,7 +263,8 @@ regra 4: declaredTotal ≠ rawCount                            → 'suspicious',
           Só onde há total de MÁQUINA autoritativo: inter pagination.total (+cross-check
           /v1/departments.numStores) · zoom "N lojas encontradas" vs sellers.length.
           Cuponomia/méliuz NÃO têm declaredTotal — diretório não-autoritativo, viajanet
-          morta = 799≠798 permanente; lá protege a regra 2 + soft-block. Foi a regra 4
+          morta = 799≠798 permanente; nos runs active protege a regra 2, enquanto tail usa
+          tamanho bruto + soft-block/backoff/circuit breaker. Foi a regra 4
           que desmascarou o parser DOM do zoom, 20 de 212.)
 crash/timeout → 'failed'
 em qualquer caso ≠ ok: dados do run anterior permanecem servindo o site

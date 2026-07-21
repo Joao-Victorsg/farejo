@@ -117,7 +117,7 @@ O conjunto de lojas pelas quais um run se responsabiliza. Numa **varredura compl
 Regra de que uma oferta some da plataforma ⇒ vira inativa (`active=false`), nunca deletada; se reaparecer, reativa. Aplica-se apenas dentro do **escopo do run**.
 
 **Oferta ativa**:
-Oferta com cashback vigente. Métrica vigiada nos sanity checks: um **soft-block** derruba ofertas ativas **sem** mudar o total de lojas.
+Oferta com cashback vigente. Métrica vigiada nos sanity checks de runs `full`/`active`: um **soft-block** derruba ofertas ativas **sem** mudar o total de lojas. Em `tail`, zero novas ofertas é legítimo e essa regra relativa não se aplica.
 
 **Sinal de presença**:
 Marcador no HTML que prova que a página pedida é a que voltou (`.store_header` no cuponomia, `.hero-sec` no méliuz). Ausência = erro retentável, nunca "loja sem cashback".
