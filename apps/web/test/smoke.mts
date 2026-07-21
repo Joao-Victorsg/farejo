@@ -300,7 +300,7 @@ try {
   const unavailable = await fetch(`${baseUrl}/loja/${fixturePrefix}indisponivel`);
   const unavailableHtml = await unavailable.text();
   assert.equal(unavailable.status, 200);
-  assert.match(unavailableHtml, /Nenhum cashback disponível no momento/);
+  assert.match(unavailableHtml, /Sem ofertas no momento/);
   assert.match(unavailableHtml, /name="robots" content="noindex, follow"/);
   assert.doesNotMatch(unavailableHtml, />Ativar</);
 
@@ -345,7 +345,7 @@ try {
   await activationTab.close();
   await page.goto(`${baseUrl}/loja/${fixturePrefix}01`);
   await expectHeading(page, "Loja real sem logo 01");
-  await page.getByText("1 plataforma com cashback").waitFor();
+  await page.getByText("1 plataforma de cashback comparada").waitFor();
   await page.goto(`${baseUrl}/?page=2`);
   await page.getByText("Loja real sem logo 24").waitFor();
   await page.goto(baseUrl);
@@ -402,7 +402,7 @@ try {
   assert.match(firstItemText, /Méliuz/);
   assert.match(firstItemText, /MELHOR/);
   let interRowText = await rankingItems.filter({ hasText: "Shopping Inter" }).innerText();
-  assert.match(interRowText, /TAXA NÃO CORRENTISTA/);
+  assert.match(interRowText, /CONDICIONAL/);
   assert.match(interRowText, /2%/);
 
   // Issue54: o histórico segue o toggle — a modalidade não correntista do Inter não tem
@@ -419,15 +419,14 @@ try {
   assert.match(firstItemText, /Shopping Inter/);
   assert.match(firstItemText, /MELHOR/);
   interRowText = await rankingItems.filter({ hasText: "Shopping Inter" }).innerText();
-  assert.match(interRowText, /TAXA CORRENTISTA/);
-  assert.doesNotMatch(interRowText, /NÃO CORRENTISTA/);
+  assert.match(interRowText, /CONDICIONAL/);
   assert.match(interRowText, /10%/);
 
   historyText = await historySection.innerText();
   assert.match(historyText, /Shopping Inter \(correntista\): variou entre 8% e 10%/);
   assert.doesNotMatch(historyText, /Shopping Inter \(não correntista\): variou/);
 
-  await page.getByRole("link", { name: "Voltar para todas as lojas" }).click();
+  await page.getByRole("link", { name: "Todas as lojas" }).click();
   await page.waitForURL(`${baseUrl}/#catalogo`);
   await interSwitch.waitFor();
   assert.equal(await interSwitch.getAttribute("aria-checked"), "true");

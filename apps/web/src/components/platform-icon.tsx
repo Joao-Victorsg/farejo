@@ -13,6 +13,6 @@ const PLATFORM_ICONS: Record<string, string> = {
   inter: "/portals/inter.svg",
 };
 
-export function PlatformIcon({ platformId }: { platformId: string }) {
-  return <Image alt="" aria-hidden="true" className="size-6 shrink-0 rounded-[6px] object-contain" height={24} src={PLATFORM_ICONS[platformId] ?? "/portals/mycashback.png"} width={24} />;
+export function PlatformIcon({ platformId, size = 24 }: { platformId: string; size?: number }) {
+  return <Image alt="" aria-hidden="true" className={`shrink-0 object-contain ${size >= 40 ? "rounded-xl" : "rounded-[6px]"}`} height={size} src={PLATFORM_ICONS[platformId] ?? "/portals/mycashback.png"} style={{ height: size, width: size }} width={size} />;
 }

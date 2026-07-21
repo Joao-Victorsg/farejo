@@ -1,54 +1,73 @@
 "use client";
 
 import { ExternalLink } from "lucide-react";
-import { FreshnessSummary } from "@/components/freshness-summary";
 import { InterToggle } from "@/components/inter-toggle";
-import type { StoreDetail } from "@/lib/catalog";
+import { PlatformIcon } from "@/components/platform-icon";
+import type { CatalogOffer, StoreDetail } from "@/lib/catalog";
 import { useInterPreference } from "@/lib/inter-preference";
 import { effectiveSignals, formatPreviousValue, formatReward, isInterCorrentistaOffer, rankOffers } from "@/lib/offer-ranking";
+
+const BADGE = "rounded-[5px] px-[7px] py-[3px] font-mono text-[10px] tracking-[0.03em]";
+
+/**
+ * Um único sinal secundário por linha, na prioridade do handoff: boost › condicional › valor fixo.
+ * "Atrasado" fica de fora porque é sinal de frescor, não de natureza da oferta, e acumula com este.
+ */
+function secondaryBadge(offer: CatalogOffer, isCorrentista: boolean) {
+  if (effectiveSignals(offer, isCorrentista).isBoost) return { label: "BOOST", cls: "bg-[#aa4a14] font-semibold text-white", title: "Cashback acima do valor típico dos últimos 60 dias" };
+  if (isInterCorrentistaOffer(offer)) return { label: "CONDICIONAL", cls: "bg-[#dcebe3] font-semibold text-[#2f6f57]", title: "Taxa condicionada a ser correntista Inter" };
+  if (offer.reward.type === "fixed") return { label: "VALOR FIXO", cls: "bg-[#f0e7d3] font-semibold text-[#8a6a33]", title: "Cashback em reais, não em porcentagem" };
+  return null;
+}
 
 export function StoreRanking({ store }: { store: StoreDetail }) {
   const { isCorrentista } = useInterPreference();
   const offers = rankOffers(store.offers, isCorrentista);
-  const oldestSeenAt = offers.reduce<string | null>((oldest, offer) => !oldest || offer.lastSeenAt < oldest ? offer.lastSeenAt : oldest, null);
 
   return (
-    <section className="mt-8" aria-labelledby="ranking-heading">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div><p className="font-mono text-xs font-medium tracking-[0.13em] text-[#1c7a4d]">OFERTAS ELEGÍVEIS</p><h2 className="mt-2 text-3xl font-bold tracking-[-0.04em]" id="ranking-heading">Ranking de cashback</h2></div>
-        <div className="flex flex-wrap items-center gap-4">
-          {oldestSeenAt ? <FreshnessSummary lastSeenAt={oldestSeenAt} /> : null}
-          {offers.some((offer) => isInterCorrentistaOffer(offer)) ? <InterToggle compact /> : null}
-        </div>
+    <section className="mt-11" aria-labelledby="ranking-heading">
+      <div className="mb-3.5 flex flex-wrap items-center justify-between gap-x-6 gap-y-3 px-1">
+        <h2 className="text-[15px] font-semibold text-[#5b5f56]" id="ranking-heading">Ranking de cashback</h2>
+        {offers.some((offer) => isInterCorrentistaOffer(offer)) ? <InterToggle compact /> : null}
       </div>
-      <ol className="mt-5 space-y-3" aria-label={`Ranking de cashback de ${store.name}`}>
+      <ol className="space-y-3" aria-label={`Ranking de cashback de ${store.name}`}>
         {offers.map((offer, index) => {
-          const signals = effectiveSignals(offer, isCorrentista);
+          const isBest = index === 0;
+          const isFixed = offer.reward.type === "fixed";
+          const secondary = secondaryBadge(offer, isCorrentista);
           const previousText = formatPreviousValue(offer, isCorrentista);
+          const isUpto = offer.reward.type === "percent" && offer.reward.isUpto;
+          // A melhor oferta em R$ só encabeça o ranking quando não há nenhuma percentual: aí ela
+          // ganha a paleta âmbar em vez da verde, para não sugerir comparação entre grandezas.
+          const rowCls = !isBest ? "border-[#ece9e2] bg-white" : isFixed ? "border-[#e6d9bd] bg-[#faf6ec]" : "border-[#cfe7d9] bg-[#f2f9f5]";
+          const valueCls = isFixed ? "text-[#8a6a33]" : isBest ? "text-[#1c7a4d]" : "text-[#3d4039]";
+          const buttonCls = !isBest ? "border border-[#e0ddd4] bg-white text-[#12140f] hover:bg-[#f6f5f0]" : isFixed ? "bg-[#8a6a33] text-white hover:bg-[#755729]" : "bg-[#1c7a4d] text-white hover:bg-[#16633f]";
           return (
-            <li className={`flex flex-wrap items-center gap-x-4 gap-y-3 rounded-2xl border p-4 sm:p-5 ${index === 0 ? "border-[#cfe7d9] bg-[#f2f9f5]" : "border-[#ece9e2] bg-white"}`} key={offer.platformId}>
-              <span aria-label={`${index + 1}ª posição`} className="font-mono text-sm font-semibold text-[#5b5f56]">{String(index + 1).padStart(2, "0")}</span>
+            <li className={`flex flex-wrap items-center gap-x-[18px] gap-y-3 rounded-2xl border px-4 py-[18px] sm:px-[22px] ${rowCls}`} key={offer.platformId}>
+              <span aria-label={`${index + 1}ª posição`} className="w-5 shrink-0 text-center font-mono text-sm font-medium text-[#5b5f56]">{index + 1}</span>
+              <PlatformIcon platformId={offer.platformId} size={46} />
               <div className="min-w-32 flex-1">
-                <p className="font-semibold">{offer.platformName}</p>
-                <div className="mt-1 flex flex-wrap gap-2 text-xs">
-                  {index === 0 ? <span className="rounded-full bg-[#e7f4ec] px-2 py-1 font-mono font-medium text-[#1c7a4d]">MELHOR</span> : null}
-                  {signals.isBoost ? <span className="rounded-full bg-[#fdece0] px-2 py-1 font-mono font-medium text-[#aa4a14]">BOOST</span> : null}
-                  {offer.reward.type === "fixed" ? <span className="rounded-full bg-[#f0e7d3] px-2 py-1 font-mono font-medium text-[#805e26]">VALOR FIXO</span> : null}
-                  {offer.freshness === "delayed" ? <span className="rounded-full bg-[#f0e7d3] px-2 py-1 font-mono font-medium text-[#805e26]">ATUALIZAÇÃO ATRASADA</span> : null}
-                  {isInterCorrentistaOffer(offer) ? <span className="rounded-full bg-[#eef1ec] px-2 py-1 font-mono font-medium text-[#5b5f56]">{isCorrentista ? "TAXA CORRENTISTA" : "TAXA NÃO CORRENTISTA"}</span> : null}
+                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+                  <span className="text-[17px] font-semibold">{offer.platformName}</span>
+                  {isBest ? <span className={`${BADGE} bg-[#e7f4ec] font-medium text-[#1c7a4d]`}>MELHOR</span> : null}
+                  {secondary ? <span className={`${BADGE} ${secondary.cls}`} title={secondary.title}>{secondary.label}</span> : null}
+                  {offer.freshness === "delayed" ? <span className={`${BADGE} bg-[#f6efda] font-semibold text-[#805e26]`} title="Verificada há mais de 24 h">ATRASADO</span> : null}
                 </div>
+                {isUpto || previousText ? (
+                  <p className="mt-1 text-[13px] text-[#70736a]">
+                    {isUpto ? "Teto anunciado pela plataforma" : null}
+                    {isUpto && previousText ? " · " : null}
+                    {previousText ? <>antes <s>{previousText}</s></> : null}
+                  </p>
+                ) : null}
               </div>
-              <div className="ml-auto text-right">
-                <p className="font-numbers text-xl font-bold text-[#1c7a4d]">{formatReward(offer, isCorrentista)}</p>
-                {offer.reward.type === "percent" && offer.reward.isUpto ? <p className="mt-1 text-xs text-[#5b5f56]">Teto anunciado pela plataforma</p> : null}
-                {previousText ? <p className="mt-1 text-xs text-[#5b5f56]">Era {previousText}</p> : null}
-              </div>
-              <a aria-label={`Ativar cashback pela ${offer.platformName} (abre em nova aba)`} className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-xl px-4 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1c7a4d] ${index === 0 ? "bg-[#1c7a4d] text-white hover:bg-[#16633f]" : "border border-[#e0ddd4] bg-white text-[#12140f] hover:bg-[#f6f5f0]"}`} href={`/go/${encodeURIComponent(store.slug)}/${encodeURIComponent(offer.platformId)}`} rel="noopener noreferrer" target="_blank">Ativar <ExternalLink aria-hidden="true" size={16} /><span className="sr-only">(abre em nova aba)</span></a>
+              <span className={`ml-auto min-w-[70px] text-right font-numbers text-[28px] font-semibold leading-none tracking-[-0.02em] ${valueCls}`}>{formatReward(offer, isCorrentista)}</span>
+              <a aria-label={`Ativar cashback pela ${offer.platformName} (abre em nova aba)`} className={`inline-flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-[10px] px-[18px] text-[14.5px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1c7a4d] ${buttonCls}`} href={`/go/${encodeURIComponent(store.slug)}/${encodeURIComponent(offer.platformId)}`} rel="noopener noreferrer" target="_blank">Ativar <ExternalLink aria-hidden="true" size={15} /><span className="sr-only">(abre em nova aba)</span></a>
             </li>
           );
         })}
       </ol>
-      <p className="mt-5 rounded-xl bg-[#faf9f5] p-4 text-sm leading-6 text-[#5b5f56]">As ofertas são informativas e podem mudar conforme as condições de cada plataforma. Confirme os detalhes antes de comprar.</p>
+      <p className="mt-6 rounded-[14px] bg-[#f6f5f0] px-[22px] py-[18px] text-[13.5px] leading-[1.55] text-[#5b5f56]">Os valores são informativos e podem variar por categoria de produto e pelas condições de cada plataforma. O botão <b className="font-semibold text-[#12140f]">Ativar</b> abre a plataforma escolhida em uma nova aba para redirecionar você à loja.</p>
     </section>
   );
 }

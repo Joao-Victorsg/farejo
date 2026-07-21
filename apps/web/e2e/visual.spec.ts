@@ -41,7 +41,7 @@ test.describe("regressão visual @ 1440px", () => {
 
   test("loja indisponível (sem oferta elegível) com histórico sendo construído", async ({ page }) => {
     await page.goto(`/loja/${gammaSlug}`);
-    await expect(page.getByRole("heading", { name: "Nenhum cashback disponível no momento" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Sem ofertas no momento" })).toBeVisible();
     await expect(page.getByText("HISTÓRICO SENDO CONSTRUÍDO")).toBeVisible();
     await expect(page).toHaveScreenshot("store-detail-unavailable.png", { fullPage: true });
   });
