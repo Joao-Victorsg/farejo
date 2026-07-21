@@ -2,8 +2,12 @@ name: Scrape cashback
 
 on:
   schedule:
-    # Dois ticks sem sobreposição: full/active rodam às 03h e 18h UTC; tail só às 03h.
-    - cron: "0 3 * * *"
+    # Dois ticks sem sobreposição: full/active rodam às 02h53 e 18h UTC; tail só às 02h53.
+    # 02h53 UTC = 23h53 BRT (nominal). O agendador do GitHub só dispara ATRASADO, nunca
+    # adiantado, e nessa janela o atraso medido é consistente (~1h); adiantar o alvo puxa o
+    # início real para perto da madrugada BRT. O minuto :53 ainda tira do topo-de-hora
+    # (pico global de crons), onde o atraso é pior. Continua best-effort: medir alguns dias.
+    - cron: "53 2 * * *"
     - cron: "0 18 * * *"
   workflow_dispatch:
     inputs:
@@ -121,7 +125,7 @@ jobs:
       - run: pnpm --filter @farejo/scraper scrape
 
   cuponomia-tail:
-    if: ${{ (github.event_name == 'schedule' && github.event.schedule == '0 3 * * *') || inputs.target == 'all' || inputs.target == 'cuponomia-tail' }}
+    if: ${{ (github.event_name == 'schedule' && github.event.schedule == '53 2 * * *') || inputs.target == 'all' || inputs.target == 'cuponomia-tail' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     concurrency:
@@ -169,7 +173,7 @@ jobs:
       - run: pnpm --filter @farejo/scraper scrape
 
   meliuz-tail:
-    if: ${{ (github.event_name == 'schedule' && github.event.schedule == '0 3 * * *') || inputs.target == 'all' || inputs.target == 'meliuz-tail' }}
+    if: ${{ (github.event_name == 'schedule' && github.event.schedule == '53 2 * * *') || inputs.target == 'all' || inputs.target == 'meliuz-tail' }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     concurrency:
