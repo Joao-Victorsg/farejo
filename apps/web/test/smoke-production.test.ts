@@ -5,9 +5,23 @@ import {
   extractActivationLink,
   extractStoreSlugsFromSitemap,
   formatSmokeReport,
+  protectionBypassHeaders,
   signInvalidation,
   type SmokeCheck,
 } from "./smoke-production.mjs";
+
+describe("protectionBypassHeaders (ADR-0056)", () => {
+  it("envia o bypass sem deixar cookie de sessão para trás", () => {
+    expect(protectionBypassHeaders("s3cr3t")).toEqual({
+      "x-vercel-protection-bypass": "s3cr3t",
+      "x-vercel-set-bypass-cookie": "false",
+    });
+  });
+
+  it("não envia header nenhum quando o segredo não está configurado", () => {
+    expect(protectionBypassHeaders(undefined)).toEqual({});
+  });
+});
 
 describe("extractStoreSlugsFromSitemap", () => {
   it("extracts every /loja/<slug> from a sitemap.xml body, in order", () => {
