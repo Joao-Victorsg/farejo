@@ -22,6 +22,12 @@ describe("logos workflow (F3/T15, #61, ADR-0042)", () => {
     expect(workflow).toMatch(/FAREJO_LOGO_S3_SECRET_ACCESS_KEY/);
   });
 
+  it("supplies the Supabase CA so both pg roles verify the server identity (ADR-0055)", async () => {
+    const workflow = await readFile(WORKFLOW_PATH, "utf8");
+
+    expect(workflow).toMatch(/FAREJO_SUPABASE_CA_CERT/);
+  });
+
   it("runs after a successful scrape and offers a manual recovery trigger", async () => {
     const workflow = await readFile(WORKFLOW_PATH, "utf8");
 

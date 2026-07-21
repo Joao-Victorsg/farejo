@@ -23,6 +23,8 @@ jobs:
     timeout-minutes: 10
     env:
       FAREJO_CURATION_DATABASE_URL: ${{ secrets.FAREJO_CURATION_DATABASE_URL }}
+      # ADR-0055: conexão `pg` contra o Supabase hospedado exige o CA do projeto.
+      FAREJO_SUPABASE_CA_CERT: ${{ secrets.FAREJO_SUPABASE_CA_CERT }}
       CATALOG_INVALIDATION_URL: ${{ secrets.CATALOG_INVALIDATION_URL }}
       CATALOG_INVALIDATION_SECRET: ${{ secrets.CATALOG_INVALIDATION_SECRET }}
     steps:

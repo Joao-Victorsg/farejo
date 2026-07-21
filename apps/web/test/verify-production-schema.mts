@@ -1,6 +1,6 @@
 import { pathToFileURL } from "node:url";
-import { Pool } from "pg";
 import { z } from "zod";
+import { createPostgresPool } from "../src/lib/postgres-pool.js";
 
 /**
  * F3/T18 (#64, ADR-0041): gate de publicação. Roda com a mesma credencial privilegiada usada
@@ -249,7 +249,7 @@ async function main(): Promise<void> {
   // max: 5, não 1 — verifyProductionSchema dispara 5 queries de leitura em paralelo
   // (Promise.all); um pool de conexão única as serializaria sem avisar, disfarçando o custo
   // real deste passo do deploy.
-  const pool = new Pool({ connectionString: environment.data.FAREJO_DEPLOY_DATABASE_URL, max: 5 });
+  const pool = createPostgresPool(environment.data.FAREJO_DEPLOY_DATABASE_URL, { max: 5 });
   try {
     const report = await verifyProductionSchema(pool);
     console.log(formatSchemaVerificationReport(report));

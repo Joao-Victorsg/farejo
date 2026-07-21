@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { pathToFileURL } from "node:url";
-import { Pool } from "pg";
 import { z } from "zod";
+import { createPostgresPool } from "../postgresPool.js";
 
 /**
  * Medição da meta de 95% (F3/T16/#62, ADR-0043/ADR-0054). Roda com uma credencial própria
@@ -57,7 +57,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const pool = new Pool({ connectionString: environment.data.FAREJO_LOGO_COVERAGE_DATABASE_URL, max: 1 });
+  const pool = createPostgresPool(environment.data.FAREJO_LOGO_COVERAGE_DATABASE_URL, { max: 1 });
   try {
     const report = await computeLogoCoverage(pool);
     console.log(formatLogoCoverageReport(report));

@@ -1,8 +1,9 @@
 import "server-only";
 import { unstable_cache } from "next/cache";
-import { Pool } from "pg";
+import type { Pool } from "pg";
 import { z } from "zod";
 import { CATALOG_CACHE_TAG, CATALOG_CACHE_TTL_SECONDS } from "./catalog-cache";
+import { createPostgresPool } from "./postgres-pool";
 import { catalogHref, isCatalogSort, type CatalogRequest, type CatalogSort } from "./catalog-url";
 import { composeStoreHistory, deriveOfferSignals, type OfferSignals, type StoreHistoryRow, type StoreHistorySeries } from "./history";
 
@@ -136,7 +137,7 @@ function getPool() {
   const connectionString = process.env.FAREJO_WEB_DATABASE_URL;
   if (!connectionString) throw new Error("FAREJO_WEB_DATABASE_URL is not configured");
 
-  pool = new Pool({ connectionString, max: 1 });
+  pool = createPostgresPool(connectionString, { max: 1 });
   return pool;
 }
 

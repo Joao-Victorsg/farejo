@@ -42,6 +42,9 @@ jobs:
       # `service_role`. Ausente = passo abaixo avisa e não falha (mesma pendência
       # operacional já registrada para o Environment "logos").
       FAREJO_LOGO_COVERAGE_DATABASE_URL: ${{ secrets.FAREJO_LOGO_COVERAGE_DATABASE_URL }}
+      # ADR-0055: o certificado do Postgres/pooler do Supabase não encadeia até uma CA pública
+      # (`SELF_SIGNED_CERT_IN_CHAIN`). Vale para as duas roles deste job — writer e coverage.
+      FAREJO_SUPABASE_CA_CERT: ${{ secrets.FAREJO_SUPABASE_CA_CERT }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
