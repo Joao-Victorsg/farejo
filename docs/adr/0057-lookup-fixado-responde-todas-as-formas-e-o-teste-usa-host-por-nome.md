@@ -39,6 +39,22 @@ O servidor de teste passa a ser endereçado por **nome** (`logo-cdn.test`), reso
 teste atravessar o `lookup` fixado de verdade. Revertendo só a implementação do lookup, 8 dos 21
 testes falham — verificado.
 
+### O defeito que estava atrás deste
+
+Destravados os downloads, o primeiro run real subiu a cobertura de 0% para 93,8% (974/1038) e
+falhou no último passo: `Catalog invalidation returned HTTP 401`. A rota valida `platform_id`
+contra um enum que não incluía `"logos"` — valor que o ingestor sempre enviou, mas que só chega lá
+quando ALGUMA loja troca de ponteiro. Como nenhuma trocava, o 401 nunca tinha como aparecer. O
+emissor tipa `platformId` como `string`, então o compilador também não acusava. `"logos"` entra no
+enum, com teste próprio.
+
+A exceção subia de dentro de `ingestLogos`, depois de os ponteiros já estarem gravados, e levava
+junto todo o diagnóstico de um run de 27 minutos — justamente as contagens por classe de rejeição
+que dizem por que as lojas restantes seguem no fallback. A falha de invalidação passa a ser
+registrada no resumo: o run continua terminando em erro, mas só depois de reportar o que fez. O
+catálogo se corrige sozinho no TTL de ~1 h, então a invalidação perdida degrada frescor, não
+correção.
+
 ## Consequências
 
 - As garantias de SSRF ficam idênticas: só HTTPS, resolução e validação antes de conectar,

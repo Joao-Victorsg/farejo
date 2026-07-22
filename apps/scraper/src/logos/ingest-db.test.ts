@@ -370,8 +370,36 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
       storesFallback: 0,
       rejectionsByClass: { unsafe_url: 0, download_too_large: 0, invalid_image: 0, network_or_http: 0 },
       errors: [],
+      catalogInvalidationError: null,
     });
     expect(invalidations).toBe(0);
+  });
+
+  // Os ponteiros já estão gravados quando a invalidação roda. Deixar a exceção escapar
+  // descartava o diagnóstico inteiro do run (ADR-0057) — o run ainda falha, mas depois de
+  // reportar o que fez, e o catálogo se corrige sozinho no TTL.
+  it("keeps the pointer and reports the failure when catalog invalidation is refused", async () => {
+    const storeId = await insertStore("invalidation-refused");
+    await insertSource(storeId, "zoom", `${baseUrl}/square-big.webp`);
+
+    const summary = await ingestLogos(
+      writerPool,
+      storage,
+      async () => {
+        throw new Error("Catalog invalidation returned HTTP 401");
+      },
+      fetchOptions,
+      { storeIds: [storeId] },
+    );
+
+    expect(summary.storesChanged).toBe(1);
+    expect(summary.storesFailed).toBe(0);
+    expect(summary.catalogInvalidationError).toBe("Catalog invalidation returned HTTP 401");
+
+    const stored = await fetchStore(storeId);
+    expect(stored.logo_url).not.toBeNull();
+    expect(stored.logo_hash).not.toBeNull();
+    trackUploads(`${storeId}/${stored.logo_hash}.webp`);
   });
 
   it("aggregates fallback and rejection-class diagnostics across a mixed partial batch (F3/T16/#62)", async () => {

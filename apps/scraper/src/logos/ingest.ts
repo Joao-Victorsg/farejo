@@ -208,6 +208,13 @@ export interface IngestSummary {
   /** Diagnóstico privado por classe de falha (F3/T16/#62) — só contagens, nunca URL/reason cru. */
   rejectionsByClass: Record<RejectionClass, number>;
   errors: Array<{ storeId: number; message: string }>;
+  /**
+   * Falha ao sinalizar a invalidação do catálogo, se houve. Fica no resumo em vez de subir
+   * como exceção porque nesse ponto os ponteiros JÁ foram gravados: deixar a exceção escapar
+   * descartava todo o diagnóstico de um run de 27 minutos (ADR-0057). O run continua falhando,
+   * só que depois de dizer o que fez — o catálogo se corrige sozinho no TTL de ~1 h.
+   */
+  catalogInvalidationError: string | null;
 }
 
 /**
@@ -247,11 +254,24 @@ export async function ingestLogos(
     }
   }
 
+  let catalogInvalidationError: string | null = null;
   if (changed > 0) {
-    await invalidateCatalog({ platformId: "logos", runId: 0, timestamp: new Date() });
+    try {
+      await invalidateCatalog({ platformId: "logos", runId: 0, timestamp: new Date() });
+    } catch (error) {
+      catalogInvalidationError = error instanceof Error ? error.message : String(error);
+    }
   }
 
-  return { storesConsidered: candidates.length, storesChanged: changed, storesFailed: failed, storesFallback: fallback, rejectionsByClass, errors };
+  return {
+    storesConsidered: candidates.length,
+    storesChanged: changed,
+    storesFailed: failed,
+    storesFallback: fallback,
+    rejectionsByClass,
+    errors,
+    catalogInvalidationError,
+  };
 }
 
 async function main(): Promise<void> {
@@ -270,8 +290,11 @@ async function main(): Promise<void> {
   for (const err of summary.errors) {
     console.error(`[logos] loja ${err.storeId}: ${err.message}`);
   }
+  if (summary.catalogInvalidationError) {
+    console.error(`[logos] invalidação do catálogo falhou (ponteiros já gravados): ${summary.catalogInvalidationError}`);
+  }
 
-  if (summary.storesFailed > 0) process.exitCode = 1;
+  if (summary.storesFailed > 0 || summary.catalogInvalidationError) process.exitCode = 1;
   await pool.end();
 }
 
