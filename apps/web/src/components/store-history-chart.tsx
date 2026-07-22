@@ -19,6 +19,7 @@ import {
   summarizeStoreHistory,
   type HistoryChartModel,
   type HistoryPresentationLine,
+  type HistoryWindow,
   type RewardType,
 } from "@/lib/history";
 
@@ -178,18 +179,17 @@ function CollectingChip({ line }: { line: HistoryPresentationLine }) {
 }
 
 export function StoreHistoryChart({
+  historyWindow,
   lines,
   rewardType,
   storeName,
-  windowEnd,
-  windowStart,
 }: {
+  historyWindow: HistoryWindow;
   lines: HistoryPresentationLine[];
   rewardType: RewardType;
   storeName: string;
-  windowEnd: Date;
-  windowStart: Date;
 }) {
+  const { start: windowStart, end: windowEnd } = historyWindow;
   const model = useMemo(
     () => buildHistoryChartModel(lines, rewardType, windowStart, windowEnd),
     [lines, rewardType, windowEnd, windowStart],
@@ -199,7 +199,7 @@ export function StoreHistoryChart({
   const effectiveLines = visibleLines.length > 0 ? visibleLines : model.availableLines;
   const visibleIds = new Set(effectiveLines.map((line) => line.platformId));
   const hasHidden = effectiveLines.length < model.availableLines.length;
-  const summary = summarizeStoreHistory(storeName, rewardType, model.availableLines);
+  const summary = summarizeStoreHistory(storeName, rewardType, model.availableLines, historyWindow);
   const ticks = useHistoryTicks(windowStart, windowEnd);
 
   function toggleLine(platformId: string) {
@@ -263,9 +263,9 @@ export function StoreHistoryChart({
         <LineChart
           accessibilityLayer
           data={model.points}
-          desc={summary ?? `Histórico de ${storeName} nos últimos 60 dias.`}
+          desc={summary ?? `Histórico de cashback de ${storeName}.`}
           margin={{ bottom: 6, left: 0, right: 12, top: 14 }}
-          title={`Gráfico dos últimos 60 dias de ${storeName}`}
+          title={`Gráfico do histórico de ${storeName}`}
         >
           <CartesianGrid horizontal stroke="#e9e6de" strokeDasharray="3 5" vertical={false} />
           <XAxis
