@@ -5,6 +5,11 @@ name: Update e2e snapshots
 # Mirrors ci.yml's setup exactly (same Supabase CLI + local stack the e2e suite expects).
 
 on:
+  # `workflow_dispatch` só fica dispatchável depois que o arquivo existe na branch padrão, o que
+  # exigiria commitar direto no master. Gatilho por push na própria branch roda a partir de
+  # qualquer ref e evita isso. Some junto com o workflow assim que as baselines forem commitadas.
+  push:
+    branches: [feat/historico-janela-adaptativa]
   workflow_dispatch:
 
 concurrency:
