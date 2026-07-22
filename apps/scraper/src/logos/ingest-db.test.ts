@@ -142,12 +142,15 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
       res.writeHead(404).end();
     });
     await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
-    baseUrl = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+    // Host por NOME, nunca IP literal — com IP literal o Node conecta direto e o `lookup`
+    // fixado do agent nunca roda, escondendo regressões no caminho de rede real (ADR-0057).
+    const testHost = "logo-cdn.test";
+    baseUrl = `http://${testHost}:${(server.address() as AddressInfo).port}`;
 
     fetchOptions = {
       allowedProtocols: ["http:"],
       resolveAddress: async (hostname) => {
-        if (hostname === "127.0.0.1") return { address: "127.0.0.1", family: 4 as const };
+        if (hostname === testHost) return [{ address: "127.0.0.1", family: 4 as const }];
         throw new UnsafeUrlError(`endereço não confiável no cenário de teste: ${hostname}`);
       },
     };
@@ -250,7 +253,7 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
 
     expect(result.changed).toBe(false);
     expect(result.hasFinalLogo).toBe(false);
-    expect(result.rejections).toEqual([{ platformId: "meliuz", errorClass: "invalid_image" }]);
+    expect(result.rejections).toEqual([{ platformId: "meliuz", errorClass: "invalid_image", networkDetail: null }]);
     const store = await fetchStore(storeId);
     expect(store.logo_url).toBeNull();
     expect(store.logo_hash).toBeNull();
@@ -270,7 +273,7 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
 
     expect(result.changed).toBe(false);
     expect(result.hasFinalLogo).toBe(false);
-    expect(result.rejections).toEqual([{ platformId: "inter", errorClass: "unsafe_url" }]);
+    expect(result.rejections).toEqual([{ platformId: "inter", errorClass: "unsafe_url", networkDetail: null }]);
     const store = await fetchStore(storeId);
     expect(store.logo_url).toBeNull();
 
@@ -345,6 +348,20 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
     expect(afterSecond.logo_hash).toBe(afterFirst.logo_hash);
   });
 
+  // "network_or_http" sozinho não distingue o que é nosso do que não é: a ADR-0057 nasceu de
+  // 2182 falhas dessa classe que eram um defeito do cliente. O detalhe separa isso de uma
+  // fonte que a plataforma simplesmente removeu, onde o fallback é a resposta honesta.
+  it("labels a network failure with its HTTP status, so a dead source is not read as a broken client", async () => {
+    const storeId = await insertStore("dead-source");
+    await insertSource(storeId, "meliuz", `${baseUrl}/gone`);
+
+    const summary = await ingestLogos(writerPool, storage, async () => {}, fetchOptions, { storeIds: [storeId] });
+
+    expect(summary.rejectionsByClass.network_or_http).toBe(1);
+    expect(summary.networkFailureDetails).toEqual({ "meliuz/http_404": 1 });
+    expect(summary.storesFallback).toBe(1);
+  });
+
   it("does not invalidate the catalog on a run where nothing needed to change", async () => {
     const storeId = await insertStore("no-op-run");
     await insertSource(storeId, "meliuz", `${baseUrl}/invalid`);
@@ -366,9 +383,38 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
       storesFailed: 0,
       storesFallback: 0,
       rejectionsByClass: { unsafe_url: 0, download_too_large: 0, invalid_image: 0, network_or_http: 0 },
+      networkFailureDetails: {},
       errors: [],
+      catalogInvalidationError: null,
     });
     expect(invalidations).toBe(0);
+  });
+
+  // Os ponteiros já estão gravados quando a invalidação roda. Deixar a exceção escapar
+  // descartava o diagnóstico inteiro do run (ADR-0057) — o run ainda falha, mas depois de
+  // reportar o que fez, e o catálogo se corrige sozinho no TTL.
+  it("keeps the pointer and reports the failure when catalog invalidation is refused", async () => {
+    const storeId = await insertStore("invalidation-refused");
+    await insertSource(storeId, "zoom", `${baseUrl}/square-big.webp`);
+
+    const summary = await ingestLogos(
+      writerPool,
+      storage,
+      async () => {
+        throw new Error("Catalog invalidation returned HTTP 401");
+      },
+      fetchOptions,
+      { storeIds: [storeId] },
+    );
+
+    expect(summary.storesChanged).toBe(1);
+    expect(summary.storesFailed).toBe(0);
+    expect(summary.catalogInvalidationError).toBe("Catalog invalidation returned HTTP 401");
+
+    const stored = await fetchStore(storeId);
+    expect(stored.logo_url).not.toBeNull();
+    expect(stored.logo_hash).not.toBeNull();
+    trackUploads(`${storeId}/${stored.logo_hash}.webp`);
   });
 
   it("aggregates fallback and rejection-class diagnostics across a mixed partial batch (F3/T16/#62)", async () => {

@@ -85,6 +85,17 @@ describe("POST /api/internal/catalog-invalidation", () => {
     expect(revalidateTag).toHaveBeenCalledWith("catalog", { expire: 0 });
   });
 
+  // O emissor de logos (F3/T15) sempre mandou platform_id "logos", mas só chega aqui quando
+  // alguma loja troca de ponteiro — o que nunca acontecera enquanto os downloads falhavam
+  // (ADR-0057). O valor ficava fora do enum e a resposta era 401 no fim de um run de 27 min.
+  it("accepts a logo pointer invalidation event (F3/T15, no scrape_runs.id)", async () => {
+    const body = JSON.stringify({ platform_id: "logos", run_id: 0, timestamp: now });
+    const response = await POST(signedRequest(body));
+
+    expect(response.status).toBe(204);
+    expect(revalidateTag).toHaveBeenCalledWith("catalog", { expire: 0 });
+  });
+
   it("accepts a replay inside the short validity window as an idempotent invalidation", async () => {
     const body = payload();
     const requestOne = signedRequest(body);

@@ -9,7 +9,10 @@ const MAX_EVENT_AGE_MS = 5 * 60 * 1_000;
 const InvalidationEvent = z.object({
   // "curation" (F3/T12, #58): aplicação do manifesto de aliases também invalida o catálogo
   // quando muda estado público, mas não tem scrape_runs.id nem plataforma associada.
-  platform_id: z.enum(["inter", "meliuz", "cuponomia", "mycashback", "zoom", "curation"]),
+  // "logos" (F3/T15, #61): idem para a troca de ponteiro de logo. O emissor sempre mandou
+  // esse valor, mas só passa por aqui quando ALGUMA loja muda de ponteiro — coisa que nunca
+  // acontecera até a ADR-0057 destravar os downloads, e por isso o 401 ficou latente.
+  platform_id: z.enum(["inter", "meliuz", "cuponomia", "mycashback", "zoom", "curation", "logos"]),
   run_id: z.number().int().nonnegative(),
   timestamp: z.number().int().nonnegative(),
 });

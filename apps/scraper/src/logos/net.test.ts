@@ -1,7 +1,7 @@
 import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
-import { DownloadTooLargeError, isPublicRoutableAddress, resolveValidatedAddress, safeFetchBytes, UnsafeUrlError } from "./net.js";
+import { DownloadTooLargeError, isPublicRoutableAddress, resolveValidatedAddresses, safeFetchBytes, UnsafeUrlError } from "./net.js";
 
 describe("isPublicRoutableAddress", () => {
   it("accepts a public IPv4 address", () => {
@@ -42,21 +42,21 @@ describe("isPublicRoutableAddress", () => {
   });
 });
 
-describe("resolveValidatedAddress", () => {
+describe("resolveValidatedAddresses", () => {
   it("rejects localhost (resolves to loopback)", async () => {
-    await expect(resolveValidatedAddress("localhost")).rejects.toBeInstanceOf(UnsafeUrlError);
+    await expect(resolveValidatedAddresses("localhost")).rejects.toBeInstanceOf(UnsafeUrlError);
   });
 
   it("accepts a public IP literal without touching DNS", async () => {
-    await expect(resolveValidatedAddress("93.184.216.34")).resolves.toEqual({ address: "93.184.216.34", family: 4 });
+    await expect(resolveValidatedAddresses("93.184.216.34")).resolves.toEqual([{ address: "93.184.216.34", family: 4 }]);
   });
 
   it("rejects a private IP literal", async () => {
-    await expect(resolveValidatedAddress("10.1.2.3")).rejects.toBeInstanceOf(UnsafeUrlError);
+    await expect(resolveValidatedAddresses("10.1.2.3")).rejects.toBeInstanceOf(UnsafeUrlError);
   });
 
   it("rejects a bracketed IPv6 loopback literal", async () => {
-    await expect(resolveValidatedAddress("[::1]")).rejects.toBeInstanceOf(UnsafeUrlError);
+    await expect(resolveValidatedAddresses("[::1]")).rejects.toBeInstanceOf(UnsafeUrlError);
   });
 });
 
@@ -70,13 +70,19 @@ describe("safeFetchBytes", () => {
     let baseUrl: string;
     let lastRequestPath = "";
 
+    // O host da URL é um NOME, nunca um IP literal: com IP literal o Node conecta direto e o
+    // `lookup` fixado do agent jamais é chamado. Era esse o ponto cego que deixou a suíte
+    // inteira verde enquanto 100% dos downloads reais falhavam em produção (ADR-0057) —
+    // manter um nome aqui é o que faz todo teste abaixo exercitar o caminho de rede real.
+    const TEST_HOST = "logo-cdn.test";
+
     // 127.0.0.1 é loopback e a regra real SEMPRE o bloqueia (corretamente — ver testes de
     // isPublicRoutableAddress acima). Para exercitar redirect/tamanho/tempo/status contra um
     // servidor real, o teste troca só a fonte de confiança do endereço (ver doc de
     // `resolveAddress` em SafeFetchOptions); qualquer host fora do servidor de teste continua
     // sendo recusado, preservando o comportamento de "bloqueia hop pra endereço não confiável".
     async function fakeResolveOnlyTestServer(hostname: string) {
-      if (hostname === "127.0.0.1") return { address: "127.0.0.1", family: 4 as const };
+      if (hostname === TEST_HOST) return [{ address: "127.0.0.1", family: 4 as const }];
       throw new UnsafeUrlError(`endereço não confiável no cenário de teste: ${hostname}`);
     }
 
@@ -140,7 +146,7 @@ describe("safeFetchBytes", () => {
       });
       await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
       const port = (server.address() as AddressInfo).port;
-      baseUrl = `http://127.0.0.1:${port}`;
+      baseUrl = `http://${TEST_HOST}:${port}`;
     });
 
     afterAll(async () => {
