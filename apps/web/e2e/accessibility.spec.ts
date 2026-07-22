@@ -65,7 +65,7 @@ test("histórico: legenda funciona por teclado e tooltip explica lacunas", async
   await historySection.getByRole("button", { name: "Mostrar todas" }).click();
   await expect(meliuzChip).toHaveAttribute("aria-pressed", "true");
 
-  const chart = historySection.getByRole("application", { name: /Gráfico dos últimos 60 dias/ }).first();
+  const chart = historySection.getByRole("application", { name: /Gráfico do histórico/ }).first();
   await chart.focus();
   await expect(chart).toBeFocused();
   const box = await chart.boundingBox();

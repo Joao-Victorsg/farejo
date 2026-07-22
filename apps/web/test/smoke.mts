@@ -411,15 +411,35 @@ try {
   // Issue54: o histórico segue o toggle — a modalidade não correntista do Inter não tem
   // mudança real (só uma leitura de value_partial) e nunca cai para a série correntista.
   const historySection = page.getByRole("region", { name: "Histórico", exact: true });
-  const historyChart = historySection.getByRole("application", { name: /Gráfico dos últimos 60 dias/ });
+  const historyChart = historySection.getByRole("application", { name: /Gráfico do histórico/ });
   await historyChart.waitFor();
-  const visibleSummary = historySection.locator("p").filter({ hasText: "Nos últimos 60 dias" });
+  const visibleSummary = historySection.locator("p").filter({ hasText: "entre as plataformas acompanhadas" });
+  // ADR-0058: o fixture tem 12 dias de histórico, então a janela padrão é todo o disponível e o
+  // resumo admite isso em vez de afirmar 60 dias que nunca existiram.
   assert.match(
     await visibleSummary.innerText(),
-    /cashback de Loja real alterna correntista variou entre 4% e 8% entre as plataformas acompanhadas/,
+    /Nos \d+ dias de histórico disponíveis, o cashback de Loja real alterna correntista variou entre 4% e 8% entre as plataformas acompanhadas/,
   );
   await historySection.getByLabel("Shopping Inter (não correntista): histórico sendo construído").waitFor();
   await historySection.getByLabel("Zoom: histórico sendo construído").waitFor();
+
+  // ADR-0058: a régua vem do dado (12 dias ⇒ "7 dias" e "Tudo"), e recortar recalcula o resumo de
+  // verdade — a cuponomia de 12d atrás sai da janela e o piso sobe de 4% para 6%.
+  const rangeGroup = historySection.getByRole("radiogroup", { name: "Período do histórico" });
+  await rangeGroup.waitFor();
+  assert.equal(await rangeGroup.getByRole("radio").count(), 2);
+  await rangeGroup.getByRole("radio", { name: "7 dias" }).click();
+  await historySection
+    .locator("p")
+    .filter({ hasText: /Nos últimos 7 dias, o cashback de Loja real alterna correntista variou entre 6% e 8%/ })
+    .waitFor();
+  assert.equal(new URL(page.url()).searchParams.get("periodo"), "7");
+
+  // Volta ao padrão para não vazar a janela recortada nas asserções seguintes; um período igual
+  // ao padrão limpa o parâmetro em vez de sujar a URL.
+  await rangeGroup.getByRole("radio", { name: /^Tudo/ }).click();
+  await historySection.locator("p").filter({ hasText: /Nos \d+ dias de histórico disponíveis/ }).waitFor();
+  assert.equal(new URL(page.url()).searchParams.get("periodo"), null);
 
   const meliuzHistoryChip = historySection.getByRole("button", { name: /Méliuz/ });
   assert.equal(await meliuzHistoryChip.getAttribute("aria-pressed"), "true");

@@ -24,9 +24,12 @@ for (const viewport of [{ width: 1024, height: 900 }, { width: 1280, height: 900
       await page.goto(`/loja/${alphaSlug}`);
       await expect(page.getByRole("heading", { name: "Loja Alfa Cashback", level: 1 })).toBeVisible();
       await expect(page.getByRole("link", { name: /Ativar cashback pela/ }).first()).toBeVisible();
-      const historyChart = page.getByRole("application", { name: /Gráfico dos últimos 60 dias/ }).first();
+      const historyChart = page.getByRole("application", { name: /Gráfico do histórico/ }).first();
       await expect(historyChart).toBeVisible();
-      expect(await historyChart.locator(".recharts-xAxis .recharts-cartesian-axis-tick").count()).toBe(10);
+      // A densidade de ticks acompanha o vão da janela, que agora depende do histórico da loja.
+      // Afirmamos a faixa (desktop é o caso denso) em vez de um número que só vale para o span
+      // exato do fixture — o que importa é a relação com o reflow estreito abaixo.
+      expect(await historyChart.locator(".recharts-xAxis .recharts-cartesian-axis-tick").count()).toBeGreaterThanOrEqual(8);
       await expectNoHorizontalOverflow(page);
     });
   });
@@ -56,10 +59,12 @@ for (const viewport of [{ width: 640, height: 900 }, { width: 375, height: 800 }
 
     test("detalhe da loja: sem rolagem horizontal e CTA acessível", async ({ page }) => {
       await page.goto(`/loja/${alphaSlug}`);
-      const historyChart = page.getByRole("application", { name: /Gráfico dos últimos 60 dias/ }).first();
+      const historyChart = page.getByRole("application", { name: /Gráfico do histórico/ }).first();
       await expect(historyChart).toBeVisible();
       const visibleDateTicks = await historyChart.locator(".recharts-xAxis .recharts-cartesian-axis-tick").count();
-      expect(visibleDateTicks).toBe(viewport.width >= 640 ? 6 : 4);
+      // Reflow estreito rareia as datas em vez de amontoá-las; o desktop acima fica sempre mais denso.
+      expect(visibleDateTicks).toBeGreaterThanOrEqual(2);
+      expect(visibleDateTicks).toBeLessThanOrEqual(viewport.width >= 640 ? 6 : 4);
       await expectNoHorizontalOverflow(page);
       await expect(page.getByRole("link", { name: /Ativar cashback pela/ }).first()).toBeVisible();
       if (viewport.width === 375) await expect(page).toHaveScreenshot("store-detail-history-mobile.png", { fullPage: true });

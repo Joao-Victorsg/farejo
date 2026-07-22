@@ -1,5 +1,9 @@
-const WINDOW_DAYS = 60;
-export const HISTORY_WINDOW_MS = WINDOW_DAYS * 24 * 60 * 60 * 1000;
+/**
+ * Janela servida pelo contrato de leitura (ADR-0010). O leitor escolhe recortes DENTRO dela;
+ * nada aqui amplia o que `web_read.store_history` entrega.
+ */
+const SERVED_DAYS = 60;
+export const HISTORY_WINDOW_MS = SERVED_DAYS * 24 * 60 * 60 * 1000;
 
 export type RewardType = "percent" | "fixed";
 
@@ -56,8 +60,51 @@ export interface HistoryChartModel {
   collectingLines: HistoryPresentationLine[];
 }
 
+/** Quanto de histórico esta loja tem de fato, já limitado ao que o contrato de leitura serve. */
+export interface HistoryAvailability {
+  /** Primeiro instante com dado desenhável. `null` quando nenhuma série é suficiente. */
+  from: Date | null;
+  /** Dias inteiros disponíveis — arredondado para baixo, para nunca prometer um dia que não fechou. */
+  days: number;
+  /**
+   * A série alcança o início da janela servida: existe histórico anterior que não recebemos.
+   * Enquanto isso for verdade, "Tudo" seria mentira e a régua para no teto servido.
+   */
+  atServedCeiling: boolean;
+}
+
+/** Um degrau da régua de período. `id` é o que viaja em `?periodo=`. */
+export interface HistoryRangeOption {
+  id: string;
+  days: number;
+  label: string;
+  /** Cobre todo o histórico disponível, e não um recorte dele. */
+  isFullAvailable: boolean;
+}
+
+export interface HistoryWindow {
+  start: Date;
+  end: Date;
+  days: number;
+  isFullAvailable: boolean;
+}
+
 const DAY_MS = 24 * 60 * 60 * 1000;
 const WEEK_MS = 7 * DAY_MS;
+const HISTORY_RANGE_LADDER_DAYS = [7, 30, 60] as const;
+/** Um degrau só entra na régua se encurtar a janela seguinte em pelo menos um quarto — senão é escolha falsa. */
+const RANGE_STEP_RATIO = 0.75;
+/** Folga à esquerda quando a janela é ajustada ao dado, para o primeiro degrau não colar na borda. */
+const WINDOW_PADDING_RATIO = 0.08;
+/**
+ * Largura de plotagem de referência no desktop, medida em 1440 px. É fixa de propósito: um padrão
+ * derivado de `window.innerWidth` divergiria entre servidor e cliente e pularia no primeiro paint.
+ */
+const REFERENCE_PLOT_WIDTH_PX = 712;
+/** Piso de legibilidade entre degraus consecutivos: ~3 diâmetros do marcador de mudança. */
+const MIN_CHANGE_SPACING_PX = 24;
+/** Um tick interior colado no fim duplicaria o rótulo da borda; some quando chega perto demais. */
+const MIN_END_TICK_GAP_RATIO = 0.06;
 
 function valueAt(segments: HistorySegment[], at: number, windowEnd: number): number | null {
   for (const segment of segments) {
@@ -68,21 +115,151 @@ function valueAt(segments: HistorySegment[], at: number, windowEnd: number): num
   return null;
 }
 
+const TICK_INTERVALS_MS = [DAY_MS, 2 * DAY_MS, WEEK_MS, 2 * WEEK_MS, 4 * WEEK_MS];
+
+/**
+ * Ticks alinhados ao intervalo, escolhidos pelo VÃO da janela e não pela janela servida: uma
+ * janela de 8 dias precisa de marcas diárias, uma de 60 precisa de semanais. Ambas as bordas
+ * entram sempre; um tick interior que caia colado na borda direita é descartado para não
+ * repetir a mesma data duas vezes.
+ */
 export function buildResponsiveHistoryTicks(windowStart: Date, windowEnd: Date, viewportWidth: number): number[] {
   const start = windowStart.getTime();
   const end = windowEnd.getTime();
   if (end <= start) return [start];
 
-  if (viewportWidth < 640) {
-    const span = end - start;
-    return [start, start + span / 3, start + (span * 2) / 3, end].map(Math.round);
-  }
+  const span = end - start;
+  const targetCount = viewportWidth < 640 ? 4 : viewportWidth < 1024 ? 6 : 10;
+  const interval = TICK_INTERVALS_MS.find((candidate) => span / candidate <= targetCount) ?? TICK_INTERVALS_MS.at(-1)!;
 
-  const interval = viewportWidth < 1024 ? 2 * WEEK_MS : WEEK_MS;
   const ticks = [start];
-  for (let at = start + interval; at < end; at += interval) ticks.push(at);
+  for (let at = start + interval; at < end - span * MIN_END_TICK_GAP_RATIO; at += interval) ticks.push(at);
   ticks.push(end);
   return ticks;
+}
+
+/**
+ * Deriva o alcance real do histórico das séries já compostas. Só séries suficientes contam:
+ * uma plataforma ainda "coletando" não deve esticar o eixo de quem já tem o que mostrar.
+ */
+export function describeHistoryAvailability(
+  lines: HistoryPresentationLine[],
+  servedStart: Date,
+  now: Date,
+): HistoryAvailability {
+  const starts = lines
+    .filter((line) => line.series.sufficient)
+    .flatMap((line) => line.series.segments.map((segment) => new Date(segment.from).getTime()));
+  if (starts.length === 0) return { from: null, days: 0, atServedCeiling: false };
+
+  const earliest = Math.min(...starts);
+  return {
+    from: new Date(earliest),
+    days: Math.max(1, Math.floor((now.getTime() - earliest) / DAY_MS)),
+    atServedCeiling: earliest <= servedStart.getTime(),
+  };
+}
+
+/**
+ * Monta a régua a partir do que existe, nunca de uma lista fixa: um degrau maior que o dado
+ * reproduziria exatamente o eixo vazio que a janela adaptativa resolve. Quando a série encosta
+ * no teto servido, o último degrau é o próprio teto e NÃO se chama "Tudo" — 60 dias não é tudo
+ * o que a loja viveu, é tudo o que nós lemos.
+ */
+export function buildHistoryRangeOptions(availability: HistoryAvailability): HistoryRangeOption[] {
+  if (availability.from === null) return [];
+
+  const ceiling = availability.atServedCeiling ? SERVED_DAYS : availability.days;
+  const options: HistoryRangeOption[] = HISTORY_RANGE_LADDER_DAYS
+    .filter((days) => days < ceiling * RANGE_STEP_RATIO)
+    .map((days) => ({ id: String(days), days, label: `${days} dias`, isFullAvailable: false }));
+
+  options.push(
+    availability.atServedCeiling
+      ? { id: String(SERVED_DAYS), days: SERVED_DAYS, label: `${SERVED_DAYS} dias`, isFullAvailable: false }
+      : { id: "tudo", days: availability.days, label: `Tudo · ${availability.days} dias`, isFullAvailable: true },
+  );
+
+  return options;
+}
+
+export function resolveHistoryWindow(
+  option: HistoryRangeOption,
+  availability: HistoryAvailability,
+  now: Date,
+): HistoryWindow {
+  if (option.isFullAvailable && availability.from !== null) {
+    const span = now.getTime() - availability.from.getTime();
+    return {
+      start: new Date(availability.from.getTime() - span * WINDOW_PADDING_RATIO),
+      end: now,
+      days: option.days,
+      isFullAvailable: true,
+    };
+  }
+
+  return { start: new Date(now.getTime() - option.days * DAY_MS), end: now, days: option.days, isFullAvailable: false };
+}
+
+function countChangesAfter(lines: HistoryPresentationLine[], startMs: number): number {
+  return lines
+    .filter((line) => line.series.sufficient)
+    .reduce(
+      (total, line) => total + line.series.segments.filter((segment) => new Date(segment.from).getTime() > startMs).length,
+      0,
+    );
+}
+
+/**
+ * Escolhe o padrão pela DENSIDADE de mudanças, não pelo volume de dias: duas lojas com o mesmo
+ * tempo de vida pedem janelas diferentes se uma muda três vezes por dia e a outra uma vez por mês.
+ * Conta as mudanças das duas grandezas juntas — errar para o lado de aproximar é mais barato que
+ * entregar um amontoado ilegível.
+ */
+export function pickDefaultHistoryRange(
+  options: HistoryRangeOption[],
+  lines: HistoryPresentationLine[],
+  availability: HistoryAvailability,
+  now: Date,
+): HistoryRangeOption | null {
+  if (options.length === 0) return null;
+
+  for (let index = options.length - 1; index >= 0; index -= 1) {
+    const option = options[index]!;
+    const changes = countChangesAfter(lines, resolveHistoryWindow(option, availability, now).start.getTime());
+    if (changes === 0 || REFERENCE_PLOT_WIDTH_PX / changes >= MIN_CHANGE_SPACING_PX) return option;
+  }
+
+  return options[0]!;
+}
+
+export function findHistoryRangeOption(options: HistoryRangeOption[], id: string | null): HistoryRangeOption | null {
+  return options.find((option) => option.id === id) ?? null;
+}
+
+/**
+ * Recorta uma série já composta na janela escolhida pelo leitor. `sufficient` é PRESERVADO de
+ * propósito: a loja tem mudanças observadas, e um recorte onde nada mudou continua sendo
+ * histórico verdadeiro — linha reta ancorada, não "Histórico sendo construído".
+ */
+export function clipSeriesToWindow(series: ComposedSeries, windowStart: Date, windowEnd: Date): ComposedSeries {
+  const start = windowStart.getTime();
+  const end = windowEnd.getTime();
+  const segments: HistorySegment[] = [];
+
+  for (const segment of series.segments) {
+    const from = new Date(segment.from).getTime();
+    const to = new Date(segment.to).getTime();
+    if (to <= start || from >= end) continue;
+    segments.push({
+      rewardType: segment.rewardType,
+      from: from < start ? windowStart.toISOString() : segment.from,
+      to: to > end ? windowEnd.toISOString() : segment.to,
+      value: segment.value,
+    });
+  }
+
+  return { sufficient: series.sufficient, segments };
 }
 
 function roundTick(value: number): number {
@@ -375,7 +552,21 @@ export function formatHistoryValue(rewardType: RewardType, value: number): strin
  * frontend design "Detalhe, histórico e sinais"). Usado tanto como conteúdo visível quanto como
  * equivalente para leitor de tela.
  */
-export function summarizeSeries(platformName: string, series: ComposedSeries): string {
+/**
+ * "Todo o histórico disponível" e "os últimos N dias" são fatos diferentes e o texto precisa
+ * distingui-los: o primeiro admite que a loja é nova, o segundo afirma um recorte escolhido.
+ */
+function describeWindow(window: HistoryWindow): string {
+  return window.isFullAvailable
+    ? `nos ${window.days} dias de histórico disponíveis`
+    : `nos últimos ${window.days} dias`;
+}
+
+function capitalize(phrase: string): string {
+  return phrase.charAt(0).toUpperCase() + phrase.slice(1);
+}
+
+export function summarizeSeries(platformName: string, series: ComposedSeries, window: HistoryWindow): string {
   if (!series.sufficient || series.segments.length === 0) {
     return `${platformName}: histórico sendo construído.`;
   }
@@ -390,11 +581,11 @@ export function summarizeSeries(platformName: string, series: ComposedSeries): s
   const changeCount = series.segments.length - 1;
 
   if (Math.min(...values) === Math.max(...values)) {
-    return `${platformName}: manteve ${formatSegmentValue(last)} nos últimos ${WINDOW_DAYS} dias.`;
+    return `${platformName}: manteve ${formatSegmentValue(last)} ${describeWindow(window)}.`;
   }
 
   const changeWord = changeCount === 1 ? "mudança" : "mudanças";
-  return `${platformName}: variou entre ${formatSegmentValue(minSegment)} e ${formatSegmentValue(maxSegment)} nos últimos ${WINDOW_DAYS} dias, com ${changeCount} ${changeWord}. Valor atual: ${formatSegmentValue(last)}.`;
+  return `${platformName}: variou entre ${formatSegmentValue(minSegment)} e ${formatSegmentValue(maxSegment)} ${describeWindow(window)}, com ${changeCount} ${changeWord}. Valor atual: ${formatSegmentValue(last)}.`;
 }
 
 const HISTORY_EXPLANATION =
@@ -404,6 +595,7 @@ export function summarizeStoreHistory(
   storeName: string,
   rewardType: RewardType,
   lines: HistoryPresentationLine[],
+  window: HistoryWindow,
 ): string | null {
   const values = lines.flatMap((line) =>
     line.series.sufficient
@@ -417,11 +609,13 @@ export function summarizeStoreHistory(
   const minLabel = formatHistoryValue(rewardType, min);
   const maxLabel = formatHistoryValue(rewardType, max);
 
+  const period = capitalize(describeWindow(window));
+
   if (rewardType === "fixed") {
     const behavior = min === max ? `permaneceram em ${maxLabel}` : `variaram entre ${minLabel} e ${maxLabel}`;
-    return `Nos últimos ${WINDOW_DAYS} dias, as ofertas de valor fixo de ${storeName} ${behavior} entre as plataformas acompanhadas. ${HISTORY_EXPLANATION}`;
+    return `${period}, as ofertas de valor fixo de ${storeName} ${behavior} entre as plataformas acompanhadas. ${HISTORY_EXPLANATION}`;
   }
 
   const behavior = min === max ? `permaneceu em ${maxLabel}` : `variou entre ${minLabel} e ${maxLabel}`;
-  return `Nos últimos ${WINDOW_DAYS} dias, o cashback de ${storeName} ${behavior} entre as plataformas acompanhadas. ${HISTORY_EXPLANATION}`;
+  return `${period}, o cashback de ${storeName} ${behavior} entre as plataformas acompanhadas. ${HISTORY_EXPLANATION}`;
 }

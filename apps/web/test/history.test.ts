@@ -1,19 +1,38 @@
 import { describe, expect, it } from "vitest";
 import {
   buildHistoryChartModel,
+  buildHistoryRangeOptions,
   buildResponsiveHistoryTicks,
+  clipSeriesToWindow,
   composeHistorySeries,
   composeStoreHistory,
+  describeHistoryAvailability,
   deriveOfferSignals,
+  findHistoryRangeOption,
   groupSegmentsByRewardType,
+  pickDefaultHistoryRange,
+  resolveHistoryWindow,
   summarizeStoreHistory,
   summarizeSeries,
   type ComposedSeries,
+  type HistoryPresentationLine,
+  type HistorySegment,
+  type HistoryWindow,
   type StoreHistoryRow,
 } from "../src/lib/history";
 
 const NOW = new Date("2026-07-18T12:00:00Z");
 const WINDOW_START = new Date("2026-05-19T12:00:00Z"); // NOW - 60d
+/** Janela servida inteira, escolhida explicitamente — não é "todo o histórico disponível". */
+const SERVED_WINDOW: HistoryWindow = { start: WINDOW_START, end: NOW, days: 60, isFullAvailable: false };
+
+function percentLine(platformId: string, platformName: string, segments: HistorySegment[]): HistoryPresentationLine {
+  return { platformId, platformName, variantLabel: "", currentRewardType: "percent", series: { sufficient: true, segments } };
+}
+
+function percentSegment(from: string, to: string, value: number): HistorySegment {
+  return { rewardType: "percent", from, to, value };
+}
 
 describe("composeHistorySeries", () => {
   it("uses the last event before the window as an anchor, clipped to windowStart", () => {
@@ -184,7 +203,7 @@ describe("composeStoreHistory — Inter value_partial semantics", () => {
 
 describe("summarizeSeries", () => {
   it("reports 'sendo construído' when the series is insufficient", () => {
-    expect(summarizeSeries("Méliuz", { sufficient: false, segments: [] })).toBe("Méliuz: histórico sendo construído.");
+    expect(summarizeSeries("Méliuz", { sufficient: false, segments: [] }, SERVED_WINDOW)).toBe("Méliuz: histórico sendo construído.");
   });
 
   it("reports a stable value when min equals max across segments", () => {
@@ -195,7 +214,7 @@ describe("summarizeSeries", () => {
         { rewardType: "percent" as const, from: "2026-06-12T00:00:00.000Z", to: NOW.toISOString(), value: 5 },
       ],
     };
-    expect(summarizeSeries("Zoom", series)).toBe("Zoom: manteve 5% nos últimos 60 dias.");
+    expect(summarizeSeries("Zoom", series, SERVED_WINDOW)).toBe("Zoom: manteve 5% nos últimos 60 dias.");
   });
 
   it("reports a range and change count when values vary", () => {
@@ -206,7 +225,7 @@ describe("summarizeSeries", () => {
         { rewardType: "percent" as const, from: "2026-06-10T00:00:00.000Z", to: NOW.toISOString(), value: 8 },
       ],
     };
-    expect(summarizeSeries("Cuponomia", series)).toBe("Cuponomia: variou entre 4% e 8% nos últimos 60 dias, com 1 mudança. Valor atual: 8%.");
+    expect(summarizeSeries("Cuponomia", series, SERVED_WINDOW)).toBe("Cuponomia: variou entre 4% e 8% nos últimos 60 dias, com 1 mudança. Valor atual: 8%.");
   });
 });
 
@@ -240,7 +259,7 @@ describe("summarizeStoreHistory", () => {
       },
     ];
 
-    expect(summarizeStoreHistory("AliExpress", "percent", lines)).toBe(
+    expect(summarizeStoreHistory("AliExpress", "percent", lines, SERVED_WINDOW)).toBe(
       "Nos últimos 60 dias, o cashback de AliExpress variou entre 5,5% e 12,5% entre as plataformas acompanhadas. Cada linha em degraus marca quando o valor mudou; trechos sem linha indicam períodos sem dado registrado.",
     );
   });
@@ -380,7 +399,7 @@ describe("summarizeStoreHistory", () => {
       },
     ];
 
-    expect(summarizeStoreHistory("Booking", "fixed", lines)).toBe(
+    expect(summarizeStoreHistory("Booking", "fixed", lines, SERVED_WINDOW)).toBe(
       "Nos últimos 60 dias, as ofertas de valor fixo de Booking variaram entre R$ 20,00 e R$ 30,00 entre as plataformas acompanhadas. Cada linha em degraus marca quando o valor mudou; trechos sem linha indicam períodos sem dado registrado.",
     );
   });
@@ -401,7 +420,7 @@ describe("summarizeStoreHistory", () => {
       },
     ];
 
-    expect(summarizeStoreHistory("AliExpress", "percent", lines)).toContain("o cashback de AliExpress permaneceu em 5,5%");
+    expect(summarizeStoreHistory("AliExpress", "percent", lines, SERVED_WINDOW)).toContain("o cashback de AliExpress permaneceu em 5,5%");
     const model = buildHistoryChartModel(lines, "percent", WINDOW_START, NOW);
     expect(model.valueTicks).toHaveLength(5);
   });
@@ -422,7 +441,7 @@ describe("summarizeStoreHistory", () => {
       },
     ];
 
-    expect(summarizeStoreHistory("Booking", "fixed", lines)).toContain("as ofertas de valor fixo de Booking permaneceram em R$ 20,50");
+    expect(summarizeStoreHistory("Booking", "fixed", lines, SERVED_WINDOW)).toContain("as ofertas de valor fixo de Booking permaneceram em R$ 20,50");
   });
 });
 
@@ -567,5 +586,206 @@ describe("deriveOfferSignals — boost, valor típico e valor anterior (ADR-0012
       { rewardType: "percent", value: 7 },
     );
     expect(result.validUntil).toBeNull();
+  });
+});
+
+const DAY = 24 * 60 * 60 * 1000;
+
+function agoIso(days: number): string {
+  return new Date(NOW.getTime() - days * DAY).toISOString();
+}
+
+/** Uma série com `changes` degraus de igual duração, espalhados nos últimos `spanDays` dias. */
+function churnLine(platformId: string, changes: number, spanDays: number): HistoryPresentationLine {
+  const startMs = NOW.getTime() - spanDays * DAY;
+  const stepMs = (spanDays * DAY) / changes;
+  return percentLine(
+    platformId,
+    platformId,
+    Array.from({ length: changes }, (_, index) =>
+      percentSegment(
+        new Date(startMs + index * stepMs).toISOString(),
+        new Date(startMs + (index + 1) * stepMs).toISOString(),
+        5 + (index % 3),
+      ),
+    ),
+  );
+}
+
+describe("describeHistoryAvailability", () => {
+  it("measures the span from the earliest drawable segment of a new store", () => {
+    const availability = describeHistoryAvailability(
+      [percentLine("meliuz", "Méliuz", [percentSegment(agoIso(7), NOW.toISOString(), 12)])],
+      WINDOW_START,
+      NOW,
+    );
+
+    expect(availability.days).toBe(7);
+    expect(availability.atServedCeiling).toBe(false);
+    expect(availability.from?.toISOString()).toBe(agoIso(7));
+  });
+
+  it("flags the served ceiling when the series is anchored at the start of the read window", () => {
+    const availability = describeHistoryAvailability(
+      [percentLine("inter", "Shopping Inter", [percentSegment(WINDOW_START.toISOString(), NOW.toISOString(), 8)])],
+      WINDOW_START,
+      NOW,
+    );
+
+    expect(availability.atServedCeiling).toBe(true);
+    expect(availability.days).toBe(60);
+  });
+
+  it("ignores platforms that are still collecting, even when their single reading is older", () => {
+    const collecting: HistoryPresentationLine = {
+      platformId: "zoom",
+      platformName: "Zoom",
+      variantLabel: "",
+      currentRewardType: "percent",
+      series: { sufficient: false, segments: [percentSegment(agoIso(50), NOW.toISOString(), 4)] },
+    };
+    const availability = describeHistoryAvailability(
+      [collecting, percentLine("meliuz", "Méliuz", [percentSegment(agoIso(9), NOW.toISOString(), 12)])],
+      WINDOW_START,
+      NOW,
+    );
+
+    expect(availability.days).toBe(9);
+  });
+
+  it("reports no availability when nothing is drawable yet", () => {
+    expect(describeHistoryAvailability([], WINDOW_START, NOW)).toEqual({ from: null, days: 0, atServedCeiling: false });
+  });
+});
+
+describe("buildHistoryRangeOptions", () => {
+  function optionsFor(days: number, atServedCeiling = false) {
+    return buildHistoryRangeOptions({ from: new Date(NOW.getTime() - days * DAY), days, atServedCeiling });
+  }
+
+  it("offers no real choice for a store whose whole history is shorter than the first rung", () => {
+    // O C&A ao vivo: 7 dias. "7 dias" e "tudo" ficariam a horas de distância — escolha falsa.
+    const options = optionsFor(7);
+    expect(options).toEqual([{ id: "tudo", days: 7, label: "Tudo · 7 dias", isFullAvailable: true }]);
+  });
+
+  it("adds a rung only once it cuts at least a quarter off the full span", () => {
+    expect(optionsFor(18).map((option) => option.label)).toEqual(["7 dias", "Tudo · 18 dias"]);
+    expect(optionsFor(45).map((option) => option.label)).toEqual(["7 dias", "30 dias", "Tudo · 45 dias"]);
+  });
+
+  it("never calls the served ceiling 'Tudo' — 60 days is all we read, not all the store lived", () => {
+    const options = optionsFor(240, true);
+    expect(options.map((option) => option.label)).toEqual(["7 dias", "30 dias", "60 dias"]);
+    expect(options.some((option) => option.isFullAvailable)).toBe(false);
+  });
+
+  it("returns no options at all when there is no drawable history", () => {
+    expect(buildHistoryRangeOptions({ from: null, days: 0, atServedCeiling: false })).toEqual([]);
+  });
+});
+
+describe("pickDefaultHistoryRange", () => {
+  const availability45 = { from: new Date(NOW.getTime() - 45 * DAY), days: 45, atServedCeiling: false };
+
+  it("steps down to a shorter range when the store changes too often to read at full span", () => {
+    const options = buildHistoryRangeOptions(availability45);
+    const chosen = pickDefaultHistoryRange(options, [churnLine("meliuz", 100, 45)], availability45, NOW);
+    expect(chosen?.id).toBe("7");
+  });
+
+  it("keeps the full span when the changes are sparse enough to stay legible", () => {
+    const options = buildHistoryRangeOptions(availability45);
+    const chosen = pickDefaultHistoryRange(options, [churnLine("meliuz", 8, 45)], availability45, NOW);
+    expect(chosen?.id).toBe("tudo");
+  });
+
+  it("has no default when the store has no drawable history", () => {
+    expect(pickDefaultHistoryRange([], [], { from: null, days: 0, atServedCeiling: false }, NOW)).toBeNull();
+  });
+});
+
+describe("resolveHistoryWindow", () => {
+  const availability = { from: new Date(NOW.getTime() - 45 * DAY), days: 45, atServedCeiling: false };
+
+  it("pads the fitted window so the first step does not sit on the left edge", () => {
+    const options = buildHistoryRangeOptions(availability);
+    const window = resolveHistoryWindow(options.at(-1)!, availability, NOW);
+
+    expect(window.isFullAvailable).toBe(true);
+    expect(window.end).toEqual(NOW);
+    expect(window.start.getTime()).toBe(availability.from.getTime() - 45 * DAY * 0.08);
+  });
+
+  it("honours a chosen rung exactly, with no padding", () => {
+    const window = resolveHistoryWindow({ id: "7", days: 7, label: "7 dias", isFullAvailable: false }, availability, NOW);
+
+    expect(window.isFullAvailable).toBe(false);
+    expect(window.start.getTime()).toBe(NOW.getTime() - 7 * DAY);
+  });
+});
+
+describe("findHistoryRangeOption", () => {
+  const options = buildHistoryRangeOptions({ from: new Date(NOW.getTime() - 45 * DAY), days: 45, atServedCeiling: false });
+
+  it("resolves a known id from the URL", () => {
+    expect(findHistoryRangeOption(options, "30")?.days).toBe(30);
+  });
+
+  it("refuses an id the store cannot honour, so the caller falls back to the computed default", () => {
+    // ?periodo=60 numa loja de 45 dias, ou lixo qualquer: nunca vira janela vazia.
+    expect(findHistoryRangeOption(options, "60")).toBeNull();
+    expect(findHistoryRangeOption(options, "365")).toBeNull();
+    expect(findHistoryRangeOption(options, null)).toBeNull();
+  });
+});
+
+describe("clipSeriesToWindow", () => {
+  const series: ComposedSeries = {
+    sufficient: true,
+    segments: [
+      percentSegment(agoIso(45), agoIso(30), 4),
+      percentSegment(agoIso(30), agoIso(3), 9),
+      percentSegment(agoIso(3), NOW.toISOString(), 14),
+    ],
+  };
+
+  it("trims the segment that crosses the left edge and drops what is fully outside", () => {
+    const windowStart = new Date(NOW.getTime() - 7 * DAY);
+    const clipped = clipSeriesToWindow(series, windowStart, NOW);
+
+    expect(clipped.segments).toEqual([
+      percentSegment(windowStart.toISOString(), agoIso(3), 9),
+      percentSegment(agoIso(3), NOW.toISOString(), 14),
+    ]);
+  });
+
+  it("keeps a quiet slice sufficient — an anchored flat line is real history, not 'sendo construído'", () => {
+    const clipped = clipSeriesToWindow(series, new Date(NOW.getTime() - 2 * DAY), NOW);
+
+    expect(clipped.sufficient).toBe(true);
+    expect(clipped.segments).toHaveLength(1);
+    expect(clipped.segments[0]?.value).toBe(14);
+  });
+});
+
+describe("buildResponsiveHistoryTicks — short windows", () => {
+  it("falls back to daily marks once the window is only a few days wide", () => {
+    const windowStart = new Date(NOW.getTime() - 8 * DAY);
+    const ticks = buildResponsiveHistoryTicks(windowStart, NOW, 1280);
+
+    expect(ticks[0]).toBe(windowStart.getTime());
+    expect(ticks.at(-1)).toBe(NOW.getTime());
+    expect(ticks[1]! - ticks[0]!).toBe(DAY);
+    expect(ticks).toHaveLength(9);
+  });
+
+  it("drops an interior mark that would repeat the right-edge date on a fitted window", () => {
+    const windowStart = new Date(NOW.getTime() - 8.2 * DAY);
+    const ticks = buildResponsiveHistoryTicks(windowStart, NOW, 1280);
+    const gaps = ticks.slice(1).map((tick, index) => tick - ticks[index]!);
+
+    expect(ticks.at(-1)).toBe(NOW.getTime());
+    expect(Math.min(...gaps)).toBeGreaterThan(DAY * 0.5);
   });
 });
