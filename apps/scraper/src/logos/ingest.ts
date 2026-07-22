@@ -225,7 +225,12 @@ export interface IngestSummary {
   storesFallback: number;
   /** Diagnóstico privado por classe de falha (F3/T16/#62) — só contagens, nunca URL/reason cru. */
   rejectionsByClass: Record<RejectionClass, number>;
-  /** Detalhe agregado das falhas `network_or_http` (`http_404`, `etimedout`, …), mesma regra. */
+  /**
+   * Falhas `network_or_http` agregadas por `plataforma/detalhe` (`meliuz/http_403`, …), sujeitas
+   * à mesma regra de sempre: só contagem, nunca URL. A plataforma entra na chave porque é ela que
+   * decide o que fazer com o resultado — 403 concentrado numa origem é problema de lá (e o
+   * fallback é a resposta honesta); espalhado por todas é problema nosso, como na ADR-0057.
+   */
   networkFailureDetails: Record<string, number>;
   errors: Array<{ storeId: number; message: string }>;
   /**
@@ -270,7 +275,10 @@ export async function ingestLogos(
       if (!result.hasFinalLogo) fallback++;
       for (const rejection of result.rejections) {
         rejectionsByClass[rejection.errorClass]++;
-        if (rejection.networkDetail) networkFailureDetails[rejection.networkDetail] = (networkFailureDetails[rejection.networkDetail] ?? 0) + 1;
+        if (rejection.networkDetail) {
+          const key = `${rejection.platformId}/${rejection.networkDetail}`;
+          networkFailureDetails[key] = (networkFailureDetails[key] ?? 0) + 1;
+        }
       }
     } catch (error) {
       failed++;

@@ -358,7 +358,7 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
     const summary = await ingestLogos(writerPool, storage, async () => {}, fetchOptions, { storeIds: [storeId] });
 
     expect(summary.rejectionsByClass.network_or_http).toBe(1);
-    expect(summary.networkFailureDetails).toEqual({ http_404: 1 });
+    expect(summary.networkFailureDetails).toEqual({ "meliuz/http_404": 1 });
     expect(summary.storesFallback).toBe(1);
   });
 
