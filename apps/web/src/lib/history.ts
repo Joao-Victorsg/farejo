@@ -33,6 +33,160 @@ export interface ComposedSeries {
   segments: HistorySegment[];
 }
 
+export interface HistoryPresentationLine {
+  platformId: string;
+  platformName: string;
+  variantLabel: string;
+  currentRewardType: RewardType | null;
+  series: ComposedSeries;
+}
+
+export interface HistoryChartPoint {
+  at: number;
+  values: Record<string, number | null>;
+  changes: string[];
+}
+
+export interface HistoryChartModel {
+  points: HistoryChartPoint[];
+  ticks: number[];
+  valueDomain: [number, number];
+  valueTicks: number[];
+  availableLines: HistoryPresentationLine[];
+  collectingLines: HistoryPresentationLine[];
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+const WEEK_MS = 7 * DAY_MS;
+
+function valueAt(segments: HistorySegment[], at: number, windowEnd: number): number | null {
+  for (const segment of segments) {
+    const from = new Date(segment.from).getTime();
+    const to = new Date(segment.to).getTime();
+    if (from <= at && (at < to || (at === windowEnd && to === windowEnd))) return segment.value;
+  }
+  return null;
+}
+
+export function buildResponsiveHistoryTicks(windowStart: Date, windowEnd: Date, viewportWidth: number): number[] {
+  const start = windowStart.getTime();
+  const end = windowEnd.getTime();
+  if (end <= start) return [start];
+
+  if (viewportWidth < 640) {
+    const span = end - start;
+    return [start, start + span / 3, start + (span * 2) / 3, end].map(Math.round);
+  }
+
+  const interval = viewportWidth < 1024 ? 2 * WEEK_MS : WEEK_MS;
+  const ticks = [start];
+  for (let at = start + interval; at < end; at += interval) ticks.push(at);
+  ticks.push(end);
+  return ticks;
+}
+
+function roundTick(value: number): number {
+  return Number(value.toFixed(6));
+}
+
+function buildValueScale(values: number[]): { domain: [number, number]; ticks: number[] } {
+  if (values.length === 0) return { domain: [0, 1], ticks: [0, 1] };
+  const rawMin = Math.min(...values);
+  const rawMax = Math.max(...values);
+  if (rawMin === rawMax) {
+    const padding = Math.max(1, Math.abs(rawMin) * 0.1);
+    const domain: [number, number] = [Math.max(0, rawMin - padding), rawMax + padding];
+    const tickStep = (domain[1] - domain[0]) / 4;
+    return {
+      domain,
+      ticks: Array.from({ length: 5 }, (_, index) => roundTick(domain[0] + tickStep * index)),
+    };
+  }
+
+  const roughStep = (rawMax - rawMin) / 3;
+  const magnitude = 10 ** Math.floor(Math.log10(roughStep));
+  const normalized = roughStep / magnitude;
+  const niceNormalized = normalized <= 1 ? 1 : normalized <= 2 ? 2 : normalized <= 2.5 ? 2.5 : normalized <= 5 ? 5 : 10;
+  const step = niceNormalized * magnitude;
+  const firstTick = Math.floor(rawMin / step) * step;
+  const lastTick = Math.ceil(rawMax / step) * step;
+  const ticks: number[] = [];
+  for (let tick = firstTick; tick <= lastTick + step / 1000; tick += step) ticks.push(roundTick(tick));
+
+  return {
+    domain: [Math.max(0, firstTick - step * 0.2), lastTick + step * 0.2],
+    ticks,
+  };
+}
+
+export function buildHistoryChartModel(
+  lines: HistoryPresentationLine[],
+  rewardType: RewardType,
+  windowStart: Date,
+  windowEnd: Date,
+): HistoryChartModel {
+  const availableLines = lines.filter(
+    (line) => line.series.sufficient && line.series.segments.some((segment) => segment.rewardType === rewardType),
+  );
+  const availableIds = new Set(availableLines.map((line) => line.platformId));
+  const collectingLines = lines.filter(
+    (line) => line.currentRewardType === rewardType && !availableIds.has(line.platformId),
+  );
+  const start = windowStart.getTime();
+  const end = windowEnd.getTime();
+  const instants = new Set<number>([start, end]);
+
+  for (let at = start + DAY_MS; at < end; at += DAY_MS) instants.add(at);
+  for (const line of availableLines) {
+    for (const segment of line.series.segments) {
+      if (segment.rewardType !== rewardType) continue;
+      const from = new Date(segment.from).getTime();
+      const to = new Date(segment.to).getTime();
+      instants.add(from);
+      instants.add(to);
+      // Recharts removes a null point from the path. Keep the left-hand value immediately
+      // before every boundary so a line entering a gap reaches the real deactivation time
+      // instead of stopping at the previous daily sample.
+      if (to > start && to <= end) instants.add(Math.max(start, to - 1));
+    }
+  }
+
+  const matchingSegments = new Map(
+    availableLines.map((line) => [
+      line.platformId,
+      line.series.segments.filter((segment) => segment.rewardType === rewardType),
+    ]),
+  );
+  const points = [...instants]
+    .filter((at) => at >= start && at <= end)
+    .sort((left, right) => left - right)
+    .map((at): HistoryChartPoint => {
+      const values: Record<string, number | null> = {};
+      const changes: string[] = [];
+      for (const line of availableLines) {
+        const segments = matchingSegments.get(line.platformId) ?? [];
+        values[line.platformId] = valueAt(segments, at, end);
+        if (at > start && segments.some((segment) => new Date(segment.from).getTime() === at)) {
+          changes.push(line.platformId);
+        }
+      }
+      return { at, values, changes };
+    });
+  const values = availableLines.flatMap((line) =>
+    line.series.segments.filter((segment) => segment.rewardType === rewardType).map((segment) => segment.value),
+  );
+  const valueScale = buildValueScale(values);
+
+  return {
+    points,
+    ticks: buildResponsiveHistoryTicks(windowStart, windowEnd, Number.POSITIVE_INFINITY),
+    valueDomain: valueScale.domain,
+    valueTicks: valueScale.ticks,
+    availableLines,
+    collectingLines,
+  };
+}
+
 /**
  * Compõe uma série delta-based (eventos + âncora anterior) em trechos em degrau dentro de
  * [windowStart, windowEnd]. `value: null` num evento é tratado como lacuna (nunca interpolado
@@ -207,9 +361,13 @@ export function groupSegmentsByRewardType(segments: HistorySegment[]): Record<Re
 }
 
 function formatSegmentValue(segment: HistorySegment): string {
-  return segment.rewardType === "percent"
-    ? `${segment.value.toLocaleString("pt-BR")}%`
-    : segment.value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  return formatHistoryValue(segment.rewardType, segment.value);
+}
+
+export function formatHistoryValue(rewardType: RewardType, value: number): string {
+  return rewardType === "percent"
+    ? `${value.toLocaleString("pt-BR")}%`
+    : value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
 /**
@@ -237,4 +395,33 @@ export function summarizeSeries(platformName: string, series: ComposedSeries): s
 
   const changeWord = changeCount === 1 ? "mudança" : "mudanças";
   return `${platformName}: variou entre ${formatSegmentValue(minSegment)} e ${formatSegmentValue(maxSegment)} nos últimos ${WINDOW_DAYS} dias, com ${changeCount} ${changeWord}. Valor atual: ${formatSegmentValue(last)}.`;
+}
+
+const HISTORY_EXPLANATION =
+  "Cada linha em degraus marca quando o valor mudou; trechos sem linha indicam períodos sem dado registrado.";
+
+export function summarizeStoreHistory(
+  storeName: string,
+  rewardType: RewardType,
+  lines: HistoryPresentationLine[],
+): string | null {
+  const values = lines.flatMap((line) =>
+    line.series.sufficient
+      ? line.series.segments.filter((segment) => segment.rewardType === rewardType).map((segment) => segment.value)
+      : [],
+  );
+  if (values.length === 0) return null;
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const minLabel = formatHistoryValue(rewardType, min);
+  const maxLabel = formatHistoryValue(rewardType, max);
+
+  if (rewardType === "fixed") {
+    const behavior = min === max ? `permaneceram em ${maxLabel}` : `variaram entre ${minLabel} e ${maxLabel}`;
+    return `Nos últimos ${WINDOW_DAYS} dias, as ofertas de valor fixo de ${storeName} ${behavior} entre as plataformas acompanhadas. ${HISTORY_EXPLANATION}`;
+  }
+
+  const behavior = min === max ? `permaneceu em ${maxLabel}` : `variou entre ${minLabel} e ${maxLabel}`;
+  return `Nos últimos ${WINDOW_DAYS} dias, o cashback de ${storeName} ${behavior} entre as plataformas acompanhadas. ${HISTORY_EXPLANATION}`;
 }

@@ -43,12 +43,17 @@ async function insertOffer(client: Client, storeId: number, options: {
   );
 }
 
-async function insertHistory(client: Client, storeId: number, platformId: string, events: { daysAgo: number; value: number; valuePartial?: number | null }[]) {
+async function insertHistory(
+  client: Client,
+  storeId: number,
+  platformId: string,
+  events: { daysAgo: number; rewardType?: "percent" | "fixed"; value: number | null; valuePartial?: number | null }[],
+) {
   for (const event of events) {
     await client.query(
       `insert into public.offer_history (store_id, platform_id, reward_type, value, value_partial, changed_at)
-       values ($1, $2, 'percent', $3, $4, $5)`,
-      [storeId, platformId, event.value, event.valuePartial ?? null, new Date(now.getTime() - event.daysAgo * DAY_MS)],
+       values ($1, $2, $3, $4, $5, $6)`,
+      [storeId, platformId, event.rewardType ?? "percent", event.value, event.valuePartial ?? null, new Date(now.getTime() - event.daysAgo * DAY_MS)],
     );
   }
 }
@@ -73,6 +78,17 @@ test("seed F3/T17 fixtures", async () => {
     await insertOffer(client, alphaId, { platformId: "mycashback", rewardType: "percent", value: 5, rawText: "5%", url: "https://www.mycashback.com.br/f3t17-alpha", lastSeenAt: delayedButFresh });
     // 47 dias a 8% seguidos de 8 dias a 12%: mediana ponderada = 8%, 12% >= 8% * 1,3 -> BOOST, "era 8%".
     await insertHistory(client, alphaId, "meliuz", [{ daysAgo: 55, value: 8 }, { daysAgo: 8, value: 12 }]);
+    await insertHistory(client, alphaId, "cuponomia", [
+      { daysAgo: 50, value: 6 },
+      { daysAgo: 25, value: null },
+      { daysAgo: 18, value: 7 },
+      { daysAgo: 5, value: 8 },
+    ]);
+    await insertHistory(client, alphaId, "mycashback", [{ daysAgo: 20, value: 5 }]);
+    await insertHistory(client, alphaId, "zoom", [
+      { daysAgo: 55, rewardType: "fixed", value: 20 },
+      { daysAgo: 5, rewardType: "fixed", value: 30 },
+    ]);
     await client.query("insert into public.store_aliases (platform_id, raw_name, store_id) values ('meliuz', $1, $2)", ["Termo Único De Busca Testável", alphaId]);
 
     const betaSlug = fixtureSlug("beta");

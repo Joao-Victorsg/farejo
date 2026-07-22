@@ -168,7 +168,10 @@ await client.query(
     ($1, 'inter', 'percent', 8, 2, now() - interval '10 days'),
     ($1, 'inter', 'percent', 10, 2, now() - interval '2 days'),
     ($1, 'meliuz', 'percent', 6, null, now() - interval '10 days'),
-    ($1, 'meliuz', 'percent', 8, null, now() - interval '2 days')`,
+    ($1, 'meliuz', 'percent', 8, null, now() - interval '2 days'),
+    ($1, 'cuponomia', 'percent', 4, null, now() - interval '12 days'),
+    ($1, 'cuponomia', 'percent', null, null, now() - interval '8 days'),
+    ($1, 'cuponomia', 'percent', 7, null, now() - interval '5 days')`,
   [toggleStore.id],
 );
 
@@ -408,10 +411,24 @@ try {
   // Issue54: o histórico segue o toggle — a modalidade não correntista do Inter não tem
   // mudança real (só uma leitura de value_partial) e nunca cai para a série correntista.
   const historySection = page.getByRole("region", { name: "Histórico", exact: true });
-  let historyText = await historySection.innerText();
-  assert.match(historyText, /Shopping Inter \(não correntista\): histórico sendo construído\./);
-  assert.doesNotMatch(historyText, /Shopping Inter \(correntista\): variou/);
-  assert.match(historyText, /Méliuz: variou entre 6% e 8%/);
+  const historyChart = historySection.getByRole("application", { name: /Gráfico dos últimos 60 dias/ });
+  await historyChart.waitFor();
+  const visibleSummary = historySection.locator("p").filter({ hasText: "Nos últimos 60 dias" });
+  assert.match(
+    await visibleSummary.innerText(),
+    /cashback de Loja real alterna correntista variou entre 4% e 8% entre as plataformas acompanhadas/,
+  );
+  await historySection.getByLabel("Shopping Inter (não correntista): histórico sendo construído").waitFor();
+  await historySection.getByLabel("Zoom: histórico sendo construído").waitFor();
+
+  const meliuzHistoryChip = historySection.getByRole("button", { name: /Méliuz/ });
+  assert.equal(await meliuzHistoryChip.getAttribute("aria-pressed"), "true");
+  await meliuzHistoryChip.click();
+  assert.equal(await meliuzHistoryChip.getAttribute("aria-pressed"), "false");
+  const showAllHistory = historySection.getByRole("button", { name: "Mostrar todas" });
+  await showAllHistory.waitFor();
+  await showAllHistory.click();
+  assert.equal(await meliuzHistoryChip.getAttribute("aria-pressed"), "true");
 
   await detailSwitch.click();
   await waitForSwitchState(detailSwitch, "true");
@@ -422,9 +439,11 @@ try {
   assert.match(interRowText, /CONDICIONAL/);
   assert.match(interRowText, /10%/);
 
-  historyText = await historySection.innerText();
-  assert.match(historyText, /Shopping Inter \(correntista\): variou entre 8% e 10%/);
-  assert.doesNotMatch(historyText, /Shopping Inter \(não correntista\): variou/);
+  await historySection.getByRole("button", { name: /Shopping Inter \(correntista\)/ }).waitFor();
+  assert.match(
+    await visibleSummary.innerText(),
+    /cashback de Loja real alterna correntista variou entre 4% e 10% entre as plataformas acompanhadas/,
+  );
 
   await page.getByRole("link", { name: "Todas as lojas" }).click();
   await page.waitForURL(`${baseUrl}/#catalogo`);

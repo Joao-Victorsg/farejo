@@ -52,3 +52,26 @@ test("navegação por teclado: ranking da loja ativa sem abrir nova aba sem avis
   await firstActivateLink.focus();
   await expect(firstActivateLink).toBeFocused();
 });
+
+test("histórico: legenda funciona por teclado e tooltip explica lacunas", async ({ page }) => {
+  await page.goto(`/loja/${alphaSlug}`);
+  const historySection = page.getByRole("region", { name: "Histórico", exact: true });
+  const meliuzChip = historySection.getByRole("button", { name: /Méliuz/ });
+  await meliuzChip.focus();
+  await page.keyboard.press("Space");
+  await expect(meliuzChip).toHaveAttribute("aria-pressed", "false");
+  const hiddenResults = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+  expect(hiddenResults.violations, JSON.stringify(hiddenResults.violations, null, 2)).toEqual([]);
+  await historySection.getByRole("button", { name: "Mostrar todas" }).click();
+  await expect(meliuzChip).toHaveAttribute("aria-pressed", "true");
+
+  const chart = historySection.getByRole("application", { name: /Gráfico dos últimos 60 dias/ }).first();
+  await chart.focus();
+  await expect(chart).toBeFocused();
+  const box = await chart.boundingBox();
+  if (!box) throw new Error("History chart has no measurable box");
+  await page.mouse.move(box.x + box.width * 0.63, box.y + box.height * 0.6);
+  await expect(historySection.getByText("sem dado", { exact: true })).toBeVisible();
+  const tooltipResults = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+  expect(tooltipResults.violations, JSON.stringify(tooltipResults.violations, null, 2)).toEqual([]);
+});
