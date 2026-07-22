@@ -82,7 +82,7 @@ export async function selectCandidateStores(pool: LogoWriterPool, options: Selec
 
 type SourceOutcome =
   | { platformId: string; status: "accepted"; width: number; height: number; contentHash: string; webp: Buffer }
-  | { platformId: string; status: "rejected"; reason: string; errorClass: RejectionClass };
+  | { platformId: string; status: "rejected"; reason: string; errorClass: RejectionClass; networkDetail: string | null };
 
 /**
  * Classe do diagnóstico privado por falha (F3/T16/#62): nunca sai do log/console da Action
@@ -96,6 +96,23 @@ function classifyRejection(error: unknown): RejectionClass {
   if (error instanceof DownloadTooLargeError) return "download_too_large";
   if (error instanceof InvalidImageError) return "invalid_image";
   return "network_or_http";
+}
+
+/**
+ * Sub-rótulo de `network_or_http`, sujeito à mesma regra da classe: agregável, sem URL nem
+ * stack. Existe porque "network_or_http" sozinho não distingue o que é nosso do que não é —
+ * `http_404` é arquivo que a plataforma removeu (nada a corrigir aqui, fallback é a resposta
+ * honesta), enquanto timeout ou erro de socket em massa aponta para o nosso lado, que foi
+ * exatamente o caso da ADR-0057.
+ */
+export function networkFailureDetail(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+  const httpStatus = /^HTTP (\d{3})\b/.exec(message);
+  if (httpStatus) return `http_${httpStatus[1]}`;
+
+  const code = (error as { cause?: { code?: unknown } }).cause?.code ?? (error as { code?: unknown }).code;
+  if (typeof code === "string") return code.toLowerCase();
+  return error instanceof Error && error.name !== "Error" ? error.name.toLowerCase() : "other";
 }
 
 async function verifySource(source: LogoSourceRow, fetchOptions: SafeFetchOptions): Promise<SourceOutcome> {
@@ -116,6 +133,7 @@ async function verifySource(source: LogoSourceRow, fetchOptions: SafeFetchOption
       status: "rejected",
       reason: error instanceof Error ? error.message : String(error),
       errorClass: classifyRejection(error),
+      networkDetail: classifyRejection(error) === "network_or_http" ? networkFailureDetail(error) : null,
     };
   }
 }
@@ -151,7 +169,7 @@ export interface StoreResult {
   changed: boolean;
   /** Falso quando a loja termina o run sem nenhum logo final — segue no fallback visual. */
   hasFinalLogo: boolean;
-  rejections: Array<{ platformId: string; errorClass: RejectionClass }>;
+  rejections: Array<{ platformId: string; errorClass: RejectionClass; networkDetail: string | null }>;
 }
 
 /**
@@ -180,7 +198,7 @@ export async function processStore(
   const accepted = outcomes.filter((o): o is Extract<SourceOutcome, { status: "accepted" }> => o.status === "accepted");
   const rejections = outcomes
     .filter((o): o is Extract<SourceOutcome, { status: "rejected" }> => o.status === "rejected")
-    .map((o) => ({ platformId: o.platformId, errorClass: o.errorClass }));
+    .map((o) => ({ platformId: o.platformId, errorClass: o.errorClass, networkDetail: o.networkDetail }));
   const winner = pickBestLogoSource(accepted.map((a) => ({ platformId: a.platformId, width: a.width, height: a.height })));
   const winningOutcome = winner ? accepted.find((a) => a.platformId === winner.platformId)! : null;
 
@@ -207,6 +225,8 @@ export interface IngestSummary {
   storesFallback: number;
   /** Diagnóstico privado por classe de falha (F3/T16/#62) — só contagens, nunca URL/reason cru. */
   rejectionsByClass: Record<RejectionClass, number>;
+  /** Detalhe agregado das falhas `network_or_http` (`http_404`, `etimedout`, …), mesma regra. */
+  networkFailureDetails: Record<string, number>;
   errors: Array<{ storeId: number; message: string }>;
   /**
    * Falha ao sinalizar a invalidação do catálogo, se houve. Fica no resumo em vez de subir
@@ -240,6 +260,7 @@ export async function ingestLogos(
     invalid_image: 0,
     network_or_http: 0,
   };
+  const networkFailureDetails: IngestSummary["networkFailureDetails"] = {};
   const errors: IngestSummary["errors"] = [];
 
   for (const store of candidates) {
@@ -247,7 +268,10 @@ export async function ingestLogos(
       const result = await processStore(pool, storage, store, fetchOptions);
       if (result.changed) changed++;
       if (!result.hasFinalLogo) fallback++;
-      for (const rejection of result.rejections) rejectionsByClass[rejection.errorClass]++;
+      for (const rejection of result.rejections) {
+        rejectionsByClass[rejection.errorClass]++;
+        if (rejection.networkDetail) networkFailureDetails[rejection.networkDetail] = (networkFailureDetails[rejection.networkDetail] ?? 0) + 1;
+      }
     } catch (error) {
       failed++;
       errors.push({ storeId: store.storeId, message: error instanceof Error ? error.message : String(error) });
@@ -269,6 +293,7 @@ export async function ingestLogos(
     storesFailed: failed,
     storesFallback: fallback,
     rejectionsByClass,
+    networkFailureDetails,
     errors,
     catalogInvalidationError,
   };
@@ -287,6 +312,11 @@ async function main(): Promise<void> {
     .map(([errorClass, count]) => `${errorClass}=${count}`)
     .join(", ");
   if (rejectionBreakdown) console.log(`[logos] fontes rejeitadas por classe: ${rejectionBreakdown}`);
+  const networkBreakdown = Object.entries(summary.networkFailureDetails)
+    .sort(([, a], [, b]) => b - a)
+    .map(([detail, count]) => `${detail}=${count}`)
+    .join(", ");
+  if (networkBreakdown) console.log(`[logos] falhas de rede por detalhe: ${networkBreakdown}`);
   for (const err of summary.errors) {
     console.error(`[logos] loja ${err.storeId}: ${err.message}`);
   }

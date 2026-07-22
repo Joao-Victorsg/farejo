@@ -253,7 +253,7 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
 
     expect(result.changed).toBe(false);
     expect(result.hasFinalLogo).toBe(false);
-    expect(result.rejections).toEqual([{ platformId: "meliuz", errorClass: "invalid_image" }]);
+    expect(result.rejections).toEqual([{ platformId: "meliuz", errorClass: "invalid_image", networkDetail: null }]);
     const store = await fetchStore(storeId);
     expect(store.logo_url).toBeNull();
     expect(store.logo_hash).toBeNull();
@@ -273,7 +273,7 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
 
     expect(result.changed).toBe(false);
     expect(result.hasFinalLogo).toBe(false);
-    expect(result.rejections).toEqual([{ platformId: "inter", errorClass: "unsafe_url" }]);
+    expect(result.rejections).toEqual([{ platformId: "inter", errorClass: "unsafe_url", networkDetail: null }]);
     const store = await fetchStore(storeId);
     expect(store.logo_url).toBeNull();
 
@@ -348,6 +348,20 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
     expect(afterSecond.logo_hash).toBe(afterFirst.logo_hash);
   });
 
+  // "network_or_http" sozinho não distingue o que é nosso do que não é: a ADR-0057 nasceu de
+  // 2182 falhas dessa classe que eram um defeito do cliente. O detalhe separa isso de uma
+  // fonte que a plataforma simplesmente removeu, onde o fallback é a resposta honesta.
+  it("labels a network failure with its HTTP status, so a dead source is not read as a broken client", async () => {
+    const storeId = await insertStore("dead-source");
+    await insertSource(storeId, "meliuz", `${baseUrl}/gone`);
+
+    const summary = await ingestLogos(writerPool, storage, async () => {}, fetchOptions, { storeIds: [storeId] });
+
+    expect(summary.rejectionsByClass.network_or_http).toBe(1);
+    expect(summary.networkFailureDetails).toEqual({ http_404: 1 });
+    expect(summary.storesFallback).toBe(1);
+  });
+
   it("does not invalidate the catalog on a run where nothing needed to change", async () => {
     const storeId = await insertStore("no-op-run");
     await insertSource(storeId, "meliuz", `${baseUrl}/invalid`);
@@ -369,6 +383,7 @@ describe("logo ingestion entrypoint (Postgres+Storage local, F3/T15/#61)", () =>
       storesFailed: 0,
       storesFallback: 0,
       rejectionsByClass: { unsafe_url: 0, download_too_large: 0, invalid_image: 0, network_or_http: 0 },
+      networkFailureDetails: {},
       errors: [],
       catalogInvalidationError: null,
     });
