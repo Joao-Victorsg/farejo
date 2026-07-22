@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
+  buildHistoryChartModel,
+  buildResponsiveHistoryTicks,
   composeHistorySeries,
   composeStoreHistory,
   deriveOfferSignals,
   groupSegmentsByRewardType,
+  summarizeStoreHistory,
   summarizeSeries,
   type ComposedSeries,
   type StoreHistoryRow,
@@ -204,6 +207,222 @@ describe("summarizeSeries", () => {
       ],
     };
     expect(summarizeSeries("Cuponomia", series)).toBe("Cuponomia: variou entre 4% e 8% nos últimos 60 dias, com 1 mudança. Valor atual: 8%.");
+  });
+});
+
+describe("summarizeStoreHistory", () => {
+  it("summarizes the observed range across every platform with percent history", () => {
+    const lines = [
+      {
+        platformId: "cuponomia",
+        platformName: "Cuponomia",
+        variantLabel: "",
+        currentRewardType: "percent" as const,
+        series: {
+          sufficient: true,
+          segments: [
+            { rewardType: "percent" as const, from: "2026-06-01T00:00:00.000Z", to: "2026-06-10T00:00:00.000Z", value: 5.5 },
+            { rewardType: "percent" as const, from: "2026-06-10T00:00:00.000Z", to: NOW.toISOString(), value: 10 },
+          ],
+        },
+      },
+      {
+        platformId: "meliuz",
+        platformName: "Méliuz",
+        variantLabel: "",
+        currentRewardType: "percent" as const,
+        series: {
+          sufficient: true,
+          segments: [
+            { rewardType: "percent" as const, from: "2026-06-04T00:00:00.000Z", to: NOW.toISOString(), value: 12.5 },
+          ],
+        },
+      },
+    ];
+
+    expect(summarizeStoreHistory("AliExpress", "percent", lines)).toBe(
+      "Nos últimos 60 dias, o cashback de AliExpress variou entre 5,5% e 12,5% entre as plataformas acompanhadas. Cada linha em degraus marca quando o valor mudou; trechos sem linha indicam períodos sem dado registrado.",
+    );
+  });
+
+  it("keeps exact intraday changes and inactivity gaps in the shared chart model", () => {
+    const windowStart = new Date("2026-05-20T00:00:00.000Z");
+    const windowEnd = new Date("2026-05-23T00:00:00.000Z");
+    const model = buildHistoryChartModel(
+      [
+        {
+          platformId: "meliuz",
+          platformName: "Méliuz",
+          variantLabel: "",
+          currentRewardType: "percent",
+          series: {
+            sufficient: true,
+            segments: [
+              { rewardType: "percent", from: windowStart.toISOString(), to: "2026-05-21T12:30:00.000Z", value: 5 },
+              { rewardType: "percent", from: "2026-05-21T12:30:00.000Z", to: "2026-05-22T00:00:00.000Z", value: 8 },
+              { rewardType: "percent", from: "2026-05-22T18:00:00.000Z", to: windowEnd.toISOString(), value: 6 },
+            ],
+          },
+        },
+      ],
+      "percent",
+      windowStart,
+      windowEnd,
+    );
+
+    expect(model.points.map((point) => point.at)).toContain(new Date("2026-05-21T12:30:00.000Z").getTime());
+    expect(model.points.find((point) => point.at === new Date("2026-05-21T12:30:00.000Z").getTime())).toMatchObject({
+      values: { meliuz: 8 },
+      changes: ["meliuz"],
+    });
+    expect(model.points.find((point) => point.at === new Date("2026-05-22T00:00:00.000Z").getTime())).toMatchObject({
+      values: { meliuz: null },
+    });
+    expect(model.points.find((point) => point.at === new Date("2026-05-21T23:59:59.999Z").getTime())).toMatchObject({
+      values: { meliuz: 8 },
+    });
+    expect(model.points.find((point) => point.at === new Date("2026-05-22T18:00:00.000Z").getTime())).toMatchObject({
+      values: { meliuz: 6 },
+      changes: ["meliuz"],
+    });
+  });
+
+  it("covers the complete 60-day domain with weekly ticks plus both endpoints", () => {
+    const windowStart = new Date("2026-05-01T12:00:00.000Z");
+    const windowEnd = new Date("2026-06-30T12:00:00.000Z");
+    const model = buildHistoryChartModel(
+      [
+        {
+          platformId: "meliuz",
+          platformName: "Méliuz",
+          variantLabel: "",
+          currentRewardType: "percent",
+          series: {
+            sufficient: true,
+            segments: [
+              { rewardType: "percent", from: windowStart.toISOString(), to: "2026-06-01T12:00:00.000Z", value: 5 },
+              { rewardType: "percent", from: "2026-06-01T12:00:00.000Z", to: windowEnd.toISOString(), value: 8 },
+            ],
+          },
+        },
+      ],
+      "percent",
+      windowStart,
+      windowEnd,
+    );
+
+    expect(model.ticks).toHaveLength(10);
+    expect(model.ticks[0]).toBe(windowStart.getTime());
+    expect(model.ticks.at(-1)).toBe(windowEnd.getTime());
+    expect(model.valueTicks).toEqual([5, 6, 7, 8]);
+  });
+
+  it("generates deterministic responsive dates while preserving both 60-day endpoints", () => {
+    const windowStart = new Date("2026-05-01T12:00:00.000Z");
+    const windowEnd = new Date("2026-06-30T12:00:00.000Z");
+    const desktop = buildResponsiveHistoryTicks(windowStart, windowEnd, 1280);
+    const intermediate = buildResponsiveHistoryTicks(windowStart, windowEnd, 768);
+    const mobile = buildResponsiveHistoryTicks(windowStart, windowEnd, 375);
+
+    expect(desktop).toHaveLength(10);
+    expect(intermediate).toHaveLength(6);
+    expect(mobile).toHaveLength(4);
+    for (const ticks of [desktop, intermediate, mobile]) {
+      expect(ticks[0]).toBe(windowStart.getTime());
+      expect(ticks.at(-1)).toBe(windowEnd.getTime());
+    }
+    expect(intermediate[1]! - intermediate[0]!).toBe(14 * 24 * 60 * 60 * 1000);
+  });
+
+  it("keeps insufficient current series as collecting without adding a false line", () => {
+    const windowStart = new Date("2026-05-01T00:00:00.000Z");
+    const model = buildHistoryChartModel(
+      [
+        {
+          platformId: "zoom",
+          platformName: "Zoom",
+          variantLabel: "",
+          currentRewardType: "percent",
+          series: { sufficient: false, segments: [] },
+        },
+        {
+          platformId: "cuponomia",
+          platformName: "Cuponomia",
+          variantLabel: "",
+          currentRewardType: "fixed",
+          series: { sufficient: false, segments: [] },
+        },
+      ],
+      "percent",
+      windowStart,
+      NOW,
+    );
+
+    expect(model.availableLines).toEqual([]);
+    expect(model.collectingLines.map((line) => line.platformId)).toEqual(["zoom"]);
+    expect(model.valueDomain).toEqual([0, 1]);
+  });
+
+  it("summarizes fixed-value history without mixing it with percentages", () => {
+    const lines = [
+      {
+        platformId: "zoom",
+        platformName: "Zoom",
+        variantLabel: "",
+        currentRewardType: "fixed" as const,
+        series: {
+          sufficient: true,
+          segments: [
+            { rewardType: "fixed" as const, from: "2026-06-01T00:00:00.000Z", to: "2026-06-10T00:00:00.000Z", value: 20 },
+            { rewardType: "fixed" as const, from: "2026-06-10T00:00:00.000Z", to: NOW.toISOString(), value: 30 },
+          ],
+        },
+      },
+    ];
+
+    expect(summarizeStoreHistory("Booking", "fixed", lines)).toBe(
+      "Nos últimos 60 dias, as ofertas de valor fixo de Booking variaram entre R$ 20,00 e R$ 30,00 entre as plataformas acompanhadas. Cada linha em degraus marca quando o valor mudou; trechos sem linha indicam períodos sem dado registrado.",
+    );
+  });
+
+  it("uses singular stable wording and pt-BR decimals for constant percentage history", () => {
+    const lines = [
+      {
+        platformId: "meliuz",
+        platformName: "Méliuz",
+        variantLabel: "",
+        currentRewardType: "percent" as const,
+        series: {
+          sufficient: true,
+          segments: [
+            { rewardType: "percent" as const, from: "2026-06-01T00:00:00.000Z", to: NOW.toISOString(), value: 5.5 },
+          ],
+        },
+      },
+    ];
+
+    expect(summarizeStoreHistory("AliExpress", "percent", lines)).toContain("o cashback de AliExpress permaneceu em 5,5%");
+    const model = buildHistoryChartModel(lines, "percent", WINDOW_START, NOW);
+    expect(model.valueTicks).toHaveLength(5);
+  });
+
+  it("uses plural stable wording and BRL localization for constant fixed-value history", () => {
+    const lines = [
+      {
+        platformId: "zoom",
+        platformName: "Zoom",
+        variantLabel: "",
+        currentRewardType: "fixed" as const,
+        series: {
+          sufficient: true,
+          segments: [
+            { rewardType: "fixed" as const, from: "2026-06-01T00:00:00.000Z", to: NOW.toISOString(), value: 20.5 },
+          ],
+        },
+      },
+    ];
+
+    expect(summarizeStoreHistory("Booking", "fixed", lines)).toContain("as ofertas de valor fixo de Booking permaneceram em R$ 20,50");
   });
 });
 
