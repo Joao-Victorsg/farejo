@@ -1,7 +1,10 @@
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import type { AliasCandidate, AliasManifest, AliasRef } from "@farejo/shared";
 import { describe, expect, it } from "vitest";
 import type { ClassifierVerdict } from "./aiClassifier.js";
-import { buildCandidatesReport, buildUpdatedManifest, candidateId, decideProposal, type CandidateProposal } from "./proposeCandidates.js";
+import { buildCandidatesReport, buildUpdatedManifest, candidateId, decideProposal, publishCandidateCount, type CandidateProposal } from "./proposeCandidates.js";
 
 const alias = (platformId: string, rawName: string): AliasRef => ({ platformId, rawName });
 const emptyManifest: AliasManifest = { version: 1, merges: [], rejects: [] };
@@ -141,5 +144,20 @@ describe("candidateId", () => {
   it("is stable regardless of which side is storeA/storeB", () => {
     const candidate = l3Candidate();
     expect(candidateId(candidate)).toBe("clinique|cliniquebrasil");
+  });
+});
+
+describe("publishCandidateCount", () => {
+  it("publishes a positive candidate count for the workflow to decide whether a review PR is needed", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "farejo-curation-"));
+    const githubOutputPath = join(directory, "github-output");
+
+    try {
+      await publishCandidateCount(1, githubOutputPath);
+
+      expect(await readFile(githubOutputPath, "utf8")).toBe("candidate_count=1\n");
+    } finally {
+      await rm(directory, { recursive: true, force: true });
+    }
   });
 });

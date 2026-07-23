@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { writeFile } from "node:fs/promises";
+import { appendFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
@@ -36,6 +36,12 @@ export interface CandidateProposal {
 
 export function candidateId(candidate: AliasCandidate): string {
   return `${candidate.storeA.canonicalSlug}|${candidate.storeB.canonicalSlug}`;
+}
+
+/** Publica a contagem para o workflow decidir se há um PR de revisão a abrir. */
+export async function publishCandidateCount(candidateCount: number, githubOutputPath = process.env.GITHUB_OUTPUT): Promise<void> {
+  if (!githubOutputPath) return;
+  await appendFile(githubOutputPath, `candidate_count=${candidateCount}\n`, "utf8");
 }
 
 /**
@@ -171,6 +177,7 @@ async function main(): Promise<void> {
   const stores = await fetchCanonicalStores(supabase);
   const candidates = generateAliasCandidates(stores, manifest);
   console.log(`[curation] ${candidates.length} candidato(s) novo(s) (stores canônicas: ${stores.length})`);
+  await publishCandidateCount(candidates.length);
 
   if (candidates.length === 0) {
     await writeFile(DEFAULT_REPORT_PATH, buildCandidatesReport([], []), "utf8");
