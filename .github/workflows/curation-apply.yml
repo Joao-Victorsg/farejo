@@ -21,6 +21,7 @@ jobs:
   apply:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    environment: curation
     env:
       FAREJO_CURATION_DATABASE_URL: ${{ secrets.FAREJO_CURATION_DATABASE_URL }}
       # ADR-0055: conexão `pg` contra o Supabase hospedado exige o CA do projeto.
