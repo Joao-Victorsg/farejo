@@ -303,7 +303,14 @@ export function StoreHistoryChart({
               dataKey={`values.${line.platformId}`}
               dot={<ChangeDot platformId={line.platformId} />}
               hide={!visibleIds.has(line.platformId)}
-              isAnimationActive="auto"
+              // Recharts 3 revela a linha animando `stroke-dasharray` via requestAnimationFrame
+              // (LineDrawShape + useAnimatedLineLength). Enquanto a animação corre, o traçado
+              // fica cortado num ponto que depende do comprimento total de CADA path — e o
+              // `animations: "disabled"` do Playwright só congela CSS/Web Animations, nunca rAF.
+              // Com isso a captura visual congelava um quadro arbitrário do meio da animação
+              // (baselines com o último patamar faltando, cada série cortada num lugar).
+              // Sem animação, o gráfico nasce completo: nada a esperar, nada a estabilizar.
+              isAnimationActive={false}
               key={line.platformId}
               name={`${line.platformName}${line.variantLabel}`}
               stroke={lineColor(line.platformId)}
