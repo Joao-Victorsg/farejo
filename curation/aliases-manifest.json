@@ -1,5 +1,807 @@
 {
   "version": 1,
-  "merges": [],
+  "merges": [
+    {
+      "canonicalSlug": "adidas",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "adidas"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "adidas"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Adidas"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Adidas"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Adidas Brasil"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "arno",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Arno"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Arno"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Arno"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Arno Brasil"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "lojasbenoit",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Lojas Benoit"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Lojas Benoit"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Benoit"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "bitdefender",
+      "aliases": [
+        {
+          "platformId": "meliuz",
+          "rawName": "Bitdefender"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Bitdefender Brasil"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "brastemp",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Brastemp"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Brastemp"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Brastemp"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Brastemp"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Brastemp Store"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "brinoxshop",
+      "aliases": [
+        {
+          "platformId": "mycashback",
+          "rawName": "Brinox Shop"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Brinox Shop"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Brinox"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "castor",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Castor"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Loja Castor"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "cellfy",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Cellfy"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Cellfy"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Cellfy"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Cellfy Brasil"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "claroloja",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Claro Loja"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Claro Loja Online"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "clinique",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Clinique"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Clinique"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Clinique"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Clinique"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Clinique Brasil"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "lojascolombo",
+      "aliases": [
+        {
+          "platformId": "meliuz",
+          "rawName": "Lojas Colombo"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Lojas Colombo"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Colombo"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "consul",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Consul"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Consul"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Consul"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Consul"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Consul Store"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "converse",
+      "aliases": [
+        {
+          "platformId": "meliuz",
+          "rawName": "Converse"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Converse BR"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "decantervinhos",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Decanter Vinhos"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Decanter Vinhos"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Decanter Vinhos"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Decanter Vinhos BR"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "dutramaquinas",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Dutra Máquinas"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Dutra Máquinas"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Dutra Máquinas"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Dutra Maquinas BR"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "elements",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Elements"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Elements"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Elements"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Elements"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Elements BR"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "evas",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Evas"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Evas Br"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "fila",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Fila"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Fila"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Fila"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Fila"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Fila Brasil"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "grancursosonline",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Gran Cursos Online"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Gran Cursos Online"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Gran Cursos"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "ibyte",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "ibyte"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Loja Ibyte"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "insiderstore",
+      "aliases": [
+        {
+          "platformId": "meliuz",
+          "rawName": "Insider Store"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Insider Store"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Insider"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "lg",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "LG"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "LG"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "LG"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Loja Online LG"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "lojacoral",
+      "aliases": [
+        {
+          "platformId": "meliuz",
+          "rawName": "Loja Coral"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Lojas Coral"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "lojaou",
+      "aliases": [
+        {
+          "platformId": "meliuz",
+          "rawName": "Loja OU"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "OU"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "pegada",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Pegada"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Pegada"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Loja Pegada"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "lojaslebes",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Lojas Lebes"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Lojas Lebes"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Lojas Lebes"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Lojas Lebes"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Lojas Lebes BR"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "lojaspompeia",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Lojas Pompéia"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Lojas Pompéia"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Pompéia"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "renner",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Renner"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Renner"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Renner"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Renner"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Lojas Renner"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "lojastorra",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Lojas Torra"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Lojas Torra"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Lojas Torra"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Lojas Torra"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Torra"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "midea",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Midea"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Midea"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Midea"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Midea"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Midea Store"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "narscosmetics",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Nars Cosmetics"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "NARS Cosmetics"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Nars Cosmetics"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Nars Cosmetics"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Nars Cosmetics BR"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "nike",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Nike"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Nike"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Nike"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Nike Store"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "osang",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Osang"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Osang BR"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "puma",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "puma"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Puma"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Puma"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "PUMA"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Puma Brasil"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "sharkninja",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Shark Ninja"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Shark-Ninja"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Shark-Ninja BR"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "shopee",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Shopee"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Shopee"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Shopee"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Shopee Brasil"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "stanley",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Stanley"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Stanley"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Stanley"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Stanley"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Stanley Brasil"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "trip",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Trip.com"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Trip.com"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Trip.com BR"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "umbro",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Umbro"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Umbro"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Umbro"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Umbro"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Umbro Brasil"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "universalmusicstore",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Universal Music Store"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Universal Music Store"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Universal Music"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "voy",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Voy"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Voy"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Voy BR"
+        }
+      ]
+    }
+  ],
   "rejects": []
 }
