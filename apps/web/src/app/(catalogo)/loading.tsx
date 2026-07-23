@@ -1,5 +1,19 @@
 import { PageFrame } from "@/components/page-frame";
 
+/**
+ * Esqueleto do catálogo. Vive no route group `(catalogo)` — e NÃO na raiz de `app/` — para
+ * envolver só a home (#101, ADR-0060).
+ *
+ * NÃO replicar em `/loja/[slug]` nem em `/plataformas`. Um `loading.tsx` cria uma fronteira de
+ * Suspense no nível da rota, e o Next transmite este shell (status 200 já no fio) antes de a
+ * página resolver — então `notFound()` e `permanentRedirect()` não conseguem mais definir o
+ * status e degradam para 200 + `meta refresh`. Foi exatamente esse o soft-404 da #101.
+ *
+ * Duas razões para não haver esqueleto lá, na ordem em que importam: aquelas páginas resolvem
+ * em 51–148ms medidos contra produção, então não há espera a preencher (a ADR-0060 tem a
+ * tabela); e, se um dia houver, a fronteira vai ABAIXO da checagem de existência — `<Suspense>`
+ * dentro da página, depois dos `await` que decidem 404/308 — nunca num `loading.tsx`.
+ */
 export default function HomeLoading() {
   return (
     <PageFrame>
