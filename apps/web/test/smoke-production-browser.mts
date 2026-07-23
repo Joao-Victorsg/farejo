@@ -2,11 +2,13 @@ import { pathToFileURL } from "node:url";
 import { chromium, type Browser, type Page } from "@playwright/test";
 import { z } from "zod";
 import {
+  extractStoreCardSlugs,
   extractStoreSlugsFromSitemap,
   formatSmokeReport,
   hasSmokeFailure,
   protectionBypassHeaders,
   readInterSwitchState,
+  storeSample,
   type SmokeCheck,
 } from "./smoke-production.mjs";
 
@@ -34,7 +36,6 @@ const BrowserSmokeEnvironment = z.object({
   VERCEL_AUTOMATION_BYPASS_SECRET: z.string().min(1).optional(),
 });
 
-const SAMPLE_STORE_LOOKUPS = 10;
 const FETCH_TIMEOUT_MS = 10_000;
 const SWITCH_STATE_TIMEOUT_MS = 10_000;
 const INTER_SWITCH = 'button[aria-label="Sou correntista Inter"]';
@@ -44,20 +45,29 @@ const INTER_SWITCH = 'button[aria-label="Sou correntista Inter"]';
  * loja tem oferta do Inter com taxa não-correntista: `StoreRanking` só o renderiza quando
  * `offers.some(isInterCorrentistaOffer)` (src/components/store-ranking.tsx:32). Não é preciso
  * inferir nada do texto renderizado.
+ *
+ * A amostra vem de `storeSample` — home (ordenada por cobertura) + sitemap (alfabético). Amostrar
+ * só o sitemap fazia este arquivo inteiro degradar para "não verificado" contra a produção real,
+ * porque a cauda longa que abre o alfabeto não tem oferta do Inter; ver a medição em storeSample.
  */
 async function findStoreWithInterToggle(
   baseUrl: URL,
   headers: Record<string, string>,
 ): Promise<{ slug: string; sampled: number } | null> {
-  const sitemap = await fetch(new URL("/sitemap.xml", baseUrl), { headers, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
-  const slugs = extractStoreSlugsFromSitemap(await sitemap.text()).slice(0, SAMPLE_STORE_LOOKUPS);
+  const fetchText = async (path: string) => {
+    const response = await fetch(new URL(path, baseUrl), { headers, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+    return response.text();
+  };
+
+  const slugs = storeSample(
+    [...new Set(extractStoreCardSlugs(await fetchText("/")))],
+    extractStoreSlugsFromSitemap(await fetchText("/sitemap.xml")),
+  );
 
   for (const slug of slugs) {
-    const response = await fetch(new URL(`/loja/${encodeURIComponent(slug)}`, baseUrl), {
-      headers,
-      signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-    });
-    if (readInterSwitchState(await response.text()) !== "absent") return { slug, sampled: slugs.length };
+    if (readInterSwitchState(await fetchText(`/loja/${encodeURIComponent(slug)}`)) !== "absent") {
+      return { slug, sampled: slugs.length };
+    }
   }
   return null;
 }
@@ -89,7 +99,7 @@ export async function runBrowserSmoke(baseUrl: URL, bypassSecret: string | undef
       name: "toggle correntista (hidratação)",
       ok: true,
       informational: true,
-      detail: `nenhuma das ${SAMPLE_STORE_LOOKUPS} lojas amostradas tinha oferta do Inter com taxa não-correntista — hidratação NÃO verificada nesta execução`,
+      detail: "nenhuma loja amostrada (home + sitemap) tinha oferta do Inter com taxa não-correntista — hidratação NÃO verificada nesta execução",
     }];
   }
 

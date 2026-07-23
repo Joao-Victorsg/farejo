@@ -60,6 +60,20 @@ então o par (slug absorvido → canônico) é derivável com `l2Key` sobre o ma
 Git. Um par declarado que responda "loja não encontrada" conta como não verificado — é fato de
 curadoria, não regressão de deploy.
 
+**A amostra de lojas vem da home antes do sitemap.** Os cards da home estão ordenados por cobertura
+("Mais plataformas"), então concentram as lojas presentes em mais plataformas; o sitemap está em
+ordem alfabética e abre pela cauda longa. Medido contra a produção real: 8 de 8 das primeiras lojas
+da home tinham oferta do Inter, contra 1 de 8 das primeiras do sitemap. Amostrar só o sitemap
+zerava, em produção, a cobertura do toggle e a do smoke de browser inteiro. As duas fontes ficam na
+amostra, para continuar provando que um slug listado no sitemap resolve.
+
+**Existe um modo somente-leitura** (`FAREJO_SMOKE_READ_ONLY=1`), para apontar o smoke a uma
+produção já no ar sem alterá-la. Ele desliga exatamente os dois checks que gravam: o bloco de
+`/go/`, cujo redirect agenda `recordActivation` e incrementa `activation_metrics` de uma loja real,
+e o POST de invalidação, que expira a tag `catalog`. Os dois saem como não verificados. O workflow
+de publicação nunca usa esse modo — lá os dois efeitos são desejados, e o deployment encenado ainda
+não recebeu tráfego.
+
 **Enquanto a #101 estiver aberta**, os checks de redirect e de loja inexistente aceitam tanto o
 status forte (3xx/404) quanto a forma degradada que o streaming produz hoje (200 + `meta refresh`,
 404 no payload RSC), e registram qual observaram. Fixar o status forte deixaria a publicação
@@ -83,3 +97,10 @@ passar despercebida.
   para os testes de e2e, então sem custo de setup novo.
 - Quando a #101 for resolvida, nenhum ajuste é necessário: os checks continuam passando e o log
   passa a registrar o status forte.
+- Cada execução completa grava em produção: 5 ativações sintéticas numa loja real e uma expiração
+  do cache do catálogo. É inerente a medir o caminho real do redirect — a alternativa seria uma
+  rota de bypass no código de produção, pior. Fica registrado para que a métrica de ativação seja
+  lida sabendo disso; o modo somente-leitura existe para todo uso que não seja a publicação.
+- Validado contra a produção real em 23/07/2026 no modo somente-leitura (53 ok, 0 falhas, 3 não
+  verificados) e com o smoke de browser (4 ok). Foi essa execução que expôs o viés de amostragem
+  acima, que nenhum fixture local reproduzia.

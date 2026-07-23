@@ -33,12 +33,22 @@ import { z } from "zod";
 
 const SmokeEnvironment = z.object({
   FAREJO_SITE_URL: z.string().url(),
-  FAREJO_CATALOG_INVALIDATION_SECRET: z.string().min(32),
+  // Opcional só para o modo somente-leitura abaixo; o refine adiante o exige em qualquer outro
+  // caso, para o passo do deploy nunca rodar sem o check de invalidação por esquecimento.
+  FAREJO_CATALOG_INVALIDATION_SECRET: z.string().min(32).optional(),
   // ADR-0056: no deploy encenado o alvo é a URL do deployment recém-criado, e a Deployment
   // Protection da Vercel responde 302 para ela (só o domínio de produção é público). Opcional
   // porque o script continua servindo para apontar direto para um domínio público.
   VERCEL_AUTOMATION_BYPASS_SECRET: z.string().min(1).optional(),
-});
+  /**
+   * Modo diagnóstico para apontar o smoke a uma produção JÁ no ar sem alterá-la — responder
+   * "o site está de pé agora?" sem sujar dado real. Nunca usado pelo workflow de publicação.
+   */
+  FAREJO_SMOKE_READ_ONLY: z.literal("1").optional(),
+}).refine(
+  (environment) => environment.FAREJO_SMOKE_READ_ONLY === "1" || environment.FAREJO_CATALOG_INVALIDATION_SECRET !== undefined,
+  { message: "FAREJO_CATALOG_INVALIDATION_SECRET é obrigatório fora do modo somente-leitura" },
+);
 
 const STORE_URL_PATTERN = /\/loja\/([^<"&]+)</;
 const ACTIVATION_HREF_PATTERN = /href="\/go\/([^/"]+)\/([^/"]+)"/;
@@ -387,6 +397,24 @@ interface CatalogHome {
   checks: SmokeCheck[];
   totalPages: number | null;
   cardCount: number;
+  cardSlugs: string[];
+}
+
+/**
+ * Amostra de lojas para os checks de detalhe, ativação e toggle. Combina duas fontes de
+ * propósito: os cards da home vêm ordenados por cobertura ("Mais plataformas"), então concentram
+ * as lojas presentes em mais plataformas — inclusive o Inter, que o toggle exige; o sitemap está
+ * em ordem alfabética e começa pela cauda longa.
+ *
+ * MEDIDO CONTRA PRODUÇÃO (23/07/2026): 8 de 8 das primeiras lojas da home tinham oferta do Inter,
+ * contra 1 de 8 das primeiras do sitemap (`1password`, `24s`, `361sport`, `4kids`…). Amostrar só
+ * o sitemap fazia o check do toggle — e o smoke de browser INTEIRO, cujo único propósito é
+ * hidratação — degradar para "não verificado" justamente em produção, onde deveriam valer.
+ * Manter as duas fontes preserva a prova de que um slug listado no sitemap resolve.
+ */
+export function storeSample(cardSlugs: string[], sitemapSlugs: string[]): string[] {
+  const half = Math.ceil(SAMPLE_STORE_LOOKUPS / 2);
+  return [...new Set([...cardSlugs.slice(0, half), ...sitemapSlugs.slice(0, half)])];
 }
 
 async function checkCatalogHome(baseUrl: URL): Promise<CatalogHome> {
@@ -394,7 +422,8 @@ async function checkCatalogHome(baseUrl: URL): Promise<CatalogHome> {
     mustNotInclude: ["Não conseguimos carregar as lojas", "O catálogo está temporariamente vazio"],
   });
   const checks = [...home.checks];
-  const cardCount = extractStoreCardSlugs(home.html).length;
+  const cardSlugs = [...new Set(extractStoreCardSlugs(home.html))];
+  const cardCount = cardSlugs.length;
   const totalPages = readPaginationTotalPages(home.html);
 
   checks.push({
@@ -418,7 +447,7 @@ async function checkCatalogHome(baseUrl: URL): Promise<CatalogHome> {
     detail: `noindex=${isNoindex(home.html)} canonical=${JSON.stringify(readCanonicalPath(home.html))}`,
   });
 
-  return { checks, totalPages, cardCount };
+  return { checks, totalPages, cardCount, cardSlugs };
 }
 
 async function checkPagination(baseUrl: URL, totalPages: number | null): Promise<SmokeCheck[]> {
@@ -657,7 +686,21 @@ async function checkInvalidation(baseUrl: URL, secret: string): Promise<SmokeChe
   return [rejectedCheck, acceptedCheck];
 }
 
-export async function runProductionSmoke(baseUrl: URL, invalidationSecret: string): Promise<{ checks: SmokeCheck[]; activationSamplesMs: number[] }> {
+/**
+ * `invalidationSecret === null` liga o MODO SOMENTE-LEITURA: nenhum check que grave em produção
+ * roda. São exatamente dois, e é bom que estejam nomeados num lugar só —
+ *
+ * - o bloco de `/go/`, porque cada redirect 307 agenda `recordActivation` via `after()`
+ *   (src/app/go/[storeSlug]/[platformId]/route.ts), incrementando `activation_metrics` de uma
+ *   loja real: 5 ativações sintéticas por execução, sempre na mesma loja;
+ * - o POST de invalidação aceito, que expira a tag `catalog` inteira.
+ *
+ * Os dois saem como não verificados, nomeando o que ficou de fora. O workflow de publicação
+ * sempre passa o segredo e roda tudo — lá os dois efeitos são desejados e o deployment encenado
+ * ainda nem recebeu tráfego.
+ */
+export async function runProductionSmoke(baseUrl: URL, invalidationSecret: string | null): Promise<{ checks: SmokeCheck[]; activationSamplesMs: number[] }> {
+  const readOnly = invalidationSecret === null;
   const checks: SmokeCheck[] = [];
 
   const home = await checkCatalogHome(baseUrl);
@@ -672,13 +715,14 @@ export async function runProductionSmoke(baseUrl: URL, invalidationSecret: strin
   const sitemapXml = await sitemapResponse.text();
   checks.push({ name: "GET /sitemap.xml", ok: sitemapResponse.status === 200 && sitemapXml.includes("<urlset"), detail: `status=${sitemapResponse.status}` });
 
-  const storeSlugs = extractStoreSlugsFromSitemap(sitemapXml).slice(0, SAMPLE_STORE_LOOKUPS);
+  const sitemapSlugs = extractStoreSlugsFromSitemap(sitemapXml);
   let activationSamplesMs: number[] = [];
   let firstStoreSlug: string | null = null;
 
-  if (storeSlugs.length === 0) {
+  if (sitemapSlugs.length === 0) {
     checks.push({ name: "loja detail + ativação", ok: false, detail: "sitemap.xml não listou nenhuma /loja/<slug>" });
   } else {
+    const storeSlugs = storeSample(home.cardSlugs, sitemapSlugs);
     firstStoreSlug = storeSlugs[0]!;
     let found: { storeSlug: string; platformId: string } | null = null;
     let inspectedDetail = false;
@@ -713,6 +757,11 @@ export async function runProductionSmoke(baseUrl: URL, invalidationSecret: strin
 
     if (!found) {
       checks.push({ name: "ativação (/go/...)", ok: false, detail: `nenhuma das ${storeSlugs.length} lojas amostradas tinha uma oferta ativa para testar o redirect` });
+    } else if (readOnly) {
+      checks.push(info(
+        `ativação (/go/${found.storeSlug}/${found.platformId})`,
+        "modo somente-leitura: redirect NÃO exercitado para não gravar ativações reais em activation_metrics",
+      ));
     } else {
       const activation = await checkActivation(baseUrl, found.storeSlug, found.platformId);
       checks.push(...activation.checks);
@@ -722,7 +771,9 @@ export async function runProductionSmoke(baseUrl: URL, invalidationSecret: strin
 
   checks.push(...(await checkNegativeRoutes(baseUrl, firstStoreSlug)));
   checks.push(...(await checkAliasRedirects(baseUrl)));
-  checks.push(...(await checkInvalidation(baseUrl, invalidationSecret)));
+  checks.push(...(invalidationSecret === null
+    ? [info("invalidação do catálogo", "modo somente-leitura: POST assinado NÃO enviado para não expirar o cache do catálogo")]
+    : await checkInvalidation(baseUrl, invalidationSecret)));
 
   return { checks, activationSamplesMs };
 }
@@ -757,8 +808,11 @@ async function main(): Promise<void> {
 
   bypassHeaders = protectionBypassHeaders(environment.data.VERCEL_AUTOMATION_BYPASS_SECRET);
 
+  const readOnly = environment.data.FAREJO_SMOKE_READ_ONLY === "1";
+  if (readOnly) console.log("[smoke-production] MODO SOMENTE-LEITURA: nenhum check que grave em produção será executado");
+
   const baseUrl = new URL(environment.data.FAREJO_SITE_URL);
-  const { checks, activationSamplesMs } = await runProductionSmoke(baseUrl, environment.data.FAREJO_CATALOG_INVALIDATION_SECRET);
+  const { checks, activationSamplesMs } = await runProductionSmoke(baseUrl, readOnly ? null : environment.data.FAREJO_CATALOG_INVALIDATION_SECRET!);
   console.log(formatSmokeReport(checks, activationSamplesMs));
   if (hasSmokeFailure(checks)) process.exitCode = 1;
 }

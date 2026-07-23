@@ -18,6 +18,7 @@ import {
   readInterSwitchState,
   readPaginationTotalPages,
   signInvalidation,
+  storeSample,
   type SmokeCheck,
 } from "./smoke-production.mjs";
 
@@ -170,6 +171,33 @@ describe("isNoindex / readCanonicalPath", () => {
 
   it("returns null when the page ships no canonical at all", () => {
     expect(readCanonicalPath(`<head><title>x</title></head>`)).toBeNull();
+  });
+});
+
+describe("storeSample", () => {
+  // Medido contra produção: as primeiras lojas do sitemap são a cauda longa alfabética
+  // ("1password", "24s", "361sport") e não têm oferta do Inter; as da home, ordenadas por
+  // cobertura, têm. Amostrar só o sitemap zerava a cobertura do toggle e da hidratação.
+  it("puts the home's best-covered stores ahead of the sitemap's alphabetical long tail", () => {
+    const sample = storeSample(
+      ["adidas", "amobeleza", "artwalk", "asics", "authenticfeet", "avon"],
+      ["1password", "24s", "361sport", "4kids", "4seating", "abelharainha"],
+    );
+    expect(sample.slice(0, 5)).toEqual(["adidas", "amobeleza", "artwalk", "asics", "authenticfeet"]);
+    expect(sample).toContain("1password");
+  });
+
+  it("keeps both sources so a sitemap-listed slug is still proven to resolve", () => {
+    const sample = storeSample(["adidas"], ["1password", "24s"]);
+    expect(sample).toEqual(["adidas", "1password", "24s"]);
+  });
+
+  it("does not sample the same store twice when it appears in both sources", () => {
+    expect(storeSample(["adidas", "asics"], ["adidas", "24s"])).toEqual(["adidas", "asics", "24s"]);
+  });
+
+  it("still works when the home rendered no cards at all", () => {
+    expect(storeSample([], ["1password", "24s"])).toEqual(["1password", "24s"]);
   });
 });
 
