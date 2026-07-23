@@ -116,6 +116,14 @@
         {
           "platformId": "cuponomia",
           "rawName": "Brinox"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Loja Oficial Brinox"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Loja Oficial Brinox"
         }
       ]
     },
@@ -163,6 +171,10 @@
         {
           "platformId": "meliuz",
           "rawName": "Claro Loja Online"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Loja Claro"
         }
       ]
     },
@@ -677,6 +689,10 @@
         {
           "platformId": "meliuz",
           "rawName": "Shark-Ninja BR"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Shark Ninja Brasil"
         }
       ]
     },
@@ -799,6 +815,104 @@
         {
           "platformId": "meliuz",
           "rawName": "Voy BR"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "portoseguroservico",
+      "aliases": [
+        {
+          "platformId": "meliuz",
+          "rawName": "Porto Seguro Serviço"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Porto Seguro Serviços"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "drogariaspacheco",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Drogaria Pacheco"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Drogarias Pacheco"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Drogarias Pacheco"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "farmaciasaojoao",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Farmácia São João"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Farmácia São João"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Farmácia São João"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Farmácias São João"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "drogariastamoio",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Drogarias Tamoio"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Drogarias Tamoio"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Drogaria Tamoio"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Drogaria Tamoio"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "discovercars",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Discover Cars"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Discovery Cars"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "nhhoteles",
+      "aliases": [
+        {
+          "platformId": "meliuz",
+          "rawName": "NH Hoteles"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "NH Hotels"
         }
       ]
     }
