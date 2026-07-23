@@ -11,7 +11,8 @@
     "test:smoke": "tsx test/smoke.mts",
     "test:e2e": "playwright test",
     "verify:schema": "tsx test/verify-production-schema.mts",
-    "test:smoke:production": "tsx test/smoke-production.mts"
+    "test:smoke:production": "tsx test/smoke-production.mts",
+    "test:smoke:production:browser": "tsx test/smoke-production-browser.mts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.2.4",
@@ -33,6 +34,7 @@
   "devDependencies": {
     "@aws-sdk/client-s3": "3.1090.0",
     "@axe-core/playwright": "4.12.1",
+    "@farejo/shared": "workspace:*",
     "@fontsource-variable/hanken-grotesk": "5.2.6",
     "@fontsource-variable/space-grotesk": "5.2.6",
     "@playwright/test": "1.61.1",
