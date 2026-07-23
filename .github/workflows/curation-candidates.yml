@@ -34,14 +34,16 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Generate candidates
+        id: generate-candidates
         run: pnpm --filter @farejo/scraper curate:propose
 
       - name: Open or update the review pull request
+        if: steps.generate-candidates.outputs.candidate_count != '0'
         run: |
           set -euo pipefail
           BRANCH="curation/auto-candidates"
 
-          if git status --porcelain -- curation/aliases-manifest.json | grep -q .; then
+          if git status --porcelain -- curation/aliases-manifest.json curation/candidates-report.md | grep -q .; then
             git config user.name "farejo-bot"
             git config user.email "actions@users.noreply.github.com"
             git checkout -B "$BRANCH"

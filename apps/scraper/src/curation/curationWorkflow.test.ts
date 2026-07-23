@@ -30,6 +30,14 @@ describe("curation-candidates workflow (F3/T13, #59)", () => {
     expect(workflow).not.toMatch(/schedule:/);
     expect(workflow).toMatch(/workflow_dispatch:/);
   });
+
+  it("opens the review PR when the generator found candidates, even if the manifest stays unchanged", async () => {
+    const workflow = await readFile(CANDIDATES_WORKFLOW_PATH, "utf8");
+
+    expect(workflow).toMatch(/id: generate-candidates/);
+    expect(workflow).toMatch(/if: steps\.generate-candidates\.outputs\.candidate_count != '0'/);
+    expect(workflow).toMatch(/git status --porcelain -- curation\/aliases-manifest\.json curation\/candidates-report\.md/);
+  });
 });
 
 describe("curation-apply workflow (F3/T13, #59)", () => {
