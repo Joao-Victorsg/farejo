@@ -80,6 +80,12 @@ status forte (3xx/404) quanto a forma degradada que o streaming produz hoje (200
 vermelha por uma condição pré-existente; aceitar qualquer 200 deixaria a perda total do redirect
 passar despercebida.
 
+> **Superado pela ADR-0060 (23/07/2026).** A #101 foi corrigida escopando o `loading.tsx` ao route
+> group da home, então `/loja/*` voltou a responder status real e os checks daquelas rotas passaram
+> a exigi-lo: 404 estrito para loja inexistente, 308 estrito para alias absorvido. A tolerância
+> permanece **apenas** na canonicalização do catálogo, onde a home mantém o esqueleto de propósito
+> — ali as duas formas são aceitas por decisão, não por espera.
+
 ## Consequências
 
 - Uma queda de leitura do Postgres reprova a publicação em vez de ser promovida: 13 checks passam a
@@ -95,8 +101,11 @@ passar despercebida.
   o schema do manifesto em vez de reimplementá-los.
 - O passo de browser acrescenta um Chromium ao caminho de publicação — já instalado no mesmo job
   para os testes de e2e, então sem custo de setup novo.
-- Quando a #101 for resolvida, nenhum ajuste é necessário: os checks continuam passando e o log
-  passa a registrar o status forte.
+- ~~Quando a #101 for resolvida, nenhum ajuste é necessário: os checks continuam passando e o log
+  passa a registrar o status forte.~~ Confirmado na prática, mas com uma correção de rumo: os
+  checks de fato continuaram passando sozinhos, e justamente por isso foram **apertados** na
+  ADR-0060. Um check que aceita a forma degradada depois que ela deixou de ser esperada não é
+  tolerância, é um buraco — deixaria a #101 voltar em silêncio.
 - Cada execução completa grava em produção: 5 ativações sintéticas numa loja real e uma expiração
   do cache do catálogo. É inerente a medir o caminho real do redirect — a alternativa seria uma
   rota de bypass no código de produção, pior. Fica registrado para que a métrica de ativação seja

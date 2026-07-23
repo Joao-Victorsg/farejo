@@ -304,18 +304,16 @@ interface RedirectObservation {
 }
 
 /**
- * MEDIDO CONTRA O ARTEFATO CONSTRUÍDO (23/07/2026): nem `redirect()` nem `permanentRedirect()`
- * viram 3xx neste app. Como existe `loading.tsx`, o Next transmite o shell antes de a página
- * resolver, o status já saiu como 200, e o redirect degrada para
- * `<meta http-equiv="refresh" content="N;url=…">` mais `NEXT_REDIRECT;replace;…;307|308` no
- * payload RSC. Vale para os três casos: canonicalização do catálogo, sort inválido e o redirect
- * de alias absorvido.
+ * Observa um redirect nas DUAS formas possíveis: 3xx de verdade, ou o 200 + `meta refresh` que o
+ * Next produz quando um shell já foi transmitido antes de `redirect()` rodar (#101).
  *
- * Esta função observa as DUAS formas e diz qual encontrou. Fixar 3xx produziria vermelho
- * permanente no caminho de publicação por uma condição pré-existente; aceitar qualquer 200
- * deixaria a perda total do redirect passar. O meio-termo correto é exigir que o visitante SEJA
- * mandado ao alvo certo, por qualquer um dos dois mecanismos, e registrar qual — se o
- * comportamento for corrigido para 3xx de verdade, o check continua passando e o log mostra.
+ * Depois da ADR-0060 as duas formas não são mais equivalentes, e quem chama escolhe qual exigir:
+ *
+ * - `/loja/*` NÃO tem mais fronteira de Suspense no nível da rota, então ali o desfecho correto
+ *   é 3xx estrito — `checkAliasRedirects` exige `via === "http"`.
+ * - A home MANTÉM o `loading.tsx` de propósito (é a página mais lenta e a única que se beneficia
+ *   do esqueleto), então a canonicalização do catálogo continua chegando por `meta refresh`.
+ *   `checkCanonicalization` aceita as duas formas, e isso é permanente, não uma espera pela #101.
  */
 async function observeRedirect(baseUrl: URL, path: string): Promise<RedirectObservation> {
   const response = await smokeFetch(new URL(path, baseUrl), { redirect: "manual" });
@@ -338,7 +336,12 @@ function describeRedirect(observation: RedirectObservation, expectPath: string):
   return `status=${observation.status} sem redirect algum esperado=${JSON.stringify(expectPath)}`;
 }
 
-/** Canonicalização do catálogo (src/lib/catalog.ts `needsCanonicalRedirect`). */
+/**
+ * Canonicalização do catálogo (src/lib/catalog.ts `needsCanonicalRedirect`). Aceita as duas
+ * formas por decisão, não por tolerância: a home mantém o esqueleto (ADR-0060), então o
+ * `redirect()` dela chega como `meta refresh`. O que precisa valer é que o visitante termine no
+ * alvo canônico — a perda TOTAL do redirect continua reprovando.
+ */
 async function checkCanonicalization(baseUrl: URL, path: string, expectPath: string): Promise<SmokeCheck> {
   const observation = await observeRedirect(baseUrl, path);
   return {
@@ -349,14 +352,15 @@ async function checkCanonicalization(baseUrl: URL, path: string, expectPath: str
 }
 
 /**
- * Loja inexistente. MEDIDO (23/07/2026): pela mesma razão do redirect acima, `notFound()`
- * responde HTTP 200 com o boundary de 404 no payload RSC, não HTTP 404 — o `<main
- * id="conteudo">` do not-found.tsx nem chega no HTML servido. Uma rota SEM página nenhuma
- * (`/rota-inexistente`) continua devolvendo 404 de verdade, então isto é específico do
- * `notFound()` sob streaming.
+ * Loja inexistente: exige HTTP 404 ESTRITO. Antes da ADR-0060 este check aceitava 200, porque o
+ * `loading.tsx` da raiz transmitia o shell antes de `notFound()` rodar e o 404 saía só no payload
+ * RSC (#101) — soft-404 em todo slug morto. Com o esqueleto escopado ao route group
+ * `(catalogo)`, `/loja/[slug]` não tem mais fronteira no nível da rota e o status volta a ser
+ * real.
  *
- * A asserção é sobre o texto do produto, não sobre o token interno do Next
- * (`NEXT_HTTP_ERROR_FALLBACK;404`), e 5xx continua reprovando.
+ * Manter 200 como aceitável reabriria a #101 em silêncio: alguém adiciona um `loading.tsx` em
+ * `/loja/[slug]` "para melhorar o carregamento" e nada acusa. É esta asserção que torna a
+ * correção durável — se ela falhar com status 200, a causa quase certamente é essa.
  */
 async function checkStoreNotFound(baseUrl: URL): Promise<SmokeCheck[]> {
   const path = `/loja/${FORGED_STORE_SLUG}`;
@@ -366,10 +370,10 @@ async function checkStoreNotFound(baseUrl: URL): Promise<SmokeCheck[]> {
 
   return [
     {
-      name: `GET ${path} (loja inexistente)`,
-      ok: identified && (response.status === 404 || response.status === 200),
+      name: `GET ${path} (loja inexistente → 404 estrito)`,
+      ok: response.status === 404 && identified,
       detail: `status=${response.status} identificada como inexistente=${identified}`
-        + (response.status === 200 ? " (notFound() sob streaming: 404 entregue no payload, não no status)" : ""),
+        + (response.status === 200 ? " — 200 indica fronteira de Suspense no nível da rota (loading.tsx); ver ADR-0060/#101" : ""),
     },
     checkNoLeakedSecrets(`GET ${path} (sem segredo vazado)`, html),
   ];
@@ -623,6 +627,11 @@ async function checkNegativeRoutes(baseUrl: URL, realStoreSlug: string | null): 
  * num scrape, o que é fato de curadoria e não regressão de deploy. Uma queda do GRANT em
  * `web_read.store_redirects` faria `getStoreRedirect` lançar e a rota responder 5xx pelo
  * error.tsx — continua distinguível e continua reprovando.
+ *
+ * Exige HTTP 308 ESTRITO (ADR-0060). É um redirect permanente: buscadores só consolidam o sinal
+ * de link da loja absorvida para a canônica com o status real — o `meta refresh` que a #101
+ * produzia é tratado como redirecionamento leve, e a curadoria de aliases (ADR-0006) entregava
+ * metade do que promete. Aqui estão os 47 merges já mesclados, então isto vale de fato.
  */
 async function checkAliasRedirects(baseUrl: URL): Promise<SmokeCheck[]> {
   const manifest = loadAliasManifest();
@@ -652,9 +661,10 @@ async function checkAliasRedirects(baseUrl: URL): Promise<SmokeCheck[]> {
 
     confirmed += 1;
     checks.push({
-      name: `GET ${path} (alias absorvido → canônico)`,
-      ok: observation.via !== null && observation.path === expected,
-      detail: describeRedirect(observation, expected),
+      name: `GET ${path} (alias absorvido → canônico, 308 estrito)`,
+      ok: observation.via === "http" && observation.status === 308 && observation.path === expected,
+      detail: describeRedirect(observation, expected)
+        + (observation.via === "stream" ? " — meta refresh não consolida link equity; ver ADR-0060/#101" : ""),
     });
   }
 
