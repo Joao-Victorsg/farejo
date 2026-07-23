@@ -12,8 +12,10 @@ import { z } from "zod";
  * critério de aceite: catálogo, busca, detalhe, ativação/redirect, sitemap, robots e a
  * invalidação HMAC.
  *
- * Ampliação: páginas editoriais (/plataformas, /como-funciona, /faq), paginação, ordenações,
- * markup do toggle de correntista, redirect de alias e os negativos 404/410.
+ * Ampliação (ADR-0059): páginas editoriais (/plataformas, /como-funciona, /faq), paginação,
+ * ordenações, markup do toggle de correntista, redirect de alias e os negativos 404/410. A
+ * hidratação do bundle publicado — que nenhuma asserção sobre HTML alcança — fica em
+ * test/smoke-production-browser.mts, passo separado do mesmo deployment encenado.
  *
  * Duas regras que valem para todo check adicionado aqui:
  *
@@ -146,9 +148,8 @@ export function readActiveSortLabel(html: string): string | null {
 /**
  * O toggle é cliente puro (`localStorage`, src/lib/inter-preference.tsx): o SSR sempre entrega
  * o padrão LIGADO. Por HTTP dá para provar exatamente isto — que o switch existe com o nome
- * acessível certo e o default ligado da ADR. O COMPORTAMENTO (reordenar, persistir) é coberto
- * no smoke local com browser (test/smoke.mts); a hidratação do bundle publicado continua sem
- * cobertura em produção e é sabido.
+ * acessível certo e o default ligado da ADR-0034. O COMPORTAMENTO (reordenar, persistir) e a
+ * hidratação do bundle publicado ficam em test/smoke-production-browser.mts.
  */
 export function readInterSwitchState(html: string): "on" | "off" | "absent" {
   const button = /<button[^>]*aria-label="Sou correntista Inter"[^>]*>/.exec(html);
@@ -293,7 +294,7 @@ interface RedirectObservation {
 }
 
 /**
- * MEDIDO CONTRA O ARTEFATO CONSTRUÍDO (22/07/2026): nem `redirect()` nem `permanentRedirect()`
+ * MEDIDO CONTRA O ARTEFATO CONSTRUÍDO (23/07/2026): nem `redirect()` nem `permanentRedirect()`
  * viram 3xx neste app. Como existe `loading.tsx`, o Next transmite o shell antes de a página
  * resolver, o status já saiu como 200, e o redirect degrada para
  * `<meta http-equiv="refresh" content="N;url=…">` mais `NEXT_REDIRECT;replace;…;307|308` no
@@ -338,7 +339,7 @@ async function checkCanonicalization(baseUrl: URL, path: string, expectPath: str
 }
 
 /**
- * Loja inexistente. MEDIDO (22/07/2026): pela mesma razão do redirect acima, `notFound()`
+ * Loja inexistente. MEDIDO (23/07/2026): pela mesma razão do redirect acima, `notFound()`
  * responde HTTP 200 com o boundary de 404 no payload RSC, não HTTP 404 — o `<main
  * id="conteudo">` do not-found.tsx nem chega no HTML servido. Uma rota SEM página nenhuma
  * (`/rota-inexistente`) continua devolvendo 404 de verdade, então isto é específico do
@@ -409,7 +410,7 @@ async function checkCatalogHome(baseUrl: URL): Promise<CatalogHome> {
   checks.push({
     name: "GET / (toggle correntista Inter, padrão ligado)",
     ok: readInterSwitchState(home.html) === "on",
-    detail: `switch=${readInterSwitchState(home.html)} (comportamento fica no smoke local com browser)`,
+    detail: `switch=${readInterSwitchState(home.html)} (comportamento e hidratação: smoke-production-browser)`,
   });
   checks.push({
     name: "GET / (indexável)",

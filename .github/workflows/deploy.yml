@@ -169,6 +169,17 @@ jobs:
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: pnpm --filter @farejo/web test:smoke:production
 
+      # Complemento de browser ao passo acima, contra o MESMO deployment encenado. O passo HTTP
+      # não alcança hidratação: o toggle de correntista é cliente puro (localStorage), então o
+      # HTML servido é idêntico com ou sem JavaScript funcionando. Verificado localmente servindo
+      # o site com os chunks JS respondendo 404 — o smoke HTTP passou 60/60 e este reprovou.
+      # O Chromium já foi instalado acima para os testes de e2e; nenhum setup novo.
+      - name: Smoke test the staged deployment (browser)
+        env:
+          FAREJO_SITE_URL: ${{ steps.deploy.outputs.url }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: pnpm --filter @farejo/web test:smoke:production:browser
+
       # Só aqui o público passa a ver o artefato novo. Falha em qualquer passo acima deixa a
       # produção intacta no deployment anterior — não há o que reverter, e as migrations aditivas
       # permanecem compatíveis com ele (ADR-0041).

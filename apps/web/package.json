@@ -11,7 +11,8 @@
     "test:smoke": "tsx test/smoke.mts",
     "test:e2e": "playwright test",
     "verify:schema": "tsx test/verify-production-schema.mts",
-    "test:smoke:production": "tsx test/smoke-production.mts"
+    "test:smoke:production": "tsx test/smoke-production.mts",
+    "test:smoke:production:browser": "tsx test/smoke-production-browser.mts"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.2.4",
