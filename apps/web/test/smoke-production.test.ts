@@ -1,11 +1,22 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import {
+  aliasRedirectPairs,
   checkNoLeakedSecrets,
   extractActivationLink,
+  extractStoreCardSlugs,
   extractStoreSlugsFromSitemap,
   formatSmokeReport,
+  hasSmokeFailure,
+  isNoindex,
+  loadAliasManifest,
   protectionBypassHeaders,
+  readActiveSortLabel,
+  readCanonicalPath,
+  readCurrentPaginationPage,
+  readMetaRefreshTarget,
+  readInterSwitchState,
+  readPaginationTotalPages,
   signInvalidation,
   type SmokeCheck,
 } from "./smoke-production.mjs";
@@ -84,12 +95,169 @@ describe("checkNoLeakedSecrets", () => {
   });
 });
 
+describe("extractStoreCardSlugs", () => {
+  it("reads one slug per catalog card, in rendered order", () => {
+    const html = `<article><a aria-label="Ver ofertas de Fast Shop" class="block p-5" href="/loja/fastshop">…</a></article>`
+      + `<article><a aria-label="Ver ofertas de Centauro" class="block p-5" href="/loja/centauro">…</a></article>`;
+    expect(extractStoreCardSlugs(html)).toEqual(["fastshop", "centauro"]);
+  });
+
+  it("ignores the JSON-escaped copy Next embeds in the RSC payload", () => {
+    const html = `<a class="c" href="/loja/fastshop">x</a><script>self.__next_f.push([1,"{\\"href\\":\\"/loja/fastshop\\"}"])</script>`;
+    expect(extractStoreCardSlugs(html)).toEqual(["fastshop"]);
+  });
+
+  it("returns an empty list for a catalog with no cards", () => {
+    expect(extractStoreCardSlugs(`<p>O catálogo está temporariamente vazio.</p>`)).toEqual([]);
+  });
+});
+
+describe("readPaginationTotalPages / readCurrentPaginationPage", () => {
+  const html = `<nav aria-label="Paginação do catálogo, página 2 de 5" class="mt-10">`
+    + `<a aria-label="Página 1" href="/#catalogo">1</a>`
+    + `<span aria-current="page" class="size-10">2</span></nav>`;
+
+  it("reads both numbers from the accessible name and the current-page marker", () => {
+    expect(readPaginationTotalPages(html)).toBe(5);
+    expect(readCurrentPaginationPage(html)).toBe(2);
+  });
+
+  it("returns null when the catalog fits in a single page (no pagination rendered)", () => {
+    expect(readPaginationTotalPages(`<section id="catalogo"></section>`)).toBeNull();
+    expect(readCurrentPaginationPage(`<section id="catalogo"></section>`)).toBeNull();
+  });
+});
+
+describe("readActiveSortLabel", () => {
+  it("reads the sort control marked aria-current=true", () => {
+    const html = `<a class="rounded-full" href="/#catalogo">Mais plataformas</a>`
+      + `<a aria-current="true" class="rounded-full" href="/?sort=cashback#catalogo">Maior cashback</a>`;
+    expect(readActiveSortLabel(html)).toBe("Maior cashback");
+  });
+
+  it("is not fooled by the pagination's aria-current=page on the same document", () => {
+    const html = `<span aria-current="page" class="size-10">2</span>`
+      + `<a aria-current="true" class="rounded-full" href="/?sort=az#catalogo">A–Z</a>`;
+    expect(readActiveSortLabel(html)).toBe("A–Z");
+  });
+});
+
+describe("readInterSwitchState", () => {
+  it("reads the SSR default as on — the toggle is client-side and always renders correntista first", () => {
+    const html = `<button aria-checked="true" aria-label="Sou correntista Inter" class="relative" role="switch" type="button"></button>`;
+    expect(readInterSwitchState(html)).toBe("on");
+  });
+
+  it("distinguishes an off switch from an absent one", () => {
+    const off = `<button aria-checked="false" aria-label="Sou correntista Inter" class="relative" role="switch" type="button"></button>`;
+    expect(readInterSwitchState(off)).toBe("off");
+    expect(readInterSwitchState(`<p>Loja sem oferta do Inter</p>`)).toBe("absent");
+  });
+});
+
+describe("isNoindex / readCanonicalPath", () => {
+  it("reads the SEO contract a non-default sort must ship", () => {
+    const html = `<meta name="robots" content="noindex, follow"/><link rel="canonical" href="https://farejo.com.br/?sort=az"/>`;
+    expect(isNoindex(html)).toBe(true);
+    expect(readCanonicalPath(html)).toBe("/?sort=az");
+  });
+
+  it("reports an indexable page and a bare-path canonical", () => {
+    const html = `<meta name="robots" content="index, follow"/><link rel="canonical" href="/"/>`;
+    expect(isNoindex(html)).toBe(false);
+    expect(readCanonicalPath(html)).toBe("/");
+  });
+
+  it("returns null when the page ships no canonical at all", () => {
+    expect(readCanonicalPath(`<head><title>x</title></head>`)).toBeNull();
+  });
+});
+
+describe("readMetaRefreshTarget", () => {
+  // Medido contra o artefato construído: com loading.tsx, redirect()/permanentRedirect()
+  // degradam para meta refresh + 200 em vez de 3xx. O smoke aceita as duas formas.
+  it("reads the target of the streamed redirect Next emits once the shell is flushed", () => {
+    expect(readMetaRefreshTarget(`<meta id="__next-page-redirect" http-equiv="refresh" content="1;url=/"/>`)).toBe("/");
+    expect(readMetaRefreshTarget(`<meta http-equiv="refresh" content="0;url=/loja/fastshop"/>`)).toBe("/loja/fastshop");
+  });
+
+  it("returns null on a page that ships no refresh meta at all", () => {
+    expect(readMetaRefreshTarget(`<meta name="robots" content="index, follow"/>`)).toBeNull();
+  });
+});
+
+describe("aliasRedirectPairs", () => {
+  it("derives the absorbed slug from the raw name, because stores.slug IS the L2 key", () => {
+    const pairs = aliasRedirectPairs({
+      version: 1,
+      merges: [{ canonicalSlug: "fastshop", aliases: [{ platformId: "meliuz", rawName: "Fast Shop Brasil" }] }],
+      rejects: [],
+    });
+    expect(pairs).toEqual([{ from: "fastshopbrasil", to: "fastshop" }]);
+  });
+
+  it("drops an alias whose raw name already normalizes to the canonical — nothing was absorbed, so no redirect row exists", () => {
+    const pairs = aliasRedirectPairs({
+      version: 1,
+      merges: [{ canonicalSlug: "fastshop", aliases: [{ platformId: "zoom", rawName: "Fast Shop" }] }],
+      rejects: [],
+    });
+    expect(pairs).toEqual([]);
+  });
+
+  it("deduplicates raw names from different platforms that collapse to the same absorbed slug", () => {
+    const pairs = aliasRedirectPairs({
+      version: 1,
+      merges: [{
+        canonicalSlug: "fastshop",
+        aliases: [{ platformId: "meliuz", rawName: "Fast-Shop Brasil" }, { platformId: "zoom", rawName: "fast shop brasil" }],
+      }],
+      rejects: [],
+    });
+    expect(pairs).toEqual([{ from: "fastshopbrasil", to: "fastshop" }]);
+  });
+});
+
+describe("loadAliasManifest", () => {
+  // Guarda o caminho relativo: se ele quebrar, o check de redirect degrada para "não
+  // verificado" para sempre, silenciosamente. Este teste falha em vez de deixar isso passar.
+  it("reads the real curation manifest from the repo checkout", () => {
+    const manifest = loadAliasManifest();
+    expect(manifest).not.toBeNull();
+    expect(manifest?.version).toBe(1);
+    expect(Array.isArray(manifest?.merges)).toBe(true);
+  });
+});
+
+describe("hasSmokeFailure", () => {
+  it("fails the deploy on a real failing check", () => {
+    expect(hasSmokeFailure([{ name: "GET /", ok: false, detail: "status=500" }])).toBe(true);
+  });
+
+  it("does not fail on an unverifiable check — missing production data is not a deploy regression", () => {
+    expect(hasSmokeFailure([
+      { name: "GET /", ok: true, detail: "status=200" },
+      { name: "redirect de alias", ok: true, detail: "nenhum merge declarado", informational: true },
+    ])).toBe(false);
+  });
+});
+
 describe("formatSmokeReport", () => {
   it("marks every passing check and omits the latency line without activation samples", () => {
     const checks: SmokeCheck[] = [{ name: "GET /", ok: true, detail: "status=200" }];
     const text = formatSmokeReport(checks, []);
     expect(text).toContain("✅");
     expect(text).not.toContain("p95");
+  });
+
+  it("renders an unverifiable check as ℹ️ and counts it apart from the passing ones", () => {
+    const checks: SmokeCheck[] = [
+      { name: "GET /", ok: true, detail: "status=200" },
+      { name: "redirect de alias", ok: true, detail: "nenhum merge declarado", informational: true },
+    ];
+    const text = formatSmokeReport(checks, []);
+    expect(text).toContain("ℹ️ [smoke-production] redirect de alias");
+    expect(text).toContain("1 ok · 0 falha(s) · 1 não verificado(s)");
   });
 
   it("marks a failing check and reports p50/p95 from the activation samples", () => {
