@@ -173,5 +173,9 @@ describe("runTieredPlatform — parser real de cuponomia/méliuz contra fixture 
     const { data: offers, error } = await client.from("offers").select("platform_id").in("platform_id", ALL_PLATFORMS);
     expect(error).toBeNull();
     expect(new Set((offers ?? []).map((offer) => offer.platform_id))).toEqual(new Set(ALL_PLATFORMS));
-  }, 15_000);
+    // 30s, não 15s: este é o teste mais pesado da suíte (seed de 5 plataformas + parse de HTML
+    // real de mycashback/zoom + 5 runs completos). Os 15s originais estouravam sob a CPU escassa
+    // do runner de CI (2 cores), embora localmente rode em ~10s. Teto alto absorve o starvation
+    // sem mascarar hang (que nunca completa). Ver PR do db-audit.
+  }, 30_000);
 });

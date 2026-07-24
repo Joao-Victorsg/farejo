@@ -153,5 +153,9 @@ describe("runPlatformScrape — sanity segmentado por scope (T5/#17, Postgres lo
       "bootstrap",
     );
     expect(parseErrorRun).toMatchObject({ status: "suspicious", tripped: "rule3_parse_errors" });
-  });
+    // 30s (o default de 5s estourava): este caso encadeia 5 runPlatformScrape sequenciais, cada
+    // um com vários roundtrips ao Postgres. Sob a CPU escassa do runner de CI (2 cores) os 5s não
+    // davam folga, embora localmente rode em poucos segundos. O teto alto não mascara um hang —
+    // um hang real nunca completa; ele só absorve o starvation de agendamento. Ver PR do db-audit.
+  }, 30_000);
 });
