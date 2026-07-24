@@ -11,7 +11,7 @@ import {
   LOGO_BUCKET_ID,
   verifyProductionSchema,
   type SchemaCheckPool,
-} from "./verify-production-schema.mjs";
+} from "./verify-schema.js";
 
 // node-postgres devolve `bigint` como string por padrão — o fixture usa a forma real que a
 // query devolveria, não o number que seria mais fácil de escrever à mão.

@@ -1,6 +1,6 @@
 import { pathToFileURL } from "node:url";
 import { z } from "zod";
-import { createPostgresPool } from "../src/lib/postgres-pool.js";
+import { createPostgresPool } from "./postgres-pool.js";
 
 /**
  * F3/T18 (#64, ADR-0041): gate de publicação. Roda com a mesma credencial privilegiada usada
@@ -9,6 +9,12 @@ import { createPostgresPool } from "../src/lib/postgres-pool.js";
  * mescladas declaram — roles, views, funções, RLS, uma amostra de alto risco dos GRANTs e o
  * bucket de logos — em vez de assumir que `supabase db push` sem erro implica automaticamente
  * nisso (drift manual, migration parcial ou papel criado fora do fluxo não teriam outro sinal).
+ *
+ * Mora em `packages/db-audit`, não em `apps/web`, porque o contrato que ele audita é do banco e
+ * já vive na raiz do monorepo (`supabase/migrations/`) — a verificação pertence ao mesmo nível
+ * da coisa verificada. O endereço anterior (`apps/web/test/`) era resíduo de onde `pg` e a
+ * credencial já estavam: o app web nunca usou `farejo_curation`, `farejo_logo_writer` nem
+ * `farejo_logo_coverage`, que pertencem ao `curation-apply.yml` e ao `logos.yml`.
  */
 
 const DeployEnvironment = z.object({

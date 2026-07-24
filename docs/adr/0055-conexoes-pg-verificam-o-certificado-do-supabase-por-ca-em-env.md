@@ -54,6 +54,12 @@ domínio puro que nunca lê `process.env`, e configuração de I/O é I/O. O hel
 deliberadamente não importa `server-only`, porque `verify-production-schema.mts` roda fora do Next;
 quem guarda essa fronteira são os consumidores (`catalog.ts`, `activation.ts`), que já a declaram.
 
+> **Nota (23/07/2026, ADR-0061):** passaram a ser **três** helpers — a auditoria de banco ganhou o
+> seu em `packages/db-audit/src/postgres-pool.ts` ao sair de `apps/web`. Mudança nesta ADR precisa
+> chegar nas três cópias. O motivo de o helper do web não importar `server-only` também mudou: o
+> script que rodava fora do Next saiu dali, e quem sustenta a restrição hoje é
+> `apps/web/test/postgres-pool.test.ts`, que roda sob vitest. A decisão em si segue valendo.
+
 `supabase db push` não usa esta variável: a CLI traz o próprio trust store.
 
 ## Consequências
