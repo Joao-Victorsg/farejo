@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   metadataBase: getSiteUrl(),
   title: { default: "farejô — compare cashback", template: "%s | farejô" },
   description: "Compare o cashback disponível nas principais plataformas antes de comprar.",
+  verification: { google: "6dt_ou73GnDLqWmull6HDM1Ye0nlJu8u4cDZ1y7cKko" },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
