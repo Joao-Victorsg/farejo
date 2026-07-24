@@ -1,0 +1,21 @@
+{
+  "name": "@farejo/db-audit",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "verify:schema": "tsx src/verify-schema.ts"
+  },
+  "dependencies": {
+    "pg": "8.16.3",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/pg": "8.15.5",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  }
+}

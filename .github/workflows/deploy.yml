@@ -109,7 +109,7 @@ jobs:
           # então toda conexão `pg` precisa do CA do projeto. O `supabase db push` acima não
           # usa isto — a CLI traz o próprio trust store.
           FAREJO_SUPABASE_CA_CERT: ${{ secrets.FAREJO_SUPABASE_CA_CERT }}
-        run: pnpm --filter @farejo/web verify:schema
+        run: pnpm --filter @farejo/db-audit verify:schema
 
       # ADR-0041 passo 4: `vercel build` roda aqui, no mesmo job, sobre o mesmo checkout que
       # acabou de passar em typecheck/build/test — não é o auto-deploy da Vercel reconstruindo
