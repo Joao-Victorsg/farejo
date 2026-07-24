@@ -1,5 +1,5 @@
 import { pathToFileURL } from "node:url";
-import { chromium, type Browser, type Page } from "@playwright/test";
+import { chromium, type Browser, type Locator, type Page } from "@playwright/test";
 import { z } from "zod";
 import {
   extractStoreCardSlugs,
@@ -38,6 +38,7 @@ const BrowserSmokeEnvironment = z.object({
 
 const FETCH_TIMEOUT_MS = 10_000;
 const SWITCH_STATE_TIMEOUT_MS = 10_000;
+const CLICK_RETRY_INTERVAL_MS = 1_000;
 const INTER_SWITCH = 'button[aria-label="Sou correntista Inter"]';
 
 /**
@@ -72,17 +73,43 @@ async function findStoreWithInterToggle(
   return null;
 }
 
-async function waitForSwitchState(page: Page, expected: "true" | "false"): Promise<boolean> {
+async function waitForSwitchState(page: Page, expected: "true" | "false", timeoutMs: number = SWITCH_STATE_TIMEOUT_MS): Promise<boolean> {
   try {
     await page.waitForFunction(
       ([selector, want]) => document.querySelector(selector!)?.getAttribute("aria-checked") === want,
       [INTER_SWITCH, expected] as const,
-      { timeout: SWITCH_STATE_TIMEOUT_MS },
+      { timeout: timeoutMs },
     );
     return true;
   } catch {
     return false;
   }
+}
+
+/**
+ * MEDIDO CONTRA PRODUÇÃO (23/07/2026): `switchLocator.waitFor()` confirma só que o nó existe no
+ * DOM — não que o React já anexou o `onClick`. A folga entre os dois é normalmente pequena
+ * demais para um clique real cair nela, mas caiu em duas execuções seguidas do deploy real
+ * (mesmo build que tinha passado 4/4 horas antes). Reproduzido e isolado: uma interação manual
+ * — com a latência natural de várias chamadas entre carregar a página e clicar — sempre pegou o
+ * estado já hidratado; rodar o script sozinho, sem essa folga, falhou 2x e depois passou 3x
+ * seguidas contra o mesmo build. É corrida de hidratação no clique automatizado, não bug do
+ * produto nem flake de CI.
+ *
+ * Reclica dentro do mesmo orçamento (SWITCH_STATE_TIMEOUT_MS) em vez de esperar passivamente uma
+ * vez. Confere o estado ANTES de cada clique — nunca clica se já está no valor esperado — porque
+ * o switch é toggle, não set: reclicar um clique que na verdade já tinha funcionado inverteria de
+ * novo. Se o bundle nunca hidratar dentro da janela inteira, todas as tentativas falham e o check
+ * reprova do mesmo jeito.
+ */
+async function clickUntilSwitchState(page: Page, switchLocator: Locator, expected: "true" | "false"): Promise<boolean> {
+  const deadline = Date.now() + SWITCH_STATE_TIMEOUT_MS;
+  do {
+    if ((await switchLocator.getAttribute("aria-checked")) === expected) return true;
+    await switchLocator.click();
+    await waitForSwitchState(page, expected, CLICK_RETRY_INTERVAL_MS);
+  } while (Date.now() < deadline);
+  return (await switchLocator.getAttribute("aria-checked")) === expected;
 }
 
 async function rankingText(page: Page): Promise<string> {
@@ -125,14 +152,13 @@ export async function runBrowserSmoke(baseUrl: URL, bypassSecret: string | undef
     const before = await rankingText(page);
 
     // Núcleo do teste: o clique só produz efeito se o bundle publicado hidratou.
-    await switchLocator.click();
-    const flipped = await waitForSwitchState(page, "false");
+    const flipped = await clickUntilSwitchState(page, switchLocator, "false");
     checks.push({
       name: `${storePath} (bundle publicado hidrata: o clique altera o estado)`,
       ok: flipped,
       detail: flipped
         ? "aria-checked passou a false após o clique"
-        : `o switch não reagiu ao clique em ${SWITCH_STATE_TIMEOUT_MS}ms — bundle publicado provavelmente não hidratou`,
+        : `o switch não reagiu ao clique em ${SWITCH_STATE_TIMEOUT_MS}ms (com retentativas) — bundle publicado provavelmente não hidratou`,
     });
 
     // Reordenação é regra de domínio já coberta em offer-ranking.test.ts; aqui a pergunta é só se
