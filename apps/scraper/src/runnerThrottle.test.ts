@@ -124,4 +124,9 @@ describe("runner — throttle adaptativo (T6/#18, Postgres local)", () => {
     await runAllPlatforms(client, [successAdapter(PLATFORM_HYSTERESIS, 100, 3)]);
     expect(await throttleMultiplierOf(PLATFORM_HYSTERESIS)).toBe(2);
   });
-});
+  // 30s para os 6 casos (não só o :104 que estourou no deploy): cada um roda runAllPlatforms
+  // com I/O de Postgres e, no CI de 2 cores, fica perto do default de 5s — no master verde vários
+  // rodaram a ~4.8s. O timeout no describe herda para todos os filhos. Correção cirúrgica (não um
+  // testTimeout global do pacote): os demais testes de integração do scraper seguem no default —
+  // ver a nota de flakiness registrada no PR do db-audit.
+}, { timeout: 30_000 });
