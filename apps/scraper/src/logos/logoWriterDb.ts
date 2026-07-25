@@ -1,6 +1,6 @@
 import type { Pool } from "pg";
 import { z } from "zod";
-import { createPostgresPool } from "../postgresPool.js";
+import { createPostgresPool } from "@farejo/postgres";
 
 const LogoWriterEnvironment = z.object({
   FAREJO_LOGO_WRITER_DATABASE_URL: z.string().min(1),

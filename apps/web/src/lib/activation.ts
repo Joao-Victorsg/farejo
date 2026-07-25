@@ -1,7 +1,7 @@
 import "server-only";
 import type { Pool } from "pg";
 import { z } from "zod";
-import { createPostgresPool } from "./postgres-pool";
+import { createPostgresPool } from "@farejo/postgres";
 
 const ActivationDestinationRow = z.object({
   store_id: z.coerce.number().int().positive(),

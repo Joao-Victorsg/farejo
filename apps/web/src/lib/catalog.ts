@@ -2,8 +2,8 @@ import "server-only";
 import { unstable_cache } from "next/cache";
 import type { Pool } from "pg";
 import { z } from "zod";
+import { createPostgresPool } from "@farejo/postgres";
 import { CATALOG_CACHE_TAG, CATALOG_CACHE_TTL_SECONDS } from "./catalog-cache";
-import { createPostgresPool } from "./postgres-pool";
 import { catalogHref, isCatalogSort, type CatalogRequest, type CatalogSort } from "./catalog-url";
 import { composeStoreHistory, deriveOfferSignals, type OfferSignals, type StoreHistoryRow, type StoreHistorySeries } from "./history";
 

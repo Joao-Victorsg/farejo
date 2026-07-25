@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { pathToFileURL } from "node:url";
 import { z } from "zod";
-import { createPostgresPool } from "../postgresPool.js";
+import { createPostgresPool } from "@farejo/postgres";
 
 /**
  * Medição da meta de 95% (F3/T16/#62, ADR-0043/ADR-0054). Roda com uma credencial própria

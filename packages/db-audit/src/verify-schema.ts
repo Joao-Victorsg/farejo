@@ -1,6 +1,6 @@
 import { pathToFileURL } from "node:url";
 import { z } from "zod";
-import { createPostgresPool } from "./postgres-pool.js";
+import { createPostgresPool } from "@farejo/postgres";
 
 /**
  * F3/T18 (#64, ADR-0041): gate de publicação. Roda com a mesma credencial privilegiada usada

@@ -60,6 +60,17 @@ quem guarda essa fronteira são os consumidores (`catalog.ts`, `activation.ts`),
 > script que rodava fora do Next saiu dali, e quem sustenta a restrição hoje é
 > `apps/web/test/postgres-pool.test.ts`, que roda sob vitest. A decisão em si segue valendo.
 
+> **Nota (25/07/2026, #112):** "um helper por app" **deixou de valer**. As três cópias viraram um
+> pacote único, `@farejo/postgres`, com um teste só (a união dos três, que já eram os mesmos casos).
+> O motivo de esperar tanto era real e foi confirmado na execução: o site nunca havia importado um
+> pacote do workspace no caminho de **runtime**, e a consolidação exigiu `transpilePackages` no Next
+> — e, mais sutil, obrigou o pacote a **não ter import relativo interno**, porque o Turbopack não
+> reescreve a extensão `.js` dos imports de TypeScript ao transpilar um pacote (o estilo que
+> `@farejo/shared` usa em todo lugar e que nunca doeu justamente por ele nunca estar nesse caminho).
+> Por isso o pacote é um módulo só, sem barrel, com o comentário registrando a armadilha.
+> `packages/shared` continua fora de cogitação pelo mesmo motivo da ADR-0002. O helper segue sem
+> `server-only`, agora porque ele também roda no scraper e na auditoria, fora do Next.
+
 `supabase db push` não usa esta variável: a CLI traz o próprio trust store.
 
 ## Consequências

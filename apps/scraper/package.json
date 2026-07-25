@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1090.0",
+    "@farejo/postgres": "workspace:*",
     "@farejo/shared": "workspace:*",
     "cheerio": "^1.0.0",
     "pg": "8.16.3",

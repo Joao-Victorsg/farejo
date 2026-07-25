@@ -1,6 +1,6 @@
 import { pathToFileURL } from "node:url";
 import { z } from "zod";
-import { createPostgresPool } from "./postgres-pool.js";
+import { createPostgresPool } from "@farejo/postgres";
 
 /**
  * #65 (ADR-0062): verificação NEGATIVA — confirma que os grantees mais expostos não têm nenhum
