@@ -75,6 +75,53 @@ Não é erro, série vazia nem autorização para fabricar pontos.
 Loja canônica válida, mas sem oferta pública elegível naquele momento. Sua rota continua existindo,
 sem CTA, para não confundir indisponibilidade temporária com slug inexistente.
 
+### Avisos
+
+**Usuário**:
+Pessoa anônima que consulta o farejô. Deliberadamente **não modelada**: sem conta, sem sessão, sem
+cookie e sem linha em tabela nenhuma. Só a preferência de **Correntista** persiste, e apenas no
+navegador dele.
+_Avoid_: visitante (sinônimo casual), cliente (é o **Correntista**, cliente do Inter).
+
+**Assinante**:
+Pessoa identificada **exclusivamente** por um `telegram_chat_id`, obtido quando ela fala com o bot.
+Não é um **Usuário** autenticado: é o único ator identificado do domínio, e existe apenas dentro do
+Telegram. O farejô não sabe, e não pode saber, qual **Usuário** virou qual **Assinante**.
+_Avoid_: cliente, user, conta.
+
+**Inscrição**:
+Pedido de um **Assinante** para ser avisado sobre uma **Loja canônica**, em um de dois modos. Um
+assinante tem N inscrições, uma por loja.
+
+**Modo melhoria**:
+Modo de **Inscrição** que avisa apenas quando há **Melhoria**. Quedas e fim de oferta são
+silenciosos. É o "me avise quando melhorar".
+
+**Modo acompanhamento**:
+Modo de **Inscrição** com um **Piso** X: avisa em qualquer mudança de valor que aterrisse **acima de
+X**, subindo ou descendo. É o "me avise sobre esta loja enquanto ela valer a pena". Sair do piso —
+inclusive por fim da oferta — é silencioso, porque nenhum valor abaixo de X (e nenhuma desativação)
+satisfaz a regra.
+
+**Piso**:
+Valor mínimo de interesse de uma **Inscrição** em **Modo acompanhamento**, tipado como um **Reward**:
+um piso em `percent` só olha ofertas percentuais, um piso em `fixed` só olha ofertas em reais.
+_Avoid_: limiar (sugere linha que se cruza uma vez), threshold.
+
+**Melhoria**:
+Aumento do valor de uma **Oferta**: o novo `value` é estritamente maior que o último valor não-nulo
+conhecido daquele par (loja, plataforma), e as duas pontas têm o mesmo **Reward** (`percent` com
+`percent`, `fixed` com `fixed`). Oferta que nasce onde não havia nenhuma também é Melhoria. `is_upto`
+**não** participa da comparação — igual ao ranking, que ordena *up-to* pelo valor. Não confundir com
+**Boost**: melhoria é a aresta (mudou agora), boost é o estado (está acima do típico).
+
+**Aviso**:
+Mensagem única entregue ao **Assinante** no Telegram ao fim de um run, reunindo as **Melhorias**
+daquele run em todas as **Inscrições** dele. Sempre mostra a
+natureza dos dois lados da **Melhoria** (inclusive o "até"), para não afirmar aumento onde o piso
+garantido caiu. Não confundir com **Alerta**, que é operacional e vai só para o mantenedor (resumo de
+run, **sanity check**).
+
 ### Curadoria e logos
 
 **Candidato de alias**:
@@ -156,6 +203,15 @@ Regra que barra a gravação de um run cujos números destoam (queda de ofertas/
 - Um **Candidato de alias** só muda identidade depois de virar **Decisão de alias** aprovada.
 - Um run de uma **Plataforma** tem um **Escopo do run** (`full` ou parcial) que delimita a **desativação por ausência**.
 - Só ~42% das lojas existem em ≥2 **Plataformas** — "uma plataforma só" é caso normal, não erro.
+- Um **Usuário** pode se tornar um **Assinante**, mas essa transição acontece fora do farejô e é
+  **não-observável** por ele: não há atribuição, funil nem correlação entre navegação e inscrição.
+- Um **Assinante** tem 1..N **Inscrições**, cada uma sobre exatamente uma **Loja canônica**.
+- Uma **Inscrição** aponta para a **Loja canônica** por identidade, não por slug, e por isso
+  **acompanha as decisões de alias**: quando duas lojas viram uma, a inscrição da absorvida passa a
+  valer para a canônica. Se o assinante tinha inscrição nas duas, sobrevive a mais recente.
+- Um **Aviso** reúne **todas** as **Melhorias** de um run que interessam a um mesmo **Assinante**,
+  atravessando várias **Inscrições** e várias **Lojas canônicas**. É um por (assinante, run) — nunca
+  um por melhoria, nunca um por loja.
 
 ## Flagged ambiguities
 
@@ -167,8 +223,25 @@ Regra que barra a gravação de um run cujos números destoam (queda de ofertas/
 - “Maior cashback” **não** compara `%` com `R$`; apenas prioriza o grupo percentual e ordena cada
   grandeza dentro do próprio grupo.
 - “O toggle reordena” significa reordenar **ofertas dentro da loja**, nunca lojas no catálogo.
+- “Alerta” era usado só para operação (**sanity check**, resumo de run) e a feature de notificação
+  reusaria a palavra — resolvido: operação continua **Alerta**; o que chega ao **Assinante** é
+  **Aviso**. Os dois saem pelo mesmo transporte (Telegram), o que torna a distinção necessária.
+- “Delta no `offer_history`” **não** é sinônimo de **Melhoria**: mudança só em `value_partial`,
+  reativação após desativação por ausência, troca de grandeza e queda também gravam linha. A
+  baseline de comparação é o último valor **não-nulo** do par, o que faz as linhas de desativação
+  serem simplesmente invisíveis para os **Avisos**.
 
 ## Example dialogue
 
 > **Dev:** "Se o run do cuponomia visita só o tier ativo, e a Nike não apareceu, desativo a oferta dela?"
 > **Domínio:** "Só se a Nike estava no **escopo do run**. Numa **coleta tiered** você não viu a cauda — ausência lá não é **desativação por ausência**, é 'não olhei'. Já numa **varredura completa**, ausência é desativação."
+
+> **Dev:** "A oferta da Nike no Méliuz caiu de 14% para 12%. Mando **Aviso** para quem assinou?"
+> **Domínio:** "Depende do modo. Em **Modo melhoria**, não — não houve **Melhoria**, e queda é
+> silêncio. Em **Modo acompanhamento** com **Piso** de 10%, sim: mudou de valor e aterrissou acima do
+> piso. E se tivesse caído para 8%, ninguém seria avisado nos dois modos — sair do piso é silencioso."
+>
+> **Dev:** "E se for a mesma pessoa, com as duas lojas melhorando no mesmo run?"
+> **Domínio:** "Um **Aviso** só. O Aviso é por (**Assinante**, run), não por loja e não por
+> **Melhoria** — juntar é o que impede rajada quando uma **Plataforma** sobe centenas de lojas de
+> uma vez."
