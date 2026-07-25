@@ -111,6 +111,18 @@ jobs:
           FAREJO_SUPABASE_CA_CERT: ${{ secrets.FAREJO_SUPABASE_CA_CERT }}
         run: pnpm --filter @farejo/db-audit verify:schema
 
+      # #65 (ADR-0062): verificação NEGATIVA, complementar à de schema. A de schema confirma que o
+      # contrato POSITIVO existe (roles/views/funções/grants esperados presentes); esta confirma que
+      # anon, authenticated, farejo_web e farejo_logo_writer não têm NADA além do contrato — via
+      # aclexplode, que enumera o ACL real (has_*_privilege não detecta excesso). Depende do
+      # hardening da migration 20260724000000, já aplicada no passo de migrations acima. Falha aqui
+      # bloqueia a publicação antes do deploy Vercel; produção segue no artefato anterior.
+      - name: Verify production privileges
+        env:
+          FAREJO_DEPLOY_DATABASE_URL: ${{ secrets.FAREJO_DEPLOY_DATABASE_URL }}
+          FAREJO_SUPABASE_CA_CERT: ${{ secrets.FAREJO_SUPABASE_CA_CERT }}
+        run: pnpm --filter @farejo/db-audit verify:privileges
+
       # ADR-0041 passo 4: `vercel build` roda aqui, no mesmo job, sobre o mesmo checkout que
       # acabou de passar em typecheck/build/test — não é o auto-deploy da Vercel reconstruindo
       # de forma independente (esse fica desabilitado por `apps/web/vercel.json`). `--prebuilt`

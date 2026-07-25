@@ -5,7 +5,8 @@
   "version": "0.0.0",
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "verify:schema": "tsx src/verify-schema.ts"
+    "verify:schema": "tsx src/verify-schema.ts",
+    "verify:privileges": "tsx src/verify-privileges.ts"
   },
   "dependencies": {
     "pg": "8.16.3",
