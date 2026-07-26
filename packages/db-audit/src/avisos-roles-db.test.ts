@@ -259,16 +259,23 @@ describe("verificação negativa contra o banco real", () => {
     await expect(verifyProductionPrivileges(client)).resolves.toMatchObject({ ok: true });
   });
 
-  it("reprova quando o job de Avisos ganha escrita além do cursor", async () => {
-    await client.query("grant update on public.subscribers to farejo_notifier");
+  /**
+   * O vetor é ADITIVO — concede um privilégio que não existe, em vez de trocar um que existe.
+   * A versão anterior concedia `update` na tabela inteira, e o revoke correspondente derrubava
+   * junto o grant por coluna do cursor, recompondo-o em seguida. Funcionava, mas abria uma janela
+   * em que `farejo_notifier` ficava sem o grant real — e o vitest roda os projetos em PARALELO
+   * contra um Postgres só, então o job de Avisos (`apps/scraper`) falhava com "permission denied"
+   * ao cair dentro dela. GRANT é estado global do cluster: um teste que só ADICIONA nunca
+   * atrapalha outro.
+   */
+  it("reprova quando o job de Avisos ganha escrita de Inscrição, que ele nunca deve ter", async () => {
+    await client.query("grant insert on public.subscriptions to farejo_notifier");
     try {
       const report = await verifyProductionPrivileges(client);
       expect(report.ok).toBe(false);
-      expect(report.unexpectedTableGrants).toContain("farejo_notifier|public.subscribers|UPDATE");
+      expect(report.unexpectedTableGrants).toContain("farejo_notifier|public.subscriptions|INSERT");
     } finally {
-      await client.query("revoke update on public.subscribers from farejo_notifier");
-      // O revoke da tabela leva junto o grant por coluna; recompõe o contrato da migration.
-      await client.query("grant update (last_notified_history_id) on public.subscribers to farejo_notifier");
+      await client.query("revoke insert on public.subscriptions from farejo_notifier");
     }
     await expect(verifyProductionPrivileges(client)).resolves.toMatchObject({ ok: true });
   });

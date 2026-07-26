@@ -55,6 +55,7 @@ export const EXPECTED_FUNCTIONS = [
   { schema: "activation", name: "record_activation" },
   { schema: "curation", name: "apply_alias_merge" },
   { schema: "curation", name: "verify_alias_merge" },
+  { schema: "alerts", name: "pending_avisos" },
 ] as const;
 
 export const EXPECTED_RLS_TABLES = [
@@ -109,6 +110,7 @@ export const EXPECTED_FUNCTION_GRANTS = [
   { role: "farejo_metrics", signature: "activation.record_activation(bigint, text)" },
   { role: "farejo_curation", signature: "curation.apply_alias_merge(text, jsonb)" },
   { role: "farejo_curation", signature: "curation.verify_alias_merge(text, jsonb)" },
+  { role: "farejo_notifier", signature: "alerts.pending_avisos(bigint)" },
 ] as const;
 
 export const EXPECTED_COLUMN_GRANTS = [
@@ -169,7 +171,7 @@ export async function verifyProductionSchema(pool: SchemaCheckPool): Promise<Sch
        from pg_proc p
        join pg_namespace n on n.oid = p.pronamespace
        where n.nspname = any($1)`,
-      [["public", "web_read", "activation", "curation"]],
+      [["public", "web_read", "activation", "curation", "alerts"]],
     ),
     pool.query<{ relname: string; relrowsecurity: boolean }>(
       `select c.relname, c.relrowsecurity

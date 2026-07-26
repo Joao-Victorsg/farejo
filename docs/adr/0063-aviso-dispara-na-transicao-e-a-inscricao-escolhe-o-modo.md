@@ -41,12 +41,17 @@ afirmaria aumento onde o piso garantido caiu.
 - **Modo melhoria** (padrão do `/start`): avisa em toda Melhoria. Quedas e fim de oferta são
   silenciosos.
 - **Modo acompanhamento**: tem um **Piso** X, tipado como Reward, e avisa em **qualquer** mudança de
-  valor que aterrisse acima de X — subindo ou descendo. Piso em `percent` só observa ofertas
+  valor que aterrisse **em X ou acima** — subindo ou descendo. Piso em `percent` só observa ofertas
   percentuais; piso em `fixed`, só as em reais.
 
+A comparação é **inclusiva** (`>= X`), precisão feita na implementação (#114): piso é chão, e uma
+oferta que marca exatamente X está nele, não abaixo dele. Excluir a borda faria quem pediu "a partir
+de 10%" não ser avisado justamente em 10%, e o sintoma seria a ausência de mensagem — o pior modo de
+falha desta feature.
+
 A saída da região do piso — inclusive por fim da oferta — é **silenciosa**, por consequência da
-regra: nenhum valor abaixo de X, e nenhuma desativação (`value = null`), satisfaz "acima de X". Foi
-uma escolha deliberada, não um esquecimento (ver Consequências).
+regra: nenhum valor abaixo de X, e nenhuma desativação (`value = null`), a satisfaz. Foi uma escolha
+deliberada, não um esquecimento (ver Consequências).
 
 **Um Aviso por (assinante, run).** A mensagem reúne todas as Melhorias daquele run em todas as
 inscrições da pessoa, agrupadas por loja e, dentro da loja, por plataforma. Não é uma mensagem por
@@ -88,8 +93,20 @@ regra é ser determinística e declarada, não justa.
 - **Toda tabela nova que referencie `stores` precisa entrar em `apply_alias_merge`.** Esquecer não
   falha em silêncio: quebra o `curation-apply.yml` inteiro com violação de FK no primeiro merge que
   encostar numa loja assinada.
-- **O cursor só é lido depois do workflow inteiro.** Os 7 jobs de scrape rodam em paralelo
-  (`scrape.yml`, cada um com seu `concurrency`, sem `needs` entre eles), então ids podem ser
-  atribuídos numa ordem e commitados noutra. O job de Avisos espelha o `logos.yml` (`workflow_run` +
-  `conclusion == 'success'`), quando as 7 transações já commitaram. Sobra o caso de um scrape manual
-  sobreposto, cujo modo de falha é Aviso perdido — o lado certo da assimetria.
+- **O cursor só pode ser lido quando NÃO há escrita de histórico em voo, e essa é uma pré-condição
+  do desenho, não uma otimização.** Os 7 jobs de scrape rodam em paralelo (`scrape.yml`, cada um com
+  seu `concurrency`, sem `needs` entre eles), e o `id` de `offer_history` vem de uma sequence:
+  `nextval` **não é transacional**. Uma transação pode reservar o id 100, outra reservar o 101 e
+  commitar primeiro. Um cursor baseado em id que seja lido nesse intervalo enxerga 101 como marca
+  d'água, e o 100 — quando commitar — já nasce abaixo dela.
+
+  A perda daí é **permanente, não transitória**: o cursor de todos os assinantes já passou do ponto,
+  inclusive o de quem não recebeu nada naquele run (que também avança, para a janela de varredura
+  não crescer sem fim). Nenhum run seguinte volta a olhar aquela linha.
+
+  Não há watermark seguro possível enquanto houver escritor concorrente — o problema é da sequence,
+  não da consulta. A defesa é operacional e só existe se o workflow a garantir: o job espelha o
+  `logos.yml` (`workflow_run` + `conclusion == 'success'`), quando as 7 transações já commitaram.
+  Um scrape manual sobreposto ao job de Avisos quebra a pré-condição e perde a transição em
+  silêncio; fechar isso com um guard explícito (recusar rodar enquanto houver `scrape_runs` sem
+  `finished_at`) é trabalho do ticket do workflow, e está registrado lá.

@@ -98,14 +98,15 @@ Modo de **Inscrição** que avisa apenas quando há **Melhoria**. Quedas e fim d
 silenciosos. É o "me avise quando melhorar".
 
 **Modo acompanhamento**:
-Modo de **Inscrição** com um **Piso** X: avisa em qualquer mudança de valor que aterrisse **acima de
-X**, subindo ou descendo. É o "me avise sobre esta loja enquanto ela valer a pena". Sair do piso —
+Modo de **Inscrição** com um **Piso** X: avisa em qualquer mudança de valor que aterrisse **em X ou
+acima**, subindo ou descendo. É o "me avise sobre esta loja enquanto ela valer a pena". Sair do piso —
 inclusive por fim da oferta — é silencioso, porque nenhum valor abaixo de X (e nenhuma desativação)
 satisfaz a regra.
 
 **Piso**:
 Valor mínimo de interesse de uma **Inscrição** em **Modo acompanhamento**, tipado como um **Reward**:
-um piso em `percent` só olha ofertas percentuais, um piso em `fixed` só olha ofertas em reais.
+um piso em `percent` só olha ofertas percentuais, um piso em `fixed` só olha ofertas em reais. É
+**inclusivo** — piso é chão, e uma oferta que marca exatamente o piso está nele, não abaixo dele.
 _Avoid_: limiar (sugere linha que se cruza uma vez), threshold.
 
 **Melhoria**:

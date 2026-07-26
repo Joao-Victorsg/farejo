@@ -48,7 +48,7 @@ export const AUDITED_GRANTEES = [
   "farejo_bot",
   "farejo_notifier",
 ] as const;
-export const PRODUCT_SCHEMAS = ["public", "web_read", "activation", "curation"] as const;
+export const PRODUCT_SCHEMAS = ["public", "web_read", "activation", "curation", "alerts"] as const;
 // storage entra só para policies: a única policy que pode referenciar PUBLIC é a de leitura de logos.
 export const POLICY_SCHEMAS = [...PRODUCT_SCHEMAS, "storage"] as const;
 
@@ -96,6 +96,9 @@ export const ALLOWED_FUNCTION_GRANTS = new Set([
   "farejo_web|web_read.store_history|EXECUTE",
   "farejo_web|web_read.catalog_history|EXECUTE",
   "farejo_web|web_read.platform_stats|EXECUTE",
+  // Funções nascem com EXECUTE para PUBLIC; a migration revoga, e é este conjunto exato que
+  // garante que continue revogado.
+  "farejo_notifier|alerts.pending_avisos|EXECUTE",
 ]);
 
 export const ALLOWED_SCHEMA_GRANTS = new Set([
@@ -104,6 +107,7 @@ export const ALLOWED_SCHEMA_GRANTS = new Set([
   "farejo_bot|public|USAGE",
   "farejo_bot|web_read|USAGE",
   "farejo_notifier|public|USAGE",
+  "farejo_notifier|alerts|USAGE",
 ]);
 
 // A única policy do produto que pode referenciar PUBLIC/anon/authenticated: leitura pública de
