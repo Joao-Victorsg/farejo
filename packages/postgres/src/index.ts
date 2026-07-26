@@ -19,12 +19,27 @@ import { Pool, type PoolConfig } from "pg";
  * condição `react-server`. Quem guarda essa fronteira no site são os consumidores — `catalog.ts` e
  * `activation.ts` já declaram `server-only`.
  *
- * ⚠️ Tudo vive neste arquivo, sem barrel e sem import relativo interno, e isso é intencional. O
- * site transpila este pacote (`transpilePackages`), e o Turbopack NÃO reescreve a extensão `.js`
- * dos imports relativos de TypeScript — o padrão que `@farejo/shared` usa em todo lugar e que
- * nunca doeu porque ele nunca esteve no caminho de runtime do Next. Um `export ... from "./pool.js"`
- * aqui quebra o `next build` com `Module not found`. Se um dia este pacote precisar de um segundo
- * módulo, o import interno tem de ser sem extensão.
+ * O pacote tem build de verdade (`pnpm build` → `tsc -p tsconfig.build.json`, `main`/`types`
+ * apontam pra `dist/`), disparado sozinho pelo `postinstall` da raiz — nenhum consumidor precisa
+ * lembrar de rodar nada. Até a #120 ele era só TypeScript-fonte (`main: "src/index.ts"`), o que
+ * funcionava pra quem transpila TS nativamente (tsx, vitest, o `transpilePackages` do Next) mas
+ * quebrou de verdade em produção no empacotador de Função Node.js da Vercel (usado por `apps/bot`,
+ * projeto sem Next): ele compila só o entrypoint e deixa o import deste pacote apontando pro `.ts`
+ * cru, que não existe executável no bundle — `ERR_MODULE_NOT_FOUND`, confirmado ao vivo via
+ * `vercel logs`. Compilar pra `dist/` faz este pacote se comportar como qualquer dependência npm
+ * normal (igual `pg`, que sempre empacotou sem problema), removendo a categoria inteira de
+ * "este bundler sabe lidar com TS cru?" em vez de resolver caso a caso.
+ *
+ * `transpilePackages: ["@farejo/postgres"]` no `next.config.ts` do site fica como defesa em
+ * profundidade inofensiva — não é mais obrigatória, já que `main` aponta pra JS de verdade.
+ *
+ * ⚠️ Tudo continua num arquivo só, sem barrel, mas por simplicidade agora — não por necessidade.
+ * Se um dia ganhar um segundo módulo, a regra INVERTE em relação à era pré-#120: um import
+ * relativo interno passa a precisar da extensão `.js` EXPLÍCITA (`from "./pool.js"`, nunca
+ * `"./pool"`), porque `dist/*.js` roda direto sob o resolvedor ESM do Node (`"type": "module"`),
+ * que exige extensão — o oposto do que o Turbopack aceitava transpilando TS cru. O typecheck NÃO
+ * pega esse erro (`moduleResolution: "bundler"`, herdado, permite sem extensão): só o `tsc -p
+ * tsconfig.build.json` real ou uma execução de verdade contra `dist/` revelam a falta.
  */
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
 

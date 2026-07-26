@@ -1,11 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // `@farejo/postgres` (ADR-0055) é publicado como TypeScript-fonte, no mesmo padrão dos demais
-  // pacotes do workspace — não há passo de build. É o primeiro pacote do workspace no caminho de
-  // RUNTIME do site (`catalog.ts`/`activation.ts`), e sem isto o bundle da função serverless tenta
-  // resolver `src/index.ts` sem loader. Era exatamente o risco que manteve as três cópias do helper
-  // vivas até a #112.
+  // `@farejo/postgres` (ADR-0055) tem build real desde o incidente do #120 (`main` aponta pra
+  // `dist/`, compilado pelo `postinstall` da raiz) — este `transpilePackages` não é mais
+  // obrigatório, fica como defesa em profundidade inofensiva contra o mesmo risco que manteve as
+  // três cópias do helper vivas até a #112: o site é o primeiro pacote do workspace no caminho de
+  // RUNTIME (`catalog.ts`/`activation.ts`), e um dia voltar a depender de transpilação implícita
+  // sem essa entrada quebraria em silêncio.
   transpilePackages: ["@farejo/postgres"],
 };
 

@@ -2,38 +2,36 @@ import { pathToFileURL } from "node:url";
 import { z } from "zod";
 
 /**
- * F4/#120 (ADR-0065) — smoke pós-deploy do `apps/bot`, contra o deployment ENCENADO (staged,
+ * F4/#120 (ADR-0065) — smoke PRÉ-promoção do `apps/bot`, contra o deployment ENCENADO (staged,
  * `--skip-domain`), nunca contra o domínio de produção — mesmo padrão do smoke do site (ADR-0056).
  *
- * Duas afirmações, cada uma provando o oposto da outra — a defesa em duas camadas da ADR-0065,
- * cada camada verificada isolada, nenhuma tomada como certa pela outra:
+ * Só uma afirmação aqui: com o bypass de Deployment Protection e um `secret_token` deliberadamente
+ * errado, a resposta tem que ser `401` da PRÓPRIA APLICAÇÃO — prova que o artefato recém-buildado
+ * está de pé e sua lógica de autenticação funciona, o gate que bloqueia "Promote to production" se
+ * falhar.
  *
- * 1. Uma requisição SEM nenhum header de bypass, vinda do runner do CI — cujo IP não está nas
- *    faixas do Telegram — tem de ser negada NA BORDA: 403 do Vercel Firewall, documentado e
- *    estável (vercel.com/docs/vercel-firewall/firewall-concepts#deny), nunca um 401 da aplicação.
- *    Prova que a regra de WAF (pendência operacional) está de pé e funcionando.
- * 2. A MESMA requisição, mas com o header de bypass da regra de WAF
- *    (`x-farejo-bot-smoke-bypass`, condição de uma regra de Bypass própria na Vercel, com
- *    prioridade maior que a regra de deny) e um `secret_token` DELIBERADAMENTE errado, tem de
- *    alcançar a aplicação e receber 401 dela — prova que a autenticação de verdade também está de
- *    pé, e que o bypass da regra de rede não é, ele mesmo, uma porta de entrada sem autenticação.
- *
- * `x-farejo-bot-smoke-bypass` não é um mecanismo da Vercel (ao contrário do bypass de Deployment
- * Protection abaixo) — é uma condição que ESTE projeto define, e que a pessoa que criar a regra de
- * WAF precisa configurar manualmente com o mesmo valor de `FAREJO_BOT_WAF_BYPASS_SECRET`.
+ * Esta checagem NÃO prova nada sobre a regra de WAF (rede). Até a correção pós-#120, este arquivo
+ * também tentava provar "requisição sem bypass é negada na borda com 403" — mas regras de WAF
+ * customizadas da Vercel só valem para o domínio de PRODUÇÃO promovido, nunca para uma deployment
+ * staged/`--skip-domain` (confirmado ao vivo: a mesma requisição sem headers contra o domínio real
+ * recebe 403 do Firewall com `X-Vercel-Mitigated: deny`; contra esta URL staged recebe 401 da
+ * Deployment Protection — um subsistema totalmente diferente, que nem chega a avaliar a regra de
+ * WAF). Testar isso aqui faria essa checagem falhar SEMPRE, mesmo com a regra perfeitamente
+ * configurada, travando "Promote to production" para sempre. A verificação de WAF de verdade só é
+ * possível DEPOIS da promoção, contra o domínio real — é o passo "Confirm WAF on production domain"
+ * do `deploy-bot.yml`, não-bloqueante (a publicação já aconteceu; uma regra de WAF é configuração
+ * de conta da Vercel, não parte do artefato, e se conserta no dashboard, não revertendo o deploy).
  */
 const SmokeEnvironment = z.object({
   FAREJO_BOT_SITE_URL: z.string().url(),
   FAREJO_BOT_WEBHOOK_PATH: z.string().min(1),
-  FAREJO_BOT_WAF_BYPASS_SECRET: z.string().min(1),
   // Deployment Protection da Vercel (ADR-0056): sem isto, TODA requisição ao deployment encenado
-  // — inclusive a que testa o 401 — recebe a tela de login antes de alcançar qualquer regra de
-  // WAF ou a aplicação. Opcional só para o caso de o alvo já ser um domínio público sem proteção.
+  // recebe a tela de login antes de alcançar a aplicação. Opcional só para o caso de o alvo já ser
+  // um domínio público sem proteção.
   VERCEL_AUTOMATION_BYPASS_SECRET: z.string().min(1).optional(),
 });
 
 const FETCH_TIMEOUT_MS = 10_000;
-const WAF_BYPASS_HEADER = "x-farejo-bot-smoke-bypass";
 
 export interface SmokeCheck {
   name: string;
@@ -59,27 +57,17 @@ function smokeFetch(url: URL, headers: Record<string, string>): Promise<Response
 export async function runBotSmoke(environment: z.infer<typeof SmokeEnvironment>): Promise<SmokeCheck[]> {
   const webhookUrl = new URL(`/api/${environment.FAREJO_BOT_WEBHOOK_PATH}`, environment.FAREJO_BOT_SITE_URL);
 
-  // Nenhum header de bypass — nem o de rede, nem o de Deployment Protection. É deliberado: o
-  // objetivo é isolar só a camada de rede, exatamente como um pedido hostil de verdade chegaria.
-  const denied = await smokeFetch(webhookUrl, {});
-  const deniedCheck: SmokeCheck = {
-    name: "webhook negado na borda sem o bypass da regra de WAF",
-    ok: denied.status === 403,
-    detail: `status=${denied.status} (esperado 403 do Vercel Firewall, antes da aplicação)`,
-  };
-
   const reached = await smokeFetch(webhookUrl, {
     ...deploymentProtectionBypassHeaders(environment.VERCEL_AUTOMATION_BYPASS_SECRET),
-    [WAF_BYPASS_HEADER]: environment.FAREJO_BOT_WAF_BYPASS_SECRET,
     "x-telegram-bot-api-secret-token": "smoke-secret-propositalmente-errado",
   });
   const reachedCheck: SmokeCheck = {
-    name: "webhook com bypass de rede e secret_token errado responde 401 da aplicação",
+    name: "webhook com secret_token errado responde 401 da aplicação",
     ok: reached.status === 401,
-    detail: `status=${reached.status} (esperado 401 de createBotHandler, não da Vercel)`,
+    detail: `status=${reached.status} (esperado 401 de createBotHandler)`,
   };
 
-  return [deniedCheck, reachedCheck];
+  return [reachedCheck];
 }
 
 export function hasSmokeFailure(checks: SmokeCheck[]): boolean {

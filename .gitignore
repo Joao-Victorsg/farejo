@@ -1,6 +1,9 @@
 node_modules/
 dist/
 .next/
+# `vercel link`/`vercel pull` locais (qualquer app) — `.vercel/project.json` tem IDs de projeto, e
+# `.env.local` recebe segredos DE VERDADE puxados do dashboard. Nunca comitar nenhum dos dois.
+.vercel
 test-results/
 playwright-report/
 blob-report/

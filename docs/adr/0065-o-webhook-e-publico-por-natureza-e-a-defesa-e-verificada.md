@@ -30,24 +30,40 @@ foi isso que decidiu a escolha de plataforma na ADR-0064.
    real continua sendo o segredo. Header inválido responde **401 sem corpo**, sem revelar se um chat
    ou uma loja existe.
 
-**O smoke pós-deploy afirma a camada externa (#120).** A regra de WAF é um controle crítico
-configurado no dashboard, invisível no código e silenciosamente ausente se alguém a apagar. O
-runner do GitHub Actions **não** está nas faixas do Telegram, então uma requisição dele para o
-webhook, sem nenhum header extra, **tem que ser negada na borda** — Vercel documenta `deny` como
-`403 Forbidden` antes da aplicação, status estável o bastante para afirmar em automação. É a mesma
-filosofia da ADR-0062 (provar o negativo) e da ADR-0059 (afirmar conteúdo, não só status).
+**O smoke afirma a camada externa — mas só depois da promoção (#120, corrigido testando ao vivo).**
+A regra de WAF é um controle crítico configurado no dashboard, invisível no código e
+silenciosamente ausente se alguém a apagar. A tentativa original era testar isso ANTES de promover,
+contra a URL staged (`--skip-domain`) que o resto do smoke já usa — mas regras de WAF customizadas
+da Vercel **não se aplicam a deployments staged**, só ao domínio de produção promovido. Confirmado
+ao vivo: a mesma requisição sem nenhum header, contra o domínio real, recebe `403 Forbidden` com o
+header `X-Vercel-Mitigated: deny` (a regra do usuário funcionando); contra a URL staged recebe
+`401` da **Deployment Protection** — um subsistema totalmente diferente, que nem chega a avaliar a
+regra de WAF. Testar a rede pré-promoção faria essa checagem falhar SEMPRE, mesmo com a regra
+perfeitamente configurada, travando "Promote to production" para sempre.
 
-A segunda metade da promessa — "requisição com header errado responde 401" — exige que o próprio
-smoke ATRAVESSE a regra de deny, senão testaria só a rede de novo. `x-vercel-protection-bypass`
-(usado pelo smoke do site para passar pela Deployment Protection) não serve para isso: a
-documentação da Vercel descreve Deployment Protection e regra de WAF como camadas distintas, sem
-garantir que o bypass de uma alcance a outra. A solução é uma **segunda regra na Vercel, de
-Bypass**, com prioridade maior que a de deny, casando um header próprio deste projeto —
-`x-farejo-bot-smoke-bypass`, com o valor de `FAREJO_BOT_WAF_BYPASS_SECRET` — e só esse header.
-Tráfego real do Telegram nunca o carrega (chega pelo IP permitido, sem precisar de bypass nenhum);
-quem só tiver a URL não tem esse segredo. O smoke manda os dois bypasses juntos (rede + Deployment
-Protection) e um `secret_token` errado de propósito, provando que a autenticação de aplicação
-continua de pé mesmo depois de furar a camada de rede — nenhuma das duas garante a outra sozinha.
+A verificação se divide nos dois lados da promoção, seguindo uma assimetria: código muda a cada
+deploy e precisa de gate bloqueante; a regra de WAF é configuração de conta da Vercel, muda raramente
+(só edição manual no dashboard) e não precisa ser re-verificada como gate a cada deploy do mesmo
+jeito.
+
+- **Pré-promoção (bloqueante)**: só prova que o CÓDIGO implantado está saudável — bypass de
+  Deployment Protection + `secret_token` errado de propósito → `401` da própria aplicação. O runner
+  do GitHub Actions **não** está nas faixas do Telegram, mas essa checagem não prova nada sobre a
+  rede; é a mesma filosofia da ADR-0062 (provar o negativo) e da ADR-0059 (afirmar conteúdo, não só
+  status), aplicada à camada que dá pra afirmar nesse ponto.
+- **Pós-promoção (não-bloqueante)**: só aqui, contra o domínio real, é possível provar as duas
+  metades da promessa juntas — requisição sem nenhum bypass → `403` (Deny); com o bypass de uma
+  **segunda regra na Vercel, de Bypass**, prioridade maior que a de deny, casando um header próprio
+  deste projeto (`x-farejo-bot-smoke-bypass`, valor de `FAREJO_BOT_WAF_BYPASS_SECRET`, que tráfego
+  real do Telegram nunca carrega) + `secret_token` errado → `401` da aplicação. `continue-on-error`
+  de propósito: a publicação já aconteceu (o plano Hobby da Vercel recusa `vercel rollback` depois
+  do primeiro uso, mesmo motivo que já descartou esse padrão no `deploy.yml` do site), e uma regra
+  mal configurada se conserta no dashboard, não revertendo o deploy.
+
+`x-vercel-protection-bypass` (usado pelo smoke do site para passar pela Deployment Protection) não
+substitui a regra de Bypass acima nem vice-versa: a documentação da Vercel descreve Deployment
+Protection e regra de WAF como camadas distintas, sem garantir que o bypass de uma alcance a outra —
+os dois bypasses continuam sendo coisas diferentes, para propósitos diferentes.
 
 **Redução de superfície:**
 
@@ -86,8 +102,13 @@ pelo farejô —, então ele não convive no mesmo Environment que o `service_ro
   BotFather, criar o projeto `apps/bot` na Vercel, criar a regra de WAF (deny fora das faixas do
   Telegram) e a regra de Bypass (`x-farejo-bot-smoke-bypass`, prioridade maior, #120), rodar o
   `setWebhook`, e configurar o Environment `bot` com `VERCEL_TOKEN`/`VERCEL_ORG_ID`/
-  `VERCEL_PROJECT_ID`/`FAREJO_BOT_WEBHOOK_PATH`/`FAREJO_BOT_WAF_BYPASS_SECRET`/
-  `VERCEL_AUTOMATION_BYPASS_SECRET`. **Diferente do padrão de "falha cedo, num passo de guarda"**
+  `VERCEL_PROJECT_ID`/`FAREJO_BOT_WEBHOOK_PATH`/`VERCEL_AUTOMATION_BYPASS_SECRET` (este último já
+  alimentava o smoke pré-promoção desde o #120, sem mudança) e mais dois novos —
+  `FAREJO_BOT_WAF_BYPASS_SECRET`/`FAREJO_BOT_PRODUCTION_URL` — que só alimentam o passo
+  não-bloqueante "Confirm WAF on production domain", pós-promoção. `FAREJO_BOT_PRODUCTION_URL` tem
+  nome deliberadamente diferente de `FAREJO_BOT_SITE_URL` (a variável interna do smoke pré-promoção,
+  que aponta pra URL efêmera do deployment staged, nunca pro domínio fixo) — mesmo nome pros dois
+  confundiria quem lesse o workflow. **Diferente do padrão de "falha cedo, num passo de guarda"**
   usado em `deploy.yml`/`avisos.yml`: `deploy-bot.yml` (#120) dispara em todo "Deploy production"
   bem-sucedido — ou seja, em todo merge para `master` —, então a ausência do Environment vira só um
   aviso e o job de publicação do bot é pulado, verde, em vez de um red X permanente até a
