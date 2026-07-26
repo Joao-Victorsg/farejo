@@ -43,12 +43,15 @@ jobs:
       # Actions. Em vez disso, registra e sai limpo (verde) — ativa sozinho assim que o
       # Environment ganhar os secrets.
       # Checa TODO secret que algum passo abaixo consome — não só os três da Vercel. O smoke
-      # (`SmokeEnvironment` em test/smoke-production.mts) exige `FAREJO_BOT_WEBHOOK_PATH` e
-      # `FAREJO_BOT_WAF_BYPASS_SECRET` sem default; faltando um dos dois, sem essa checagem o job
-      # passaria por build+deploy (gastando um deployment real da Vercel) só para o smoke falhar
-      # por env ausente — e viraria o mesmo red X permanente que este guard existe para evitar,
-      # só que um passo mais tarde. `VERCEL_AUTOMATION_BYPASS_SECRET` fica de fora de propósito:
-      # é opcional no schema do smoke (site sem Deployment Protection também é um alvo válido).
+      # (`SmokeEnvironment` em test/smoke-production.mts) exige `FAREJO_BOT_WEBHOOK_PATH` sem
+      # default; faltando, sem essa checagem o job passaria por build+deploy (gastando um
+      # deployment real da Vercel) só para o smoke falhar por env ausente — e viraria o mesmo red
+      # X permanente que este guard existe para evitar, só que um passo mais tarde.
+      # `VERCEL_AUTOMATION_BYPASS_SECRET` fica de fora de propósito: é opcional no schema do smoke
+      # (site sem Deployment Protection também é um alvo válido). `FAREJO_BOT_WAF_BYPASS_SECRET`
+      # e `FAREJO_BOT_PRODUCTION_URL` TAMBÉM ficam de fora: só o passo pós-promoção os usa, e ele
+      # se auto-degrada com um aviso próprio se faltarem — não vale gastar build+deploy à toa por
+      # causa de um secret que só um passo NÃO-bloqueante consome.
       - name: Check bot deployment configured
         id: check
         env:
@@ -56,14 +59,12 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           FAREJO_BOT_WEBHOOK_PATH: ${{ secrets.FAREJO_BOT_WEBHOOK_PATH }}
-          FAREJO_BOT_WAF_BYPASS_SECRET: ${{ secrets.FAREJO_BOT_WAF_BYPASS_SECRET }}
         run: |
           missing=()
           [ -z "$VERCEL_TOKEN" ] && missing+=("VERCEL_TOKEN")
           [ -z "$VERCEL_ORG_ID" ] && missing+=("VERCEL_ORG_ID")
           [ -z "$VERCEL_PROJECT_ID" ] && missing+=("VERCEL_PROJECT_ID")
           [ -z "$FAREJO_BOT_WEBHOOK_PATH" ] && missing+=("FAREJO_BOT_WEBHOOK_PATH")
-          [ -z "$FAREJO_BOT_WAF_BYPASS_SECRET" ] && missing+=("FAREJO_BOT_WAF_BYPASS_SECRET")
           if [ ${#missing[@]} -gt 0 ]; then
             echo "::warning::Environment \"bot\" ainda não tem os secrets: ${missing[*]}. Pendência operacional; publicação do apps/bot pulada."
             echo "configured=false" >> "$GITHUB_OUTPUT"
@@ -116,14 +117,19 @@ jobs:
           url=$(apps/bot/node_modules/.bin/vercel deploy --prebuilt --prod --skip-domain --token="$VERCEL_TOKEN")
           echo "url=${url}" >> "$GITHUB_OUTPUT"
 
-      # #120 (ADR-0065): prova as duas camadas de defesa do webhook contra o deployment recém
-      # publicado, ainda não promovido — nunca contra o domínio de produção.
+      # #120, corrigido depois de testar ao vivo: prova só a camada de APLICAÇÃO contra o
+      # deployment staged, ainda não promovido. Regras de WAF customizadas da Vercel não se
+      # aplicam a URLs staged/`--skip-domain` — confirmado ao vivo (a mesma requisição sem
+      # headers contra o domínio real recebe 403 do Firewall; contra esta URL recebe 401 da
+      # Deployment Protection, que nem chega a avaliar a regra) — então testar a camada de rede
+      # aqui faria este passo falhar SEMPRE, mesmo com a regra perfeitamente configurada,
+      # travando "Promote to production" para sempre. Ver "Confirm WAF on production domain"
+      # abaixo, e o comentário no topo de test/smoke-production.mts.
       - if: steps.check.outputs.configured == 'true'
         name: Smoke test the staged bot deployment
         env:
           FAREJO_BOT_SITE_URL: ${{ steps.deploy.outputs.url }}
           FAREJO_BOT_WEBHOOK_PATH: ${{ secrets.FAREJO_BOT_WEBHOOK_PATH }}
-          FAREJO_BOT_WAF_BYPASS_SECRET: ${{ secrets.FAREJO_BOT_WAF_BYPASS_SECRET }}
           VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
         run: pnpm --filter @farejo/bot test:smoke:production
 
@@ -137,3 +143,50 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: apps/bot/node_modules/.bin/vercel promote "${{ steps.deploy.outputs.url }}" --token="$VERCEL_TOKEN" --yes
+
+      # A ÚNICA forma de provar a regra de WAF é contra o domínio real, e só depois de promovido.
+      # Não-bloqueante de propósito (`continue-on-error: true` no PASSO, não no job): a publicação
+      # já aconteceu, o plano Hobby da Vercel recusa `vercel rollback` depois do primeiro uso
+      # (mesmo motivo que já descartou esse padrão no deploy.yml do site), e uma regra de WAF mal
+      # configurada se conserta no dashboard da Vercel, não re-rodando este workflow. O script
+      # termina com `exit 1` quando algo diverge — sem isso, `continue-on-error` fica inerte e o
+      # passo aparece verde normal, escondendo justamente o que deveria aparecer.
+      - if: steps.check.outputs.configured == 'true'
+        name: Confirm WAF on production domain
+        continue-on-error: true
+        env:
+          # Nome DIFERENTE de propósito do `FAREJO_BOT_SITE_URL` usado no passo de smoke acima:
+          # lá é a URL efêmera do deployment staged (`steps.deploy.outputs.url`); aqui é o domínio
+          # fixo de produção (secret novo). Mesmo nome pros dois confundiria quem lesse o workflow.
+          FAREJO_BOT_PRODUCTION_URL: ${{ secrets.FAREJO_BOT_PRODUCTION_URL }}
+          FAREJO_BOT_WEBHOOK_PATH: ${{ secrets.FAREJO_BOT_WEBHOOK_PATH }}
+          FAREJO_BOT_WAF_BYPASS_SECRET: ${{ secrets.FAREJO_BOT_WAF_BYPASS_SECRET }}
+        run: |
+          if [ -z "$FAREJO_BOT_PRODUCTION_URL" ] || [ -z "$FAREJO_BOT_WAF_BYPASS_SECRET" ]; then
+            echo "::notice::FAREJO_BOT_PRODUCTION_URL ou FAREJO_BOT_WAF_BYPASS_SECRET ausente — confirmação de WAF pulada. Pendência operacional, não um achado de regressão; a publicação já aconteceu e não depende disto."
+            exit 0
+          fi
+
+          url="$FAREJO_BOT_PRODUCTION_URL/api/$FAREJO_BOT_WEBHOOK_PATH"
+          failed=0
+
+          denied=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$url" -H "content-type: application/json" -d '{"update_id":0}')
+          if [ "$denied" != "403" ]; then
+            echo "::warning::regra de Deny: esperado 403 (Vercel Firewall) para requisição sem bypass no domínio de produção, recebido $denied."
+            failed=1
+          else
+            echo "OK: requisição sem bypass negada na borda (403)."
+          fi
+
+          reached=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$url" -H "content-type: application/json" -H "x-farejo-bot-smoke-bypass: $FAREJO_BOT_WAF_BYPASS_SECRET" -H "x-telegram-bot-api-secret-token: smoke-secret-propositalmente-errado" -d '{"update_id":0}')
+          if [ "$reached" != "401" ]; then
+            echo "::warning::regra de Bypass: esperado 401 (aplicação) com bypass da regra de WAF, recebido $reached."
+            failed=1
+          else
+            echo "OK: bypass da regra de WAF alcança a aplicação, que recusa secret_token errado (401)."
+          fi
+
+          if [ "$failed" = "1" ]; then
+            echo "::error::confirmação de WAF pós-promoção encontrou divergência — verifique as regras no dashboard da Vercel. A publicação já aconteceu e NÃO foi revertida."
+            exit 1
+          fi

@@ -7,6 +7,7 @@
     "node": "24.x"
   },
   "scripts": {
+    "postinstall": "pnpm --filter @farejo/postgres build",
     "typecheck": "pnpm -r typecheck",
     "build": "pnpm --filter @farejo/web build",
     "test": "vitest run && pnpm --filter @farejo/web test:smoke && pnpm --filter @farejo/web test:e2e",
