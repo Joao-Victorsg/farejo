@@ -1,0 +1,139 @@
+name: Deploy bot
+
+# F4/#120 (ADR-0064/ADR-0065): apps/bot é um deployable Vercel separado, publicado em cadeia
+# depois que "Deploy production" termina com sucesso — as migrations e as duas verificações de
+# banco já rodaram e passaram nesse momento (esse workflow não repete nenhuma), então a ordem
+# exigida (bot só depois de migration + verificação) fica garantida sem duplicar esses passos
+# aqui. ADR-0041 é sobre a corrida entre o FRONTEND e as migrations que ele consome; apps/bot não
+# introduz nenhuma migration própria e não compete por esse recurso.
+#
+# `pnpm typecheck`/`pnpm test` na raiz (que "Deploy production" já roda) cobrem TODO o workspace,
+# apps/bot incluído — não há necessidade de repeti-los aqui só para publicar o artefato que já
+# passou por eles no mesmo commit.
+on:
+  workflow_run:
+    workflows: [Deploy production]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: deploy-bot
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # ADR-0064/ADR-0065: credenciais próprias do projeto apps/bot na Vercel — nunca as de
+    # "production" (apps/web). Environment "bot" precisa ser criado manualmente no repo antes do
+    # primeiro run real, mesma pendência operacional do Environment "logos"/"avisos".
+    environment: bot
+    steps:
+      - uses: actions/checkout@v4
+
+      # Diferente do "Guard production secrets" do deploy.yml (falha alto): aqui a AUSÊNCIA do
+      # Environment é o estado normal até o projeto apps/bot existir de fato na Vercel — e este
+      # workflow dispara em TODO "Deploy production" bem-sucedido, ou seja, em todo merge para
+      # master. Falhar alto faria essa pendência operacional virar um red X permanente na aba
+      # Actions. Em vez disso, registra e sai limpo (verde) — ativa sozinho assim que o
+      # Environment ganhar os secrets.
+      # Checa TODO secret que algum passo abaixo consome — não só os três da Vercel. O smoke
+      # (`SmokeEnvironment` em test/smoke-production.mts) exige `FAREJO_BOT_WEBHOOK_PATH` e
+      # `FAREJO_BOT_WAF_BYPASS_SECRET` sem default; faltando um dos dois, sem essa checagem o job
+      # passaria por build+deploy (gastando um deployment real da Vercel) só para o smoke falhar
+      # por env ausente — e viraria o mesmo red X permanente que este guard existe para evitar,
+      # só que um passo mais tarde. `VERCEL_AUTOMATION_BYPASS_SECRET` fica de fora de propósito:
+      # é opcional no schema do smoke (site sem Deployment Protection também é um alvo válido).
+      - name: Check bot deployment configured
+        id: check
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          FAREJO_BOT_WEBHOOK_PATH: ${{ secrets.FAREJO_BOT_WEBHOOK_PATH }}
+          FAREJO_BOT_WAF_BYPASS_SECRET: ${{ secrets.FAREJO_BOT_WAF_BYPASS_SECRET }}
+        run: |
+          missing=()
+          [ -z "$VERCEL_TOKEN" ] && missing+=("VERCEL_TOKEN")
+          [ -z "$VERCEL_ORG_ID" ] && missing+=("VERCEL_ORG_ID")
+          [ -z "$VERCEL_PROJECT_ID" ] && missing+=("VERCEL_PROJECT_ID")
+          [ -z "$FAREJO_BOT_WEBHOOK_PATH" ] && missing+=("FAREJO_BOT_WEBHOOK_PATH")
+          [ -z "$FAREJO_BOT_WAF_BYPASS_SECRET" ] && missing+=("FAREJO_BOT_WAF_BYPASS_SECRET")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::warning::Environment \"bot\" ainda não tem os secrets: ${missing[*]}. Pendência operacional; publicação do apps/bot pulada."
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.check.outputs.configured == 'true'
+        uses: pnpm/action-setup@v4
+
+      - if: steps.check.outputs.configured == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - if: steps.check.outputs.configured == 'true'
+        run: pnpm install --frozen-lockfile
+
+      # Mesma observação do "monorepo requirement" de deploy.yml: o CLI roda da raiz para
+      # enxergar o workspace pnpm-hoisted inteiro; o "Root Directory" do projeto na Vercel
+      # (apps/bot) decide o que de fato é buildado/publicado.
+      - if: steps.check.outputs.configured == 'true'
+        name: Pull Vercel project settings
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: apps/bot/node_modules/.bin/vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - if: steps.check.outputs.configured == 'true'
+        name: Build Vercel artifact
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: apps/bot/node_modules/.bin/vercel build --prod --token="$VERCEL_TOKEN"
+
+      # ADR-0056, mesmo padrão do site: `--skip-domain` cria o deployment SEM mover o domínio.
+      # Produção continua servindo o webhook anterior enquanto o smoke roda contra o novo, e só
+      # uma publicação aprovada chega ao público — sem depender de `vercel rollback`.
+      - if: steps.check.outputs.configured == 'true'
+        name: Deploy prebuilt artifact (staged, no domain)
+        id: deploy
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          url=$(apps/bot/node_modules/.bin/vercel deploy --prebuilt --prod --skip-domain --token="$VERCEL_TOKEN")
+          echo "url=${url}" >> "$GITHUB_OUTPUT"
+
+      # #120 (ADR-0065): prova as duas camadas de defesa do webhook contra o deployment recém
+      # publicado, ainda não promovido — nunca contra o domínio de produção.
+      - if: steps.check.outputs.configured == 'true'
+        name: Smoke test the staged bot deployment
+        env:
+          FAREJO_BOT_SITE_URL: ${{ steps.deploy.outputs.url }}
+          FAREJO_BOT_WEBHOOK_PATH: ${{ secrets.FAREJO_BOT_WEBHOOK_PATH }}
+          FAREJO_BOT_WAF_BYPASS_SECRET: ${{ secrets.FAREJO_BOT_WAF_BYPASS_SECRET }}
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: pnpm --filter @farejo/bot test:smoke:production
+
+      # Só aqui o webhook público passa a apontar para o artefato novo. Falha em qualquer passo
+      # acima (incluindo o smoke) deixa a etapa "Promote" sem rodar — produção intacta no
+      # deployment anterior, nada para reverter.
+      - if: steps.check.outputs.configured == 'true'
+        name: Promote to production
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: apps/bot/node_modules/.bin/vercel promote "${{ steps.deploy.outputs.url }}" --token="$VERCEL_TOKEN" --yes

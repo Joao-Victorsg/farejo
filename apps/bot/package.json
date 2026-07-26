@@ -4,7 +4,8 @@
   "type": "module",
   "version": "0.0.0",
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:smoke:production": "tsx test/smoke-production.mts"
   },
   "dependencies": {
     "@farejo/postgres": "workspace:*",
@@ -14,6 +15,8 @@
   "devDependencies": {
     "@types/node": "^22.0.0",
     "@types/pg": "8.15.5",
-    "typescript": "^5.7.0"
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vercel": "56.3.1"
   }
 }
