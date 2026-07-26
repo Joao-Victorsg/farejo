@@ -160,6 +160,12 @@ begin
   -- pode já ter inscrição do mesmo assinante. Na colisão sobrevive a MAIS RECENTE — modo e Piso
   -- são regra, não medida, então não se somam nem se mediam.
   --
+  -- EMPATE: o comparador é estrito (`>`), então `created_at` igual mantém a inscrição da CANÔNICA.
+  -- Empate não tem "mais recente" — a escolha é arbitrária por natureza, e o que se exige dela é
+  -- ser determinística e declarada, não justa. Mesmo comparador estrito de store_logo_sources.
+  -- Entre duas ABSORVIDAS empatadas, o desempate cai no `store_id desc` do ORDER BY abaixo, que é
+  -- ordem de inserção e não significado — igualmente arbitrário, igualmente determinístico.
+  --
   -- O `distinct on` não é adorno: um cluster transitivo pode absorver DUAS lojas onde o mesmo
   -- assinante estava inscrito (o `brinox`~`brinoxshop`~`lojaoficialbrinox` do recon é exatamente
   -- isso). Sem ele, o INSERT traria duas linhas para a mesma PK e o Postgres aborta com "ON

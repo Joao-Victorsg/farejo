@@ -14,6 +14,14 @@ interface StoreFixture {
 const CHAT_RANGE = { first: 911500, last: 911599 };
 
 async function cleanFixtures() {
+  // Duas limpezas, de propósito. A por slug é a que casa com o resto do arquivo e garante que
+  // NENHUMA inscrição segure uma loja de fixture — inclusive uma criada por outro teste, fora da
+  // faixa de chats abaixo. Sem ela, o `delete from stores` falharia num teste que não tem nada a
+  // ver com Inscrições, longe da causa.
+  await client.query(
+    "delete from public.subscriptions where store_id in (select id from public.stores where slug like $1)",
+    [`${fixturePrefix}%`],
+  );
   await client.query("delete from public.subscribers where telegram_chat_id between $1 and $2", [CHAT_RANGE.first, CHAT_RANGE.last]);
   await client.query(
     "delete from public.activation_metrics where store_id in (select id from public.stores where slug like $1)",
@@ -277,8 +285,17 @@ describe("curation.apply_alias_merge", () => {
  * atravessar o merge como as demais tabelas que referenciam `stores`.
  */
 describe("curation.apply_alias_merge — Inscrições (F4, #115, ADR-0063)", () => {
-  // O guard-rail que torna "esquecer de tratar" um erro ALTO em vez de uma perda silenciosa. É o
-  // motivo de a FK não ter `on delete cascade`: sem tratamento, o merge inteiro para aqui.
+  // O guard-rail que torna "esquecer de tratar" um erro ALTO em vez de uma perda silenciosa: é o
+  // motivo de a FK não ter `on delete cascade`.
+  //
+  // Este teste afirma o guard-rail, NÃO o merge sem o tratamento — e a diferença é honesta: para
+  // afirmar o segundo seria preciso reintroduzir a versão antiga da função, que não existe mais.
+  // A demonstração real foi feita na implementação, com estes mesmos casos rodando ANTES do
+  // bloco de `subscriptions` existir: quatro deles falharam com
+  // `update or delete on table "stores" violates foreign key constraint
+  // "subscriptions_store_id_fkey"`, vindo de dentro de `apply_alias_merge`. O que sobra aqui é a
+  // metade durável: a FK segue armada, então a próxima tabela que referenciar `stores` e for
+  // esquecida quebra do mesmo jeito.
   it("uma Loja canônica com Inscrição não pode simplesmente ser apagada", async () => {
     const store = await createStore(`${fixturePrefix}fk-guard`, "FK Guard");
     const subscriber = await createSubscriber(CHAT_RANGE.first);
@@ -404,6 +421,33 @@ describe("curation.apply_alias_merge — Inscrições (F4, #115, ADR-0063)", () 
 
     expect(await subscriptionsOf(subscriber)).toEqual([
       { store_id: canonical.id, mode: "tracking", floor_value: "12.00", floor_reward_type: "percent" },
+    ]);
+  });
+
+  // Empate de `created_at` não tem "mais recente". A resolução é arbitrária por natureza, então o
+  // que importa é ser DETERMINÍSTICA e declarada: vence a canônica. Sem este teste, inverter o
+  // comparador da migration passaria despercebido — e o custo é a regra do assinante sumir sem
+  // rastro. Empate exige inscrições gravadas na mesma transação, então é raro, não impossível.
+  it("no empate exato de created_at, a Inscrição da canônica é a que sobrevive", async () => {
+    const canonical = await createStore(`${fixturePrefix}sub-tie-canonical`, "Canonical");
+    const absorbed = await createStore(`${fixturePrefix}sub-tie-absorbed`, "Absorbed");
+    await createAlias("meliuz", "Tie Canonical", canonical.id);
+    await createAlias("cuponomia", "Tie Absorbed", absorbed.id);
+    await createOffer(canonical.id, "meliuz", 5);
+    await createOffer(absorbed.id, "cuponomia", 7);
+
+    const sameInstant = "2026-07-10T12:00:00Z";
+    const subscriber = await createSubscriber(CHAT_RANGE.first + 8);
+    await createSubscription(subscriber, canonical.id, { mode: "improvement" }, sameInstant);
+    await createSubscription(subscriber, absorbed.id, { mode: "tracking", floorValue: 99, floorRewardType: "percent" }, sameInstant);
+
+    await applyMerge(canonical.slug, [
+      { platformId: "meliuz", rawName: "Tie Canonical" },
+      { platformId: "cuponomia", rawName: "Tie Absorbed" },
+    ]);
+
+    expect(await subscriptionsOf(subscriber)).toEqual([
+      { store_id: canonical.id, mode: "improvement", floor_value: null, floor_reward_type: null },
     ]);
   });
 

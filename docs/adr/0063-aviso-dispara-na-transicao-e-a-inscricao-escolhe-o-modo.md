@@ -67,7 +67,9 @@ própria migration registra que pular `activation_metrics` "quebra o DELETE das 
 assim que houver alguma ativação real". A tabela de inscrições entra na mesma lista, com
 upsert-then-delete no padrão de `store_logo_sources`. **Sem `on delete cascade`**: cascade apagaria
 a inscrição em silêncio e a pessoa nunca saberia que parou de ser avisada. Colisão (o assinante
-tinha inscrição na absorvida **e** na canônica) resolve pela **mais recente** por `created_at`.
+tinha inscrição na absorvida **e** na canônica) resolve pela **mais recente** por `created_at`; no
+empate exato sobrevive a da **canônica**, porque empate não tem "mais recente" e o que se exige da
+regra é ser determinística e declarada, não justa.
 
 ## Consequências
 
