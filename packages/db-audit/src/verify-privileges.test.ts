@@ -38,8 +38,8 @@ function schemaRowsFromAllowlist() {
     return { grantee, schema, privilege };
   });
 }
-// Estado real limpo das 4 roles: anon/authenticated NOLOGIN+INHERIT (default plataforma, não
-// auditado), farejo_web/farejo_logo_writer LOGIN+noinherit.
+// Estado real limpo das 6 roles auditadas: anon/authenticated NOLOGIN+INHERIT (default plataforma,
+// não auditado); as do farejô LOGIN+noinherit.
 function cleanRoleRows() {
   const base = { rolsuper: false, rolcreaterole: false, rolcreatedb: false, rolreplication: false, rolbypassrls: false };
   return [
@@ -47,6 +47,8 @@ function cleanRoleRows() {
     { rolname: "authenticated", rolinherit: true, rolcanlogin: false, ...base },
     { rolname: "farejo_web", rolinherit: false, rolcanlogin: true, ...base },
     { rolname: "farejo_logo_writer", rolinherit: false, rolcanlogin: true, ...base },
+    { rolname: "farejo_bot", rolinherit: false, rolcanlogin: true, ...base },
+    { rolname: "farejo_notifier", rolinherit: false, rolcanlogin: true, ...base },
   ];
 }
 const CLEAN_POLICY_ROWS = [

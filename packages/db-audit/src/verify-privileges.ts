@@ -31,7 +31,17 @@ export interface PrivilegeCheckPool {
 
 // Grantees cujo ACL é auditado por igualdade. `PUBLIC` é enumerado como o literal "PUBLIC"
 // (aclexplode devolve grantee 0 para o pseudo-role) e nunca deve ter grant nos schemas do produto.
-export const AUDITED_GRANTEES = ["anon", "authenticated", "farejo_web", "farejo_logo_writer"] as const;
+export const AUDITED_GRANTEES = [
+  "anon",
+  "authenticated",
+  "farejo_web",
+  "farejo_logo_writer",
+  // Avisos (#113, ADR-0064). `farejo_bot` entra por ser a superfície exposta na internet — é o
+  // grantee de maior risco do projeto, e é aqui que "o bot nunca vê o histórico de ofertas" deixa
+  // de ser texto de ADR. `farejo_notifier` entra junto porque as duas nascem do mesmo contrato.
+  "farejo_bot",
+  "farejo_notifier",
+] as const;
 export const PRODUCT_SCHEMAS = ["public", "web_read", "activation", "curation"] as const;
 // storage entra só para policies: a única policy que pode referenciar PUBLIC é a de leitura de logos.
 export const POLICY_SCHEMAS = [...PRODUCT_SCHEMAS, "storage"] as const;
@@ -46,11 +56,33 @@ export const ALLOWED_TABLE_GRANTS = new Set([
   "farejo_logo_writer|public.store_logo_sources|SELECT",
   "farejo_logo_writer|public.store_logo_sources|UPDATE",
   "farejo_logo_writer|public.stores|SELECT",
+  // farejo_bot: escreve Inscrições e resolve slug; lê oferta corrente só pelas views do catálogo.
+  // A ausência de `public.offers` e `public.offer_history` nesta lista é o contrato.
+  "farejo_bot|public.subscribers|SELECT",
+  "farejo_bot|public.subscribers|INSERT",
+  "farejo_bot|public.subscribers|DELETE",
+  "farejo_bot|public.subscriptions|SELECT",
+  "farejo_bot|public.subscriptions|INSERT",
+  "farejo_bot|public.subscriptions|UPDATE",
+  "farejo_bot|public.subscriptions|DELETE",
+  "farejo_bot|public.stores|SELECT",
+  "farejo_bot|web_read.store_redirects|SELECT",
+  "farejo_bot|web_read.catalog_offers|SELECT",
+  // farejo_notifier: lê o que o Aviso precisa. A única escrita é o cursor, e ela é por coluna
+  // (ALLOWED_COLUMN_GRANTS) — nenhum UPDATE de tabela inteira aparece aqui.
+  "farejo_notifier|public.subscribers|SELECT",
+  "farejo_notifier|public.subscribers|DELETE",
+  "farejo_notifier|public.subscriptions|SELECT",
+  "farejo_notifier|public.offer_history|SELECT",
+  "farejo_notifier|public.offers|SELECT",
+  "farejo_notifier|public.stores|SELECT",
+  "farejo_notifier|public.platforms|SELECT",
 ]);
 
 export const ALLOWED_COLUMN_GRANTS = new Set([
   "farejo_logo_writer|public.stores.logo_url|UPDATE",
   "farejo_logo_writer|public.stores.logo_hash|UPDATE",
+  "farejo_notifier|public.subscribers.last_notified_history_id|UPDATE",
 ]);
 
 export const ALLOWED_FUNCTION_GRANTS = new Set([
@@ -63,6 +95,9 @@ export const ALLOWED_FUNCTION_GRANTS = new Set([
 export const ALLOWED_SCHEMA_GRANTS = new Set([
   "farejo_web|web_read|USAGE",
   "farejo_logo_writer|public|USAGE",
+  "farejo_bot|public|USAGE",
+  "farejo_bot|web_read|USAGE",
+  "farejo_notifier|public|USAGE",
 ]);
 
 // A única policy do produto que pode referenciar PUBLIC/anon/authenticated: leitura pública de
@@ -114,11 +149,11 @@ interface PolicyRow {
 }
 
 // Roles que DEVEM poder logar (as outras auditadas devem ser NOLOGIN).
-const LOGIN_ROLES = new Set(["farejo_web", "farejo_logo_writer"]);
+const LOGIN_ROLES = new Set(["farejo_web", "farejo_logo_writer", "farejo_bot", "farejo_notifier"]);
 // Roles criadas pelo farejô com `noinherit` por contrato. anon/authenticated são da plataforma
 // Supabase e carregam o default INHERIT do Postgres — inócuo, porque não são membros de nenhuma
 // role (o check de membership abaixo garante que continue assim), então INHERIT só é auditado aqui.
-const NOINHERIT_ROLES = new Set(["farejo_web", "farejo_logo_writer"]);
+const NOINHERIT_ROLES = new Set(["farejo_web", "farejo_logo_writer", "farejo_bot", "farejo_notifier"]);
 
 export async function verifyProductionPrivileges(pool: PrivilegeCheckPool): Promise<PrivilegeVerificationReport> {
   const grantees = [...AUDITED_GRANTEES];
@@ -255,7 +290,7 @@ export async function verifyProductionPrivileges(pool: PrivilegeCheckPool): Prom
 
 export function formatPrivilegeVerificationReport(report: PrivilegeVerificationReport): string {
   if (report.ok)
-    return "✅ [verify-privileges] anon, authenticated, farejo_web e farejo_logo_writer não têm privilégios além do contrato";
+    return `✅ [verify-privileges] ${AUDITED_GRANTEES.join(", ")} e PUBLIC não têm privilégios além do contrato`;
 
   const lines = ["❌ [verify-privileges] privilégios em EXCESSO detectados (além do contrato mínimo):"];
   if (report.unexpectedTableGrants.length) lines.push(`  - grants de tabela/view: ${report.unexpectedTableGrants.join(", ")}`);

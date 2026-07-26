@@ -32,6 +32,8 @@ export const EXPECTED_LOGIN_ROLES = [
   "farejo_curation",
   "farejo_logo_writer",
   "farejo_logo_coverage",
+  "farejo_bot",
+  "farejo_notifier",
 ] as const;
 
 export const EXPECTED_WEB_READ_VIEWS = [
@@ -66,6 +68,8 @@ export const EXPECTED_RLS_TABLES = [
   "activation_metrics",
   "store_logo_sources",
   "store_slug_redirects",
+  "subscribers",
+  "subscriptions",
 ] as const;
 
 export const LOGO_BUCKET_ID = "store-logos";
@@ -85,6 +89,15 @@ export const EXPECTED_TABLE_GRANTS = [
   { role: "farejo_logo_writer", relation: "public.store_logo_sources", privilege: "UPDATE" },
   { role: "farejo_logo_writer", relation: "public.stores", privilege: "SELECT" },
   { role: "farejo_logo_coverage", relation: "web_read.logo_coverage", privilege: "SELECT" },
+  // Avisos (#113): a entrada pública escreve Inscrição e lê o catálogo; o job lê o histórico.
+  { role: "farejo_bot", relation: "public.subscriptions", privilege: "INSERT" },
+  { role: "farejo_bot", relation: "public.subscriptions", privilege: "DELETE" },
+  { role: "farejo_bot", relation: "public.subscribers", privilege: "INSERT" },
+  { role: "farejo_bot", relation: "web_read.catalog_offers", privilege: "SELECT" },
+  { role: "farejo_bot", relation: "web_read.store_redirects", privilege: "SELECT" },
+  { role: "farejo_notifier", relation: "public.subscriptions", privilege: "SELECT" },
+  { role: "farejo_notifier", relation: "public.offer_history", privilege: "SELECT" },
+  { role: "farejo_notifier", relation: "public.subscribers", privilege: "DELETE" },
 ] as const;
 
 export const EXPECTED_FUNCTION_GRANTS = [
@@ -101,6 +114,8 @@ export const EXPECTED_FUNCTION_GRANTS = [
 export const EXPECTED_COLUMN_GRANTS = [
   { role: "farejo_logo_writer", relation: "public.stores", column: "logo_url", privilege: "UPDATE" },
   { role: "farejo_logo_writer", relation: "public.stores", column: "logo_hash", privilege: "UPDATE" },
+  // A única escrita do job de Avisos é o cursor (ADR-0064) — grant por coluna, não pela tabela.
+  { role: "farejo_notifier", relation: "public.subscribers", column: "last_notified_history_id", privilege: "UPDATE" },
 ] as const;
 
 export interface SchemaVerificationReport {
