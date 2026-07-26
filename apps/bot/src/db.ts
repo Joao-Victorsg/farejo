@@ -70,24 +70,135 @@ export async function upsertSubscriber(pool: BotPool, telegramChatId: number): P
   return { id: SubscriberIdRow.parse(existing.rows[0]).id, isNew: false };
 }
 
+export type EnsureSubscriptionResult = "created" | "exists" | "capped";
+
+/** ADR-0065: sem teto, uma conta assina o catálogo inteiro e vira amplificador. */
+const SUBSCRIPTION_CAP = 10;
+
 /**
  * `/start` cria em **Modo melhoria** sem perguntar nada (ADR-0064). `do nothing` na colisão: um
  * `/start` repetido preserva o que já existe — inclusive um Piso que a pessoa tenha definido
  * depois (#117), que `/start` não tem por que desfazer.
+ *
+ * O teto de 10 é verificado DENTRO do mesmo `insert...select...where`, não em um `SELECT count(*)`
+ * separado antes do insert: `BotPool` é só `{query}`, e em produção é um `pg.Pool` de verdade — duas
+ * chamadas `.query()` sequenciais não compartilham sessão nem transação implícita, cada uma pode
+ * pegar uma conexão diferente do pool. Um `BEGIN`/`SELECT`/`INSERT`/`COMMIT` fatiado em `.query()`s
+ * separadas SÓ pareceria atômico contra o `Client` único dos testes. Aqui a contagem é uma subquery
+ * do PRÓPRIO comando: um round-trip, uma instrução, atômica por construção do Postgres,
+ * independente de qual conexão do pool a atende.
+ *
+ * `on conflict do nothing` nunca devolve linha em conflito (mesmo motivo de `upsertSubscriber`), e
+ * isso teria uma ambiguidade se o teto entrasse só no `where`: uma repetição de `/start` numa loja
+ * já inscrita, com o Assinante EXATAMENTE no teto, cairia no mesmo "nenhuma linha voltou" que um
+ * recusado por teto de verdade. Por isso o SELECT de desempate roda sempre que nada foi inserido —
+ * idempotência de `/start` não pode virar falso-recusado só porque o Assinante já está no teto.
+ *
+ * Risco residual, deliberadamente não fechado aqui: isto protege contra a FALTA DE AFINIDADE DE
+ * SESSÃO do `Pool` (o problema documentado acima), não contra duas invocações GENUINAMENTE
+ * concorrentes para o MESMO assinante — sob READ COMMITTED, o `count(*)` de cada uma enxerga o
+ * snapshot do início da própria instrução, então duas corridas em paralelo podem, cada uma, ver
+ * `< 10` e inserir, superando o teto por uma margem pequena. Fechar isso de verdade exigiria
+ * SERIALIZABLE (com retry no chamador) ou uma transação explícita numa conexão só — o que alargaria
+ * `BotPool` para além do que este ticket pede. Risco aceito e sinalizado, não silencioso.
  */
-export async function ensureSubscription(pool: BotPool, subscriberId: number, storeId: number): Promise<void> {
-  await pool.query(
-    `insert into public.subscriptions (subscriber_id, store_id, mode) values ($1, $2, 'improvement')
-     on conflict (subscriber_id, store_id) do nothing`,
+export async function ensureSubscription(pool: BotPool, subscriberId: number, storeId: number): Promise<EnsureSubscriptionResult> {
+  const inserted = await pool.query<unknown>(
+    `insert into public.subscriptions (subscriber_id, store_id, mode)
+     select $1, $2, 'improvement'
+     where (select count(*) from public.subscriptions where subscriber_id = $1) < $3
+     on conflict (subscriber_id, store_id) do nothing
+     returning subscriber_id`,
+    [subscriberId, storeId, SUBSCRIPTION_CAP],
+  );
+  if (inserted.rows.length > 0) return "created";
+
+  const existing = await pool.query<unknown>(
+    "select 1 from public.subscriptions where subscriber_id = $1 and store_id = $2",
     [subscriberId, storeId],
   );
+  return existing.rows.length > 0 ? "exists" : "capped";
+}
+
+/** As duas grandezas de Reward (`packages/shared/src/reward.ts`) que o Piso pode tipar. */
+export type RewardType = "percent" | "fixed";
+
+export interface Subscription {
+  slug: string;
+  storeName: string;
+  modeInfo: { mode: "improvement" } | { mode: "tracking"; floorValue: number; floorRewardType: RewardType };
+}
+
+// Espelha o CHECK `subscriptions_floor_matches_mode` do schema: melhoria nunca tem Piso, acompanhamento
+// sempre tem. Modelar como união discriminada (em vez de campos opcionais soltos) torna "melhoria com
+// Piso" um estado irrepresentável no TypeScript, não só proibido no banco.
+const SubscriptionRow = z.discriminatedUnion("mode", [
+  z.object({
+    slug: z.string(),
+    store_name: z.string(),
+    mode: z.literal("improvement"),
+    floor_value: z.null(),
+    floor_reward_type: z.null(),
+  }),
+  z.object({
+    slug: z.string(),
+    store_name: z.string(),
+    mode: z.literal("tracking"),
+    floor_value: z.coerce.number(),
+    floor_reward_type: z.enum(["percent", "fixed"]),
+  }),
+]);
+
+/** `/lojas`: todas as Inscrições do Assinante, com o modo e o Piso (quando houver). */
+export async function listSubscriptions(pool: BotPool, telegramChatId: number): Promise<Subscription[]> {
+  const result = await pool.query<unknown>(
+    `select st.slug, st.name as store_name, s.mode, s.floor_value, s.floor_reward_type
+     from public.subscriptions s
+     join public.subscribers sub on sub.id = s.subscriber_id
+     join public.stores st on st.id = s.store_id
+     where sub.telegram_chat_id = $1
+     order by st.name`,
+    [telegramChatId],
+  );
+
+  return result.rows.map((row) => {
+    const parsed = SubscriptionRow.parse(row);
+    return {
+      slug: parsed.slug,
+      storeName: parsed.store_name,
+      modeInfo:
+        parsed.mode === "improvement"
+          ? { mode: "improvement" as const }
+          : { mode: "tracking" as const, floorValue: parsed.floor_value, floorRewardType: parsed.floor_reward_type },
+    };
+  });
+}
+
+/**
+ * `/parar <slug>` remove só a Inscrição daquela Loja canônica — nunca o Assinante. Junta por
+ * `telegram_chat_id` em vez de resolver o `subscriber_id` numa ida separada: um chat sem nenhuma
+ * Inscrição (nunca falou com o bot, ou já apagou tudo) não precisa de um caso especial, o `join`
+ * simplesmente não casa nenhuma linha.
+ */
+export async function removeSubscription(pool: BotPool, telegramChatId: number, storeId: number): Promise<boolean> {
+  const deleted = await pool.query<unknown>(
+    `delete from public.subscriptions s
+     using public.subscribers sub
+     where s.subscriber_id = sub.id
+       and sub.telegram_chat_id = $1
+       and s.store_id = $2
+     returning s.store_id`,
+    [telegramChatId, storeId],
+  );
+  return deleted.rows.length > 0;
 }
 
 /**
  * `/parar` sem argumento é a única promessa de eliminação que a consentBlock faz (ADR-0066: "é
- * DELETE, não flag"), e por isso é a única fatia da gestão de Inscrições que nasce aqui — o resto
- * (`/parar <slug>` seletivo, teto de 10, `/lojas`, `/ajuda`, `my_chat_member kicked`) é #118.
- * A FK de `subscriptions` para `subscribers` tem cascade (#113): uma linha apaga as duas.
+ * DELETE, não flag"). A FK de `subscriptions` para `subscribers` tem cascade (#113): uma linha
+ * apaga as duas. Reusada por dois chamadores: `/parar` sem argumento e o update `my_chat_member`
+ * com status `kicked` (bloqueio do bot, ADR-0066) — os dois querem exatamente a mesma eliminação
+ * total e imediata, só a origem do `telegramChatId` muda.
  */
 export async function deleteSubscriber(pool: BotPool, telegramChatId: number): Promise<boolean> {
   const deleted = await pool.query<unknown>("delete from public.subscribers where telegram_chat_id = $1 returning id", [telegramChatId]);

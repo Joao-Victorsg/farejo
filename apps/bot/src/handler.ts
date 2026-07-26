@@ -1,7 +1,20 @@
 import { timingSafeEqual } from "node:crypto";
 import type { BotPool } from "./db.js";
-import { deleteSubscriber, ensureSubscription, resolveStore, upsertSubscriber } from "./db.js";
-import { confirmSubscription, consentBlock, fallback, privacy, stopped, storeNotFound, welcome } from "./replies.js";
+import { deleteSubscriber, ensureSubscription, listSubscriptions, removeSubscription, resolveStore, upsertSubscriber } from "./db.js";
+import {
+  confirmSubscription,
+  consentBlock,
+  fallback,
+  help,
+  notSubscribed,
+  privacy,
+  stopped,
+  stoppedStore,
+  storeNotFound,
+  subscriptionCapped,
+  subscriptionsList,
+  welcome,
+} from "./replies.js";
 import { parseCommand, TelegramUpdate } from "./update.js";
 
 export interface BotHandlerConfig {
@@ -12,8 +25,9 @@ export interface BotHandlerConfig {
 }
 
 /**
- * F4/#116 (ADR-0064/ADR-0065/ADR-0066) — o handler HTTP do bot, framework-agnostic (`Request` →
- * `Response`) para ser testável sem mock e reutilizável entre o entrypoint da Vercel e os testes.
+ * F4/#116-#118 (ADR-0064/ADR-0065/ADR-0066) — o handler HTTP do bot, framework-agnostic
+ * (`Request` → `Response`) para ser testável sem mock e reutilizável entre o entrypoint da Vercel
+ * e os testes.
  *
  * O caminho E o segredo são checados ANTES de qualquer outra coisa, e os dois falham do mesmo
  * jeito — 401 sem corpo — porque a URL é o segundo segredo (ADR-0065): um caminho errado não pode
@@ -36,9 +50,18 @@ export function createBotHandler(config: BotHandlerConfig): (request: Request) =
 
     const body: unknown = await request.json().catch(() => null);
     const parsed = TelegramUpdate.safeParse(body);
-    const message = parsed.success ? parsed.data.message : undefined;
+    const update = parsed.success ? parsed.data : undefined;
 
-    // Update sem mensagem de texto (ex.: edited_message, membro entrando/saindo): não sabemos
+    // Sinal DEFINITIVO de revogação (ADR-0066): não é heurística de inatividade, é o Telegram
+    // avisando que a pessoa bloqueou o bot. Apaga na hora, sem esperar a próxima falha de envio —
+    // e nunca gera `sendMessage`, porque não há mais chat para responder.
+    if (update?.my_chat_member?.new_chat_member.status === "kicked") {
+      await deleteSubscriber(pool, update.my_chat_member.chat.id);
+      return new Response(null, { status: 200 });
+    }
+
+    const message = update?.message;
+    // Update sem mensagem de texto (ex.: `my_chat_member` que não é `kicked`): não sabemos
     // tratar, então só confirmamos recebimento. Um não-2xx faria o Bot API reenviar para sempre.
     if (!message) return new Response(null, { status: 200 });
 
@@ -48,7 +71,10 @@ export function createBotHandler(config: BotHandlerConfig): (request: Request) =
     let text: string;
     if (command?.command === "/start") text = await handleStart(pool, siteUrl, chatId, command.argument);
     else if (command?.command === "/privacidade") text = privacy(siteUrl);
+    else if (command?.command === "/parar" && command.argument) text = await handleStopStore(pool, siteUrl, chatId, command.argument);
     else if (command?.command === "/parar") text = await handleStop(pool, chatId);
+    else if (command?.command === "/lojas") text = await handleList(pool, siteUrl, chatId);
+    else if (command?.command === "/ajuda") text = help();
     else text = fallback(siteUrl);
 
     return Response.json({ method: "sendMessage", chat_id: chatId, text });
@@ -62,7 +88,8 @@ async function handleStart(pool: BotPool, siteUrl: string, chatId: number, slug:
   if (!store) return storeNotFound(siteUrl);
 
   const subscriber = await upsertSubscriber(pool, chatId);
-  await ensureSubscription(pool, subscriber.id, store.id);
+  const result = await ensureSubscription(pool, subscriber.id, store.id);
+  if (result === "capped") return subscriptionCapped(store.name);
 
   const confirmation = confirmSubscription(store.name);
   return subscriber.isNew ? `${consentBlock(siteUrl)}\n\n${confirmation}` : confirmation;
@@ -71,4 +98,21 @@ async function handleStart(pool: BotPool, siteUrl: string, chatId: number, slug:
 async function handleStop(pool: BotPool, chatId: number): Promise<string> {
   await deleteSubscriber(pool, chatId);
   return stopped();
+}
+
+/**
+ * Resolve por identidade de loja, igual `/start` (ADR-0063): `/parar <slug-antigo>` de uma loja
+ * absorvida por um merge precisa continuar removendo a Inscrição certa.
+ */
+async function handleStopStore(pool: BotPool, siteUrl: string, chatId: number, slug: string): Promise<string> {
+  const store = await resolveStore(pool, slug);
+  if (!store) return storeNotFound(siteUrl);
+
+  const removed = await removeSubscription(pool, chatId, store.id);
+  return removed ? stoppedStore(store.name) : notSubscribed(store.name);
+}
+
+async function handleList(pool: BotPool, siteUrl: string, chatId: number): Promise<string> {
+  const items = await listSubscriptions(pool, chatId);
+  return subscriptionsList(items, siteUrl);
 }
