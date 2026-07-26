@@ -83,6 +83,8 @@ export const ALLOWED_TABLE_GRANTS = new Set([
   "farejo_notifier|public.offers|SELECT",
   "farejo_notifier|public.stores|SELECT",
   "farejo_notifier|public.platforms|SELECT",
+  // #119 (ADR-0063): só para o guard do workflow recusar rodar com um scrape em andamento.
+  "farejo_notifier|public.scrape_runs|SELECT",
 ]);
 
 export const ALLOWED_COLUMN_GRANTS = new Set([

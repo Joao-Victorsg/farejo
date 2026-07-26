@@ -1,0 +1,81 @@
+name: Avisos de cashback
+
+# F4/#119 (ADR-0063): roda depois de um scrape bem-sucedido, mesmo desenho e pelos mesmos dois
+# motivos do workflow de logos. Correção de dados: só faz sentido em cima de uma coleta aceita
+# pelo sanity check. Consistência do cursor: os sete jobs de scrape rodam em PARALELO, então ids
+# de `offer_history` podem ser atribuídos numa ordem e efetivados noutra — esperar o workflow
+# inteiro terminar é o que garante que tudo já está gravado quando o cursor é lido.
+#
+# workflow_dispatch existe para recuperação manual excepcional. Diferente de `logos.yml`, esse
+# caminho não é só "reexecutar" — ele pode se sobrepor a um scrape manual em andamento, e rodar os
+# Avisos nesse instante arrisca perder uma Melhoria para sempre (nextval não é transacional,
+# ADR-0063). O passo "Guard scrape em andamento" existe só para cobrir esse caso.
+on:
+  workflow_run:
+    workflows: [Scrape cashback]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: avisos-send
+  cancel-in-progress: false
+
+jobs:
+  send:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # ADR-0064/ADR-0065: credencial de farejo_notifier e o token do bot de PRODUTO — o segredo
+    # mais perigoso do projeto, porque quem o tiver manda mensagem a TODOS os assinantes se
+    # passando pelo farejô. Nunca reaproveita nenhum secret do scrape/curadoria/logos, e nunca
+    # chega à Vercel. O bot operacional que manda o resumo de run continua separado, com token
+    # próprio e sem webhook. Environment "avisos" precisa ser criado manualmente no repo antes do
+    # primeiro run real — mesma pendência operacional já registrada para o Environment "logos".
+    environment: avisos
+    steps:
+      - uses: actions/checkout@v4
+
+      # Falha rápido e explícito se o Environment ainda não tem os secrets configurados, em vez
+      # de gastar checkout/install/guard-de-banco só para descobrir isso depois — mesmo padrão do
+      # "Guard production secrets" do deploy.yml, inclusive checando FAREJO_SUPABASE_CA_CERT aqui
+      # (e não só deixando `createPostgresPool` recusar mais adiante, ADR-0055): sem ele nenhuma
+      # conexão remota deste job funciona, então também é obrigatório, não incidental.
+      - name: Guard avisos secrets
+        env:
+          FAREJO_NOTIFIER_DATABASE_URL: ${{ secrets.FAREJO_NOTIFIER_DATABASE_URL }}
+          FAREJO_AVISOS_BOT_TOKEN: ${{ secrets.FAREJO_AVISOS_BOT_TOKEN }}
+          FAREJO_SUPABASE_CA_CERT: ${{ secrets.FAREJO_SUPABASE_CA_CERT }}
+        run: |
+          missing=()
+          [ -z "$FAREJO_NOTIFIER_DATABASE_URL" ] && missing+=("FAREJO_NOTIFIER_DATABASE_URL")
+          [ -z "$FAREJO_AVISOS_BOT_TOKEN" ] && missing+=("FAREJO_AVISOS_BOT_TOKEN")
+          [ -z "$FAREJO_SUPABASE_CA_CERT" ] && missing+=("FAREJO_SUPABASE_CA_CERT")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::GitHub Environment \"avisos\" está sem os secrets: ${missing[*]}. Pendência operacional (mesmo padrão do Environment \"logos\"); envio bloqueado até serem configurados."
+            exit 1
+          fi
+
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      # #119 (ADR-0063): recusa rodar enquanto houver scrape_runs sem finished_at. O
+      # workflow_run acima cobre o caso normal; este guard cobre só o workflow_dispatch de
+      # recuperação, que pode se sobrepor a um scrape manual que o gatilho automático não alcança.
+      - run: pnpm --filter @farejo/scraper avisos:guard
+        env:
+          FAREJO_NOTIFIER_DATABASE_URL: ${{ secrets.FAREJO_NOTIFIER_DATABASE_URL }}
+          FAREJO_SUPABASE_CA_CERT: ${{ secrets.FAREJO_SUPABASE_CA_CERT }}
+
+      - run: pnpm --filter @farejo/scraper avisos:send
+        env:
+          FAREJO_NOTIFIER_DATABASE_URL: ${{ secrets.FAREJO_NOTIFIER_DATABASE_URL }}
+          FAREJO_AVISOS_BOT_TOKEN: ${{ secrets.FAREJO_AVISOS_BOT_TOKEN }}
+          FAREJO_SUPABASE_CA_CERT: ${{ secrets.FAREJO_SUPABASE_CA_CERT }}

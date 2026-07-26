@@ -99,6 +99,8 @@ export const EXPECTED_TABLE_GRANTS = [
   { role: "farejo_notifier", relation: "public.subscriptions", privilege: "SELECT" },
   { role: "farejo_notifier", relation: "public.offer_history", privilege: "SELECT" },
   { role: "farejo_notifier", relation: "public.subscribers", privilege: "DELETE" },
+  // #119 (ADR-0063): só para o guard do workflow recusar rodar com um scrape em andamento.
+  { role: "farejo_notifier", relation: "public.scrape_runs", privilege: "SELECT" },
 ] as const;
 
 export const EXPECTED_FUNCTION_GRANTS = [
