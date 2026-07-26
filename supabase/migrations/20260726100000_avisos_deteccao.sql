@@ -31,9 +31,10 @@ returns table (
   reward_type       text,
   value             double precision,
   is_upto           boolean,
-  previous_value    double precision,
-  previous_is_upto  boolean,
-  changed_at        timestamptz
+  previous_value       double precision,
+  previous_reward_type text,
+  previous_is_upto     boolean,
+  changed_at           timestamptz
 )
 language sql
 stable
@@ -77,6 +78,10 @@ as $$
     c.value::double precision,
     c.is_upto,
     prev.value::double precision,
+    -- A grandeza do lado ANTERIOR precisa viajar junto: no Modo acompanhamento as duas pontas
+    -- podem ter grandezas diferentes, e renderizar o valor antigo com a grandeza nova ("R$ 20"
+    -- virando "20%") afirmaria uma queda percentual que nunca existiu.
+    prev.reward_type,
     prev.is_upto,
     c.changed_at
   from candidate c
@@ -103,11 +108,24 @@ as $$
     when 'improvement' then
       prev.value is null or (prev.reward_type = c.reward_type and c.value > prev.value)
     -- Acompanhamento: qualquer mudança que aterrisse no Piso ou acima, em qualquer direção. A
-    -- comparação é INCLUSIVA: Piso é chão, e "valor mínimo de interesse" inclui o próprio valor —
-    -- quem pediu "a partir de 10%" espera ser avisado quando a loja marcar exatamente 10%, e o
-    -- sintoma de excluir a borda seria a ausência de mensagem, o pior modo de falha desta feature.
+    -- comparação com o piso é INCLUSIVA: Piso é chão, e "valor mínimo de interesse" inclui o
+    -- próprio valor — quem pediu "a partir de 10%" espera ser avisado quando a loja marcar
+    -- exatamente 10%, e o sintoma de excluir a borda seria a ausência de mensagem, o pior modo de
+    -- falha desta feature.
+    --
+    -- O terceiro termo é o que faz este modo ser sobre MUDANÇA, e não sobre estado. Sem ele, toda
+    -- linha de histórico acima do piso vira Aviso, inclusive as que não mexeram no valor: mudança
+    -- só em `value_partial` (grava linha com o mesmo `value`) e reativação pelo mesmo valor
+    -- passariam a avisar "5% → 5%". No Modo melhoria isso já não acontecia de graça, porque
+    -- "maior que" é estrito; aqui precisa ser dito.
+    --
+    -- `is_upto` fica FORA do teste de mudança, coerente com ele nunca participar de comparação:
+    -- `10%` virar `até 10%` é mudança de natureza, não de valor, e segue silenciosa — mesma
+    -- família da saída do piso, que também é silenciosa por decisão.
     when 'tracking' then
-      c.reward_type = c.floor_reward_type and c.value >= c.floor_value
+      c.reward_type = c.floor_reward_type
+      and c.value >= c.floor_value
+      and (prev.value is null or prev.reward_type <> c.reward_type or prev.value <> c.value)
     else false
   end
   order by c.telegram_chat_id, st.name, c.platform_id, c.history_id;

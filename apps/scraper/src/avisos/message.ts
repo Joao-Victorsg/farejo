@@ -4,17 +4,25 @@
  * A detecção mora em SQL (`alerts.pending_avisos`, ADR-0064); daqui para frente é apresentação.
  */
 
+/** As duas grandezas de **Reward**, que nunca se comparam entre si. */
+export type RewardType = "percent" | "fixed";
+
 export interface PendingTransition {
   subscriberId: number;
   telegramChatId: string;
-  historyId: string;
   storeName: string;
   platformName: string;
-  rewardType: string;
+  rewardType: RewardType;
   value: number;
   isUpto: boolean;
   /** `null` quando não havia valor anterior conhecido: é oferta nova. */
   previousValue: number | null;
+  /**
+   * A grandeza do lado anterior, que pode diferir da atual no **Modo acompanhamento** — lá as duas
+   * pontas não precisam ser do mesmo tipo. Renderizar o valor antigo com a grandeza nova
+   * transformaria "R$ 20 → até 6%" em "20% → até 6%", afirmando uma queda que nunca existiu.
+   */
+  previousRewardType: RewardType | null;
   previousIsUpto: boolean;
 }
 
@@ -24,8 +32,44 @@ export interface Aviso {
   text: string;
 }
 
-/** "5%", "4,5%", "até 10%", "R$ 15", "R$ 15,50" — pt-BR, sem zero à direita inútil. */
-export function formatReward(value: number, rewardType: string, isUpto: boolean): string {
+/**
+ * Limite duro do `text` de `sendMessage` no Bot API. Estourá-lo devolve HTTP 400 — o MESMO status
+ * de "chat not found" —, e o caminho de revogação apaga dado pessoal. Cortar aqui remove a
+ * ambiguidade na origem, em vez de depender do transporte desambiguar depois.
+ *
+ * Alcançável de verdade: um lote acumulado (Telegram fora do ar por alguns runs) com muitas lojas
+ * assinadas cresce sem teto, e a decisão de não colapsar transições faz cada oscilação virar linha.
+ */
+const TELEGRAM_TEXT_LIMIT = 4096;
+
+const HEADER = "🔔 Mudou o cashback nas suas lojas";
+
+/** Mantém blocos inteiros: cortar no meio de uma loja entregaria uma linha sem contexto. */
+function fitWithinLimit(blocks: readonly string[]): string {
+  const full = [HEADER, ...blocks].join("\n\n");
+  if (full.length <= TELEGRAM_TEXT_LIMIT) return full;
+
+  const kept: string[] = [];
+  for (const [index, block] of blocks.entries()) {
+    const remaining = blocks.length - index;
+    const tail = `… e mais ${remaining} ${remaining === 1 ? "loja" : "lojas"} com mudanças.`;
+    const candidate = [HEADER, ...kept, block, tail].join("\n\n");
+    if (candidate.length > TELEGRAM_TEXT_LIMIT) break;
+    kept.push(block);
+  }
+
+  const dropped = blocks.length - kept.length;
+  if (dropped === 0) return full;
+  return [HEADER, ...kept, `… e mais ${dropped} ${dropped === 1 ? "loja" : "lojas"} com mudanças.`].join("\n\n");
+}
+
+/**
+ * "5%", "4,50%", "até 10%", "R$ 15", "R$ 15,50" — pt-BR.
+ *
+ * `rewardType` é união literal, não `string`, de propósito: com `string` um valor inesperado cairia
+ * no ramo percentual em silêncio, que é exatamente a mistura de `%` com `R$` que o domínio proíbe.
+ */
+export function formatReward(value: number, rewardType: RewardType, isUpto: boolean): string {
   const decimals = Number.isInteger(value) ? 0 : 2;
   const number = value.toFixed(decimals).replace(".", ",");
   const rendered = rewardType === "fixed" ? `R$ ${number}` : `${number}%`;
@@ -45,9 +89,11 @@ export function formatReward(value: number, rewardType: string, isUpto: boolean)
  */
 function formatLine(transition: PendingTransition): string {
   const current = formatReward(transition.value, transition.rewardType, transition.isUpto);
-  if (transition.previousValue === null) return `• ${transition.platformName}: novo, ${current}`;
+  if (transition.previousValue === null || transition.previousRewardType === null) {
+    return `• ${transition.platformName}: novo, ${current}`;
+  }
 
-  const previous = formatReward(transition.previousValue, transition.rewardType, transition.previousIsUpto);
+  const previous = formatReward(transition.previousValue, transition.previousRewardType, transition.previousIsUpto);
   return `• ${transition.platformName}: ${previous} → ${current}`;
 }
 
@@ -87,7 +133,7 @@ export function buildAvisos(transitions: readonly PendingTransition[]): Aviso[] 
       // Cabeçalho NEUTRO de propósito: no Modo acompanhamento uma linha pode ser queda que
       // continua acima do Piso, e "subiu!" mentiria. Os dois valores de cada linha mostram a
       // direção, e o "até" mostra a natureza.
-      text: ["🔔 Mudou o cashback nas suas lojas", "", ...blocks].join("\n\n"),
+      text: fitWithinLimit(blocks),
     };
   });
 }

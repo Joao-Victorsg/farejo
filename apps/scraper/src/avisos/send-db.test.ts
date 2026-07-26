@@ -62,9 +62,14 @@ async function history(
   // `offer_history` tem FK composta para `offers(store_id, platform_id)`: a série só existe
   // pendurada numa oferta. Os valores da oferta em si não participam da detecção — quem manda é
   // o histórico —, mas a linha precisa existir.
+  //
+  // `last_seen_at` bem no passado de propósito: assim a oferta fica FORA da janela de frescor de
+  // 48 h e não entra no catálogo público. Sem isso estas fixtures inflariam a contagem de lojas
+  // elegíveis e quebrariam o teste de cobertura de logos, que roda em paralelo contra o mesmo
+  // banco e conta o catálogo inteiro.
   await admin.query(
     `insert into public.offers (store_id, platform_id, reward_type, value, raw_text, url, active, last_seen_at)
-     values ($1, $2, $3, coalesce($4::numeric, 0), 'fixture', 'https://example.test/issue114', true, now())
+     values ($1, $2, $3, coalesce($4::numeric, 0), 'fixture', 'https://example.test/issue114', true, now() - interval '30 days')
      on conflict (store_id, platform_id) do update set value = coalesce(excluded.value, public.offers.value)`,
     [storeId, platformId, entry.rewardType ?? "percent", entry.value],
   );
@@ -273,6 +278,49 @@ describe("Modo acompanhamento — o Piso decide", () => {
     await sendPendingAvisos(notifier, transport);
 
     expect(sent).toHaveLength(1);
+  });
+
+  // O Modo acompanhamento é sobre MUDANÇA, não sobre estado. Sem um teste de "o valor mexeu?",
+  // toda linha de histórico acima do piso viraria Aviso — inclusive as que não mexeram no valor.
+  it("não avisa quando só o value_partial muda, mesmo acima do Piso", async () => {
+    const store = await createStore("piso-parcial", "Loja Piso Parcial");
+    await history(store, "inter", { value: 12, valuePartial: 1 }, "2026-07-01T00:00:00Z");
+    await history(store, "inter", { value: 12, valuePartial: 2 }, "2026-07-02T00:00:00Z");
+    await subscribe(CHAT_BASE + 21, store, { mode: "tracking", floorValue: 10, floorRewardType: "percent" });
+
+    const { transport, sent } = transportSpy();
+    await sendPendingAvisos(notifier, transport);
+
+    expect(sent).toEqual([]);
+  });
+
+  it("não avisa quando a loja some e volta pelo mesmo valor, mesmo acima do Piso", async () => {
+    const store = await createStore("piso-volta", "Loja Piso Volta");
+    await history(store, "cuponomia", { value: 12 }, "2026-07-01T00:00:00Z");
+    await history(store, "cuponomia", { value: null }, "2026-07-02T00:00:00Z");
+    await history(store, "cuponomia", { value: 12 }, "2026-07-03T00:00:00Z");
+    await subscribe(CHAT_BASE + 22, store, { mode: "tracking", floorValue: 10, floorRewardType: "percent" });
+
+    const { transport, sent } = transportSpy();
+    await sendPendingAvisos(notifier, transport);
+
+    expect(sent).toEqual([]);
+  });
+
+  // No acompanhamento as duas pontas podem ter grandezas diferentes: a baseline é o último valor
+  // não-nulo do par, seja qual for o tipo.
+  it("mostra a grandeza de cada lado quando elas diferem, sem inventar uma queda percentual", async () => {
+    const store = await createStore("piso-grandezas", "Loja Grandezas");
+    await history(store, "cuponomia", { value: 20, rewardType: "fixed" }, "2026-07-01T00:00:00Z");
+    await history(store, "cuponomia", { value: 12, rewardType: "percent" }, "2026-07-02T00:00:00Z");
+    await subscribe(CHAT_BASE + 23, store, { mode: "tracking", floorValue: 10, floorRewardType: "percent" });
+
+    const { transport, sent } = transportSpy();
+    await sendPendingAvisos(notifier, transport);
+
+    expect(sent).toHaveLength(1);
+    expect(sent[0]!.text).toContain("R$ 20 → 12%");
+    expect(sent[0]!.text).not.toContain("20%");
   });
 
   it("ignora a grandeza que não é a do Piso", async () => {

@@ -25,12 +25,26 @@ const TelegramResponse = z.object({
 });
 
 /**
- * Sinais definitivos de revogação, segundo o Bot API: 403 quando a pessoa bloqueou o bot, 400
- * quando o chat não existe mais (conta apagada). Qualquer outro status é falha temporária — a
- * entrega fica para o run seguinte, e o cursor não avança.
+ * Descrições de 400 que significam "este chat não existe mais". O Bot API usa 400 para QUALQUER
+ * erro de cliente — inclusive "message is too long" —, então status sozinho não distingue
+ * revogação de problema de conteúdo. E a diferença é grave: revogação apaga dado pessoal
+ * (ADR-0066), irreversivelmente. Um lote acumulado grande devolveria 400, e tratar isso como
+ * revogação apagaria um assinante ativo por causa do TAMANHO da própria mensagem.
  */
-function outcomeForStatus(status: number): TransportOutcome {
-  return status === 403 || status === 400 ? "revoked" : "failed";
+const CHAT_GONE_DESCRIPTIONS = ["chat not found", "user is deactivated", "peer_id_invalid", "chat_id is empty"];
+
+/**
+ * Revogação exige sinal DEFINITIVO. 403 é sempre definitivo em chat privado (bot bloqueado, conta
+ * desativada, bot removido). 400 só conta quando a descrição diz que o chat sumiu; qualquer outro
+ * 400 é problema nosso, não da pessoa, e vira falha temporária — a entrega fica para o run
+ * seguinte e o cursor não avança.
+ */
+function outcomeFor(status: number, description: string | undefined): TransportOutcome {
+  if (status === 403) return "revoked";
+  if (status !== 400) return "failed";
+
+  const normalized = (description ?? "").toLowerCase();
+  return CHAT_GONE_DESCRIPTIONS.some((known) => normalized.includes(known)) ? "revoked" : "failed";
 }
 
 export function createTelegramTransport(token: string, fetchImplementation: typeof globalThis.fetch = globalThis.fetch): AvisoTransport {
@@ -45,9 +59,13 @@ export function createTelegramTransport(token: string, fetchImplementation: type
         signal: AbortSignal.timeout(10_000),
       });
 
-      if (!response.ok) return outcomeForStatus(response.status);
+      // O corpo é lido MESMO em erro: `description` é o único campo que distingue chat inexistente
+      // de mensagem malformada, e é ele que decide se um assinante será apagado.
+      const payload = TelegramResponse.safeParse(await response.json().catch(() => null));
+      const description = payload.success ? payload.data.description : undefined;
 
-      const payload = TelegramResponse.safeParse(await response.json());
+      if (!response.ok) return outcomeFor(response.status, description);
+
       return payload.success && payload.data.ok ? "sent" : "failed";
     } catch {
       // Rede, timeout, JSON inválido: temporário por definição. Nunca revogação — apagar dado
