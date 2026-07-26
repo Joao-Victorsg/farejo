@@ -1,12 +1,25 @@
 import { timingSafeEqual } from "node:crypto";
 import type { BotPool } from "./db.js";
-import { deleteSubscriber, ensureSubscription, listSubscriptions, removeSubscription, resolveStore, upsertSubscriber } from "./db.js";
+import {
+  currentOfferRewardTypes,
+  deleteSubscriber,
+  ensureSubscription,
+  listSubscriptions,
+  removeSubscription,
+  resolveStore,
+  setSubscriptionFloor,
+  upsertSubscriber,
+} from "./db.js";
+import { floorMismatchHint, parseFloorValue, splitPisoArgument } from "./floor.js";
 import {
   confirmSubscription,
   consentBlock,
   fallback,
+  floorSet,
   help,
+  invalidFloorValue,
   notSubscribed,
+  notSubscribedForFloor,
   privacy,
   stopped,
   stoppedStore,
@@ -70,6 +83,7 @@ export function createBotHandler(config: BotHandlerConfig): (request: Request) =
 
     let text: string;
     if (command?.command === "/start") text = await handleStart(pool, siteUrl, chatId, command.argument);
+    else if (command?.command === "/piso") text = await handlePiso(pool, siteUrl, chatId, command.argument);
     else if (command?.command === "/privacidade") text = privacy(siteUrl);
     else if (command?.command === "/parar" && command.argument) text = await handleStopStore(pool, siteUrl, chatId, command.argument);
     else if (command?.command === "/parar") text = await handleStop(pool, chatId);
@@ -115,4 +129,26 @@ async function handleStopStore(pool: BotPool, siteUrl: string, chatId: number, s
 async function handleList(pool: BotPool, siteUrl: string, chatId: number): Promise<string> {
   const items = await listSubscriptions(pool, chatId);
   return subscriptionsList(items, siteUrl);
+}
+
+/**
+ * F4/#117 (ADR-0063) — `/piso <slug> <valor>` troca a Inscrição para Modo acompanhamento. A ordem
+ * das checagens sobe de custo: gramática (pura, sem banco) → resolver a loja → só então gravar —
+ * um comando malformado nunca chega a abrir uma query.
+ */
+async function handlePiso(pool: BotPool, siteUrl: string, chatId: number, argument: string | undefined): Promise<string> {
+  const split = splitPisoArgument(argument);
+  if (!split) return invalidFloorValue();
+
+  const floor = parseFloorValue(split.valueText);
+  if (!floor) return invalidFloorValue();
+
+  const store = await resolveStore(pool, split.slug);
+  if (!store) return storeNotFound(siteUrl);
+
+  const updated = await setSubscriptionFloor(pool, chatId, store.id, floor);
+  if (!updated) return notSubscribedForFloor(store.name);
+
+  const eligibleTypes = await currentOfferRewardTypes(pool, store.slug);
+  return floorSet(store.name, floor, floorMismatchHint(floor.rewardType, eligibleTypes));
 }

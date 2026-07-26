@@ -1,4 +1,5 @@
 import type { RewardType, Subscription } from "./db.js";
+import type { FloorMismatchHint, ParsedFloor } from "./floor.js";
 
 /**
  * F4/#116-#118 (ADR-0066) — todo texto que o bot manda vive aqui, num lugar só.
@@ -59,11 +60,20 @@ export function notSubscribed(storeName: string): string {
   return `Você não tem uma Inscrição na ${storeName}.`;
 }
 
+/** `/piso` ajusta uma Inscrição existente — não a cria (`db.ts#setSubscriptionFloor`). Mensagem própria porque a orientação (usar `/start`) é específica desse comando, diferente do `notSubscribed` genérico do `/parar <slug>`. */
+export function notSubscribedForFloor(storeName: string): string {
+  return `Você ainda não acompanha a loja ${storeName}. Use /start <loja> antes de definir um piso.`;
+}
+
 export function subscriptionCapped(storeName: string): string {
   return `Você já tem 10 lojas na sua lista, o teto por Assinante. Remova uma com /parar <slug> antes de adicionar ${storeName}.`;
 }
 
-/** "5%", "4,50%", "R$ 15", "R$ 15,50" — mesma formatação pt-BR do texto do Aviso (`avisos/message.ts`). */
+/**
+ * "5%", "4,50%", "R$ 15", "R$ 15,50" — mesma formatação pt-BR do texto do Aviso (`avisos/message.ts`).
+ * Único helper para as duas grandezas do domínio: `/lojas` (via `Subscription.modeInfo`, #118) e
+ * `/piso` (via `ParsedFloor`, #117) formatam o mesmo par (valor, grandeza), só a origem difere.
+ */
 function formatFloor(value: number, rewardType: RewardType): string {
   const decimals = Number.isInteger(value) ? 0 : 2;
   const number = value.toFixed(decimals).replace(".", ",");
@@ -89,10 +99,40 @@ export function help(): string {
   return [
     "Comandos disponíveis:",
     "/start <loja> — acompanhar uma loja",
+    "/piso <loja> <valor> — definir um piso e acompanhar a partir dele",
     "/lojas — ver suas Inscrições",
     "/parar <loja> — remover uma Inscrição",
     "/parar — remover tudo e apagar sua conta",
     "/privacidade — o que guardamos e como apagar",
     "/ajuda — esta mensagem",
+  ].join("\n");
+}
+
+const UNIT_EXAMPLE: Record<RewardType, string> = {
+  percent: "10 ou 10%",
+  fixed: "R$ 25 ou 25 reais",
+};
+
+/**
+ * Toda escrita de piso responde com o ESTADO RESULTANTE da Inscrição (modo + piso), nunca um "ok"
+ * (AC #117) — inclusive quando há incompatibilidade de grandeza: o piso é gravado do mesmo jeito
+ * (ADR-0063, silêncio é o pior modo de falha), e o aviso vem OPCIONAL, depois do estado.
+ */
+export function floorSet(storeName: string, floor: ParsedFloor, hint: FloorMismatchHint): string {
+  const state = `✅ Pronto! A loja ${storeName} está em Modo acompanhamento, piso ${formatFloor(floor.value, floor.rewardType)} — aviso a partir daí.`;
+
+  if (hint.kind === "match") return state;
+  if (hint.kind === "no-eligible-offers") {
+    return `${state}\n\n⚠️ Não encontrei oferta elegível dessa loja agora para conferir — o piso fica valendo, é só não ter como confirmar que ele bate com alguma oferta corrente.`;
+  }
+  const suggestedUnit = hint.suggestedType === "fixed" ? "R$" : "%";
+  return `${state}\n\n⚠️ Hoje a loja ${storeName} só tem oferta elegível em ${suggestedUnit}. Se era isso que você queria, tente de novo com ${UNIT_EXAMPLE[hint.suggestedType]}.`;
+}
+
+export function invalidFloorValue(): string {
+  return [
+    "Não entendi esse piso. Formas aceitas:",
+    "/piso <loja> 10 ou /piso <loja> 10% — piso percentual",
+    "/piso <loja> R$ 25 ou /piso <loja> 25 reais — piso em reais",
   ].join("\n");
 }
