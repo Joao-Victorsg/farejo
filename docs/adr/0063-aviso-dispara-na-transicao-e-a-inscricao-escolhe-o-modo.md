@@ -41,12 +41,17 @@ afirmaria aumento onde o piso garantido caiu.
 - **Modo melhoria** (padrão do `/start`): avisa em toda Melhoria. Quedas e fim de oferta são
   silenciosos.
 - **Modo acompanhamento**: tem um **Piso** X, tipado como Reward, e avisa em **qualquer** mudança de
-  valor que aterrisse acima de X — subindo ou descendo. Piso em `percent` só observa ofertas
+  valor que aterrisse **em X ou acima** — subindo ou descendo. Piso em `percent` só observa ofertas
   percentuais; piso em `fixed`, só as em reais.
 
+A comparação é **inclusiva** (`>= X`), precisão feita na implementação (#114): piso é chão, e uma
+oferta que marca exatamente X está nele, não abaixo dele. Excluir a borda faria quem pediu "a partir
+de 10%" não ser avisado justamente em 10%, e o sintoma seria a ausência de mensagem — o pior modo de
+falha desta feature.
+
 A saída da região do piso — inclusive por fim da oferta — é **silenciosa**, por consequência da
-regra: nenhum valor abaixo de X, e nenhuma desativação (`value = null`), satisfaz "acima de X". Foi
-uma escolha deliberada, não um esquecimento (ver Consequências).
+regra: nenhum valor abaixo de X, e nenhuma desativação (`value = null`), a satisfaz. Foi uma escolha
+deliberada, não um esquecimento (ver Consequências).
 
 **Um Aviso por (assinante, run).** A mensagem reúne todas as Melhorias daquele run em todas as
 inscrições da pessoa, agrupadas por loja e, dentro da loja, por plataforma. Não é uma mensagem por
