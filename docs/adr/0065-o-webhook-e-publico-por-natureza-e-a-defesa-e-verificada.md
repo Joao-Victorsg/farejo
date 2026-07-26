@@ -30,11 +30,24 @@ foi isso que decidiu a escolha de plataforma na ADR-0064.
    real continua sendo o segredo. Header inválido responde **401 sem corpo**, sem revelar se um chat
    ou uma loja existe.
 
-**O smoke pós-deploy afirma a camada externa.** A regra de WAF é um controle crítico configurado no
-dashboard, invisível no código e silenciosamente ausente se alguém a apagar. O runner do GitHub
-Actions **não** está nas faixas do Telegram, então uma requisição dele para o webhook **tem que ser
-negada na borda**, sem chegar à aplicação; e uma requisição com header errado tem que responder 401.
-É a mesma filosofia da ADR-0062 (provar o negativo) e da ADR-0059 (afirmar conteúdo, não só status).
+**O smoke pós-deploy afirma a camada externa (#120).** A regra de WAF é um controle crítico
+configurado no dashboard, invisível no código e silenciosamente ausente se alguém a apagar. O
+runner do GitHub Actions **não** está nas faixas do Telegram, então uma requisição dele para o
+webhook, sem nenhum header extra, **tem que ser negada na borda** — Vercel documenta `deny` como
+`403 Forbidden` antes da aplicação, status estável o bastante para afirmar em automação. É a mesma
+filosofia da ADR-0062 (provar o negativo) e da ADR-0059 (afirmar conteúdo, não só status).
+
+A segunda metade da promessa — "requisição com header errado responde 401" — exige que o próprio
+smoke ATRAVESSE a regra de deny, senão testaria só a rede de novo. `x-vercel-protection-bypass`
+(usado pelo smoke do site para passar pela Deployment Protection) não serve para isso: a
+documentação da Vercel descreve Deployment Protection e regra de WAF como camadas distintas, sem
+garantir que o bypass de uma alcance a outra. A solução é uma **segunda regra na Vercel, de
+Bypass**, com prioridade maior que a de deny, casando um header próprio deste projeto —
+`x-farejo-bot-smoke-bypass`, com o valor de `FAREJO_BOT_WAF_BYPASS_SECRET` — e só esse header.
+Tráfego real do Telegram nunca o carrega (chega pelo IP permitido, sem precisar de bypass nenhum);
+quem só tiver a URL não tem esse segredo. O smoke manda os dois bypasses juntos (rede + Deployment
+Protection) e um `secret_token` errado de propósito, provando que a autenticação de aplicação
+continua de pé mesmo depois de furar a camada de rede — nenhuma das duas garante a outra sozinha.
 
 **Redução de superfície:**
 
@@ -70,7 +83,17 @@ pelo farejô —, então ele não convive no mesmo Environment que o `service_ro
   o site é afetado — `apps/web` lê Postgres direto via Supavisor e não passa por este deployable. A
   feature falha sozinha.
 - **Pendências operacionais**, no mesmo padrão do Environment `logos`: criar o bot de produto no
-  BotFather, criar o projeto `apps/bot` na Vercel, criar a regra de WAF e rodar o `setWebhook`. Sem
-  elas o workflow falha cedo, num passo de guarda.
+  BotFather, criar o projeto `apps/bot` na Vercel, criar a regra de WAF (deny fora das faixas do
+  Telegram) e a regra de Bypass (`x-farejo-bot-smoke-bypass`, prioridade maior, #120), rodar o
+  `setWebhook`, e configurar o Environment `bot` com `VERCEL_TOKEN`/`VERCEL_ORG_ID`/
+  `VERCEL_PROJECT_ID`/`FAREJO_BOT_WEBHOOK_PATH`/`FAREJO_BOT_WAF_BYPASS_SECRET`/
+  `VERCEL_AUTOMATION_BYPASS_SECRET`. **Diferente do padrão de "falha cedo, num passo de guarda"**
+  usado em `deploy.yml`/`avisos.yml`: `deploy-bot.yml` (#120) dispara em todo "Deploy production"
+  bem-sucedido — ou seja, em todo merge para `master` —, então a ausência do Environment vira só um
+  aviso e o job de publicação do bot é pulado, verde, em vez de um red X permanente até a
+  configuração existir. Ao criar o projeto na Vercel, `FAREJO_BOT_DATABASE_URL`/
+  `FAREJO_BOT_WEBHOOK_SECRET`/`FAREJO_SITE_URL` (variáveis de runtime, lidas pelo próprio bot) têm
+  que ser escopadas só para Production — mesmo alerta já registrado para `apps/web` (ADR-0037):
+  nenhuma delas pode chegar a Preview.
 - O Hobby da Vercel permite **3 regras** de WAF — orçamento fixo compartilhado com qualquer regra
   futura do site.

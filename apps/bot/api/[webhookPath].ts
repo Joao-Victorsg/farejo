@@ -11,7 +11,13 @@ import { createBotHandler } from "../src/handler.js";
  *
  * Handler e pool são construídos uma vez por cold start (padrão já usado em `apps/web/src/lib/
  * catalog.ts`): variável de ambiente ausente falha explícito na primeira requisição, não no import.
+ *
+ * `runtime: "nodejs"` explícito (#120): já era o default de projeto sem framework, mas declarado
+ * de propósito — documenta a exigência do driver `pg` (socket TCP cru, inviável em edge), mesmo
+ * padrão non-negotiable já usado em `apps/web/.../go/[storeSlug]/[platformId]/route.ts`.
  */
+export const config = { runtime: "nodejs" };
+
 function requiredEnv(name: string): string {
   const value = process.env[name];
   if (!value) throw new Error(`${name} não configurada`);
