@@ -13,7 +13,8 @@
     "curate:propose": "tsx src/curation/proposeCandidates.ts",
     "logos:ingest": "tsx src/logos/ingest.ts",
     "logos:coverage": "tsx src/logos/coverage.ts",
-    "avisos:send": "tsx src/avisos/send.ts"
+    "avisos:send": "tsx src/avisos/send.ts",
+    "avisos:guard": "tsx src/avisos/guard.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1090.0",
