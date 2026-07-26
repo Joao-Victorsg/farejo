@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { FloorRewardType, ParsedFloor } from "./floor.js";
 
 /**
  * F4/#116 (ADR-0064) — as únicas queries que o handler faz, todas sob `farejo_bot`.
@@ -10,8 +11,9 @@ import { z } from "zod";
  * Toda linha que volta do Postgres é dado externo como qualquer outro (mesma disciplina de
  * `apps/scraper/src/avisos/send.ts` e `apps/web/src/lib/catalog.ts`): valida com zod ANTES de
  * virar tipo de domínio. `.parse()` (não `.safeParse()`) porque cada função aqui busca no máximo
- * uma linha para o próprio request — uma linha fora do contrato é defeito nosso, não dado de
- * terceiro num lote, e deve estourar alto em vez de ser silenciosamente descartada.
+ * uma linha (ou, em `currentOfferRewardTypes`, um punhado por loja — nunca um lote de terceiro)
+ * para o próprio request — uma linha fora do contrato é defeito nosso, e deve estourar alto em
+ * vez de ser silenciosamente descartada.
  */
 export interface BotPool {
   query<T = unknown>(text: string, params?: unknown[]): Promise<{ rows: T[] }>;
@@ -20,6 +22,9 @@ export interface BotPool {
 export interface ResolvedStore {
   id: number;
   name: string;
+  // Slug CANÔNICO (pós-redirect): #117 precisa dele para consultar `web_read.catalog_offers`,
+  // que é chaveada por `store_slug`, não por id.
+  slug: string;
 }
 
 const RedirectRow = z.object({ to_slug: z.string() });
@@ -38,7 +43,7 @@ export async function resolveStore(pool: BotPool, slug: string): Promise<Resolve
 
   const store = await pool.query<unknown>("select id, name from public.stores where slug = $1", [canonicalSlug]);
   const row = StoreRow.nullable().parse(store.rows[0] ?? null);
-  return row ? { id: row.id, name: row.name } : null;
+  return row ? { id: row.id, name: row.name, slug: canonicalSlug } : null;
 }
 
 export interface UpsertedSubscriber {
@@ -92,4 +97,39 @@ export async function ensureSubscription(pool: BotPool, subscriberId: number, st
 export async function deleteSubscriber(pool: BotPool, telegramChatId: number): Promise<boolean> {
   const deleted = await pool.query<unknown>("delete from public.subscribers where telegram_chat_id = $1 returning id", [telegramChatId]);
   return deleted.rows.length > 0;
+}
+
+const CurrentOfferRow = z.object({ reward_type: z.enum(["percent", "fixed"]) });
+
+/**
+ * Grandezas com ao menos uma Oferta pública elegível da loja, na MESMA definição do catálogo
+ * (`web_read.catalog_offers`: `active = true` e frescor de 48 h, ADR-0064) — nunca a tabela
+ * `public.offers` crua, que `farejo_bot` nem enxerga (#117). Lendo a tabela crua o bot confirmaria
+ * um piso contra oferta que o site já considera expirada: duas definições de "oferta válida" no
+ * mesmo produto.
+ */
+export async function currentOfferRewardTypes(pool: BotPool, storeSlug: string): Promise<Set<FloorRewardType>> {
+  const result = await pool.query<unknown>("select distinct reward_type from web_read.catalog_offers where store_slug = $1", [storeSlug]);
+  return new Set(result.rows.map((row) => CurrentOfferRow.parse(row).reward_type));
+}
+
+/**
+ * Ajusta o Piso de uma Inscrição já existente — sempre UPDATE, nunca INSERT (#117). `/piso` não
+ * cria Inscrição: ela só nasce no `/start` (`ensureSubscription` acima), então rodar o comando
+ * numa loja nunca assinada devolve `false` em vez de inventar Modo e Piso do nada — a UI não tem
+ * como saber se a pessoa quis dizer aquilo. Ajustar o valor depois é outro UPDATE na mesma chave
+ * primária `(subscriber_id, store_id)`, nunca recria a linha.
+ */
+export async function setSubscriptionFloor(pool: BotPool, telegramChatId: number, storeId: number, floor: ParsedFloor): Promise<boolean> {
+  const result = await pool.query<unknown>(
+    `update public.subscriptions s
+     set mode = 'tracking', floor_value = $1, floor_reward_type = $2
+     from public.subscribers sub
+     where sub.id = s.subscriber_id
+       and sub.telegram_chat_id = $3
+       and s.store_id = $4
+     returning s.store_id`,
+    [floor.value, floor.rewardType, telegramChatId, storeId],
+  );
+  return result.rows.length > 0;
 }

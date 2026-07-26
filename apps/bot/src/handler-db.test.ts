@@ -75,6 +75,59 @@ async function cleanFixtures() {
   await admin.query("delete from public.stores where slug like $1", [`${fixturePrefix}%`]);
 }
 
+// F4/#117 — faixa de fixtures própria (chat 917100–917199, prefixo "issue117bot"), separada da
+// de #116 (911800) e da de #118 (918100), que rodam em worktrees irmãs contra o MESMO Postgres.
+const pisoPrefix = "issue117bot";
+const PISO_CHAT = 917100;
+
+async function insertPisoStore(suffix: string, name: string): Promise<{ id: number; slug: string }> {
+  const slug = `${pisoPrefix}${suffix}`;
+  const result = await admin.query<{ id: number }>("insert into public.stores (slug, name) values ($1, $2) returning id", [slug, name]);
+  return { id: result.rows[0]!.id, slug };
+}
+
+/** Oferta pública elegível por padrão (`active=true`, `last_seen_at` recente) — `hoursOld` empurra pra fora do frescor de 48h quando o teste precisa de uma oferta NÃO elegível. */
+async function insertPisoOffer(
+  storeId: number,
+  platformId: string,
+  rewardType: "percent" | "fixed",
+  value: number,
+  options: { active?: boolean; hoursOld?: number } = {},
+) {
+  await admin.query(
+    `insert into public.offers (store_id, platform_id, reward_type, value, is_upto, raw_text, url, active, last_seen_at)
+     values ($1, $2, $3, $4, false, $5, $6, $7, now() - ($8::text || ' hours')::interval)`,
+    [storeId, platformId, rewardType, value, `${value}`, `https://example.test/${platformId}`, options.active ?? true, String(options.hoursOld ?? 0)],
+  );
+}
+
+async function insertPisoSubscriber(chatId: number): Promise<number> {
+  const result = await admin.query<{ id: number }>("insert into public.subscribers (telegram_chat_id) values ($1) returning id", [chatId]);
+  return result.rows[0]!.id;
+}
+
+async function insertPisoSubscription(subscriberId: number, storeId: number) {
+  await admin.query("insert into public.subscriptions (subscriber_id, store_id, mode) values ($1, $2, 'improvement')", [subscriberId, storeId]);
+}
+
+async function pisoSubscriptionOf(chatId: number, storeSlug: string) {
+  const result = await admin.query<{ mode: string; floor_value: string | null; floor_reward_type: string | null }>(
+    `select s.mode, s.floor_value, s.floor_reward_type
+     from public.subscriptions s
+     join public.subscribers sub on sub.id = s.subscriber_id
+     join public.stores st on st.id = s.store_id
+     where sub.telegram_chat_id = $1 and st.slug = $2`,
+    [chatId, storeSlug],
+  );
+  return result.rows[0] ?? null;
+}
+
+async function cleanPisoFixtures() {
+  await admin.query("delete from public.subscribers where telegram_chat_id between $1 and $2", [PISO_CHAT, PISO_CHAT + 99]);
+  await admin.query("delete from public.offers where store_id in (select id from public.stores where slug like $1)", [`${pisoPrefix}%`]);
+  await admin.query("delete from public.stores where slug like $1", [`${pisoPrefix}%`]);
+}
+
 beforeAll(async () => {
   await admin.connect();
   await bot.connect();
@@ -237,6 +290,195 @@ describe("dado mínimo (ADR-0066)", () => {
 
     expect(response.status).toBe(200);
     expect(await subscriptionsOfChat()).toEqual([]);
+  });
+});
+
+describe("/piso (#117, ADR-0063)", () => {
+  beforeEach(async () => {
+    await cleanPisoFixtures();
+  });
+
+  afterAll(async () => {
+    await cleanPisoFixtures();
+  });
+
+  it("define piso percentual com número puro e troca a Inscrição para Modo acompanhamento", async () => {
+    const store = await insertPisoStore("amazon", "Amazon");
+    await insertPisoOffer(store.id, "meliuz", "percent", 5);
+    const subscriberId = await insertPisoSubscriber(PISO_CHAT);
+    await insertPisoSubscription(subscriberId, store.id);
+
+    const reply = await replyOf(await handler()(request(update(`/piso ${store.slug} 10`, PISO_CHAT))));
+
+    expect(reply.text).toMatch(/10%/);
+    expect(reply.text).toMatch(/acompanhamento/i);
+    const subscription = await pisoSubscriptionOf(PISO_CHAT, store.slug);
+    expect(subscription).toMatchObject({ mode: "tracking", floor_reward_type: "percent" });
+    expect(Number(subscription!.floor_value)).toBe(10);
+  });
+
+  it("aceita '10%' explícito como piso percentual", async () => {
+    const store = await insertPisoStore("kabum-pct", "KaBuM");
+    await insertPisoOffer(store.id, "meliuz", "percent", 5);
+    const subscriberId = await insertPisoSubscriber(PISO_CHAT + 1);
+    await insertPisoSubscription(subscriberId, store.id);
+
+    await handler()(request(update(`/piso ${store.slug} 10%`, PISO_CHAT + 1)));
+
+    const subscription = await pisoSubscriptionOf(PISO_CHAT + 1, store.slug);
+    expect(subscription).toMatchObject({ mode: "tracking", floor_reward_type: "percent" });
+    expect(Number(subscription!.floor_value)).toBe(10);
+  });
+
+  it("define piso em reais com 'R$ 25'", async () => {
+    const store = await insertPisoStore("betera", "Betera");
+    await insertPisoOffer(store.id, "cuponomia", "fixed", 15);
+    const subscriberId = await insertPisoSubscriber(PISO_CHAT + 2);
+    await insertPisoSubscription(subscriberId, store.id);
+
+    const reply = await replyOf(await handler()(request(update(`/piso ${store.slug} R$ 25`, PISO_CHAT + 2))));
+
+    expect(reply.text).toMatch(/R\$\s*25/);
+    const subscription = await pisoSubscriptionOf(PISO_CHAT + 2, store.slug);
+    expect(subscription).toMatchObject({ mode: "tracking", floor_reward_type: "fixed" });
+    expect(Number(subscription!.floor_value)).toBe(25);
+  });
+
+  it("define piso em reais com '25 reais'", async () => {
+    const store = await insertPisoStore("truebet", "TrueBet");
+    await insertPisoOffer(store.id, "cuponomia", "fixed", 15);
+    const subscriberId = await insertPisoSubscriber(PISO_CHAT + 3);
+    await insertPisoSubscription(subscriberId, store.id);
+
+    await handler()(request(update(`/piso ${store.slug} 25 reais`, PISO_CHAT + 3)));
+
+    const subscription = await pisoSubscriptionOf(PISO_CHAT + 3, store.slug);
+    expect(subscription).toMatchObject({ mode: "tracking", floor_reward_type: "fixed" });
+    expect(Number(subscription!.floor_value)).toBe(25);
+  });
+
+  it("ajustar o valor depois faz UPDATE na mesma Inscrição, nunca recria a linha", async () => {
+    const store = await insertPisoStore("magalu", "Magalu");
+    await insertPisoOffer(store.id, "meliuz", "percent", 5);
+    const subscriberId = await insertPisoSubscriber(PISO_CHAT + 4);
+    await insertPisoSubscription(subscriberId, store.id);
+
+    await handler()(request(update(`/piso ${store.slug} 10%`, PISO_CHAT + 4)));
+    await handler()(request(update(`/piso ${store.slug} 15%`, PISO_CHAT + 4)));
+
+    const rows = await admin.query(
+      `select count(*)::int as count from public.subscriptions s
+       join public.subscribers sub on sub.id = s.subscriber_id
+       where sub.telegram_chat_id = $1 and s.store_id = $2`,
+      [PISO_CHAT + 4, store.id],
+    );
+    expect(rows.rows[0].count).toBe(1);
+    const subscription = await pisoSubscriptionOf(PISO_CHAT + 4, store.slug);
+    expect(Number(subscription!.floor_value)).toBe(15);
+  });
+
+  it("valor inválido responde de forma útil e não altera a Inscrição existente", async () => {
+    const store = await insertPisoStore("submarino", "Submarino");
+    await insertPisoOffer(store.id, "meliuz", "percent", 5);
+    const subscriberId = await insertPisoSubscriber(PISO_CHAT + 5);
+    await insertPisoSubscription(subscriberId, store.id);
+
+    const reply = await replyOf(await handler()(request(update(`/piso ${store.slug} abacate`, PISO_CHAT + 5))));
+
+    expect(reply.text).toMatch(/não entendi/i);
+    const subscription = await pisoSubscriptionOf(PISO_CHAT + 5, store.slug);
+    expect(subscription).toMatchObject({ mode: "improvement", floor_value: null, floor_reward_type: null });
+  });
+
+  it("comando sem loja nem valor responde de forma útil, sem tocar no banco", async () => {
+    const reply = await replyOf(await handler()(request(update("/piso", PISO_CHAT + 6))));
+
+    expect(reply.text).toMatch(/não entendi/i);
+  });
+
+  it("loja não assinada responde de forma útil, sem criar Inscrição", async () => {
+    const store = await insertPisoStore("centauro", "Centauro");
+    await insertPisoOffer(store.id, "meliuz", "percent", 5);
+    // Sem insertPisoSubscription: a loja existe, mas este assinante nunca deu /start nela.
+
+    const reply = await replyOf(await handler()(request(update(`/piso ${store.slug} 10%`, PISO_CHAT + 7))));
+
+    expect(reply.text).toMatch(/ainda não acompanha/i);
+    expect(await pisoSubscriptionOf(PISO_CHAT + 7, store.slug)).toBeNull();
+  });
+
+  it("loja inexistente responde 'não encontrei', sem criar nada", async () => {
+    const reply = await replyOf(await handler()(request(update(`/piso ${pisoPrefix}naoexiste 10%`, PISO_CHAT + 8))));
+
+    expect(reply.text).toMatch(/não encontrei|nao encontrei/i);
+  });
+
+  it("sinaliza piso incompatível com a grandeza das ofertas correntes, sugere a unidade certa, e ainda assim grava", async () => {
+    const store = await insertPisoStore("kalunga", "Kalunga");
+    await insertPisoOffer(store.id, "cuponomia", "fixed", 15);
+    const subscriberId = await insertPisoSubscriber(PISO_CHAT + 9);
+    await insertPisoSubscription(subscriberId, store.id);
+
+    const reply = await replyOf(await handler()(request(update(`/piso ${store.slug} 10%`, PISO_CHAT + 9))));
+
+    expect(reply.text).toMatch(/R\$/);
+    // AC: sinaliza, não bloqueia — a ausência de mensagem é o pior modo de falha (ADR-0063).
+    const subscription = await pisoSubscriptionOf(PISO_CHAT + 9, store.slug);
+    expect(subscription).toMatchObject({ mode: "tracking", floor_reward_type: "percent" });
+    expect(Number(subscription!.floor_value)).toBe(10);
+  });
+
+  it("não sinaliza incompatibilidade quando a grandeza casa com alguma oferta elegível, mesmo com outras plataformas em grandeza diferente", async () => {
+    const store = await insertPisoStore("shoptime", "Shoptime");
+    await insertPisoOffer(store.id, "meliuz", "percent", 5);
+    await insertPisoOffer(store.id, "cuponomia", "fixed", 15);
+    const subscriberId = await insertPisoSubscriber(PISO_CHAT + 10);
+    await insertPisoSubscription(subscriberId, store.id);
+
+    const reply = await replyOf(await handler()(request(update(`/piso ${store.slug} 10%`, PISO_CHAT + 10))));
+
+    expect(reply.text).not.toMatch(/⚠️/);
+  });
+
+  it("sinaliza ausência de oferta elegível quando não há nenhuma (loja indisponível)", async () => {
+    const store = await insertPisoStore("centercomp", "CenterComp");
+    // Nenhuma oferta inserida: loja existe, mas sem Oferta pública elegível.
+    const subscriberId = await insertPisoSubscriber(PISO_CHAT + 11);
+    await insertPisoSubscription(subscriberId, store.id);
+
+    const reply = await replyOf(await handler()(request(update(`/piso ${store.slug} 10%`, PISO_CHAT + 11))));
+
+    expect(reply.text).toMatch(/⚠️/);
+    expect(reply.text).toMatch(/não encontrei oferta/i);
+  });
+
+  it("consulta pela view pública (web_read.catalog_offers), não pela tabela crua: oferta fora do frescor de 48h não conta como elegível", async () => {
+    const store = await insertPisoStore("extra", "Extra");
+    // Oferta percentual existe na tabela crua, mas fora da janela de frescor (48h) — não é
+    // Oferta pública elegível. Se o código consultasse a tabela crua em vez da view, este teste
+    // falharia por não sinalizar incompatibilidade nenhuma.
+    await insertPisoOffer(store.id, "meliuz", "percent", 5, { hoursOld: 72 });
+    const subscriberId = await insertPisoSubscriber(PISO_CHAT + 12);
+    await insertPisoSubscription(subscriberId, store.id);
+
+    const reply = await replyOf(await handler()(request(update(`/piso ${store.slug} 10%`, PISO_CHAT + 12))));
+
+    expect(reply.text).toMatch(/⚠️/);
+    expect(reply.text).toMatch(/não encontrei oferta/i);
+  });
+
+  it("a resposta declara o estado resultante (modo e piso), nunca um 'ok' isolado", async () => {
+    const store = await insertPisoStore("dafiti", "Dafiti");
+    await insertPisoOffer(store.id, "meliuz", "percent", 5);
+    const subscriberId = await insertPisoSubscriber(PISO_CHAT + 13);
+    await insertPisoSubscription(subscriberId, store.id);
+
+    const reply = await replyOf(await handler()(request(update(`/piso ${store.slug} 12,5%`, PISO_CHAT + 13))));
+
+    expect(reply.text).toContain("Dafiti");
+    expect(reply.text).toMatch(/acompanhamento/i);
+    expect(reply.text).toMatch(/12,50%/);
+    expect(reply.text?.trim().toLowerCase()).not.toBe("ok");
   });
 });
 

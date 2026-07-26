@@ -1,3 +1,5 @@
+import type { FloorMismatchHint, FloorRewardType, ParsedFloor } from "./floor.js";
+
 /**
  * F4/#116 (ADR-0066) — todo texto que o bot manda vive aqui, num lugar só.
  *
@@ -46,4 +48,45 @@ export function privacy(siteUrl: string): string {
 
 export function fallback(siteUrl: string): string {
   return `Não entendi. Use /start <loja> para acompanhar uma loja — veja o catálogo em ${siteUrl}`;
+}
+
+/** "10%", "10,5%", "R$ 25", "R$ 25,50" — mesmo estilo pt-BR de `apps/scraper/src/avisos/message.ts`. */
+function formatFloor(floor: ParsedFloor): string {
+  const decimals = Number.isInteger(floor.value) ? 0 : 2;
+  const number = floor.value.toFixed(decimals).replace(".", ",");
+  return floor.rewardType === "fixed" ? `R$ ${number}` : `${number}%`;
+}
+
+const UNIT_EXAMPLE: Record<FloorRewardType, string> = {
+  percent: "10 ou 10%",
+  fixed: "R$ 25 ou 25 reais",
+};
+
+/**
+ * Toda escrita de piso responde com o ESTADO RESULTANTE da Inscrição (modo + piso), nunca um "ok"
+ * (AC #117) — inclusive quando há incompatibilidade de grandeza: o piso é gravado do mesmo jeito
+ * (ADR-0063, silêncio é o pior modo de falha), e o aviso vem OPCIONAL, depois do estado.
+ */
+export function floorSet(storeName: string, floor: ParsedFloor, hint: FloorMismatchHint): string {
+  const state = `✅ Pronto! A loja ${storeName} está em Modo acompanhamento, piso ${formatFloor(floor)} — aviso a partir daí.`;
+
+  if (hint.kind === "match") return state;
+  if (hint.kind === "no-eligible-offers") {
+    return `${state}\n\n⚠️ Não encontrei oferta elegível dessa loja agora para conferir — o piso fica valendo, é só não ter como confirmar que ele bate com alguma oferta corrente.`;
+  }
+  const suggestedUnit = hint.suggestedType === "fixed" ? "R$" : "%";
+  return `${state}\n\n⚠️ Hoje a loja ${storeName} só tem oferta elegível em ${suggestedUnit}. Se era isso que você queria, tente de novo com ${UNIT_EXAMPLE[hint.suggestedType]}.`;
+}
+
+export function invalidFloorValue(): string {
+  return [
+    "Não entendi esse piso. Formas aceitas:",
+    "/piso <loja> 10 ou /piso <loja> 10% — piso percentual",
+    "/piso <loja> R$ 25 ou /piso <loja> 25 reais — piso em reais",
+  ].join("\n");
+}
+
+/** `/piso` ajusta uma Inscrição existente — não a cria (`db.ts#setSubscriptionFloor`). */
+export function notSubscribed(storeName: string): string {
+  return `Você ainda não acompanha a loja ${storeName}. Use /start <loja> antes de definir um piso.`;
 }
