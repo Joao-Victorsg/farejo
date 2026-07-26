@@ -9,6 +9,7 @@
     "verify:privileges": "tsx src/verify-privileges.ts"
   },
   "dependencies": {
+    "@farejo/postgres": "workspace:*",
     "pg": "8.16.3",
     "zod": "^3.24.0"
   },

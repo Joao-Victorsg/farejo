@@ -23,6 +23,9 @@ importers:
       '@aws-sdk/client-s3':
         specifier: 3.1090.0
         version: 3.1090.0
+      '@farejo/postgres':
+        specifier: workspace:*
+        version: link:../../packages/postgres
       '@farejo/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -69,6 +72,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@farejo/postgres':
+        specifier: workspace:*
+        version: link:../../packages/postgres
       '@radix-ui/react-slot':
         specifier: 1.2.4
         version: 1.2.4(@types/react@19.2.7)(react@19.2.7)
@@ -160,6 +166,9 @@ importers:
 
   packages/db-audit:
     dependencies:
+      '@farejo/postgres':
+        specifier: workspace:*
+        version: link:../postgres
       pg:
         specifier: 8.16.3
         version: 8.16.3
@@ -176,6 +185,22 @@ importers:
       tsx:
         specifier: 4.21.0
         version: 4.21.0
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+
+  packages/postgres:
+    dependencies:
+      pg:
+        specifier: 8.16.3
+        version: 8.16.3
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.1
+      '@types/pg':
+        specifier: 8.15.5
+        version: 8.15.5
       typescript:
         specifier: ^5.7.0
         version: 5.9.3

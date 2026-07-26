@@ -38,6 +38,10 @@ as três num `@farejo/postgres` exigiria mexer no caminho de runtime do site (bu
 serverless, a condição `react-server` do pacote `server-only`), risco desproporcional para uma
 mudança de endereço. Fica como follow-up, registrado nas três cópias e na ADR-0055.
 
+> **Resolvido (25/07/2026, #112):** o follow-up foi feito — as três cópias viraram `@farejo/postgres`.
+> O risco previsto aqui era real: exigiu `transpilePackages` no Next e um pacote sem import relativo
+> interno. Detalhes na nota de 25/07/2026 da ADR-0055.
+
 ## Consequências
 
 - O contrato de segurança do banco passa a ter um dono nomeado, no nível do que ele descreve.

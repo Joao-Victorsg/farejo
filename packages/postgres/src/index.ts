@@ -1,24 +1,30 @@
 import { Pool, type PoolConfig } from "pg";
 
 /**
- * Fronteira única de TLS das conexões `pg` do site (ADR-0055).
+ * Fronteira única de TLS de TODA conexão `pg` do projeto (ADR-0055).
  *
  * O certificado do Postgres/pooler do Supabase não encadeia até uma CA pública: o bundle padrão
  * do Node rejeita a cadeia com `SELF_SIGNED_CERT_IN_CHAIN`. O CA do projeto chega pelo env
- * `FAREJO_SUPABASE_CA_CERT` como PEM inteiro — e não como caminho de arquivo — porque um arquivo
- * exigiria `outputFileTracingIncludes` para sobreviver ao bundle da função serverless.
+ * `FAREJO_SUPABASE_CA_CERT` como PEM inteiro — e não como caminho de arquivo — para valer igual
+ * em GitHub Actions e na Vercel, sem depender de cwd relativo nem de `outputFileTracingIncludes`.
  *
- * Espelha `apps/scraper/src/postgresPool.ts`: a ADR-0002 mantém `packages/shared` como domínio
- * puro que nunca lê `process.env`, e configuração de I/O é I/O.
+ * Este pacote existe porque a lógica é a mesma para todos os consumidores e precisa mudar num
+ * lugar só: até a #112 ela vivia em três cópias (`apps/web`, `apps/scraper`, `packages/db-audit`),
+ * e a ADR-0055 exigia que qualquer alteração chegasse nas três — o tipo de acordo que diverge em
+ * silêncio. `packages/shared` não é candidato a recebê-la: a ADR-0002 o mantém como domínio puro
+ * que nunca lê `process.env`, e configuração de I/O é I/O.
  *
- * Deliberadamente SEM `import "server-only"`: `test/postgres-pool.test.ts` roda sob vitest, fora
- * do Next, e o pacote `server-only` lança quando resolvido sem a condição `react-server`. Quem
- * guarda a fronteira são os consumidores — `catalog.ts` e `activation.ts` já declaram
- * `server-only`.
+ * Deliberadamente SEM `import "server-only"`, apesar de o site ser consumidor: o pacote também é
+ * usado fora do Next (scraper e auditoria de banco), e `server-only` lança quando resolvido sem a
+ * condição `react-server`. Quem guarda essa fronteira no site são os consumidores — `catalog.ts` e
+ * `activation.ts` já declaram `server-only`.
  *
- * A auditoria de banco (`packages/db-audit`) mantém a própria cópia desta lógica: ela conecta em
- * produção pelo workflow de deploy, mas é concern de banco, não do app web. Mudança na ADR-0055
- * precisa chegar nas três cópias (esta, `apps/scraper/src/postgresPool.ts` e a do db-audit).
+ * ⚠️ Tudo vive neste arquivo, sem barrel e sem import relativo interno, e isso é intencional. O
+ * site transpila este pacote (`transpilePackages`), e o Turbopack NÃO reescreve a extensão `.js`
+ * dos imports relativos de TypeScript — o padrão que `@farejo/shared` usa em todo lugar e que
+ * nunca doeu porque ele nunca esteve no caminho de runtime do Next. Um `export ... from "./pool.js"`
+ * aqui quebra o `next build` com `Module not found`. Se um dia este pacote precisar de um segundo
+ * módulo, o import interno tem de ser sem extensão.
  */
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
 
@@ -62,7 +68,7 @@ export function resolvePostgresSsl(
 
   // Host remoto sem CA: recusa em vez de degradar para uma conexão não verificada em silêncio.
   throw new Error(
-    "FAREJO_SUPABASE_CA_CERT ausente para uma conexão Postgres remota (ADR-0055). Configure a variável de ambiente antes de conectar.",
+    "FAREJO_SUPABASE_CA_CERT ausente para uma conexão Postgres remota (ADR-0055). Configure a variável de ambiente (secret do repositório nas Actions, variável do projeto na Vercel) antes de conectar.",
   );
 }
 
