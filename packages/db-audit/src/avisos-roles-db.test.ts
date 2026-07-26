@@ -213,6 +213,10 @@ describe("farejo_notifier — job pós-scrape", () => {
 
     const left = await client.query("select 1 from public.subscribers where telegram_chat_id = 911304");
     expect(left.rowCount).toBe(0);
+    const orphans = await client.query(
+      "select 1 from public.subscriptions where subscriber_id not in (select id from public.subscribers)",
+    );
+    expect(orphans.rowCount).toBe(0);
   });
 
   it("NÃO enxerga curadoria, logos nem ativações", async () => {
@@ -228,6 +232,16 @@ describe("farejo_notifier — job pós-scrape", () => {
 // e não com pool falso, como os testes de unidade do verificador — é o que prova que o vetor
 // concreto desta feature (dar histórico de ofertas à superfície pública) para a publicação.
 describe("verificação negativa contra o banco real", () => {
+  // Rede de segurança: os casos abaixo mexem em GRANT, que é estado GLOBAL do cluster — não dá
+  // para isolar por transação nem por fixture. Se um `finally` falhar no meio (o do vetor 2 faz
+  // revoke e re-grant), o banco fica fora do contrato e os testes seguintes falhariam longe da
+  // causa. Este hook falha alto, aqui, apontando o dedo. Pelo mesmo motivo, nenhum outro teste do
+  // repositório deve afirmar privilégios: o vitest roda arquivos em paralelo contra um Postgres só.
+  afterAll(async () => {
+    const report = await verifyProductionPrivileges(client);
+    expect(report, "um dos vetores injetados não foi revertido — o banco local ficou fora do contrato").toMatchObject({ ok: true });
+  });
+
   it("aprova o estado limpo das roles novas", async () => {
     const report = await verifyProductionPrivileges(client);
     expect(report).toMatchObject({ ok: true, unexpectedTableGrants: [], unexpectedColumnGrants: [] });

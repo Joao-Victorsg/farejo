@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  EXPECTED_CHECK_CONSTRAINTS,
   EXPECTED_COLUMN_GRANTS,
+  EXPECTED_FOREIGN_KEY_ACTIONS,
   EXPECTED_FUNCTION_GRANTS,
   EXPECTED_FUNCTIONS,
   EXPECTED_LOGIN_ROLES,
@@ -17,6 +19,14 @@ import {
 // query devolveria, não o number que seria mais fácil de escrever à mão.
 const FULL_BUCKET_ROW = { public: true, file_size_limit: "2097152", allowed_mime_types: ["image/webp"] };
 
+// Reconstrói o estado limpo a partir do contrato exportado: mudou o contrato, mudou o fixture.
+function cleanConstraintRows() {
+  return [
+    ...EXPECTED_CHECK_CONSTRAINTS.map((c) => ({ relation: c.relation, name: c.name, contype: "c", confdeltype: null })),
+    ...EXPECTED_FOREIGN_KEY_ACTIONS.map((c) => ({ relation: c.relation, name: c.name, contype: "f", confdeltype: c.onDelete })),
+  ];
+}
+
 function fakePool(overrides: {
   roles?: string[];
   views?: string[];
@@ -26,6 +36,7 @@ function fakePool(overrides: {
   tableGrants?: (typeof EXPECTED_TABLE_GRANTS[number] & { granted: boolean })[];
   functionGrants?: (typeof EXPECTED_FUNCTION_GRANTS[number] & { granted: boolean })[];
   columnGrants?: (typeof EXPECTED_COLUMN_GRANTS[number] & { granted: boolean })[];
+  constraints?: { relation: string; name: string; contype: string; confdeltype: string | null }[];
 } = {}): SchemaCheckPool {
   const responses = [
     overrides.roles ?? [...EXPECTED_LOGIN_ROLES],
@@ -36,6 +47,7 @@ function fakePool(overrides: {
     overrides.tableGrants ?? EXPECTED_TABLE_GRANTS.map((g) => ({ ...g, granted: true })),
     overrides.functionGrants ?? EXPECTED_FUNCTION_GRANTS.map((g) => ({ ...g, granted: true })),
     overrides.columnGrants ?? EXPECTED_COLUMN_GRANTS.map((g) => ({ ...g, granted: true })),
+    overrides.constraints ?? cleanConstraintRows(),
   ];
   let call = 0;
   return {
@@ -60,6 +72,48 @@ describe("verifyProductionSchema", () => {
     expect(report.missingTableGrants).toEqual([]);
     expect(report.missingFunctionGrants).toEqual([]);
     expect(report.missingColumnGrants).toEqual([]);
+    expect(report.missingCheckConstraints).toEqual([]);
+    expect(report.wrongForeignKeyActions).toEqual([]);
+  });
+
+  // Os dois invariantes dos Avisos vivem em constraint, não em código: existência de tabela, role
+  // e grant não os alcança, e derrubá-los em produção passaria batido pelo resto do gate.
+  it("flags the dropped mode/floor invariant", async () => {
+    const report = await verifyProductionSchema(
+      fakePool({ constraints: cleanConstraintRows().filter((row) => row.contype !== "c") }),
+    );
+    expect(report.ok).toBe(false);
+    expect(report.missingCheckConstraints).toEqual(["public.subscriptions.subscriptions_floor_matches_mode"]);
+  });
+
+  // ADR-0063: cascade aqui apagaria a Inscrição em silêncio num merge de alias.
+  it("flags a cascade sneaked onto the store reference", async () => {
+    const report = await verifyProductionSchema(
+      fakePool({
+        constraints: cleanConstraintRows().map((row) =>
+          row.name === "subscriptions_store_id_fkey" ? { ...row, confdeltype: "c" } : row,
+        ),
+      }),
+    );
+    expect(report.ok).toBe(false);
+    expect(report.wrongForeignKeyActions).toEqual([
+      'public.subscriptions.subscriptions_store_id_fkey (on delete "c", esperado "a")',
+    ]);
+  });
+
+  // ...e o inverso: perder o cascade do Assinante deixaria Inscrições órfãs após um /parar.
+  it("flags the subscriber cascade being downgraded", async () => {
+    const report = await verifyProductionSchema(
+      fakePool({
+        constraints: cleanConstraintRows().map((row) =>
+          row.name === "subscriptions_subscriber_id_fkey" ? { ...row, confdeltype: "a" } : row,
+        ),
+      }),
+    );
+    expect(report.ok).toBe(false);
+    expect(report.wrongForeignKeyActions).toEqual([
+      'public.subscriptions.subscriptions_subscriber_id_fkey (on delete "a", esperado "c")',
+    ]);
   });
 
   it("flags a missing role without failing the other checks", async () => {

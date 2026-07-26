@@ -18,7 +18,8 @@ continua sem endpoint de escrita e sem segredo de escrita.
 | | `farejo_bot` (entrada) | `farejo_notifier` (saída) |
 |---|---|---|
 | inscrições | insert/update/delete | select + update do cursor |
-| `stores`, `store_slug_redirects` | select | select |
+| `stores` | select | select (nomear a loja no Aviso) |
+| redirects de slug | select, **via `web_read`** | **nunca** — não resolve slug |
 | ofertas correntes | select **via `web_read`** | select |
 | `offer_history` | **nunca** | select |
 | exposição | pública na internet | dentro do Actions |

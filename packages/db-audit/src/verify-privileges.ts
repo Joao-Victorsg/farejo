@@ -10,11 +10,17 @@ import { createPostgresPool } from "@farejo/postgres";
  * ninguém previu. Aqui a primitiva é invertida — `aclexplode()` ENUMERA o ACL real e a
  * comparação é por igualdade contra uma allowlist exata.
  *
- * Grantees cobertos (os do AC da #65): `anon`/`authenticated` (a Data API, que o farejô não usa),
- * `farejo_web` (a role do site na Vercel) e `farejo_logo_writer` (a role da Action de logos, que a
- * ADR-0042 promete nunca ver ofertas). `PUBLIC` (grantee 0) entra junto — um grant a PUBLIC atinge
- * anon/authenticated também. As roles operacionais (activation/metrics/curation/logo_coverage) não
- * entram: não são expostas ao browser e o lado positivo já as cobre.
+ * Grantees cobertos: `anon`/`authenticated` (a Data API, que o farejô não usa), `farejo_web` (a role
+ * do site na Vercel) e `farejo_logo_writer` (a role da Action de logos, que a ADR-0042 promete nunca
+ * ver ofertas) — os do AC da #65 —, mais `farejo_bot` e `farejo_notifier` desde a #113. `PUBLIC`
+ * (grantee 0) entra junto: um grant a PUBLIC atinge anon/authenticated também.
+ *
+ * `farejo_bot` entra por ser a superfície exposta na INTERNET, o grantee de maior risco do projeto:
+ * é aqui que "o bot nunca vê o histórico de ofertas" (ADR-0064) deixa de ser texto e passa a
+ * reprovar a publicação. `farejo_notifier` entra junto por nascer do mesmo contrato — e é a exceção
+ * consciente à regra abaixo, porque separá-la do bot é justamente a decisão que precisa ser
+ * afirmada. As demais roles operacionais (activation/metrics/curation/logo_coverage) seguem fora:
+ * não são expostas ao browser e o lado positivo já as cobre.
  *
  * Depende do hardening da migration 20260724000000: sem ele, anon/authenticated carregam o baseline
  * default do Supabase em public e esta verificação falha de propósito (era o ponto — torná-lo
@@ -254,7 +260,7 @@ export async function verifyProductionPrivileges(pool: PrivilegeCheckPool): Prom
     // noinherit é o contrato das roles do farejô; herança ligada abriria escalação lateral se a
     // role virasse membro de outra. anon/authenticated ficam de fora (default da plataforma).
     if (role.rolinherit && NOINHERIT_ROLES.has(role.rolname)) flags.push("INHERIT");
-    // anon/authenticated devem ser NOLOGIN; farejo_web/farejo_logo_writer devem ser LOGIN.
+    // anon/authenticated devem ser NOLOGIN; as roles do farejô devem ser LOGIN.
     const shouldLogin = LOGIN_ROLES.has(role.rolname);
     if (role.rolcanlogin && !shouldLogin) flags.push("LOGIN");
     if (!role.rolcanlogin && shouldLogin) flags.push("NOLOGIN");

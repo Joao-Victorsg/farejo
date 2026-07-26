@@ -72,13 +72,25 @@ $$;
 grant farejo_bot, farejo_notifier to postgres;
 
 -- Caminho de usuário: o Telegram espera resposta rápida, e uma query lenta aqui vira timeout de
--- webhook. Mesmo teto de `farejo_web`.
+-- webhook. Mesmo teto de `farejo_web`. O `lock_timeout` é curto de propósito: o bot escreve no
+-- caminho de usuário e vai disputar `stores` com o merge de alias (#115) — melhor falhar rápido e
+-- pedir para tentar de novo do que segurar a requisição até o statement_timeout.
 alter role farejo_bot set statement_timeout = '3s';
+alter role farejo_bot set lock_timeout = '1500ms';
 alter role farejo_bot set search_path = public, pg_catalog;
 
 -- Job em lote, não caminho de usuário.
 alter role farejo_notifier set statement_timeout = '30s';
+alter role farejo_notifier set lock_timeout = '5s';
 alter role farejo_notifier set search_path = public, pg_catalog;
+
+-- Sobre as policies abaixo, todas `using (true)`: não há identidade de sessão no Postgres para
+-- escopar por assinante — quem fala com o banco é o processo, não a pessoa. Então a role da
+-- entrada pública consegue, por construção, enxergar qualquer `telegram_chat_id`. RLS aqui não é
+-- isolamento entre assinantes; é a segunda camada que garante que quem NÃO tem policy (anon,
+-- authenticated, qualquer role futura) não alcance a tabela por acidente. O isolamento real é da
+-- aplicação (`apps/bot` só opera sobre o chat que assinou a requisição) somada às defesas de borda
+-- da ADR-0065.
 
 -- --------------------------------------------------------------------------------------------
 -- farejo_bot: escreve Inscrições, lê o catálogo público. NUNCA `offer_history`, `offers` cruas,
