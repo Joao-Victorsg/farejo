@@ -32,6 +32,8 @@ export const EXPECTED_LOGIN_ROLES = [
   "farejo_curation",
   "farejo_logo_writer",
   "farejo_logo_coverage",
+  "farejo_bot",
+  "farejo_notifier",
 ] as const;
 
 export const EXPECTED_WEB_READ_VIEWS = [
@@ -66,6 +68,8 @@ export const EXPECTED_RLS_TABLES = [
   "activation_metrics",
   "store_logo_sources",
   "store_slug_redirects",
+  "subscribers",
+  "subscriptions",
 ] as const;
 
 export const LOGO_BUCKET_ID = "store-logos";
@@ -85,6 +89,15 @@ export const EXPECTED_TABLE_GRANTS = [
   { role: "farejo_logo_writer", relation: "public.store_logo_sources", privilege: "UPDATE" },
   { role: "farejo_logo_writer", relation: "public.stores", privilege: "SELECT" },
   { role: "farejo_logo_coverage", relation: "web_read.logo_coverage", privilege: "SELECT" },
+  // Avisos (#113): a entrada pública escreve Inscrição e lê o catálogo; o job lê o histórico.
+  { role: "farejo_bot", relation: "public.subscriptions", privilege: "INSERT" },
+  { role: "farejo_bot", relation: "public.subscriptions", privilege: "DELETE" },
+  { role: "farejo_bot", relation: "public.subscribers", privilege: "INSERT" },
+  { role: "farejo_bot", relation: "web_read.catalog_offers", privilege: "SELECT" },
+  { role: "farejo_bot", relation: "web_read.store_redirects", privilege: "SELECT" },
+  { role: "farejo_notifier", relation: "public.subscriptions", privilege: "SELECT" },
+  { role: "farejo_notifier", relation: "public.offer_history", privilege: "SELECT" },
+  { role: "farejo_notifier", relation: "public.subscribers", privilege: "DELETE" },
 ] as const;
 
 export const EXPECTED_FUNCTION_GRANTS = [
@@ -101,6 +114,30 @@ export const EXPECTED_FUNCTION_GRANTS = [
 export const EXPECTED_COLUMN_GRANTS = [
   { role: "farejo_logo_writer", relation: "public.stores", column: "logo_url", privilege: "UPDATE" },
   { role: "farejo_logo_writer", relation: "public.stores", column: "logo_hash", privilege: "UPDATE" },
+  // A única escrita do job de Avisos é o cursor (ADR-0064) — grant por coluna, não pela tabela.
+  { role: "farejo_notifier", relation: "public.subscribers", column: "last_notified_history_id", privilege: "UPDATE" },
+] as const;
+
+/**
+ * Invariantes que vivem em CONSTRAINT, não em código de aplicação, e que por isso precisam ser
+ * afirmados aqui: existência de role/tabela/grant não os alcança, e um `drop constraint` ou um
+ * `on delete cascade` acrescentado à mão em produção passaria batido por todo o resto do gate.
+ *
+ * `confdeltype` é a ação ON DELETE da FK: 'a' = NO ACTION, 'c' = CASCADE.
+ */
+export const EXPECTED_CHECK_CONSTRAINTS = [
+  // ADR-0063: acompanhamento exige Piso, melhoria o proíbe. Sem isto uma inscrição em
+  // acompanhamento sem piso nunca avisaria nada, e o sintoma seria a AUSÊNCIA de mensagem.
+  { relation: "public.subscriptions", name: "subscriptions_floor_matches_mode" },
+] as const;
+
+export const EXPECTED_FOREIGN_KEY_ACTIONS = [
+  // ADR-0063: cascade aqui apagaria a Inscrição em silêncio num merge de alias. O NO ACTION é o
+  // que obriga `curation.apply_alias_merge` a tratá-la (#115) e a falhar alto se esquecer.
+  { relation: "public.subscriptions", name: "subscriptions_store_id_fkey", onDelete: "a" },
+  // ...enquanto apagar o Assinante DEVE levar as Inscrições junto: /parar é DELETE de verdade
+  // (ADR-0066) e as duas linhas são o mesmo agregado.
+  { relation: "public.subscriptions", name: "subscriptions_subscriber_id_fkey", onDelete: "c" },
 ] as const;
 
 export interface SchemaVerificationReport {
@@ -114,6 +151,8 @@ export interface SchemaVerificationReport {
   missingTableGrants: string[];
   missingFunctionGrants: string[];
   missingColumnGrants: string[];
+  missingCheckConstraints: string[];
+  wrongForeignKeyActions: string[];
   ok: boolean;
 }
 
@@ -122,7 +161,7 @@ function functionKey(schema: string, name: string): string {
 }
 
 export async function verifyProductionSchema(pool: SchemaCheckPool): Promise<SchemaVerificationReport> {
-  const [roleRows, viewRows, functionRows, rlsRows, bucketRows, tableGrantRows, functionGrantRows, columnGrantRows] = await Promise.all([
+  const [roleRows, viewRows, functionRows, rlsRows, bucketRows, tableGrantRows, functionGrantRows, columnGrantRows, constraintRows] = await Promise.all([
     pool.query<{ rolname: string }>("select rolname from pg_roles where rolname = any($1)", [EXPECTED_LOGIN_ROLES]),
     pool.query<{ table_name: string }>("select table_name from information_schema.views where table_schema = 'web_read'"),
     pool.query<{ schema: string; name: string }>(
@@ -166,6 +205,18 @@ export async function verifyProductionSchema(pool: SchemaCheckPool): Promise<Sch
         EXPECTED_COLUMN_GRANTS.map((g) => g.privilege),
       ],
     ),
+    pool.query<{ relation: string; name: string; contype: string; confdeltype: string | null }>(
+      // O nome qualificado é montado de pg_namespace/pg_class em vez de `conrelid::regclass::text`
+      // porque o regclass OMITE o schema quando ele está no search_path da conexão — a comparação
+      // por igualdade passaria a depender de quem chama.
+      `select n.nspname || '.' || c.relname as relation, con.conname as name,
+              con.contype::text as contype, nullif(con.confdeltype::text, '') as confdeltype
+       from pg_constraint con
+       join pg_class c on c.oid = con.conrelid
+       join pg_namespace n on n.oid = c.relnamespace
+       where n.nspname || '.' || c.relname = any($1)`,
+      [[...new Set([...EXPECTED_CHECK_CONSTRAINTS, ...EXPECTED_FOREIGN_KEY_ACTIONS].map((c) => c.relation))]],
+    ),
   ]);
 
   const foundRoles = new Set(roleRows.rows.map((row) => row.rolname));
@@ -201,7 +252,25 @@ export async function verifyProductionSchema(pool: SchemaCheckPool): Promise<Sch
   const missingFunctionGrants = functionGrantRows.rows.filter((row) => !row.granted).map((row) => `${row.role}→${row.signature}`);
   const missingColumnGrants = columnGrantRows.rows.filter((row) => !row.granted).map((row) => `${row.role}→${row.relation}.${row.column}(${row.privilege})`);
 
+  const constraintsByKey = new Map(constraintRows.rows.map((row) => [`${row.relation}|${row.name}`, row]));
+
+  const missingCheckConstraints = EXPECTED_CHECK_CONSTRAINTS.filter((expected) => {
+    const found = constraintsByKey.get(`${expected.relation}|${expected.name}`);
+    return !found || found.contype !== "c";
+  }).map((expected) => `${expected.relation}.${expected.name}`);
+
+  const wrongForeignKeyActions = EXPECTED_FOREIGN_KEY_ACTIONS.flatMap((expected) => {
+    const found = constraintsByKey.get(`${expected.relation}|${expected.name}`);
+    if (!found || found.contype !== "f") return [`${expected.relation}.${expected.name} (ausente)`];
+    if (found.confdeltype !== expected.onDelete) {
+      return [`${expected.relation}.${expected.name} (on delete "${found.confdeltype}", esperado "${expected.onDelete}")`];
+    }
+    return [];
+  });
+
   const ok =
+    missingCheckConstraints.length === 0 &&
+    wrongForeignKeyActions.length === 0 &&
     missingRoles.length === 0 &&
     missingViews.length === 0 &&
     missingFunctions.length === 0 &&
@@ -223,12 +292,14 @@ export async function verifyProductionSchema(pool: SchemaCheckPool): Promise<Sch
     missingTableGrants,
     missingFunctionGrants,
     missingColumnGrants,
+    missingCheckConstraints,
+    wrongForeignKeyActions,
     ok,
   };
 }
 
 export function formatSchemaVerificationReport(report: SchemaVerificationReport): string {
-  if (report.ok) return "✅ [verify-schema] roles, views, funções, RLS e bucket de logos batem com as migrations mescladas";
+  if (report.ok) return "✅ [verify-schema] roles, views, funções, RLS, constraints e bucket de logos batem com as migrations mescladas";
 
   const lines = ["❌ [verify-schema] drift detectado entre o banco de produção e as migrations mescladas:"];
   if (report.missingRoles.length) lines.push(`  - roles ausentes: ${report.missingRoles.join(", ")}`);
@@ -241,6 +312,8 @@ export function formatSchemaVerificationReport(report: SchemaVerificationReport)
   if (report.missingTableGrants.length) lines.push(`  - grants de tabela/view ausentes: ${report.missingTableGrants.join(", ")}`);
   if (report.missingFunctionGrants.length) lines.push(`  - grants de execução ausentes: ${report.missingFunctionGrants.join(", ")}`);
   if (report.missingColumnGrants.length) lines.push(`  - grants de coluna ausentes: ${report.missingColumnGrants.join(", ")}`);
+  if (report.missingCheckConstraints.length) lines.push(`  - check constraints ausentes: ${report.missingCheckConstraints.join(", ")}`);
+  if (report.wrongForeignKeyActions.length) lines.push(`  - chaves estrangeiras com ON DELETE fora do contrato: ${report.wrongForeignKeyActions.join(", ")}`);
   return lines.join("\n");
 }
 
