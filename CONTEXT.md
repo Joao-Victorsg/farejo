@@ -68,8 +68,9 @@ Clique em “Ativar” validado pelo servidor antes de redirecionar à URL vigen
 pagamento do cashback e não torna o farejô intermediário da compra.
 
 **Histórico sendo construído**:
-Estado público de uma loja sem mudança real suficiente nos últimos 60 dias para sustentar um gráfico.
-Não é erro, série vazia nem autorização para fabricar pontos.
+Estado público de uma série ainda sem observação histórica ou cuja primeira observação ainda não foi
+confirmada por uma coleta posterior com a mesma grandeza, valor e modalidade. Não é erro, série vazia
+nem autorização para fabricar pontos.
 
 **Loja indisponível**:
 Loja canônica válida, mas sem oferta pública elegível naquele momento. Sua rota continua existindo,

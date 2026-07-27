@@ -63,8 +63,9 @@ async function insertHistory(
  * MELHOR+BOOST+ATÉ+ATRASADO+VALOR FIXO (alpha), loja de uma plataforma só + toggle Inter sem
  * boost (beta), loja indisponível (gamma, todas as ofertas inativas — resolve via
  * web_read.store_details que usa LEFT JOIN), e loja com ranking normal mas sem histórico
- * suficiente (delta). Roda como o projeto "seed", depois de "empty-state" já ter capturado o
- * catálogo genuinamente vazio.
+ * suficiente (delta), além de uma loja cujas plataformas são inteiramente estáveis e já foram
+ * reobservadas (epsilon, ADR-0067). Roda como o projeto "seed", depois de "empty-state" já ter
+ * capturado o catálogo genuinamente vazio.
  */
 test("seed F3/T17 fixtures", async () => {
   await withDb(async (client) => {
@@ -104,6 +105,19 @@ test("seed F3/T17 fixtures", async () => {
     const deltaSlug = fixtureSlug("delta");
     const deltaId = await insertStore(client, deltaSlug, "Loja Delta Sem Histórico");
     await insertOffer(client, deltaId, { platformId: "cuponomia", rewardType: "percent", value: 9, rawText: "9%", url: "https://www.cuponomia.com.br/f3t17-delta" });
+
+    const epsilonSlug = fixtureSlug("epsilon");
+    const epsilonId = await insertStore(client, epsilonSlug, "Loja Épsilon Estável");
+    await insertOffer(client, epsilonId, { platformId: "inter", rewardType: "percent", value: 7, valuePartial: 3.5, rawText: "7%", url: "https://shopping.inter.co/site-parceiro/lojas/f3t17-epsilon" });
+    await insertOffer(client, epsilonId, { platformId: "meliuz", rewardType: "percent", value: 6, rawText: "6%", url: "https://www.meliuz.com.br/desconto/f3t17-epsilon" });
+    await insertOffer(client, epsilonId, { platformId: "cuponomia", rewardType: "percent", value: 5, rawText: "5%", url: "https://www.cuponomia.com.br/f3t17-epsilon" });
+    await insertOffer(client, epsilonId, { platformId: "mycashback", rewardType: "percent", value: 4, rawText: "4%", url: "https://www.mycashback.com.br/f3t17-epsilon" });
+    await insertOffer(client, epsilonId, { platformId: "zoom", rewardType: "percent", value: 3, rawText: "3%", url: "https://www.zoom.com.br/f3t17-epsilon" });
+    await insertHistory(client, epsilonId, "inter", [{ daysAgo: 20, value: 7, valuePartial: 3.5 }]);
+    await insertHistory(client, epsilonId, "meliuz", [{ daysAgo: 20, value: 6 }]);
+    await insertHistory(client, epsilonId, "cuponomia", [{ daysAgo: 20, value: 5 }]);
+    await insertHistory(client, epsilonId, "mycashback", [{ daysAgo: 20, value: 4 }]);
+    await insertHistory(client, epsilonId, "zoom", [{ daysAgo: 20, value: 3 }]);
   });
 
   await invalidateCatalog();

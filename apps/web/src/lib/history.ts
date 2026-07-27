@@ -31,10 +31,16 @@ export interface HistorySegment {
 }
 
 export interface ComposedSeries {
-  /** Há ao menos uma mudança real observável dentro do alcance da janela (âncora + eventos). */
+  /** Há mudança real ou reobservação posterior suficiente para sustentar a apresentação. */
   sufficient: boolean;
   /** Trechos em degrau já cortados na janela; lacunas entre trechos são períodos inativos/desconhecidos. */
   segments: HistorySegment[];
+}
+
+export interface HistoryObservation {
+  rewardType: RewardType;
+  value: number;
+  observedAt: string;
 }
 
 export interface HistoryPresentationLine {
@@ -406,6 +412,32 @@ export function composeHistorySeries(events: RawSeriesEvent[], windowStart: Date
   }
 
   return { sufficient: merged.length >= 2, segments };
+}
+
+/**
+ * Promove uma série plana quando a oferta corrente confirma o último estado em uma observação
+ * estritamente posterior. Não acrescenta segmento nem altera o contrato delta-based (ADR-0067).
+ */
+export function confirmHistorySeries(
+  series: ComposedSeries,
+  observation: HistoryObservation | null,
+): ComposedSeries {
+  if (series.sufficient || observation === null) return series;
+
+  const first = series.segments[0];
+  const last = series.segments.at(-1);
+  if (!first || !last) return series;
+
+  const firstObservedAt = new Date(first.from).getTime();
+  const confirmedAt = new Date(observation.observedAt).getTime();
+  const isConfirmed =
+    Number.isFinite(firstObservedAt) &&
+    Number.isFinite(confirmedAt) &&
+    confirmedAt > firstObservedAt &&
+    last.rewardType === observation.rewardType &&
+    last.value === observation.value;
+
+  return isConfirmed ? { ...series, sufficient: true } : series;
 }
 
 export interface StoreHistorySeries {
