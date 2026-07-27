@@ -6,6 +6,7 @@ const alphaSlug = fixtureSlug("alpha");
 const betaSlug = fixtureSlug("beta");
 const gammaSlug = fixtureSlug("gamma");
 const deltaSlug = fixtureSlug("delta");
+const epsilonSlug = fixtureSlug("epsilon");
 
 test.describe("regressão visual @ 1440px", () => {
   test("catálogo com lojas elegíveis: MELHOR, BOOST, ATÉ, ATRASADO, VALOR FIXO e +N", async ({ page }) => {
@@ -42,15 +43,27 @@ test.describe("regressão visual @ 1440px", () => {
   test("loja indisponível (sem oferta elegível) com histórico sendo construído", async ({ page }) => {
     await page.goto(`/loja/${gammaSlug}`);
     await expect(page.getByRole("heading", { name: "Sem ofertas no momento" })).toBeVisible();
-    await expect(page.getByText("Ainda estamos coletando os valores de cashback desta loja.")).toBeVisible();
+    await expect(page.getByText("Ainda precisamos confirmar estes valores em uma nova coleta.")).toBeVisible();
     await expect(page).toHaveScreenshot("store-detail-unavailable.png", { fullPage: true });
   });
 
   test("loja disponível com histórico sendo construído", async ({ page }) => {
     await page.goto(`/loja/${deltaSlug}`);
     await expect(page.getByRole("heading", { name: "Loja Delta Sem Histórico", level: 1 })).toBeVisible();
-    await expect(page.getByText("Ainda estamos coletando os valores de cashback desta loja.")).toBeVisible();
+    await expect(page.getByText("Ainda precisamos confirmar estes valores em uma nova coleta.")).toBeVisible();
     await expect(page).toHaveScreenshot("store-detail-history-building.png", { fullPage: true });
+  });
+
+  test("loja inteiramente estável e reobservada mostra todas as plataformas no histórico", async ({ page }) => {
+    await page.goto(`/loja/${epsilonSlug}`);
+    await expect(page.getByRole("heading", { name: "Loja Épsilon Estável", level: 1 })).toBeVisible();
+    const history = page.getByRole("region", { name: "Histórico", exact: true });
+    await expect(history.getByRole("application", { name: /Gráfico do histórico/ })).toBeVisible();
+    for (const platform of [/Shopping Inter \(correntista\)/, /Méliuz/, /Cuponomia/, /MyCashback/, /Zoom/]) {
+      await expect(history.getByRole("button", { name: platform })).toBeVisible();
+    }
+    await expect(history.getByText(/MyCashback: manteve 4%/)).toBeAttached();
+    await expect(page).toHaveScreenshot("store-detail-entirely-stable.png", { fullPage: true });
   });
 
   test("página de plataformas", async ({ page }) => {

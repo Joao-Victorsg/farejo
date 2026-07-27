@@ -340,7 +340,7 @@ async function getStoreDetailUncached(slug: string): Promise<StoreDetail | null>
   };
 }
 
-const getCachedStoreDetail = unstable_cache(getStoreDetailUncached, ["catalog-store-detail-v3"], {
+const getCachedStoreDetail = unstable_cache(getStoreDetailUncached, ["catalog-store-detail-v4"], {
   tags: [CATALOG_CACHE_TAG],
   revalidate: CATALOG_CACHE_TTL_SECONDS,
 });

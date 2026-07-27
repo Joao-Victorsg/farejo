@@ -6,6 +6,7 @@ const alphaSlug = fixtureSlug("alpha");
 const betaSlug = fixtureSlug("beta");
 const gammaSlug = fixtureSlug("gamma");
 const deltaSlug = fixtureSlug("delta");
+const epsilonSlug = fixtureSlug("epsilon");
 
 const AXE_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
 
@@ -16,6 +17,7 @@ const ROUTES: { path: string; label: string }[] = [
   { path: `/loja/${betaSlug}`, label: "loja com uma plataforma" },
   { path: `/loja/${gammaSlug}`, label: "loja indisponível" },
   { path: `/loja/${deltaSlug}`, label: "loja com histórico sendo construído" },
+  { path: `/loja/${epsilonSlug}`, label: "loja inteiramente estável e reobservada" },
   { path: "/plataformas", label: "plataformas" },
   { path: "/como-funciona", label: "como funciona" },
   { path: "/faq", label: "faq" },
@@ -71,7 +73,7 @@ test("histórico: legenda funciona por teclado e tooltip explica lacunas", async
   const box = await chart.boundingBox();
   if (!box) throw new Error("History chart has no measurable box");
   await page.mouse.move(box.x + box.width * 0.63, box.y + box.height * 0.6);
-  await expect(historySection.getByText("sem dado", { exact: true })).toBeVisible();
+  await expect(historySection.getByText("sem dado", { exact: true }).first()).toBeVisible();
   const tooltipResults = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
   expect(tooltipResults.violations, JSON.stringify(tooltipResults.violations, null, 2)).toEqual([]);
 });

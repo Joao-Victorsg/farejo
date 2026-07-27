@@ -73,8 +73,12 @@ URLs do catálogo padrão são indexáveis. Busca e ordenações alternativas s�
 - Loja canônica sem oferta elegível mantém a página com estado indisponível e sem CTA; não vira 404.
 - Histórico cobre 60 dias, usa gráfico em degraus, inclui a âncora anterior à janela e representa
   desativação como lacuna. Percentual e valor fixo usam escalas separadas.
-- Sem ao menos uma mudança real, a seção mostra “Histórico sendo construído”. Não há interpolação ou
-  dados fabricados em produção.
+- Uma série aparece quando contém uma mudança real ou quando uma coleta posterior confirma o mesmo
+  tipo, valor e modalidade da primeira observação. Sem histórico ou sem essa segunda confirmação, a
+  seção mostra “Histórico sendo construído”. `offer_history` continua delta-based; não há
+  interpolação, snapshot de coleta idêntica ou dado fabricado em produção.
+- Inter correntista e não correntista são confirmados separadamente, sem fallback. Oferta inativa,
+  expirada ou ausente do DTO não confirma série plana.
 - Boost é derivado da mediana ponderada pelo tempo nos 60 dias. Valor anterior não define boost.
 - Valor anterior só aparece quando há evidência nativa ou intervalo anterior verdadeiro. Validade só
   aparece quando a fonte fornece uma data explícita; nunca é inferida.

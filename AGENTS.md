@@ -39,7 +39,7 @@ Os cinco adapters foram implementados e operacionalmente validados na Fase 2. Es
 - **Catálogo:** todas as lojas elegíveis, 24 por página. Padrão “Mais plataformas”; alternativas “Maior cashback” e “A–Z” na URL. Busca prioriza relevância e atua sobre o catálogo inteiro.
 - **Maior cashback:** lojas percentuais antes das exclusivamente fixas; cada grandeza ordena dentro do próprio grupo. Inter usa sempre a taxa de correntista como referência estável.
 - **Inter:** preferência global começa ligada, persiste localmente e aparece na home e no detalhe. Reordena ofertas dentro da loja, nunca lojas ou páginas.
-- **Histórico:** 60 dias, degraus, lacunas em desativação, série parcial do Inter e estado “Histórico sendo construído”. Boost usa mediana ponderada; valor anterior e validade só aparecem com evidência verdadeira.
+- **Histórico:** 60 dias, degraus, lacunas em desativação e série parcial do Inter. Série plana só aparece após reobservação posterior do mesmo tipo, valor e modalidade; sem histórico ou segunda confirmação, mostra “Histórico sendo construído”. Inter correntista e não correntista são confirmados separadamente. Boost usa mediana ponderada; valor anterior e validade só aparecem com evidência verdadeira.
 - **Frescor:** normal até 24 h, “Atualização atrasada” até 48 h, excluída depois disso.
 - **Ativação:** CTA usa `/go/[storeSlug]/[platformId]`, revalida antes do redirect e nunca usa URL antiga. Oferta encerrada retorna 410; falha temporária, 503.
 - **Aliases:** decisões `merge`/`reject` vivem em manifesto no Git. Trigram e IA geram candidatos; nunca auto-merge. Merge do PR aplica a decisão automaticamente.

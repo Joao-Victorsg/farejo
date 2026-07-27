@@ -8,6 +8,7 @@ import {
   buildHistoryRangeOptions,
   clipSeriesToWindow,
   composeStoreHistory,
+  confirmHistorySeries,
   describeHistoryAvailability,
   findHistoryRangeOption,
   HISTORY_WINDOW_MS,
@@ -37,18 +38,27 @@ function formatAvailabilityDate(at: Date) {
 function selectStoreHistoryLines(store: StoreDetail, isCorrentista: boolean, now: Date) {
   const composed = composeStoreHistory(store.history, now);
   const hasInterPartial = composed.some((platform) => platform.platformId === INTER_PLATFORM_ID && platform.partial !== null);
-  const currentRewardTypes = new Map(store.offers.map((offer) => [offer.platformId, offer.reward.type]));
+  const currentOffers = new Map(store.offers.map((offer) => [offer.platformId, offer]));
 
   const lines: HistoryPresentationLine[] = composed.map((platform) => {
     const isInter = platform.platformId === INTER_PLATFORM_ID;
     const usePartial = isInter && !isCorrentista;
+    const offer = currentOffers.get(platform.platformId);
+    const primaryObservation = offer
+      ? { rewardType: offer.reward.type, value: offer.reward.value, observedAt: offer.lastSeenAt }
+      : null;
+    const partialObservation =
+      isInter && offer?.reward.type === "percent" && offer.reward.valuePartial !== null
+        ? { rewardType: "percent" as const, value: offer.reward.valuePartial, observedAt: offer.lastSeenAt }
+        : null;
     // ADR-0011: uma série insuficiente do Inter nunca cai para a outra modalidade como fallback.
-    const series = usePartial ? (platform.partial ?? { sufficient: false, segments: [] }) : platform.primary;
+    const unconfirmedSeries = usePartial ? (platform.partial ?? { sufficient: false, segments: [] }) : platform.primary;
+    const series = confirmHistorySeries(unconfirmedSeries, usePartial ? partialObservation : primaryObservation);
     return {
       platformId: platform.platformId,
       platformName: platform.platformName,
       variantLabel: isInter ? (isCorrentista ? " (correntista)" : " (não correntista)") : "",
-      currentRewardType: currentRewardTypes.get(platform.platformId) ?? platform.primary.segments.at(-1)?.rewardType ?? null,
+      currentRewardType: offer?.reward.type ?? platform.primary.segments.at(-1)?.rewardType ?? null,
       series,
     };
   });
@@ -147,7 +157,7 @@ export function StoreHistory({ store }: { store: StoreDetail }) {
       ) : (
         <div className="rounded-[18px] border border-dashed border-[#ddd9cf] bg-[#faf9f5] px-7 py-8 text-center">
           <p className="text-[17px] font-semibold text-[#12140f]">Histórico sendo construído</p>
-          <p className="mx-auto mt-1.5 max-w-[470px] text-[14.5px] leading-[1.55] text-[#70736a]">Ainda estamos coletando os valores de cashback desta loja. Assim que houver dados suficientes, o gráfico aparece aqui.</p>
+          <p className="mx-auto mt-1.5 max-w-[470px] text-[14.5px] leading-[1.55] text-[#70736a]">Ainda precisamos confirmar estes valores em uma nova coleta. Assim que isso acontecer, o gráfico aparece aqui.</p>
         </div>
       )}
 

@@ -59,7 +59,9 @@ componentes e tokens; `farejô App.dc.html` contém as telas editáveis do prot�
   “Ativar aviso no Telegram” (abre `t.me/<bot>?start=<slug>`). Sempre visível, inclusive com a loja em
   estado "Sem ofertas no momento" — fica entre o ranking/estado-vazio e o Histórico.
 - Seção “Histórico” com janela de 60 dias, legenda por plataforma, gráfico em degraus e resumo
-  textual. O estado “Histórico sendo construído” usa a mesma área sem gráfico fabricado.
+  textual. Uma linha plana só aparece depois de uma coleta posterior confirmar o mesmo tipo, valor e
+  modalidade; antes disso, o estado “Histórico sendo construído” usa a mesma área sem gráfico
+  fabricado.
 - Seção “Como funciona” com três passos.
 - Não existe seção “Outras lojas populares”.
 

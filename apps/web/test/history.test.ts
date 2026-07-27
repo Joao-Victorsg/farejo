@@ -6,6 +6,7 @@ import {
   clipSeriesToWindow,
   composeHistorySeries,
   composeStoreHistory,
+  confirmHistorySeries,
   describeHistoryAvailability,
   deriveOfferSignals,
   findHistoryRangeOption,
@@ -111,6 +112,106 @@ describe("composeHistorySeries", () => {
     const result = composeHistorySeries([], WINDOW_START, NOW);
     expect(result.sufficient).toBe(false);
     expect(result.segments).toEqual([]);
+  });
+});
+
+describe("confirmHistorySeries", () => {
+  const firstObservedAt = "2026-06-01T00:00:00.000Z";
+  const flatPercentSeries: ComposedSeries = {
+    sufficient: false,
+    segments: [{ rewardType: "percent", from: firstObservedAt, to: NOW.toISOString(), value: 5 }],
+  };
+
+  it("keeps the first observation insufficient when observedAt equals its first reachable event", () => {
+    const result = confirmHistorySeries(flatPercentSeries, {
+      rewardType: "percent",
+      value: 5,
+      observedAt: firstObservedAt,
+    });
+
+    expect(result.sufficient).toBe(false);
+  });
+
+  it("promotes a flat series after a later observation confirms the same reward type and value", () => {
+    const result = confirmHistorySeries(flatPercentSeries, {
+      rewardType: "percent",
+      value: 5,
+      observedAt: "2026-06-02T00:00:00.000Z",
+    });
+
+    expect(result).toEqual({ ...flatPercentSeries, sufficient: true });
+  });
+
+  it.each([
+    { rewardType: "percent" as const, value: 6, label: "value" },
+    { rewardType: "fixed" as const, value: 5, label: "reward type" },
+  ])("does not promote when the current $label diverges", ({ rewardType, value }) => {
+    const result = confirmHistorySeries(flatPercentSeries, {
+      rewardType,
+      value,
+      observedAt: "2026-06-02T00:00:00.000Z",
+    });
+
+    expect(result.sufficient).toBe(false);
+  });
+
+  it("does not promote a series without a drawable segment or without a current confirmation", () => {
+    expect(
+      confirmHistorySeries(
+        { sufficient: false, segments: [] },
+        { rewardType: "percent", value: 5, observedAt: "2026-06-02T00:00:00.000Z" },
+      ).sufficient,
+    ).toBe(false);
+    expect(confirmHistorySeries(flatPercentSeries, null).sufficient).toBe(false);
+  });
+
+  it("confirms Inter primary and partial series independently, without fallback", () => {
+    const primary: ComposedSeries = {
+      sufficient: false,
+      segments: [{ rewardType: "percent", from: firstObservedAt, to: NOW.toISOString(), value: 6 }],
+    };
+    const partial: ComposedSeries = {
+      sufficient: false,
+      segments: [{ rewardType: "percent", from: firstObservedAt, to: NOW.toISOString(), value: 2 }],
+    };
+
+    expect(
+      confirmHistorySeries(primary, {
+        rewardType: "percent",
+        value: 2,
+        observedAt: "2026-06-02T00:00:00.000Z",
+      }).sufficient,
+    ).toBe(false);
+    expect(
+      confirmHistorySeries(partial, {
+        rewardType: "percent",
+        value: 2,
+        observedAt: "2026-06-02T00:00:00.000Z",
+      }).sufficient,
+    ).toBe(true);
+  });
+
+  it("makes a confirmed flat series available with a stable summary and zero invented changes", () => {
+    const confirmed = confirmHistorySeries(flatPercentSeries, {
+      rewardType: "percent",
+      value: 5,
+      observedAt: "2026-06-02T00:00:00.000Z",
+    });
+    const line: HistoryPresentationLine = {
+      platformId: "mycashback",
+      platformName: "MyCashback",
+      variantLabel: "",
+      currentRewardType: "percent",
+      series: confirmed,
+    };
+    const model = buildHistoryChartModel([line], "percent", WINDOW_START, NOW);
+    const summary = summarizeSeries("MyCashback", confirmed, SERVED_WINDOW);
+
+    expect(model.availableLines).toEqual([line]);
+    expect(model.collectingLines).toEqual([]);
+    expect(confirmed.segments).toHaveLength(1);
+    expect(summary).toBe("MyCashback: manteve 5% nos últimos 60 dias.");
+    expect(summary).not.toContain("mudança");
   });
 });
 
