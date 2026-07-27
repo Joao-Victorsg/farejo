@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { PageFrame } from "@/components/page-frame";
+import { StoreAvisosCta } from "@/components/store-avisos-cta";
 import { StoreHeader } from "@/components/store-header";
 import { StoreHistory } from "@/components/store-history";
 import { StoreRanking } from "@/components/store-ranking";
@@ -72,6 +73,7 @@ export default async function StorePage({ params }: StorePageProps) {
           ) : (
             <StoreRanking store={store} />
           )}
+          <StoreAvisosCta store={store} />
           <StoreHistory store={store} />
           {store.offers.length > 0 ? (
             <section aria-labelledby="steps-heading" className="mt-11">

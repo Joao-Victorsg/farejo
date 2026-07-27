@@ -27,8 +27,12 @@ export function stopped(): string {
   return "✅ Pronto! Não vou mais te avisar, e não guardo mais nada seu.";
 }
 
-export function confirmSubscription(storeName: string): string {
-  return `✅ Pronto! Vou te avisar quando o cashback da ${storeName} melhorar.`;
+export function confirmSubscription(storeName: string, slug: string): string {
+  return [
+    `✅ Pronto! Vou te avisar quando o cashback da ${storeName} melhorar.`,
+    "",
+    `Quer ser avisado também quando passar de um valor definido por você? Use /piso ${slug} <valor> — por exemplo, /piso ${slug} 10.`,
+  ].join("\n");
 }
 
 export function welcome(siteUrl: string): string {

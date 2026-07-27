@@ -55,6 +55,9 @@ componentes e tokens; `farejô App.dc.html` contém as telas editáveis do prot�
 - A melhor linha usa superfície verde suave e CTA sólido; demais linhas usam superfície branca e CTA
   outline.
 - Aviso informativo em superfície neutra abaixo do ranking.
+- Card "Avise-me quando o cashback da [Loja] subir": ícone, título, corpo com ênfase inline e CTA
+  “Ativar aviso no Telegram” (abre `t.me/<bot>?start=<slug>`). Sempre visível, inclusive com a loja em
+  estado "Sem ofertas no momento" — fica entre o ranking/estado-vazio e o Histórico.
 - Seção “Histórico” com janela de 60 dias, legenda por plataforma, gráfico em degraus e resumo
   textual. O estado “Histórico sendo construído” usa a mesma área sem gráfico fabricado.
 - Seção “Como funciona” com três passos.

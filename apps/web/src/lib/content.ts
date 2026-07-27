@@ -44,6 +44,10 @@ export const faqs = [
     question: "Preciso criar uma conta no farejô?",
     answer: "Não. O farejô não pede cadastro. Você só precisa atender às regras da plataforma escolhida para receber o cashback.",
   },
+  {
+    question: "Como funciona o aviso no Telegram?",
+    answer: 'Na página de cada loja há o botão "Ativar aviso no Telegram". Ele abre o nosso bot já com a loja preenchida e, em um toque, você passa a receber uma mensagem sempre que o cashback daquela loja subir ou passar de um valor definido por você — inclusive em lojas que estão sem oferta agora. É gratuito, não exige conta no farejô e você pode sair quando quiser pelo próprio bot.',
+  },
 ] as const;
 
 export const platforms = ["Méliuz", "Cuponomia", "MyCashback", "Zoom", "Inter"] as const;
