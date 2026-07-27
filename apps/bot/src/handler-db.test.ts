@@ -184,6 +184,7 @@ describe("/start", () => {
     expect(reply.method).toBe("sendMessage");
     expect(reply.chat_id).toBe(CHAT);
     expect(reply.text).toContain("Amazon");
+    expect(reply.text).toContain("/piso");
 
     expect(await subscriptionsOfChat()).toEqual([{ slug: `${fixturePrefix}amazon`, mode: "improvement", floor_value: null }]);
   });

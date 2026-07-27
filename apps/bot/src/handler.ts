@@ -105,7 +105,7 @@ async function handleStart(pool: BotPool, siteUrl: string, chatId: number, slug:
   const result = await ensureSubscription(pool, subscriber.id, store.id);
   if (result === "capped") return subscriptionCapped(store.name);
 
-  const confirmation = confirmSubscription(store.name);
+  const confirmation = confirmSubscription(store.name, store.slug);
   return subscriber.isNew ? `${consentBlock(siteUrl)}\n\n${confirmation}` : confirmation;
 }
 

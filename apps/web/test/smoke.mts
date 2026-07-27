@@ -270,6 +270,11 @@ try {
   assert.match(detailHtml, /Histórico sendo construído/);
   assert.match(detailHtml, /Ainda estamos coletando os valores de cashback desta loja/);
 
+  // #121: link estático de Avisos, sem estado de assinatura — só a marcação importa (o AC do
+  // ticket dispensa teste de browser dedicado para um link estático).
+  assert.match(detailHtml, /Avise-me quando o cashback da Loja real sem logo 00 subir/);
+  assert.match(detailHtml, new RegExp(`href="https://t\\.me/farejocashbackbot\\?start=${fixturePrefix}00"`));
+
   // Renderização inicial do servidor assume correntista=true (ADR-0034/ADR-0046) — a
   // modalidade não correntista só aparece depois do toggle no cliente (coberto abaixo, via
   // Playwright, junto com a troca real de estado).
@@ -306,6 +311,10 @@ try {
   assert.match(unavailableHtml, /Sem ofertas no momento/);
   assert.match(unavailableHtml, /name="robots" content="noindex, follow"/);
   assert.doesNotMatch(unavailableHtml, />Ativar</);
+  // #121: o CTA de Avisos aparece TAMBÉM sem oferta elegível — é onde mais vale, e não pede
+  // regra nova (a primeira oferta de uma loja sem oferta anterior já é uma Melhoria).
+  assert.match(unavailableHtml, /Avise-me quando o cashback da Loja real indisponível subir/);
+  assert.match(unavailableHtml, new RegExp(`href="https://t\\.me/farejocashbackbot\\?start=${fixturePrefix}indisponivel"`));
 
   const missing = await fetch(`${baseUrl}/loja/${fixturePrefix}inexistente`);
   const missingHtml = await missing.text();
