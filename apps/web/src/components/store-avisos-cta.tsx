@@ -13,12 +13,12 @@ function botStartUrl(slug: string) {
  */
 export function StoreAvisosCta({ store }: { store: StoreDetail }) {
   return (
-    <section className="mt-6 flex flex-wrap items-center justify-between gap-5 rounded-[18px] border border-[#ece9e2] bg-white p-6 sm:p-8" aria-labelledby="avisos-heading">
-      <div className="flex items-center gap-[18px]">
+    <section className="mt-6 flex flex-wrap items-center gap-5 rounded-[18px] border border-[#ece9e2] bg-white p-6 sm:p-8" aria-labelledby="avisos-heading">
+      <div className="flex flex-1 items-center gap-[18px]">
         <span aria-hidden="true" className="flex size-[52px] shrink-0 items-center justify-center rounded-[14px] bg-[#e7f4ec] text-[#1c7a4d]">
           <Send size={26} />
         </span>
-        <div>
+        <div className="min-w-0">
           <h2 className="text-[19px] font-bold tracking-[-0.01em]" id="avisos-heading">{`Avise-me quando o cashback da ${store.name} subir`}</h2>
           <p className="mt-1.5 max-w-[460px] text-[14.5px] leading-[1.55] text-[#5b5f56]">
             {`Receba uma mensagem no Telegram sempre que o cashback da ${store.name} `}
