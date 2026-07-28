@@ -159,10 +159,9 @@ await client.query(
     ($1, 'zoom', 'percent', 4, null, '4%', 'https://outside.example.test/zoom-toggle', true, now())`,
   [toggleStore.id],
 );
-// Issue54: histórico real — correntista Inter e Méliuz têm uma mudança real (sufficient);
-// o não correntista Inter só tem uma leitura de value_partial (2), sem mudança — o toggle
-// para "não correntista" precisa mostrar "sendo construído" para o Inter em vez de cair
-// para a série de correntista.
+// Issue54: correntista Inter e Méliuz têm mudança real. ADR-0067: o não correntista
+// Inter mantém 2% e Zoom mantém 4%; ambos são confirmados por last_seen_at posterior,
+// sem cair para outra modalidade e sem acrescentar delta.
 await client.query(
   `insert into public.offer_history (store_id, platform_id, reward_type, value, value_partial, changed_at) values
     ($1, 'inter', 'percent', 8, 2, now() - interval '10 days'),
@@ -171,7 +170,8 @@ await client.query(
     ($1, 'meliuz', 'percent', 8, null, now() - interval '2 days'),
     ($1, 'cuponomia', 'percent', 4, null, now() - interval '12 days'),
     ($1, 'cuponomia', 'percent', null, null, now() - interval '8 days'),
-    ($1, 'cuponomia', 'percent', 7, null, now() - interval '5 days')`,
+    ($1, 'cuponomia', 'percent', 7, null, now() - interval '5 days'),
+    ($1, 'zoom', 'percent', 4, null, now() - interval '9 days')`,
   [toggleStore.id],
 );
 
@@ -268,7 +268,7 @@ try {
   assert.doesNotMatch(detailHtml, /https:\/\/(shopping\.inter\.co|www\.meliuz\.com\.br|www\.zoom\.com\.br)/);
   assert.match(detailHtml, />Histórico</);
   assert.match(detailHtml, /Histórico sendo construído/);
-  assert.match(detailHtml, /Ainda estamos coletando os valores de cashback desta loja/);
+  assert.match(detailHtml, /Ainda precisamos confirmar estes valores em uma nova coleta/);
 
   // #121: link estático de Avisos, sem estado de assinatura — só a marcação importa (o AC do
   // ticket dispensa teste de browser dedicado para um link estático).
@@ -417,8 +417,8 @@ try {
   assert.match(interRowText, /CONDICIONAL/);
   assert.match(interRowText, /2%/);
 
-  // Issue54: o histórico segue o toggle — a modalidade não correntista do Inter não tem
-  // mudança real (só uma leitura de value_partial) e nunca cai para a série correntista.
+  // ADR-0067: o histórico segue o toggle e confirma a modalidade não correntista do Inter
+  // separadamente. A série estável nunca cai para a série de correntista.
   const historySection = page.getByRole("region", { name: "Histórico", exact: true });
   const historyChart = historySection.getByRole("application", { name: /Gráfico do histórico/ });
   await historyChart.waitFor();
@@ -427,20 +427,23 @@ try {
   // resumo admite isso em vez de afirmar 60 dias que nunca existiram.
   assert.match(
     await visibleSummary.innerText(),
-    /Nos \d+ dias de histórico disponíveis, o cashback de Loja real alterna correntista variou entre 4% e 8% entre as plataformas acompanhadas/,
+    /Nos \d+ dias de histórico disponíveis, o cashback de Loja real alterna correntista variou entre 2% e 8% entre as plataformas acompanhadas/,
   );
-  await historySection.getByLabel("Shopping Inter (não correntista): histórico sendo construído").waitFor();
-  await historySection.getByLabel("Zoom: histórico sendo construído").waitFor();
+  await historySection.getByRole("button", { name: /Shopping Inter \(não correntista\)/ }).waitFor();
+  await historySection.getByRole("button", { name: /Zoom/ }).waitFor();
+  await historySection.getByText(/Shopping Inter \(não correntista\): manteve 2%/).waitFor();
+  await historySection.getByText(/Zoom: manteve 4%/).waitFor();
 
   // ADR-0058: a régua vem do dado (12 dias ⇒ "7 dias" e "Tudo"), e recortar recalcula o resumo de
-  // verdade — a cuponomia de 12d atrás sai da janela e o piso sobe de 4% para 6%.
+  // verdade — a cuponomia de 12d atrás sai da janela, mas a linha estável parcial do Inter
+  // preserva o piso observado em 2%.
   const rangeGroup = historySection.getByRole("radiogroup", { name: "Período do histórico" });
   await rangeGroup.waitFor();
   assert.equal(await rangeGroup.getByRole("radio").count(), 2);
   await rangeGroup.getByRole("radio", { name: "7 dias" }).click();
   await historySection
     .locator("p")
-    .filter({ hasText: /Nos últimos 7 dias, o cashback de Loja real alterna correntista variou entre 6% e 8%/ })
+    .filter({ hasText: /Nos últimos 7 dias, o cashback de Loja real alterna correntista variou entre 2% e 8%/ })
     .waitFor();
   assert.equal(new URL(page.url()).searchParams.get("periodo"), "7");
 

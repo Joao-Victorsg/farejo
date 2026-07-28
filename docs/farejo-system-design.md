@@ -183,7 +183,7 @@ create index idx_stores_name_trgm on stores using gin (name gin_trgm_ops); -- bu
 Pontos de design:
 
 - **`offers` guarda só o estado vigente** (PK composta loja+plataforma, upsert). Toda query do dia a dia (busca, ranking, card) bate só nela — o histórico nunca entra no caminho quente.
-- **`offer_history` é delta-based: grava apenas quando o valor muda**, não a cada run. Primeiro-visto, mudança, desativação e reativação criam eventos; re-run idempotente só atualiza frescor. A Fase 3 acrescenta `value_partial` nullable ao histórico para que o toggle Inter selecione uma série verdadeira de não-correntista. Escrita continua atômica por plataforma e por escopo; runs `suspicious`/`failed` não alteram ofertas.
+- **`offer_history` é delta-based: grava apenas quando o valor muda**, não a cada run. Primeiro-visto, mudança, desativação e reativação criam eventos; re-run idempotente só atualiza frescor em `offers.last_seen_at`. Essa observação posterior pode confirmar uma série plana quando grandeza, valor e modalidade coincidem, sem criar snapshot. A Fase 3 acrescenta `value_partial` nullable ao histórico para que o toggle Inter selecione uma série verdadeira de não-correntista. Escrita continua atômica por plataforma e por escopo; runs `suspicious`/`failed` não alteram ofertas.
 - **Boost = derivado, não armazenado.** O valor típico é a mediana ponderada pela duração dos intervalos nos últimos 60 dias; boost existe quando o valor atual atinge o limiar aprovado sobre esse típico. `value` e `value_partial` do Inter possuem bases independentes.
 - **`raw_text` sempre preservado.** Quando o parser errar, você vê exatamente o que o site mostrava.
 - **`last_seen_at` resolve o requisito F8 (lojas inativas)** — ver §5.
@@ -381,8 +381,10 @@ Duas camadas:
   normal.
 - O toggle Inter começa ligado, persiste em `localStorage` e aparece na home e no detalhe. Reordena
   ofertas dentro da loja, não lojas no catálogo.
-- O histórico é step chart com âncora anterior à janela e lacunas em desativação. Sem mudança real,
-  mostra “Histórico sendo construído”. Percentual e fixo não compartilham escala.
+- O histórico é step chart com âncora anterior à janela e lacunas em desativação. Uma série aparece
+  após uma mudança real ou uma reobservação posterior do mesmo tipo, valor e modalidade; sem
+  histórico ou segunda confirmação, mostra “Histórico sendo construído”. Inter correntista e não
+  correntista são confirmados separadamente. Percentual e fixo não compartilham escala.
 - O CTA recebe apenas a rota `/go`; `offers.url` fica server-only até a validação do clique. Oferta
   encerrada produz 410; falha temporária, 503; nunca há redirect para URL antiga.
 - Dados de catálogo usam tag ampla `catalog`, TTL de ~1 h e expiração imediata por `POST` autenticado
