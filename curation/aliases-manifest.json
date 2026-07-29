@@ -917,6 +917,27 @@
       ]
     },
     {
+      "canonicalSlug": "emma",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Emma"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Emma"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Emma Colchões"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Colchões Emma"
+        }
+      ]
+    },
+    {
       "canonicalSlug": "madesa",
       "aliases": [
         {
