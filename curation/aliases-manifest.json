@@ -915,6 +915,27 @@
           "rawName": "NH Hotels"
         }
       ]
+    },
+    {
+      "canonicalSlug": "madesa",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Madesa"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Madesa"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Madesa"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Loja Madesa"
+        }
+      ]
     }
   ],
   "rejects": []
