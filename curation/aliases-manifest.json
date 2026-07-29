@@ -915,6 +915,48 @@
           "rawName": "NH Hotels"
         }
       ]
+    },
+    {
+      "canonicalSlug": "emma",
+      "aliases": [
+        {
+          "platformId": "inter",
+          "rawName": "Emma"
+        },
+        {
+          "platformId": "zoom",
+          "rawName": "Emma"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Emma Colchões"
+        },
+        {
+          "platformId": "cuponomia",
+          "rawName": "Colchões Emma"
+        }
+      ]
+    },
+    {
+      "canonicalSlug": "madesa",
+      "aliases": [
+        {
+          "platformId": "cuponomia",
+          "rawName": "Madesa"
+        },
+        {
+          "platformId": "inter",
+          "rawName": "Madesa"
+        },
+        {
+          "platformId": "mycashback",
+          "rawName": "Madesa"
+        },
+        {
+          "platformId": "meliuz",
+          "rawName": "Loja Madesa"
+        }
+      ]
     }
   ],
   "rejects": []
