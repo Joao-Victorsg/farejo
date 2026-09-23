@@ -53,6 +53,23 @@ API pública própria; `/api/search` não é necessária.
 URLs do catálogo padrão são indexáveis. Busca e ordenações alternativas são compartilháveis, mas
 `noindex,follow`. `sort=platforms` é normalizado para a URL sem o parâmetro.
 
+### Filtro de categorias (extensão do catálogo)
+
+- `category` é um slug de categoria na URL, omitido para todas as lojas. Uma categoria pode
+  conter várias lojas e uma loja pode pertencer a várias categorias, inclusive generalistas.
+- Categoria se combina com a busca antes da paginação. Trocar categoria ou ordenação preserva
+  os demais filtros e volta à primeira página. Submeter busca preserva categoria e ordenação.
+- O dropdown fica abaixo do título conforme o handoff. O título vira o nome da categoria;
+  havendo busca junto, o termo aparece em uma linha de apoio. Sem categoria, títulos existentes.
+- O hero usa a contagem global elegível; a seção usa contagem filtrada. O dropdown não mostra
+  contagens por opção. Categoria conhecida sem resultado recebe estado vazio contextual;
+  slug inválido não retorna catálogo amplo como se estivesse filtrado.
+- URLs filtradas por categoria são `noindex,follow`, com canonical normalizado, fora do sitemap.
+- Limpar categoria preserva busca e ordenação; limpar busca preserva categoria e ordenação.
+- Evidências e decisões de curadoria não entram no DTO público. Lojas não classificadas
+  continuam na busca geral e em “Todas as lojas”. Classificação não garante cashback em todos
+  os produtos daquele departamento; as regras de ativação continuam valendo.
+
 ## Cards, ranking e preferência Inter
 
 - O card abre `/loja/[slug]`; “Ativar” abre uma nova aba.

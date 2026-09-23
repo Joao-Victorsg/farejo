@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { catalogHref } from "@/lib/catalog-url";
+import { catalogHref, type CatalogSort } from "@/lib/catalog-url";
 
-export function HeroSearch({ query, placeholder }: { query: string; placeholder: string }) {
+export function HeroSearch({ query, placeholder, category, sort }: { query: string; placeholder: string; category?: string; sort: CatalogSort }) {
   const router = useRouter();
   const [input, setInput] = useState(query);
 
@@ -15,7 +15,7 @@ export function HeroSearch({ query, placeholder }: { query: string; placeholder:
       className="mt-8 flex max-w-xl items-center gap-2 rounded-2xl border border-[#e0ddd4] bg-white p-2 shadow-[0_6px_24px_-14px_rgba(0,0,0,.25)]"
       onSubmit={(event) => {
         event.preventDefault();
-        router.push(`${catalogHref({ page: 1, query: input.trim(), sort: "platforms" })}#catalogo`);
+        router.push(`${catalogHref({ page: 1, query: input.trim(), sort, category })}#catalogo`);
       }}
     >
       <label className="sr-only" htmlFor="hero-search">Buscar loja</label>

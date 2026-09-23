@@ -7,11 +7,12 @@ import { catalogHref, type CatalogSort } from "@/lib/catalog-url";
 interface PageJumpProps {
   query: string;
   sort: CatalogSort;
+  category?: string;
   totalPages: number;
 }
 
 /** Salto direto de página para catálogos longos, onde a lista truncada não alcança toda página. */
-export function PageJump({ query, sort, totalPages }: PageJumpProps) {
+export function PageJump({ query, sort, category, totalPages }: PageJumpProps) {
   const router = useRouter();
   const [value, setValue] = useState("");
 
@@ -23,7 +24,7 @@ export function PageJump({ query, sort, totalPages }: PageJumpProps) {
         const parsed = Number.parseInt(value, 10);
         if (!Number.isFinite(parsed)) return;
         const page = Math.min(totalPages, Math.max(1, parsed));
-        router.push(`${catalogHref({ page, query, sort })}#catalogo`);
+        router.push(`${catalogHref({ page, query, sort, category })}#catalogo`);
       }}
     >
       <label className="whitespace-nowrap" htmlFor="page-jump">Ir para a página</label>

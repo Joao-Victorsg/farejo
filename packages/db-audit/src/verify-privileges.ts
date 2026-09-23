@@ -57,6 +57,7 @@ export const POLICY_SCHEMAS = [...PRODUCT_SCHEMAS, "storage"] as const;
 export const ALLOWED_TABLE_GRANTS = new Set([
   "farejo_web|web_read.catalog_offers|SELECT",
   "farejo_web|web_read.catalog_stores|SELECT",
+  "farejo_web|web_read.catalog_categories|SELECT",
   "farejo_web|web_read.store_details|SELECT",
   "farejo_web|web_read.store_redirects|SELECT",
   "farejo_logo_writer|public.store_logo_sources|SELECT",

@@ -1,0 +1,3 @@
+-- Snapshot integral para pesquisa de categorias; somente SELECT.
+-- Usa a elegibilidade do read model, sem consultar dados de assinantes.
+select s.id, s.slug, s.name, coalesce(c.platform_count, 0)::int as eligible_platform_count, (select jsonb_agg(jsonb_build_object('platform_id', a.platform_id, 'name', a.raw_name) order by a.platform_id) from public.store_aliases a where a.store_id = s.id) as aliases, (select jsonb_agg(jsonb_build_object('platform_id', o.platform_id, 'url', o.url) order by o.platform_id) from public.offers o where o.store_id = s.id) as platform_links from public.stores s left join web_read.catalog_stores c on c.slug = s.slug order by s.slug;

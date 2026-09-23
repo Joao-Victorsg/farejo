@@ -1,0 +1,1786 @@
+{
+  "description": "Snapshot somente de dados públicos de lojas e aliases usado para o piloto. Não inclui assinantes, métricas pessoais, tokens ou credenciais.",
+  "snapshot_started_at_utc": "2026-09-10T02:16:08Z",
+  "stores": [
+    {
+      "id": 488,
+      "slug": "1password",
+      "name": "1Password",
+      "eligible_platform_count": 1,
+      "aliases": [
+        {
+          "name": "1Password",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.mycashback.com.br/retailer/1password",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "24s",
+      "name": "24S",
+      "eligible_platform_count": 1,
+      "aliases": [
+        {
+          "name": "24S",
+          "platform_id": "meliuz"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.meliuz.com.br/desconto/24s",
+          "platform_id": "meliuz"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "4seating",
+      "name": "4seating.com",
+      "eligible_platform_count": 1,
+      "aliases": [
+        {
+          "name": "4seating.com",
+          "platform_id": "meliuz"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.meliuz.com.br/desconto/4seating-com",
+          "platform_id": "meliuz"
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "slug": "adidas",
+      "name": "adidas",
+      "eligible_platform_count": 5,
+      "aliases": [
+        {
+          "name": "adidas",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Adidas Brasil",
+          "platform_id": "inter"
+        },
+        {
+          "name": "adidas",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Adidas",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Adidas",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/adidas",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/adidas",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-adidas",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/adidas",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/adidas-25860",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "slug": "airalo",
+      "name": "Airalo",
+      "eligible_platform_count": 3,
+      "aliases": [
+        {
+          "name": "Airalo",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Airalo",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Airalo",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/airalo",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-airalo",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/airalo",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "slug": "aliexpress",
+      "name": "AliExpress",
+      "eligible_platform_count": 4,
+      "aliases": [
+        {
+          "name": "AliExpress",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Aliexpress",
+          "platform_id": "inter"
+        },
+        {
+          "name": "AliExpress",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Aliexpress",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/aliexpress",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/aliexpress",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-aliexpress",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/aliexpress",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "slug": "allianztravel",
+      "name": "Allianz Travel",
+      "eligible_platform_count": 4,
+      "aliases": [
+        {
+          "name": "Allianz Travel",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Allianz Travel",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Allianz Travel",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Allianz Travel",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/allianz-assistance",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-allianz-travel",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/allianztravel",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/allianz-travel-19291",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "slug": "alura",
+      "name": "Alura",
+      "eligible_platform_count": 4,
+      "aliases": [
+        {
+          "name": "Alura",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Alura",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Alura",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Alura",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/alura",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/alura",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-alura",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/alura-19290",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "slug": "baggiocafe",
+      "name": "Baggio Café",
+      "eligible_platform_count": 4,
+      "aliases": [
+        {
+          "name": "Baggio Café",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Baggio Café",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Baggio Café",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Baggio Café",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/baggio-cafe",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/baggio-cafe",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-baggio-cafe",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/baggio-cafe",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "slug": "bobbarsoverbottles",
+      "name": "B.O.B. Bars Over Bottles",
+      "eligible_platform_count": 2,
+      "aliases": [
+        {
+          "name": "B.O.B. Bars Over Bottles",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "B.O.B - Bars Over Bottles",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.meliuz.com.br/desconto/bars-over-bottles",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/use-bob",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 120,
+      "slug": "booking",
+      "name": "Booking.com",
+      "eligible_platform_count": 4,
+      "aliases": [
+        {
+          "name": "Booking.com",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Booking.com",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Booking.com",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Booking.com",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/booking-com",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/booking",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-booking",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/booking",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 444,
+      "slug": "brinoxshop",
+      "name": "Brinox Shop",
+      "eligible_platform_count": 5,
+      "aliases": [
+        {
+          "name": "Brinox",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Loja Oficial Brinox",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Loja Oficial Brinox",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Brinox Shop",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Brinox Shop",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/brinox",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/brinox",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-brinox",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/brinoxshop",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/brinox-shop-21100",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 194,
+      "slug": "buser",
+      "name": "Buser",
+      "eligible_platform_count": 5,
+      "aliases": [
+        {
+          "name": "Buser",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Buser",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Buser",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Buser",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Buser",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/buser",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/buser",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-buser",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/buser",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/buser-21991",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 141,
+      "slug": "carrefour",
+      "name": "Carrefour",
+      "eligible_platform_count": 4,
+      "aliases": [
+        {
+          "name": "Carrefour",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Carrefour",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Carrefour",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Carrefour",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/carrefour",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/carrefour",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-carrefour",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/carrefour",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 233,
+      "slug": "casaspedro",
+      "name": "Casas Pedro",
+      "eligible_platform_count": 3,
+      "aliases": [
+        {
+          "name": "Casas Pedro",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Casas Pedro",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Casas Pedro",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/casas-pedro",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-casas-pedro",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/casas-pedro",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 105,
+      "slug": "cobasi",
+      "name": "Cobasi",
+      "eligible_platform_count": 5,
+      "aliases": [
+        {
+          "name": "Cobasi",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Cobasi",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Cobasi",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Cobasi",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Cobasi",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/cobasi",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/cobasi",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-cobasi",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/cobasi",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/cobasi-21108",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 636,
+      "slug": "cpaps",
+      "name": "CPAPS",
+      "eligible_platform_count": 1,
+      "aliases": [
+        {
+          "name": "CPAPS",
+          "platform_id": "cuponomia"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/cpaps",
+          "platform_id": "cuponomia"
+        }
+      ]
+    },
+    {
+      "id": 185,
+      "slug": "decathlon",
+      "name": "Decathlon",
+      "eligible_platform_count": 5,
+      "aliases": [
+        {
+          "name": "Decathlon",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Decathlon",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Decathlon",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Decathlon",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Decathlon",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/decathlon",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/decathlon",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-decathlon",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/decathlonbr",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/decathlon-21115",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 283,
+      "slug": "dell",
+      "name": "Dell",
+      "eligible_platform_count": 3,
+      "aliases": [
+        {
+          "name": "Dell",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Dell",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Dell",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Dell",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/dell",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/dell",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-dell",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/dell",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 469,
+      "slug": "disneyplus",
+      "name": "Disney+",
+      "eligible_platform_count": 3,
+      "aliases": [
+        {
+          "name": "Disney+",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Disney+",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Disney+",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/disney-plus",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-disney",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/disney",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 148,
+      "slug": "evino",
+      "name": "Evino",
+      "eligible_platform_count": 5,
+      "aliases": [
+        {
+          "name": "Evino",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Evino",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Evino",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Evino",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Evino",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/evino",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/evino",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-evino",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/evino",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/evino-21122",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 231,
+      "slug": "giulianaflores",
+      "name": "Giuliana Flores",
+      "eligible_platform_count": 5,
+      "aliases": [
+        {
+          "name": "Giuliana Flores",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Giuliana Flores",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Giuliana Flores",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Giuliana Flores",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Giuliana Flores",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/giuliana-flores",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/giuliana-flores",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-giuliana-flores",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/giuliana-flores",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/giuliana-flores-753",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 1070,
+      "slug": "growthsupplements",
+      "name": "Growth Supplements",
+      "eligible_platform_count": 1,
+      "aliases": [
+        {
+          "name": "Growth Supplements",
+          "platform_id": "cuponomia"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/gsuplementos",
+          "platform_id": "cuponomia"
+        }
+      ]
+    },
+    {
+      "id": 197,
+      "slug": "hostinger",
+      "name": "Hostinger",
+      "eligible_platform_count": 5,
+      "aliases": [
+        {
+          "name": "Hostinger",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Hostinger",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Hostinger",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Hostinger",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Hostinger",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/hostinger",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/hostinger",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-hostinger",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/hostinger",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/hostinger-21904",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 96,
+      "slug": "kabum",
+      "name": "KaBuM!",
+      "eligible_platform_count": 5,
+      "aliases": [
+        {
+          "name": "KaBuM!",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "KaBum",
+          "platform_id": "inter"
+        },
+        {
+          "name": "KaBuM!",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Kabum!",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "KaBuM!",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/kabum",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/kabum",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-kabum",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/kabum",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/kabum!-21",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 692,
+      "slug": "leiturinha",
+      "name": "Leiturinha",
+      "eligible_platform_count": 2,
+      "aliases": [
+        {
+          "name": "Leiturinha",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Leiturinha",
+          "platform_id": "meliuz"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/leiturinha",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/leiturinha",
+          "platform_id": "meliuz"
+        }
+      ]
+    },
+    {
+      "id": 123,
+      "slug": "leroymerlin",
+      "name": "Leroy Merlin",
+      "eligible_platform_count": 4,
+      "aliases": [
+        {
+          "name": "Leroy Merlin",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Leroy Merlin",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Leroy Merlin",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Leroy Merlin",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/leroy-merlin",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/leroy-merlin",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-leroy-merlin",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/leroy-merlin",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 696,
+      "slug": "livrariamartinsfontespaulista",
+      "name": "Livraria Martins Fontes Paulista",
+      "eligible_platform_count": 1,
+      "aliases": [
+        {
+          "name": "Livraria Martins Fontes Paulista",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Livraria Martins Fontes Paulista",
+          "platform_id": "meliuz"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/livraria-martins-fontes-paulista",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-livraria-martins-fontes-paulista",
+          "platform_id": "meliuz"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "slug": "lolacosmetics",
+      "name": " Lola Cosmetics",
+      "eligible_platform_count": 2,
+      "aliases": [
+        {
+          "name": "Lola Cosmetics",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": " Lola Cosmetics",
+          "platform_id": "meliuz"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/lola-cosmetics",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/-lola-cosmetics",
+          "platform_id": "meliuz"
+        }
+      ]
+    },
+    {
+      "id": 209,
+      "slug": "madesa",
+      "name": "Madesa",
+      "eligible_platform_count": 4,
+      "aliases": [
+        {
+          "name": "Madesa",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Madesa",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Loja Madesa",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Madesa",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/madesa",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/madesa",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-loja-madesa",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/madesa",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "slug": "magazineluiza",
+      "name": "Magazine Luiza",
+      "eligible_platform_count": 4,
+      "aliases": [
+        {
+          "name": "Magazine Luiza",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Magazine Luiza",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Magazine Luiza",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Magazine Luiza",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/magazine-luiza",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/magazine-luiza",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-magazine-luiza",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/magazine-luiza-22906",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 811,
+      "slug": "mercadolivre",
+      "name": "Mercado Livre",
+      "eligible_platform_count": 2,
+      "aliases": [
+        {
+          "name": "Mercado Livre",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Mercado Livre",
+          "platform_id": "meliuz"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/mercado-livre",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-desconto-mercado-livre",
+          "platform_id": "meliuz"
+        }
+      ]
+    },
+    {
+      "id": 111,
+      "slug": "natura",
+      "name": "Natura",
+      "eligible_platform_count": 5,
+      "aliases": [
+        {
+          "name": "Natura",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Natura",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Natura",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Natura",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Natura",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/natura",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/natura",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-natura",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/natura",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/natura-20906",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 854,
+      "slug": "nottaai",
+      "name": "Notta AI",
+      "eligible_platform_count": 1,
+      "aliases": [
+        {
+          "name": "Notta AI",
+          "platform_id": "meliuz"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-notta-ai",
+          "platform_id": "meliuz"
+        }
+      ]
+    },
+    {
+      "id": 125,
+      "slug": "nuuvem",
+      "name": "Nuuvem",
+      "eligible_platform_count": 4,
+      "aliases": [
+        {
+          "name": "Nuuvem",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Nuuvem",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Nuuvem",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Nuuvem",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/nuuvem",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/nuuvem",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-nuuvem",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/nuuvembr",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 91,
+      "slug": "paguemenos",
+      "name": "Pague Menos",
+      "eligible_platform_count": 5,
+      "aliases": [
+        {
+          "name": "Pague Menos",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Pague Menos",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Pague Menos",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Pague Menos",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Pague Menos",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/pague-menos",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/pague-menos",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-pague-menos",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/paguemenos",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/pague-menos-21856",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 742,
+      "slug": "parafuzo",
+      "name": "Parafuzo",
+      "eligible_platform_count": 2,
+      "aliases": [
+        {
+          "name": "Parafuzo",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Parafuzo",
+          "platform_id": "meliuz"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/parafuzo",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/parafuzo",
+          "platform_id": "meliuz"
+        }
+      ]
+    },
+    {
+      "id": 606,
+      "slug": "petlove",
+      "name": "Pet Love",
+      "eligible_platform_count": 2,
+      "aliases": [
+        {
+          "name": "Pet Love",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Petlove",
+          "platform_id": "meliuz"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/pet-love",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-pet-love",
+          "platform_id": "meliuz"
+        }
+      ]
+    },
+    {
+      "id": 1066,
+      "slug": "pichau",
+      "name": "Pichau",
+      "eligible_platform_count": 1,
+      "aliases": [
+        {
+          "name": "Pichau",
+          "platform_id": "cuponomia"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/pichau",
+          "platform_id": "cuponomia"
+        }
+      ]
+    },
+    {
+      "id": 592,
+      "slug": "pneustore",
+      "name": "Pneu Store",
+      "eligible_platform_count": 3,
+      "aliases": [
+        {
+          "name": "Pneu Store",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "PneuStore",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Pneu Store",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/pneu-store",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-pneustore",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/pneu-store",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 758,
+      "slug": "remessaonline",
+      "name": "Remessa Online",
+      "eligible_platform_count": 3,
+      "aliases": [
+        {
+          "name": "Remessa Online",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Remessa Online",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Remessa Online",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/remessa-online",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-remessa-online",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/remessa-online",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 112,
+      "slug": "renner",
+      "name": "Renner",
+      "eligible_platform_count": 5,
+      "aliases": [
+        {
+          "name": "Lojas Renner",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Renner",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Renner",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Renner",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Renner",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/lojas-renner",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/renner",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-renner",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/renner",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/renner-21077",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 423,
+      "slug": "semparar",
+      "name": "Sem Parar",
+      "eligible_platform_count": 4,
+      "aliases": [
+        {
+          "name": "Sem Parar",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Sem Parar",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Sem Parar",
+          "platform_id": "mycashback"
+        },
+        {
+          "name": "Sem Parar",
+          "platform_id": "zoom"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/sem-parar",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/sem-parar",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/semparar",
+          "platform_id": "mycashback"
+        },
+        {
+          "url": "https://www.zoom.com.br/cupom-de-desconto/sem-parar-21735",
+          "platform_id": "zoom"
+        }
+      ]
+    },
+    {
+      "id": 848,
+      "slug": "shopee",
+      "name": "Shopee",
+      "eligible_platform_count": 3,
+      "aliases": [
+        {
+          "name": "Shopee",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Shopee",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Shopee",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Shopee Brasil",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/shopee",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/shopee",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-shopee",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/shopeebr",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 991,
+      "slug": "swift",
+      "name": "Swift",
+      "eligible_platform_count": 1,
+      "aliases": [
+        {
+          "name": "Swift",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.mycashback.com.br/retailer/swiftbr",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 963,
+      "slug": "testeops",
+      "name": "teste ops",
+      "eligible_platform_count": 1,
+      "aliases": [
+        {
+          "name": "teste ops",
+          "platform_id": "meliuz"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.meliuz.com.br/desconto/teste-ops",
+          "platform_id": "meliuz"
+        }
+      ]
+    },
+    {
+      "id": 107,
+      "slug": "tiasonia",
+      "name": "Tia Sônia",
+      "eligible_platform_count": 1,
+      "aliases": [
+        {
+          "name": "Tia Sônia",
+          "platform_id": "inter"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/emporiotiasonia",
+          "platform_id": "inter"
+        }
+      ]
+    },
+    {
+      "id": 967,
+      "slug": "timcontrole",
+      "name": "Tim Controle",
+      "eligible_platform_count": 2,
+      "aliases": [
+        {
+          "name": "Tim Controle",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Tim Controle",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.meliuz.com.br/desconto/tim-controle",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/tim_loja",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 306,
+      "slug": "udemy",
+      "name": "Udemy",
+      "eligible_platform_count": 3,
+      "aliases": [
+        {
+          "name": "Udemy",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Udemy",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "Udemy",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/udemy",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-udemy",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/udemy",
+          "platform_id": "mycashback"
+        }
+      ]
+    },
+    {
+      "id": 387,
+      "slug": "zeedog",
+      "name": "ZeeDog",
+      "eligible_platform_count": 4,
+      "aliases": [
+        {
+          "name": "Zee.Dog",
+          "platform_id": "cuponomia"
+        },
+        {
+          "name": "Zee Dog",
+          "platform_id": "inter"
+        },
+        {
+          "name": "Zeedog",
+          "platform_id": "meliuz"
+        },
+        {
+          "name": "ZeeDog",
+          "platform_id": "mycashback"
+        }
+      ],
+      "platform_links": [
+        {
+          "url": "https://www.cuponomia.com.br/desconto/zeedog",
+          "platform_id": "cuponomia"
+        },
+        {
+          "url": "https://shopping.inter.co/site-parceiro/lojas/zee-dog",
+          "platform_id": "inter"
+        },
+        {
+          "url": "https://www.meliuz.com.br/desconto/cupom-zeedog",
+          "platform_id": "meliuz"
+        },
+        {
+          "url": "https://www.mycashback.com.br/retailer/zeedog",
+          "platform_id": "mycashback"
+        }
+      ]
+    }
+  ]
+}

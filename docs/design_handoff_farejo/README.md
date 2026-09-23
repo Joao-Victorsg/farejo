@@ -39,6 +39,14 @@ componentes e tokens; `farejô App.dc.html` contém as telas editáveis do prot�
 
 - Hero com eyebrow monoespaçado, headline forte, subtítulo, busca e dois cards de estatística.
 - Seção “Todas as lojas” com controles de ordenação e preferência “Correntista Inter”.
+- Categorias: dropdown abaixo do título, alinhado à esquerda, com 12 px de distância do
+  cabeçalho. Botão “Categorias” e chevron, mesma escala dos seletores de ordenação: texto de
+  14 px, padding vertical de 6 px, contorno neutro e formato de pílula. O nome da categoria
+  selecionada ocupa o título da seção; o botão conserva seu rótulo curto.
+- Painel de categorias branco, borda neutra, ícones Lucide discretos, links alinhados em colunas
+  e seleção marcada com check e tint verde. Inclui “Todas as lojas”; abre por clique/teclado,
+  fecha por Escape/clique fora. Não escurece toda a página. No toque, alvos de pelo menos 44 px
+  e reflow do painel sem overflow horizontal. Não há página própria de categorias nesta versão.
 - Grade desktop de três colunas, gap de 16 px.
 - Card de loja com logo/fallback, nome, quantidade de plataformas, melhor retorno e até três linhas
   de ofertas.

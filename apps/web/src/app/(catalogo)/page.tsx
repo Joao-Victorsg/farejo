@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { PageFrame } from "@/components/page-frame";
 import { CatalogCard } from "@/components/catalog-card";
+import { CategoryFilter } from "@/components/category-filter";
 import { CatalogControls } from "@/components/catalog-controls";
 import { HeroSearch } from "@/components/hero-search";
 import { InterToggle } from "@/components/inter-toggle";
@@ -15,7 +16,7 @@ import { editorial } from "@/lib/content";
 export const dynamic = "force-dynamic";
 
 interface HomePageProps {
-  searchParams: Promise<{ page?: string | string[]; q?: string | string[]; sort?: string | string[] }>;
+  searchParams: Promise<{ page?: string | string[]; q?: string | string[]; sort?: string | string[]; category?: string | string[] }>;
 }
 
 function formatHeroStoreCount(total: number) {
@@ -52,7 +53,7 @@ function Pagination({ request, totalPages }: { request: CatalogRequest; totalPag
           : <Link aria-label={`Página ${item}`} className="inline-flex size-10 items-center justify-center rounded-lg border border-[#e0ddd4] text-sm font-semibold hover:bg-[#f6f5f0]" href={hrefForCatalog({ ...request, page: item })} key={item}>{item}</Link>)}
         {request.page < totalPages ? <Link className={`${edge} border border-[#e0ddd4] hover:bg-[#f6f5f0]`} href={hrefForCatalog({ ...request, page: request.page + 1 })}>Próxima<ArrowRight aria-hidden="true" size={16} /></Link> : <span aria-disabled="true" className={`${edge} border border-[#ece9e2] text-[#70736a]`}>Próxima<ArrowRight aria-hidden="true" size={16} /></span>}
       </div>
-      {totalPages > 7 ? <PageJump query={request.query} sort={request.sort} totalPages={totalPages} /> : null}
+      {totalPages > 7 ? <PageJump query={request.query} sort={request.sort} category={request.category} totalPages={totalPages} /> : null}
     </nav>
   );
 }
@@ -61,8 +62,19 @@ function HomeError() {
   return <PageFrame><main id="conteudo" tabIndex={-1}><section className="mx-auto max-w-[1160px] px-5 py-24 sm:px-8"><p className="font-mono text-xs font-medium tracking-[0.13em] text-[#1c7a4d]">CATÁLOGO</p><h1 className="mt-4 text-4xl font-bold tracking-[-0.05em]">Não conseguimos carregar as lojas agora.</h1><p className="mt-5 max-w-xl leading-7 text-[#5b5f56]">Tente novamente em alguns instantes. Nenhuma oferta foi tratada como indisponível.</p><Button asChild className="mt-8"><Link href="/">Tentar novamente</Link></Button></section></main></PageFrame>;
 }
 
-function PageNotFound() {
-  return <div className="mt-8 rounded-2xl border border-[#e0ddd4] bg-[#faf9f5] p-6"><h3 className="text-xl font-bold">Esta página não existe.</h3><p className="mt-2 text-[#5b5f56]">Volte para a primeira página do catálogo para continuar navegando.</p><Link className="mt-4 inline-flex font-semibold text-[#1c7a4d]" href="/#catalogo">Ir para a primeira página</Link></div>;
+function PageNotFound({ request }: { request: CatalogRequest }) {
+  return <div className="mt-8 rounded-2xl border border-[#e0ddd4] bg-[#faf9f5] p-6"><h3 className="text-xl font-bold">Esta página não existe.</h3><p className="mt-2 text-[#5b5f56]">Volte para a primeira página do catálogo para continuar navegando.</p><Link className="mt-4 inline-flex font-semibold text-[#1c7a4d]" href={hrefForCatalog({ ...request, page: 1 })}>Ir para a primeira página</Link></div>;
+}
+
+function FilteredEmpty({ request, invalidCategory = false }: { request: CatalogRequest; invalidCategory?: boolean }) {
+  return <div className="mt-8 rounded-2xl border border-[#e0ddd4] bg-[#faf9f5] p-6">
+    <h3 className="text-xl font-bold">{invalidCategory ? "Esta categoria não existe." : request.category ? "Nenhuma loja com cashback disponível nesta seleção." : "Nenhuma loja com cashback disponível foi encontrada."}</h3>
+    <p className="mt-2 text-[#5b5f56]">{request.category ? "Escolha outra categoria ou ajuste sua busca para continuar." : "Tente outro nome ou limpe a busca para ver o catálogo completo."}</p>
+    <div className="mt-4 flex flex-wrap gap-4 font-semibold text-[#1c7a4d]">
+      {request.query ? <Link href={hrefForCatalog({ ...request, query: "", page: 1 })}>Limpar busca</Link> : null}
+      {request.category ? <Link href={hrefForCatalog({ ...request, category: undefined, page: 1 })}>Remover categoria</Link> : null}
+    </div>
+  </div>;
 }
 
 export async function generateMetadata({ searchParams }: HomePageProps): Promise<Metadata> {
@@ -78,7 +90,7 @@ export async function generateMetadata({ searchParams }: HomePageProps): Promise
     }
   }
 
-  const noindex = request.invalidPage || request.invalidParameters || pageOutOfRange || Boolean(request.query) || request.sort !== "platforms";
+  const noindex = request.invalidPage || request.invalidParameters || pageOutOfRange || Boolean(request.query) || Boolean(request.category) || request.sort !== "platforms";
 
   return {
     alternates: { canonical: catalogHref(request) },
@@ -91,7 +103,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   if (request.needsCanonicalRedirect) redirect(catalogHref(request));
 
   if (request.invalidPage || request.invalidParameters) {
-    return <PageFrame><main id="conteudo" tabIndex={-1}><section id="catalogo" className="mx-auto max-w-[1160px] px-5 py-16 sm:px-8"><p className="font-mono text-xs font-medium tracking-[0.13em] text-[#1c7a4d]">CATÁLOGO</p><h1 className="mt-3 text-3xl font-bold tracking-[-0.04em]">Todas as lojas</h1><PageNotFound /></section></main></PageFrame>;
+    return <PageFrame><main id="conteudo" tabIndex={-1}><section id="catalogo" className="mx-auto max-w-[1160px] px-5 py-16 sm:px-8"><p className="font-mono text-xs font-medium tracking-[0.13em] text-[#1c7a4d]">CATÁLOGO</p><h1 className="mt-3 text-3xl font-bold tracking-[-0.04em]">Todas as lojas</h1><PageNotFound request={request} /></section></main></PageFrame>;
   }
 
   let catalog;
@@ -102,12 +114,21 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   }
 
   const pageOutOfRange = catalog.total > 0 && request.page > catalog.totalPages;
+  const category = catalog.categories.find((item) => item.slug === request.category);
 
   return (
     <PageFrame>
       <main id="conteudo" tabIndex={-1}>
-        <section><div className="mx-auto max-w-[1160px] px-5 pt-14 pb-10 sm:px-8 sm:pt-20 sm:pb-12"><div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_auto]"><div><p className="font-mono text-xs font-medium tracking-[0.14em] text-[#1c7a4d]">{editorial.home.eyebrow}</p><h1 className="mt-5 max-w-2xl text-4xl font-bold leading-[1.03] tracking-[-0.055em] sm:text-6xl">{editorial.home.title}</h1><p className="mt-6 max-w-lg text-lg leading-8 text-[#5b5f56]">{editorial.home.description}</p><HeroSearch placeholder={editorial.home.searchPlaceholder} query={request.query} /></div><dl className="flex gap-4"><div className="flex-1 rounded-2xl border border-[#ece9e2] bg-white px-7 py-8 text-center"><dd className="font-numbers text-5xl font-bold leading-none text-[#1c7a4d]">{formatHeroStoreCount(catalog.total)}</dd><dt className="mt-2 text-sm text-[#5b5f56]">lojas</dt></div><div className="flex-1 rounded-2xl border border-[#ece9e2] bg-white px-7 py-8 text-center"><dd className="font-numbers text-5xl font-bold leading-none text-[#1c7a4d]">5</dd><dt className="mt-2 text-sm text-[#5b5f56]">plataformas</dt></div></dl></div></div></section>
-        <section id="catalogo" className="mx-auto max-w-[1160px] px-5 pb-16 pt-4 sm:px-8"><div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4"><h2 className="text-3xl font-bold tracking-[-0.04em]">{request.query ? `Resultados para “${request.query}”` : "Todas as lojas"}</h2><div className="flex flex-wrap items-center gap-3"><CatalogControls query={request.query} sort={request.sort} /><span aria-hidden="true" className="h-5 w-px bg-[#e0ddd4]" /><InterToggle compact /></div></div>{catalog.total === 0 ? request.query ? <div className="mt-8 rounded-2xl border border-[#e0ddd4] bg-[#faf9f5] p-6"><h3 className="text-xl font-bold">Nenhuma loja com cashback disponível foi encontrada.</h3><p className="mt-2 text-[#5b5f56]">Tente outro nome ou limpe a busca para ver o catálogo completo.</p><Link className="mt-4 inline-flex font-semibold text-[#1c7a4d]" href="/#catalogo">Limpar busca</Link></div> : <div className="mt-8 rounded-2xl border border-[#e0ddd4] bg-[#faf9f5] p-6"><h3 className="text-xl font-bold">O catálogo está temporariamente vazio.</h3><p className="mt-2 text-[#5b5f56]">Isso pode indicar uma anomalia nos dados. Tente novamente em alguns instantes.</p></div> : pageOutOfRange ? <PageNotFound /> : <><div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">{catalog.items.map((store) => <CatalogCard key={store.slug} store={store} />)}</div><Pagination request={request} totalPages={catalog.totalPages} /></>}</section>
+        <section><div className="mx-auto max-w-[1160px] px-5 pt-14 pb-10 sm:px-8 sm:pt-20 sm:pb-12"><div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_auto]"><div><p className="font-mono text-xs font-medium tracking-[0.14em] text-[#1c7a4d]">{editorial.home.eyebrow}</p><h1 className="mt-5 max-w-2xl text-4xl font-bold leading-[1.03] tracking-[-0.055em] sm:text-6xl">{editorial.home.title}</h1><p className="mt-6 max-w-lg text-lg leading-8 text-[#5b5f56]">{editorial.home.description}</p><HeroSearch key={catalogHref(request)} placeholder={editorial.home.searchPlaceholder} query={request.query} category={request.category} sort={request.sort} /></div><dl className="flex gap-4"><div className="flex-1 rounded-2xl border border-[#ece9e2] bg-white px-7 py-8 text-center"><dd className="font-numbers text-5xl font-bold leading-none text-[#1c7a4d]">{formatHeroStoreCount(catalog.globalTotal)}</dd><dt className="mt-2 text-sm text-[#5b5f56]">lojas</dt></div><div className="flex-1 rounded-2xl border border-[#ece9e2] bg-white px-7 py-8 text-center"><dd className="font-numbers text-5xl font-bold leading-none text-[#1c7a4d]">5</dd><dt className="mt-2 text-sm text-[#5b5f56]">plataformas</dt></div></dl></div></div></section>
+        <section id="catalogo" className="mx-auto max-w-[1160px] px-5 pb-16 pt-4 sm:px-8">
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4">
+            <h2 className="text-3xl font-bold tracking-[-0.04em]">{catalog.invalidCategory ? "Categoria indisponível" : category?.name ?? (request.query ? `Resultados para “${request.query}”` : "Todas as lojas")}</h2>
+            <div className="flex flex-wrap items-center gap-3"><CatalogControls query={request.query} sort={request.sort} category={request.category} /><span aria-hidden="true" className="h-5 w-px bg-[#e0ddd4]" /><InterToggle compact /></div>
+          </div>
+          <CategoryFilter key={catalogHref(request)} categories={catalog.categories} request={request} />
+          {category ? <p aria-live="polite" className="mt-3 text-sm text-[#5b5f56]">{request.query ? `Resultados para “${request.query}” · ` : ""}{catalog.total} {catalog.total === 1 ? "loja encontrada" : "lojas encontradas"}</p> : null}
+          {catalog.invalidCategory ? <FilteredEmpty request={request} invalidCategory /> : catalog.total === 0 ? request.query || request.category ? <FilteredEmpty request={request} /> : <div className="mt-8 rounded-2xl border border-[#e0ddd4] bg-[#faf9f5] p-6"><h3 className="text-xl font-bold">O catálogo está temporariamente vazio.</h3><p className="mt-2 text-[#5b5f56]">Isso pode indicar uma anomalia nos dados. Tente novamente em alguns instantes.</p></div> : pageOutOfRange ? <PageNotFound request={request} /> : <><div className={`${catalog.categories.length ? "mt-6" : "mt-8"} grid gap-4 md:grid-cols-2 xl:grid-cols-3`}>{catalog.items.map((store) => <CatalogCard key={store.slug} store={store} />)}</div><Pagination request={request} totalPages={catalog.totalPages} /></>}
+        </section>
       </main>
     </PageFrame>
   );

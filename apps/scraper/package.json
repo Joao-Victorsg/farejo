@@ -10,6 +10,7 @@
     "seed": "tsx src/seed.ts",
     "bootstrap": "tsx src/bootstrap.ts",
     "curate:apply": "tsx src/curation/apply.ts",
+    "curate:categories": "tsx src/curation/applyCategories.ts",
     "curate:propose": "tsx src/curation/proposeCandidates.ts",
     "logos:ingest": "tsx src/logos/ingest.ts",
     "logos:coverage": "tsx src/logos/coverage.ts",

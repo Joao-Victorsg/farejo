@@ -83,7 +83,11 @@ const CatalogSearchParams = z.object({
   page: z.union([z.string(), z.array(z.string())]).optional(),
   q: z.union([z.string(), z.array(z.string())]).optional(),
   sort: z.union([z.string(), z.array(z.string())]).optional(),
+  category: z.union([z.string(), z.array(z.string())]).optional(),
 });
+
+const CatalogCategoryRow = z.object({ slug: z.string(), name: z.string(), icon: z.string(), position: z.number().int() });
+export type CatalogCategory = z.infer<typeof CatalogCategoryRow>;
 
 type CatalogOfferBase = {
   platformId: string;
@@ -116,6 +120,9 @@ export type CatalogPage = {
   sort: CatalogSort;
   total: number;
   totalPages: number;
+  globalTotal: number;
+  categories: CatalogCategory[];
+  invalidCategory: boolean;
 };
 
 export type StoreDetail = CatalogStore & { history: StoreHistoryRow[] };
@@ -145,9 +152,11 @@ function getSingleParameter(value: string | string[] | undefined) {
   return typeof value === "string" ? value : undefined;
 }
 
-export function parseCatalogRequest(searchParams: { page?: string | string[]; q?: string | string[]; sort?: string | string[] }): ParsedCatalogRequest {
+export function parseCatalogRequest(searchParams: { page?: string | string[]; q?: string | string[]; sort?: string | string[]; category?: string | string[] }): ParsedCatalogRequest {
   const parsedParams = CatalogSearchParams.parse(searchParams);
-  const invalidParameters = Array.isArray(parsedParams.q) || Array.isArray(parsedParams.sort);
+  const invalidParameters = Array.isArray(parsedParams.q) || Array.isArray(parsedParams.sort) || Array.isArray(parsedParams.category);
+  const rawCategory = getSingleParameter(parsedParams.category);
+  const category = rawCategory?.trim() || undefined;
   const rawPage = getSingleParameter(parsedParams.page);
   const rawQuery = getSingleParameter(parsedParams.q);
   const rawSort = getSingleParameter(parsedParams.sort);
@@ -156,15 +165,16 @@ export function parseCatalogRequest(searchParams: { page?: string | string[]; q?
   const invalidPage = Array.isArray(parsedParams.page) || (rawPage !== undefined && (!Number.isSafeInteger(parsedPage) || parsedPage < 1));
   const page = invalidPage ? 1 : parsedPage;
   const sort = rawSort !== undefined && isCatalogSort(rawSort) ? rawSort : "platforms";
-  const needsCanonicalRedirect = !invalidPage && (
-    rawPage === "1"
+  const needsCanonicalRedirect = !invalidPage && !invalidParameters && (
+    (rawCategory !== undefined && rawCategory !== (category ?? "")) || rawCategory === ""
+    || rawPage === "1"
     || (rawPage !== undefined && rawPage !== String(page))
     || (rawQuery !== undefined && rawQuery !== query)
     || rawSort === "platforms"
     || (rawSort !== undefined && !isCatalogSort(rawSort))
   );
 
-  return { page, query, sort, invalidParameters, invalidPage, needsCanonicalRedirect };
+  return { page, query, sort, category, invalidParameters, invalidPage, needsCanonicalRedirect };
 }
 
 function assertRequest(request: CatalogRequest) {
@@ -176,10 +186,15 @@ function assertRequest(request: CatalogRequest) {
 async function getCatalogPageUncached(request: CatalogRequest): Promise<CatalogPage> {
   const database = getPool();
   const search = (page: number) => database.query(
-    "select slug, name, logo_url, platform_count, relevance, total_count from web_read.catalog_search($1, $2, $3)",
-    [request.query, request.sort, page],
+    "select slug, name, logo_url, platform_count, relevance, total_count from web_read.catalog_search($1, $2, $3, $4)",
+    [request.query, request.sort, page, request.category ?? null],
   );
-  const pageResult = await search(request.page);
+  const [pageResult, categoriesResult, globalResult] = await Promise.all([
+    search(request.page),
+    database.query("select slug, name, icon, position from web_read.catalog_categories order by position, name, slug"),
+    database.query("select count(*)::integer as total from web_read.catalog_stores"),
+  ]);
+  const categories = z.array(CatalogCategoryRow).parse(categoriesResult.rows);
   const rows = z.array(CatalogSearchRow).parse(pageResult.rows);
   const total = rows[0]?.total_count ?? (request.page > 1 ? z.array(CatalogSearchRow).parse((await search(1)).rows)[0]?.total_count ?? 0 : 0);
   const slugs = rows.map((row) => row.slug);
@@ -219,6 +234,9 @@ async function getCatalogPageUncached(request: CatalogRequest): Promise<CatalogP
     sort: request.sort,
     total,
     totalPages: Math.ceil(total / CATALOG_PAGE_SIZE),
+    categories,
+    invalidCategory: Boolean(request.category && !categories.some((category) => category.slug === request.category)),
+    globalTotal: z.object({ total: z.number().int().nonnegative() }).parse(globalResult.rows[0]).total,
   };
 }
 
@@ -380,7 +398,7 @@ export async function getEligibleStoreSlugs() {
   return getCachedEligibleStoreSlugs();
 }
 
-const getCachedCatalogPage = unstable_cache(getCatalogPageUncached, ["catalog-page-v4"], {
+const getCachedCatalogPage = unstable_cache(getCatalogPageUncached, ["catalog-page-v5-categories"], {
   tags: [CATALOG_CACHE_TAG],
   revalidate: CATALOG_CACHE_TTL_SECONDS,
 });
