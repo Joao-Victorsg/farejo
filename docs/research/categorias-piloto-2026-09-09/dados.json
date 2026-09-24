@@ -1,0 +1,3635 @@
+{
+  "schema_version": 2,
+  "title": "Piloto de categorias do farejô — 50 lojas",
+  "status": "proposta_para_revisao",
+  "research_date_local": "2026-09-09",
+  "timezone": "America/Sao_Paulo",
+  "inventory_snapshot_started_at_utc": "2026-09-10T02:16:08Z",
+  "repository_commit": "443bcedca06a596a456eb4e7a37bdf1a8e925d0e",
+  "database_read_only": true,
+  "total_database_stores": 1019,
+  "total_publicly_eligible_stores_at_snapshot": 963,
+  "selection_method": "Amostra intencional de diversidade: 50 registros da lista atual, escolhidos para cobrir varejistas generalistas, especialistas, serviços, múltiplas categorias e uma identidade duvidosa. Não é amostra aleatória nem estimativa da distribuição do catálogo.",
+  "taxonomy": [
+    {
+      "slug": "alimentos-bebidas",
+      "name": "Alimentos e bebidas",
+      "includes": "Comida, bebidas, mercearia, cafés, vinhos e supermercados como atividade relevante.",
+      "excludes": "Ração pertence a Pets; suplementos esportivos concentrados ficam em Saúde/Esportes. Ter snacks de conveniência não basta.",
+      "status": "proposta"
+    },
+    {
+      "slug": "moda-acessorios",
+      "name": "Moda e acessórios",
+      "includes": "Roupas, calçados, bolsas, joias e acessórios para vestir.",
+      "excludes": "Roupas para animais ficam em Pets. Roupas esportivas podem acumular Esportes.",
+      "status": "proposta"
+    },
+    {
+      "slug": "beleza-cuidados",
+      "name": "Beleza e cuidados pessoais",
+      "includes": "Cosméticos, perfumes, maquiagem, produtos capilares e higiene pessoal como linhas relevantes.",
+      "excludes": "Não inferir Saúde a partir de qualquer cosmético. Produtos pet ficam em Pets.",
+      "status": "proposta"
+    },
+    {
+      "slug": "saude-bem-estar",
+      "name": "Saúde e bem-estar",
+      "includes": "Farmácias, equipamentos para saúde humana e suplementos como atividade relevante.",
+      "excludes": "Classificação comercial, sem afirmação de eficácia ou recomendação de uso. Cosméticos comuns não entram automaticamente.",
+      "status": "proposta"
+    },
+    {
+      "slug": "eletronicos-informatica",
+      "name": "Eletrônicos e informática",
+      "includes": "Computadores, componentes, periféricos e eletrônicos físicos.",
+      "excludes": "Serviços de software, cursos de tecnologia e planos de dados têm categorias próprias. Gamer não implica venda de jogos. Eletrodomésticos ficam em Casa; consoles e jogos em Entretenimento.",
+      "status": "proposta"
+    },
+    {
+      "slug": "casa-jardim",
+      "name": "Casa e jardim",
+      "includes": "Móveis, decoração, utensílios domésticos, eletrodomésticos, eletroportáteis para o lar, construção, jardinagem e serviços para cuidar do lar.",
+      "excludes": "Inclui material de obra e limpeza residencial no piloto. Avaliar separar Construção e Serviços se a revisão indicar dificuldade de navegação.",
+      "status": "proposta"
+    },
+    {
+      "slug": "esportes-fitness",
+      "name": "Esportes e fitness",
+      "includes": "Equipamentos, vestuário esportivo e nutrição explicitamente destinada à prática esportiva.",
+      "excludes": "Transmissões esportivas ficam em Entretenimento; alimentos saudáveis comuns não entram apenas por marketing.",
+      "status": "proposta"
+    },
+    {
+      "slug": "pets",
+      "name": "Pets",
+      "includes": "Produtos, alimentação, acessórios e serviços para animais de companhia.",
+      "excludes": "Ração não entra em Alimentos e remédios veterinários não entram em Saúde humana.",
+      "status": "proposta"
+    },
+    {
+      "slug": "viagens-turismo",
+      "name": "Viagens e turismo",
+      "includes": "Hospedagem, passagens e serviços explicitamente destinados à viagem, como seguro viagem e eSIM de viagem.",
+      "excludes": "Não classificar todo serviço usado por um viajante como Viagens. A relação precisa ser central na oferta. Malas e bagagens, por si, não comprovam venda de serviços turísticos.",
+      "status": "proposta"
+    },
+    {
+      "slug": "livros-educacao",
+      "name": "Livros e educação",
+      "includes": "Venda de livros, clubes de leitura e cursos, inclusive departamentos de livros em generalistas.",
+      "excludes": "O assunto do livro/curso não atribui categorias extras: curso de programação não vira loja de eletrônicos.",
+      "status": "proposta"
+    },
+    {
+      "slug": "software-digital",
+      "name": "Software e serviços digitais",
+      "includes": "Software de produtividade, segurança digital, hospedagem e infraestrutura web.",
+      "excludes": "Planos de conectividade ficam em Telefonia. Jogos e streaming ficam em Entretenimento. Ser online não basta.",
+      "status": "proposta"
+    },
+    {
+      "slug": "entretenimento-games",
+      "name": "Entretenimento e games",
+      "includes": "Jogos físicos e digitais, consoles e acessórios dedicados, assinaturas de streaming e conteúdo de entretenimento.",
+      "excludes": "Computadores e periféricos de uso geral, mesmo gamer, ficam em Eletrônicos; cadeiras em Casa. Esportes transmitidos não viram artigos esportivos.",
+      "status": "proposta"
+    },
+    {
+      "slug": "automotivo",
+      "name": "Automotivo",
+      "includes": "Pneus, peças e serviços diretamente ligados ao uso ou manutenção de veículos, incluindo tags de pedágio.",
+      "excludes": "Passagens de ônibus e reservas de viagem ficam em Viagens.",
+      "status": "proposta"
+    },
+    {
+      "slug": "presentes-flores",
+      "name": "Presentes e flores",
+      "includes": "Floriculturas e negócios especializados em arranjos, cestas e presentes por ocasião.",
+      "excludes": "Não classificar toda loja que vende gift card ou permite presentear. Chocolates acessórios a um arranjo não exigem Alimentos.",
+      "status": "proposta"
+    },
+    {
+      "slug": "financas-seguros",
+      "name": "Finanças e seguros",
+      "includes": "Serviços financeiros, remessas internacionais e seguros.",
+      "excludes": "Venda de cartão próprio de um varejista não basta. Guardar dados financeiros em software não torna a loja financeira.",
+      "status": "proposta"
+    },
+    {
+      "slug": "telefonia-internet",
+      "name": "Telefonia e internet",
+      "includes": "Planos móveis, banda larga e pacotes eSIM/dados.",
+      "excludes": "Aparelhos físicos são Eletrônicos; hospedagem é Software. eSIM voltado a viagem pode acumular Viagens.",
+      "status": "proposta"
+    }
+  ],
+  "stores": [
+    {
+      "store_id": 811,
+      "canonical_slug": "mercadolivre",
+      "name": "Mercado Livre",
+      "raw_database_name": "Mercado Livre",
+      "eligible_platform_count": 2,
+      "category_slugs": [
+        "alimentos-bebidas",
+        "moda-acessorios",
+        "beleza-cuidados",
+        "saude-bem-estar",
+        "eletronicos-informatica",
+        "casa-jardim",
+        "esportes-fitness",
+        "pets",
+        "livros-educacao",
+        "entretenimento-games",
+        "automotivo"
+      ],
+      "rationale": "Departamentos comerciais sustentam múltiplas categorias; a operação generalista passa a ser um perfil separado.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F57",
+        "F58"
+      ],
+      "store_profile": {
+        "assortment_scope": "generalista",
+        "operates_marketplace": true,
+        "research_status": "evidencia_encontrada",
+        "approval_status": "pendente",
+        "source_ids": [
+          "F57"
+        ]
+      },
+      "category_coverage": "parcial",
+      "deferred_research": [
+        "Software aparece como subcategoria, mas a oferta e o tipo de licença não foram examinados. Serviços de viagem/educação e consórcios citados no diretório requerem validar canal e identidade antes de associação adicional."
+      ],
+      "revised_on_local": "2026-09-10",
+      "category_associations": [
+        {
+          "category_slug": "alimentos-bebidas",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F57"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "moda-acessorios",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F57"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "beleza-cuidados",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F57"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "saude-bem-estar",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F57"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "eletronicos-informatica",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F57"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "casa-jardim",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F57"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "esportes-fitness",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F58"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "pets",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F57"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "livros-educacao",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F58"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "entretenimento-games",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F57"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "automotivo",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F57"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 74,
+      "canonical_slug": "magazineluiza",
+      "name": "Magazine Luiza",
+      "raw_database_name": "Magazine Luiza",
+      "eligible_platform_count": 4,
+      "category_slugs": [
+        "alimentos-bebidas",
+        "moda-acessorios",
+        "beleza-cuidados",
+        "saude-bem-estar",
+        "eletronicos-informatica",
+        "casa-jardim",
+        "esportes-fitness",
+        "pets",
+        "livros-educacao",
+        "entretenimento-games",
+        "automotivo"
+      ],
+      "rationale": "Navegação geral e departamentos específicos sustentam as associações; produtos patrocinados fora do segmento não geram categorias.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F59",
+        "F64",
+        "F61",
+        "F66",
+        "F62",
+        "F65",
+        "F63",
+        "F67",
+        "F60"
+      ],
+      "store_profile": {
+        "assortment_scope": "generalista",
+        "operates_marketplace": true,
+        "research_status": "evidencia_encontrada",
+        "approval_status": "pendente",
+        "source_ids": [
+          "F59"
+        ]
+      },
+      "category_coverage": "parcial",
+      "deferred_research": [
+        "Beleza usa uma página com rastreamento informado de 8 meses; confirmar frescor antes de publicação. Links para seguros e consórcios do grupo não bastam para classificar esta loja em Finanças."
+      ],
+      "revised_on_local": "2026-09-10",
+      "category_associations": [
+        {
+          "category_slug": "alimentos-bebidas",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F64"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "moda-acessorios",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F59"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "beleza-cuidados",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F61"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "saude-bem-estar",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F66"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "eletronicos-informatica",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F59"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "casa-jardim",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F59"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "esportes-fitness",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F62"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "pets",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F65"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "livros-educacao",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F63"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "entretenimento-games",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F67"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "automotivo",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F60"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 54,
+      "canonical_slug": "aliexpress",
+      "name": "AliExpress",
+      "raw_database_name": "AliExpress",
+      "eligible_platform_count": 4,
+      "category_slugs": [
+        "moda-acessorios",
+        "beleza-cuidados",
+        "eletronicos-informatica",
+        "casa-jardim",
+        "automotivo"
+      ],
+      "rationale": "Descrições das plataformas de cashback sustentam cinco categorias como propostas com ressalva; confirmação direta dos departamentos ficou pendente.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "atencao",
+      "review_notes": [
+        "Catálogo oficial não acessível nesta sessão. Moda e Eletrônicos têm corroboração em duas plataformas; Casa, Beleza e Automotivo usam a descrição do Méliuz. Confirmar departamentos e disponibilidade para o Brasil antes de publicar."
+      ],
+      "source_ids": [
+        "F03",
+        "F69",
+        "F70"
+      ],
+      "store_profile": {
+        "assortment_scope": "generalista",
+        "operates_marketplace": true,
+        "research_status": "evidencia_encontrada",
+        "approval_status": "pendente",
+        "source_ids": [
+          "F03",
+          "F69"
+        ]
+      },
+      "category_coverage": "parcial",
+      "deferred_research": [
+        "Não desmembrar a menção conjunta saúde e beleza em Saúde sem exemplos específicos. Esportes, Pets, Livros, Alimentos e Games ainda precisam de evidência direta ou descrição comercial suficiente."
+      ],
+      "revised_on_local": "2026-09-10",
+      "category_associations": [
+        {
+          "category_slug": "moda-acessorios",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F69",
+            "F70"
+          ],
+          "evidence_basis": "descricao_plataforma_cashback",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "beleza-cuidados",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F69"
+          ],
+          "evidence_basis": "descricao_plataforma_cashback",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "eletronicos-informatica",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F69",
+            "F70"
+          ],
+          "evidence_basis": "descricao_plataforma_cashback",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "casa-jardim",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F69"
+          ],
+          "evidence_basis": "descricao_plataforma_cashback",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "automotivo",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F69"
+          ],
+          "evidence_basis": "descricao_plataforma_cashback",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 848,
+      "canonical_slug": "shopee",
+      "name": "Shopee",
+      "raw_database_name": "Shopee",
+      "eligible_platform_count": 3,
+      "category_slugs": [
+        "alimentos-bebidas",
+        "moda-acessorios",
+        "beleza-cuidados",
+        "saude-bem-estar",
+        "eletronicos-informatica",
+        "casa-jardim",
+        "esportes-fitness",
+        "pets",
+        "livros-educacao",
+        "entretenimento-games",
+        "automotivo"
+      ],
+      "rationale": "Diretório brasileiro sustenta onze categorias de compra, incluindo moda e calçados; marketplace permanece como perfil.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F04",
+        "F68"
+      ],
+      "store_profile": {
+        "assortment_scope": "generalista",
+        "operates_marketplace": true,
+        "research_status": "evidencia_encontrada",
+        "approval_status": "pendente",
+        "source_ids": [
+          "F04",
+          "F68"
+        ]
+      },
+      "category_coverage": "parcial",
+      "deferred_research": [
+        "Viagens e bagagens não comprova reservas, passagens ou serviços turísticos; não atribuir Viagens por esse rótulo."
+      ],
+      "revised_on_local": "2026-09-10",
+      "category_associations": [
+        {
+          "category_slug": "alimentos-bebidas",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F68"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "moda-acessorios",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F68"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "beleza-cuidados",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F68"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "saude-bem-estar",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F68"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "eletronicos-informatica",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F68"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "casa-jardim",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F68"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "esportes-fitness",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F68"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "pets",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F68"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "livros-educacao",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F68"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "entretenimento-games",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F68"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "automotivo",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F68"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 141,
+      "canonical_slug": "carrefour",
+      "name": "Carrefour",
+      "raw_database_name": "Carrefour",
+      "eligible_platform_count": 4,
+      "category_slugs": [
+        "alimentos-bebidas",
+        "moda-acessorios",
+        "beleza-cuidados",
+        "eletronicos-informatica",
+        "casa-jardim",
+        "esportes-fitness",
+        "pets",
+        "entretenimento-games",
+        "automotivo"
+      ],
+      "rationale": "Supermercado e shopping sustentam nove categorias. Alimentos segue a mesma regra de evidência dos demais segmentos; deixa de ser exceção.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "atencao",
+      "review_notes": [
+        "Confirmar correspondência entre os canais Mercado/Shopping e os destinos das plataformas. As categorias da identidade canônica não confirmam cashback em cada operação. Parte das fontes possui rastreamento de 1 a 4 meses."
+      ],
+      "source_ids": [
+        "F71",
+        "F74",
+        "F73",
+        "F72"
+      ],
+      "store_profile": {
+        "assortment_scope": "generalista",
+        "operates_marketplace": true,
+        "research_status": "evidencia_encontrada",
+        "approval_status": "pendente",
+        "source_ids": [
+          "F71",
+          "F74"
+        ]
+      },
+      "category_coverage": "parcial",
+      "deferred_research": [
+        "Drogaria aparece como canal separado; Saúde aguarda avaliação específica. Livros e outros segmentos não foram confirmados nesta revisão."
+      ],
+      "revised_on_local": "2026-09-10",
+      "category_associations": [
+        {
+          "category_slug": "alimentos-bebidas",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F71"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "moda-acessorios",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F73"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "beleza-cuidados",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F71"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "eletronicos-informatica",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F72"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "casa-jardim",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F72"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "esportes-fitness",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F73"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "pets",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F71"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "entretenimento-games",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F72"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "automotivo",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F72"
+          ],
+          "evidence_basis": "departamento_ou_sortimento_estruturado",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 991,
+      "canonical_slug": "swift",
+      "name": "Swift",
+      "raw_database_name": "Swift",
+      "eligible_platform_count": 1,
+      "category_slugs": [
+        "alimentos-bebidas"
+      ],
+      "rationale": "O catálogo apresenta carnes, pescados, hortifruti, refeições prontas, mercearia e bebidas.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F07"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "alimentos-bebidas",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F07"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 103,
+      "canonical_slug": "baggiocafe",
+      "name": "Baggio Café",
+      "raw_database_name": "Baggio Café",
+      "eligible_platform_count": 4,
+      "category_slugs": [
+        "alimentos-bebidas"
+      ],
+      "rationale": "A marca vende cafés em diferentes apresentações e assinaturas de café; acessórios não alteram o segmento principal.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F08"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "alimentos-bebidas",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F08"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 233,
+      "canonical_slug": "casaspedro",
+      "name": "Casas Pedro",
+      "raw_database_name": "Casas Pedro",
+      "eligible_platform_count": 3,
+      "category_slugs": [
+        "alimentos-bebidas"
+      ],
+      "rationale": "A página oficial apresenta um catálogo de ervas e chás para consumo, suficiente para a categoria alimentar.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F09"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "alimentos-bebidas",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F09"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 148,
+      "canonical_slug": "evino",
+      "name": "Evino",
+      "raw_database_name": "Evino",
+      "eligible_platform_count": 5,
+      "category_slugs": [
+        "alimentos-bebidas"
+      ],
+      "rationale": "A loja tem catálogo de vinhos e kits de bebidas; taças e acessórios são complementares.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F10"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "alimentos-bebidas",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F10"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 107,
+      "canonical_slug": "tiasonia",
+      "name": "Tia Sônia",
+      "raw_database_name": "Tia Sônia",
+      "eligible_platform_count": 1,
+      "category_slugs": [
+        "alimentos-bebidas"
+      ],
+      "rationale": "A navegação e os produtos destacam granolas, snacks, barras e cookies. Isso não implica uma classificação médica.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F11"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "alimentos-bebidas",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F11"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 49,
+      "canonical_slug": "adidas",
+      "name": "adidas",
+      "raw_database_name": "adidas",
+      "eligible_platform_count": 5,
+      "category_slugs": [
+        "moda-acessorios",
+        "esportes-fitness"
+      ],
+      "rationale": "A página reúne calçados, roupas e acessórios associados a modalidades esportivas e lifestyle.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F12"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "moda-acessorios",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F12"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "esportes-fitness",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F12"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 112,
+      "canonical_slug": "renner",
+      "name": "Renner",
+      "raw_database_name": "Renner",
+      "eligible_platform_count": 5,
+      "category_slugs": [
+        "moda-acessorios"
+      ],
+      "rationale": "A descrição relaciona bolsas, cintos e bijuterias a roupas femininas e composições de vestuário.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F13"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "moda-acessorios",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F13"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 2,
+      "canonical_slug": "24s",
+      "name": "24S",
+      "raw_database_name": "24S",
+      "eligible_platform_count": 1,
+      "category_slugs": [
+        "moda-acessorios",
+        "beleza-cuidados"
+      ],
+      "rationale": "O catálogo apresenta roupas, bolsas, joias e perfumes; a controladora confirma a curadoria de marcas de moda e beleza.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "atencao",
+      "review_notes": [
+        "As páginas de moda consultadas usam a vitrine dos EUA. Confirmar a pertinência de Beleza para a experiência de compra brasileira antes de publicar essa associação."
+      ],
+      "source_ids": [
+        "F14",
+        "F15"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "moda-acessorios",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F14",
+            "F15"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "beleza-cuidados",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F14",
+            "F15"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 1,
+      "canonical_slug": "lolacosmetics",
+      "name": "Lola Cosmetics",
+      "raw_database_name": " Lola Cosmetics",
+      "eligible_platform_count": 2,
+      "category_slugs": [
+        "beleza-cuidados"
+      ],
+      "rationale": "A navegação é centrada em produtos e rotinas capilares, com shampoos, finalizadores e tratamentos.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F16"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "beleza-cuidados",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F16"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 111,
+      "canonical_slug": "natura",
+      "name": "Natura",
+      "raw_database_name": "Natura",
+      "eligible_platform_count": 5,
+      "category_slugs": [
+        "beleza-cuidados"
+      ],
+      "rationale": "Perfumaria, corpo e banho, cabelos, maquiagem e rosto são linhas centrais da loja.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F17"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "beleza-cuidados",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F17"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 91,
+      "canonical_slug": "paguemenos",
+      "name": "Pague Menos",
+      "raw_database_name": "Pague Menos",
+      "eligible_platform_count": 5,
+      "category_slugs": [
+        "saude-bem-estar",
+        "beleza-cuidados"
+      ],
+      "rationale": "A loja oferece departamentos explícitos de medicamentos/saúde e dermocosméticos/beleza.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F18"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "saude-bem-estar",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F18"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "beleza-cuidados",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F18"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 636,
+      "canonical_slug": "cpaps",
+      "name": "CPAPS",
+      "raw_database_name": "CPAPS",
+      "eligible_platform_count": 1,
+      "category_slugs": [
+        "saude-bem-estar"
+      ],
+      "rationale": "O site da própria loja descreve a venda de equipamentos CPAP e acessórios para terapia respiratória.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F19"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "saude-bem-estar",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F19"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 96,
+      "canonical_slug": "kabum",
+      "name": "KaBuM!",
+      "raw_database_name": "KaBuM!",
+      "eligible_platform_count": 5,
+      "category_slugs": [
+        "eletronicos-informatica"
+      ],
+      "rationale": "A navegação destaca hardware, computadores, memória, periféricos e TVs.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F20"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "eletronicos-informatica",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F20"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 283,
+      "canonical_slug": "dell",
+      "name": "Dell",
+      "raw_database_name": "Dell",
+      "eligible_platform_count": 3,
+      "category_slugs": [
+        "eletronicos-informatica"
+      ],
+      "rationale": "A loja oficial apresenta notebooks, computadores, monitores, acessórios e servidores.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F21"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "eletronicos-informatica",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F21"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 1066,
+      "canonical_slug": "pichau",
+      "name": "Pichau",
+      "raw_database_name": "Pichau",
+      "eligible_platform_count": 1,
+      "category_slugs": [
+        "eletronicos-informatica"
+      ],
+      "rationale": "O catálogo de hardware reúne componentes para montagem e atualização de computadores.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F22"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "eletronicos-informatica",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F22"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 3,
+      "canonical_slug": "4seating",
+      "name": "4seating.com",
+      "raw_database_name": "4seating.com",
+      "eligible_platform_count": 1,
+      "category_slugs": [
+        "casa-jardim"
+      ],
+      "rationale": "A loja vende poltronas, sofás e mobiliário para salas de cinema domésticas; o produto principal é mobiliário.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "atencao",
+      "review_notes": [
+        "Categoria de móveis sustentada; entrega e viabilidade de compra no Brasil não foram verificadas."
+      ],
+      "source_ids": [
+        "F23"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "casa-jardim",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F23"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 209,
+      "canonical_slug": "madesa",
+      "name": "Madesa",
+      "raw_database_name": "Madesa",
+      "eligible_platform_count": 4,
+      "category_slugs": [
+        "casa-jardim"
+      ],
+      "rationale": "A página de cozinhas apresenta móveis e projetos para esse ambiente.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F24"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "casa-jardim",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F24"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 123,
+      "canonical_slug": "leroymerlin",
+      "name": "Leroy Merlin",
+      "raw_database_name": "Leroy Merlin",
+      "eligible_platform_count": 4,
+      "category_slugs": [
+        "casa-jardim"
+      ],
+      "rationale": "Há oferta explícita de materiais de construção, além de um departamento de decoração.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F25",
+        "F26"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "casa-jardim",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F25",
+            "F26"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 444,
+      "canonical_slug": "brinoxshop",
+      "name": "Brinox Shop",
+      "raw_database_name": "Brinox Shop",
+      "eligible_platform_count": 5,
+      "category_slugs": [
+        "casa-jardim"
+      ],
+      "rationale": "O site da marca apresenta panelas, cozinha, mesa e taças; a página vinculada do Méliuz confirma utensílios de cozinha.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "atencao",
+      "review_notes": [
+        "O conteúdo legível do site oficial veio do índice de busca, com rastreamento antigo. A página atual do Méliuz corrobora utensílios; a home oficial abriu sem catálogo legível."
+      ],
+      "source_ids": [
+        "F27",
+        "F28"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "casa-jardim",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F27",
+            "F28"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 185,
+      "canonical_slug": "decathlon",
+      "name": "Decathlon",
+      "raw_database_name": "Decathlon",
+      "eligible_platform_count": 5,
+      "category_slugs": [
+        "esportes-fitness",
+        "moda-acessorios"
+      ],
+      "rationale": "A loja estrutura o catálogo por esportes e também por roupas, calçados e acessórios esportivos.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F29"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "esportes-fitness",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F29"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "moda-acessorios",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F29"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 1070,
+      "canonical_slug": "growthsupplements",
+      "name": "Growth Supplements",
+      "raw_database_name": "Growth Supplements",
+      "eligible_platform_count": 1,
+      "category_slugs": [
+        "saude-bem-estar",
+        "esportes-fitness"
+      ],
+      "rationale": "A página vinculada no Cuponomia descreve suplementos e vitaminas para o segmento fitness.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "atencao",
+      "review_notes": [
+        "A home oficial apresentou verificação de navegador; a classificação usa a página da plataforma e a vitrine oficial no marketplace indexada.",
+        "No Cuponomia, a regra distingue compras no Mercado Livre das compras no site da Growth. Categoria não equivale a cashback válido em todo canal.",
+        "Revisar a regra editorial de suplementos em Saúde e Esportes; não classificar automaticamente como Alimentos."
+      ],
+      "source_ids": [
+        "F30",
+        "F31"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "saude-bem-estar",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F30",
+            "F31"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "esportes-fitness",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F30",
+            "F31"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 105,
+      "canonical_slug": "cobasi",
+      "name": "Cobasi",
+      "raw_database_name": "Cobasi",
+      "eligible_platform_count": 5,
+      "category_slugs": [
+        "pets",
+        "casa-jardim"
+      ],
+      "rationale": "A rede apresenta produtos e serviços pet e mantém um departamento próprio de jardinagem.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "atencao",
+      "review_notes": [
+        "Confirmar se o departamento recorrente de jardinagem justifica a segunda categoria em um negócio principalmente pet."
+      ],
+      "source_ids": [
+        "F32",
+        "F33"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "pets",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F32"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "casa-jardim",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F32",
+            "F33"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 606,
+      "canonical_slug": "petlove",
+      "name": "Pet Love",
+      "raw_database_name": "Pet Love",
+      "eligible_platform_count": 2,
+      "category_slugs": [
+        "pets"
+      ],
+      "rationale": "A oferta reúne rações, acessórios, higiene e serviços voltados a animais de companhia.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F34"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "pets",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F34"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 387,
+      "canonical_slug": "zeedog",
+      "name": "ZeeDog",
+      "raw_database_name": "ZeeDog",
+      "eligible_platform_count": 4,
+      "category_slugs": [
+        "pets"
+      ],
+      "rationale": "Guias, coleiras, peitorais e acessórios para cães e gatos organizam o catálogo.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F35"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "pets",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F35"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 120,
+      "canonical_slug": "booking",
+      "name": "Booking.com",
+      "raw_database_name": "Booking.com",
+      "eligible_platform_count": 4,
+      "category_slugs": [
+        "viagens-turismo"
+      ],
+      "rationale": "A página permite pesquisar e reservar hospedagens, como hotéis, casas e apartamentos.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F36"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "viagens-turismo",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F36"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 194,
+      "canonical_slug": "buser",
+      "name": "Buser",
+      "raw_database_name": "Buser",
+      "eligible_platform_count": 5,
+      "category_slugs": [
+        "viagens-turismo"
+      ],
+      "rationale": "O serviço permite buscar e comprar viagens de ônibus por origem, destino e datas.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F37"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "viagens-turismo",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F37"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 51,
+      "canonical_slug": "airalo",
+      "name": "Airalo",
+      "raw_database_name": "Airalo",
+      "eligible_platform_count": 3,
+      "category_slugs": [
+        "telefonia-internet",
+        "viagens-turismo"
+      ],
+      "rationale": "A página comercializa pacotes eSIM de dados e os apresenta como conectividade para quem viaja.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F38"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "telefonia-internet",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F38"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "viagens-turismo",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F38"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 55,
+      "canonical_slug": "allianztravel",
+      "name": "Allianz Travel",
+      "raw_database_name": "Allianz Travel",
+      "eligible_platform_count": 4,
+      "category_slugs": [
+        "financas-seguros",
+        "viagens-turismo"
+      ],
+      "rationale": "A oferta principal é seguro viagem, com cotação para viagens nacionais e internacionais.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F39"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "financas-seguros",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F39"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        },
+        {
+          "category_slug": "viagens-turismo",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F39"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 59,
+      "canonical_slug": "alura",
+      "name": "Alura",
+      "raw_database_name": "Alura",
+      "eligible_platform_count": 4,
+      "category_slugs": [
+        "livros-educacao"
+      ],
+      "rationale": "A página oferece formações e cursos para desenvolvimento de competências em tecnologia e negócios.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F40"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "livros-educacao",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F40"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 306,
+      "canonical_slug": "udemy",
+      "name": "Udemy",
+      "raw_database_name": "Udemy",
+      "eligible_platform_count": 3,
+      "category_slugs": [
+        "livros-educacao"
+      ],
+      "rationale": "A página descreve uma plataforma de ensino e aprendizagem, com cursos online gratuitos e pagos.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F41"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "livros-educacao",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F41"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 692,
+      "canonical_slug": "leiturinha",
+      "name": "Leiturinha",
+      "raw_database_name": "Leiturinha",
+      "eligible_platform_count": 2,
+      "category_slugs": [
+        "livros-educacao"
+      ],
+      "rationale": "O serviço entrega livros infantis selecionados por idade em uma assinatura recorrente.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F42"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "livros-educacao",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F42"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 696,
+      "canonical_slug": "livrariamartinsfontespaulista",
+      "name": "Livraria Martins Fontes Paulista",
+      "raw_database_name": "Livraria Martins Fontes Paulista",
+      "eligible_platform_count": 1,
+      "category_slugs": [
+        "livros-educacao"
+      ],
+      "rationale": "O catálogo comercializa livros, dicionários e gramáticas.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F43"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "livros-educacao",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F43"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 197,
+      "canonical_slug": "hostinger",
+      "name": "Hostinger",
+      "raw_database_name": "Hostinger",
+      "eligible_platform_count": 5,
+      "category_slugs": [
+        "software-digital"
+      ],
+      "rationale": "O serviço vende hospedagem, criação e infraestrutura para sites.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F44"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "software-digital",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F44"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 488,
+      "canonical_slug": "1password",
+      "name": "1Password",
+      "raw_database_name": "1Password",
+      "eligible_platform_count": 1,
+      "category_slugs": [
+        "software-digital"
+      ],
+      "rationale": "O produto é um gerenciador de senhas para uso individual e familiar.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F45"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "software-digital",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F45"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 854,
+      "canonical_slug": "nottaai",
+      "name": "Notta AI",
+      "raw_database_name": "Notta AI",
+      "eligible_platform_count": 1,
+      "category_slugs": [
+        "software-digital"
+      ],
+      "rationale": "O produto oferece transcrição, resumo e organização de reuniões com recursos de IA.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F46"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "software-digital",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F46"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 469,
+      "canonical_slug": "disneyplus",
+      "name": "Disney+",
+      "raw_database_name": "Disney+",
+      "eligible_platform_count": 3,
+      "category_slugs": [
+        "entretenimento-games"
+      ],
+      "rationale": "A oferta consiste em assinatura para assistir a filmes, séries e transmissões esportivas.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F47"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "entretenimento-games",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F47"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 125,
+      "canonical_slug": "nuuvem",
+      "name": "Nuuvem",
+      "raw_database_name": "Nuuvem",
+      "eligible_platform_count": 4,
+      "category_slugs": [
+        "entretenimento-games"
+      ],
+      "rationale": "O catálogo comercializa jogos digitais, com filtros por plataformas e sistemas.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F48"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "entretenimento-games",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F48"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 592,
+      "canonical_slug": "pneustore",
+      "name": "Pneu Store",
+      "raw_database_name": "Pneu Store",
+      "eligible_platform_count": 3,
+      "category_slugs": [
+        "automotivo"
+      ],
+      "rationale": "O catálogo é centrado em pneus e acessórios para veículos.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F49"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "automotivo",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F49"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 423,
+      "canonical_slug": "semparar",
+      "name": "Sem Parar",
+      "raw_database_name": "Sem Parar",
+      "eligible_platform_count": 4,
+      "category_slugs": [
+        "automotivo"
+      ],
+      "rationale": "A tag é apresentada para pedágios, estacionamentos e outros usos ligados ao deslocamento de carro.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F50"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "automotivo",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F50"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 231,
+      "canonical_slug": "giulianaflores",
+      "name": "Giuliana Flores",
+      "raw_database_name": "Giuliana Flores",
+      "eligible_platform_count": 5,
+      "category_slugs": [
+        "presentes-flores"
+      ],
+      "rationale": "O catálogo é organizado por flores, arranjos, presentes e ocasiões.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F51"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "presentes-flores",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F51"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 742,
+      "canonical_slug": "parafuzo",
+      "name": "Parafuzo",
+      "raw_database_name": "Parafuzo",
+      "eligible_platform_count": 2,
+      "category_slugs": [
+        "casa-jardim"
+      ],
+      "rationale": "O serviço oferece faxina, passadoria, montagem de móveis e assistência residencial.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "atencao",
+      "review_notes": [
+        "Confirmar se Casa e jardim deve incluir serviços domésticos ou se a navegação precisa de uma categoria Serviços."
+      ],
+      "source_ids": [
+        "F52"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "casa-jardim",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F52"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 758,
+      "canonical_slug": "remessaonline",
+      "name": "Remessa Online",
+      "raw_database_name": "Remessa Online",
+      "eligible_platform_count": 3,
+      "category_slugs": [
+        "financas-seguros"
+      ],
+      "rationale": "O serviço permite enviar e receber transferências internacionais.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F53"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "financas-seguros",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F53"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 967,
+      "canonical_slug": "timcontrole",
+      "name": "Tim Controle",
+      "raw_database_name": "Tim Controle",
+      "eligible_platform_count": 2,
+      "category_slugs": [
+        "telefonia-internet"
+      ],
+      "rationale": "A página oferece planos de telefonia móvel com franquias de internet e chamadas.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F54"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "telefonia-internet",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F54"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 16,
+      "canonical_slug": "bobbarsoverbottles",
+      "name": "B.O.B. Bars Over Bottles",
+      "raw_database_name": "B.O.B. Bars Over Bottles",
+      "eligible_platform_count": 2,
+      "category_slugs": [
+        "beleza-cuidados"
+      ],
+      "rationale": "O catálogo apresenta shampoo, condicionador e outros cosméticos sólidos. O nome Bars Over Bottles não significa bebidas.",
+      "research_status": "evidencia_encontrada",
+      "approval_status": "pendente",
+      "review_priority": "normal",
+      "review_notes": [],
+      "source_ids": [
+        "F55"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": [
+        {
+          "category_slug": "beleza-cuidados",
+          "approval_status": "pendente",
+          "source_ids": [
+            "F55"
+          ],
+          "evidence_basis": "pesquisa_original",
+          "cashback_coverage": "nao_verificada"
+        }
+      ]
+    },
+    {
+      "store_id": 963,
+      "canonical_slug": "testeops",
+      "name": "teste ops",
+      "raw_database_name": "teste ops",
+      "eligible_platform_count": 1,
+      "category_slugs": [],
+      "rationale": "A página do Méliuz confirma a presença do cadastro, mas usa texto genérico de cupons e não identifica o tipo de negócio.",
+      "research_status": "inconclusiva",
+      "approval_status": "pendente",
+      "review_priority": "atencao",
+      "review_notes": [
+        "Identidade comercial inconclusiva. Investigar em escopo separado; o piloto não remove nem reclassifica a oferta automaticamente."
+      ],
+      "source_ids": [
+        "F56"
+      ],
+      "store_profile": {
+        "assortment_scope": "nao_avaliado",
+        "operates_marketplace": null,
+        "research_status": "nao_avaliado",
+        "approval_status": "pendente",
+        "source_ids": []
+      },
+      "category_coverage": "parcial",
+      "category_associations": []
+    }
+  ],
+  "sources": [
+    {
+      "title": "Categorias e Seções no Mercado Livre",
+      "url": "https://www.mercadolivre.com.br/categorias/",
+      "summary": "O diretório reúne famílias muito distintas, como veículos, supermercado, tecnologia e moda; o posicionamento é generalista.",
+      "supports": [],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F01",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10",
+      "supports_profile": [
+        "generalista"
+      ]
+    },
+    {
+      "title": "Compre agora | Magazine luiza",
+      "url": "https://especiais.magazineluiza.com.br/compre-agora/",
+      "summary": "A navegação destaca celulares, TVs, eletrodomésticos, móveis, informática e moda, sustentando uma classificação generalista.",
+      "supports": [],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F02",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10",
+      "supports_profile": [
+        "generalista"
+      ]
+    },
+    {
+      "title": "AliExpress-Alibaba Group",
+      "url": "https://www.alibabagroup.com/en-US/about-alibaba-businesses-1747705938191581184",
+      "summary": "A apresentação corporativa descreve uma plataforma varejista global com ampla variedade de produtos.",
+      "supports": [],
+      "access": "busca_indexada",
+      "kind": "controladora",
+      "id": "F03",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10",
+      "supports_profile": [
+        "generalista"
+      ]
+    },
+    {
+      "title": "2025-04-17 - Form 20-F",
+      "url": "https://cdn.sea.com/webmain/static/resource/seagroup/pressrelease/2024AR/NT8CQURDcqzIyTpTQ0SN/2025-04-17%20-%20Form%2020-F.pdf",
+      "summary": "O relatório da controladora descreve operação de marketplace e um sortimento diversificado.",
+      "supports": [],
+      "access": "busca_indexada",
+      "kind": "controladora",
+      "id": "F04",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10",
+      "supports_profile": [
+        "generalista",
+        "marketplace"
+      ]
+    },
+    {
+      "title": "Bebidas: refrigerantes, vinhos, café, chás e mais - Mercado Carrefour | Ofertas de Supermercado Delivery",
+      "url": "https://mercado.carrefour.com.br/categoria/bebidas",
+      "summary": "Página de bebidas da operação de supermercado Carrefour.",
+      "supports": [
+        "alimentos-bebidas"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F05",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Departamento de eletrodomésticos do Carrefour",
+      "url": "https://www.carrefour.com.br/categoria/eletrodomesticos/",
+      "summary": "O departamento de bens duráveis complementa a evidência de supermercado.",
+      "supports": [
+        "casa-jardim"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F06",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10",
+      "supports_profile": [
+        "generalista"
+      ]
+    },
+    {
+      "title": "Loja Online Swift, compre agora e receba em casa",
+      "url": "https://www.swift.com.br/",
+      "summary": "O catálogo apresenta carnes, pescados, hortifruti, refeições prontas, mercearia e bebidas.",
+      "supports": [
+        "alimentos-bebidas"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "id": "F07",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Baggio Café | Café Especial Premiado",
+      "url": "https://baggiocafe.com.br/",
+      "summary": "A marca vende cafés em diferentes apresentações e assinaturas de café; acessórios não alteram o segmento principal.",
+      "supports": [
+        "alimentos-bebidas"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F08",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Produtos - Ervas e Chás Casas Pedro – Casas Pedro",
+      "url": "https://www.casaspedro.com.br/produtos/ervas-e-chas/casas-pedro",
+      "summary": "A página oficial apresenta um catálogo de ervas e chás para consumo, suficiente para a categoria alimentar.",
+      "supports": [
+        "alimentos-bebidas"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F09",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "VINHOS: Don Simon, Portada, La Grupa e Mais | Evino",
+      "url": "https://www.evino.com.br/vinhos",
+      "summary": "A loja tem catálogo de vinhos e kits de bebidas; taças e acessórios são complementares.",
+      "supports": [
+        "alimentos-bebidas"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F10",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Site Oficial da Tia Sônia - Amor, Sabor e Qualidade",
+      "url": "https://www.tiasonia.com.br/",
+      "summary": "A navegação e os produtos destacam granolas, snacks, barras e cookies. Isso não implica uma classificação médica.",
+      "supports": [
+        "alimentos-bebidas"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F11",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Calcados - Esportes De Areia | adidas BR",
+      "url": "https://www.adidas.com.br/calcados-esportes_de_areia",
+      "summary": "A página reúne calçados, roupas e acessórios associados a modalidades esportivas e lifestyle.",
+      "supports": [
+        "moda-acessorios",
+        "esportes-fitness"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F12",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Acessórios Femininos | Confira itens em Oferta - Renner",
+      "url": "https://www.lojasrenner.com.br/c/feminino/acessorios/-/N-10ip4lqZwxqas2Z1hwylc0Z13df56z/",
+      "summary": "A descrição relaciona bolsas, cintos e bijuterias a roupas femininas e composições de vestuário.",
+      "supports": [
+        "moda-acessorios"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F13",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "24S | Luxury Fashion: designer clothes, bags & shoes",
+      "url": "https://www.24s.com/en-us/women",
+      "summary": "O catálogo apresenta roupas, bolsas, joias e perfumes; a controladora confirma a curadoria de marcas de moda e beleza.",
+      "supports": [
+        "moda-acessorios",
+        "beleza-cuidados"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F14",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "24S — apresentação da LVMH",
+      "url": "https://www.lvmh.com/en/our-maisons/selective-retailing/24s",
+      "summary": "A controladora caracteriza a seleção como moda e beleza.",
+      "supports": [
+        "moda-acessorios",
+        "beleza-cuidados"
+      ],
+      "access": "busca_indexada",
+      "kind": "controladora",
+      "id": "F15",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Lola Cosmetics - Escolha Lola, escolha ser feliz!",
+      "url": "https://www.lolacosmetics.com.br/",
+      "summary": "A navegação é centrada em produtos e rotinas capilares, com shampoos, finalizadores e tratamentos.",
+      "supports": [
+        "beleza-cuidados"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F16",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Natura Brasil | Perfumaria, maquiagem e muito mais",
+      "url": "https://www.natura.com.br/",
+      "summary": "Perfumaria, corpo e banho, cabelos, maquiagem e rosto são linhas centrais da loja.",
+      "supports": [
+        "beleza-cuidados"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F17",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Pague Menos - Farmárcia Online",
+      "url": "https://www.paguemenos.com.br/",
+      "summary": "A loja oferece departamentos explícitos de medicamentos/saúde e dermocosméticos/beleza.",
+      "supports": [
+        "saude-bem-estar",
+        "beleza-cuidados"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F18",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "CPAP - Glossário",
+      "url": "https://www.cpaps.com.br/glossario/termo/CPAP",
+      "summary": "O site da própria loja descreve a venda de equipamentos CPAP e acessórios para terapia respiratória.",
+      "supports": [
+        "saude-bem-estar"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F19",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "KaBuM! | Ofertas em Tech e Gamer? Só se for no KaBuM!",
+      "url": "https://www.kabum.com.br/",
+      "summary": "A navegação destaca hardware, computadores, memória, periféricos e TVs.",
+      "supports": [
+        "eletronicos-informatica"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F20",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Loja Oficial Dell: Notebooks, PCs e Monitores | Dell Brasil",
+      "url": "https://www.dell.com/pt-br",
+      "summary": "A loja oficial apresenta notebooks, computadores, monitores, acessórios e servidores.",
+      "supports": [
+        "eletronicos-informatica"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F21",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Placa-mãe, Placas de Vídeo e Muito Mais | Pichau",
+      "url": "https://www.pichau.com.br/hardware?rgpu=742",
+      "summary": "O catálogo de hardware reúne componentes para montagem e atualização de computadores.",
+      "supports": [
+        "eletronicos-informatica"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F22",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Home Theater Seating | Shop Home Theater Seats - 4seating.com",
+      "url": "https://4seating.com/",
+      "summary": "A loja vende poltronas, sofás e mobiliário para salas de cinema domésticas; o produto principal é mobiliário.",
+      "supports": [
+        "casa-jardim"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F23",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Móveis para Cozinha: Cozinhas Completas e mais | Madesa",
+      "url": "https://www.madesa.com/pages/cozinhas",
+      "summary": "A página de cozinhas apresenta móveis e projetos para esse ambiente.",
+      "supports": [
+        "casa-jardim"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F24",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Materiais de Construção | Leroy Merlin",
+      "url": "https://www.leroymerlin.com.br/materiais-de-construcao/",
+      "summary": "Há oferta explícita de materiais de construção, além de um departamento de decoração.",
+      "supports": [
+        "casa-jardim"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F25",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Decoração — Leroy Merlin",
+      "url": "https://www.leroymerlin.com.br/decoracao",
+      "summary": "O departamento reúne cortinas, tapetes, espelhos e outros itens decorativos.",
+      "supports": [
+        "casa-jardim"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "id": "F26",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Inox em Panelas – Brinox",
+      "url": "https://www.brinox.com.br/panelas/Inox/1295",
+      "summary": "O site da marca apresenta panelas, cozinha, mesa e taças; a página vinculada do Méliuz confirma utensílios de cozinha.",
+      "supports": [
+        "casa-jardim"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F27",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Loja Oficial Brinox no Méliuz",
+      "url": "https://www.meliuz.com.br/desconto/cupom-brinox",
+      "summary": "A página vinculada ao alias apresenta utensílios de cozinha e panelas.",
+      "supports": [
+        "casa-jardim"
+      ],
+      "access": "pagina_aberta",
+      "kind": "plataforma_cashback",
+      "id": "F28",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Decathlon | Loja de artigos esportivos online - Ready to Play",
+      "url": "https://www.decathlon.com.br/",
+      "summary": "A loja estrutura o catálogo por esportes e também por roupas, calçados e acessórios esportivos.",
+      "supports": [
+        "esportes-fitness",
+        "moda-acessorios"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F29",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Cupom Desconto Gsuplementos | 10% OFF Setembro 2026",
+      "url": "https://www.cuponomia.com.br/desconto/gsuplementos",
+      "summary": "A página vinculada no Cuponomia descreve suplementos e vitaminas para o segmento fitness.",
+      "supports": [
+        "saude-bem-estar",
+        "esportes-fitness"
+      ],
+      "access": "pagina_aberta",
+      "kind": "plataforma_cashback",
+      "id": "F30",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Growth Supplements — vitrine marcada como Loja Oficial no Mercado Livre",
+      "url": "https://www.mercadolivre.com.br/loja/growth-supplements",
+      "summary": "O resultado indexado apresenta whey e creatina; a abertura direta retornou 403.",
+      "supports": [
+        "saude-bem-estar",
+        "esportes-fitness"
+      ],
+      "access": "busca_indexada_abertura_bloqueada",
+      "kind": "vitrine_marketplace",
+      "id": "F31",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Pet Shop Cobasi Cantareira Norte Shopping",
+      "url": "https://www.cobasi.com.br/lojas/cobasi-cantareira-norte",
+      "summary": "A rede apresenta produtos e serviços pet e mantém um departamento próprio de jardinagem.",
+      "supports": [
+        "pets",
+        "casa-jardim"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F32",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Jardim — Cobasi",
+      "url": "https://www.cobasi.com.br/c/jardim",
+      "summary": "Há um departamento online dedicado a jardinagem.",
+      "supports": [
+        "casa-jardim"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "id": "F33",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Petlove: o maior petshop online do Brasil",
+      "url": "https://www.petlove.com.br/",
+      "summary": "A oferta reúne rações, acessórios, higiene e serviços voltados a animais de companhia.",
+      "supports": [
+        "pets"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F34",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Zee.Dog - Guias, coleiras, peitorais e acessórios para cachorros e gatos | Zee.Dog - Conectando Cachorros e Pessoas",
+      "url": "https://www.zeedog.com.br/",
+      "summary": "Guias, coleiras, peitorais e acessórios para cães e gatos organizam o catálogo.",
+      "supports": [
+        "pets"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F35",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Booking.com | Site oficial | Os melhores hotéis, voos, aluguéis de carro e acomodações",
+      "url": "https://m.booking.com/index.pt-br.html",
+      "summary": "A página permite pesquisar e reservar hospedagens, como hotéis, casas e apartamentos.",
+      "supports": [
+        "viagens-turismo"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F36",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Viagens de ônibus com mais conforto pelo menor preço | Buser",
+      "url": "https://www.buser.com.br/",
+      "summary": "O serviço permite buscar e comprar viagens de ônibus por origem, destino e datas.",
+      "supports": [
+        "viagens-turismo"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F37",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "eSIM Brasil, a partir de $4.00 USD | A primeira loja eSIM do mundo · Airalo",
+      "url": "https://www.airalo.com/pt-BR/brazil-esim/",
+      "summary": "A página comercializa pacotes eSIM de dados e os apresenta como conectividade para quem viaja.",
+      "supports": [
+        "telefonia-internet",
+        "viagens-turismo"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F38",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Seguro Viagem Allianz | Allianz Travel",
+      "url": "https://www.allianztravel.com.br/",
+      "summary": "A oferta principal é seguro viagem, com cotação para viagens nacionais e internacionais.",
+      "supports": [
+        "financas-seguros",
+        "viagens-turismo"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F39",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Formações em Tecnologia e Negócios | Alura",
+      "url": "https://www.alura.com.br/formacoes",
+      "summary": "A página oferece formações e cursos para desenvolvimento de competências em tecnologia e negócios.",
+      "supports": [
+        "livros-educacao"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F40",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Mais de 450 cursos online gratuitos - O melhor de 2026 | Aprendizado e certificação na Udemy",
+      "url": "https://www.udemy.com/pt/courses/free/",
+      "summary": "A página descreve uma plataforma de ensino e aprendizagem, com cursos online gratuitos e pagos.",
+      "supports": [
+        "livros-educacao"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F41",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Leiturinha | O maior clube de livros infantis do Brasil",
+      "url": "https://leiturinha.com.br/",
+      "summary": "O serviço entrega livros infantis selecionados por idade em uma assinatura recorrente.",
+      "supports": [
+        "livros-educacao"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "id": "F42",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Dicionários e Gramáticas | Livraria Martins Fontes Paulista",
+      "url": "https://www.martinsfontespaulista.com.br/livros/dicionarios-e-gramaticas/dicionarios-tematicos",
+      "summary": "O catálogo comercializa livros, dicionários e gramáticas.",
+      "supports": [
+        "livros-educacao"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F43",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Hospedagem de sites a partir de R$ 5,99/mês",
+      "url": "https://www.hostinger.com/br/hospedagem-de-sites",
+      "summary": "O serviço vende hospedagem, criação e infraestrutura para sites.",
+      "supports": [
+        "software-digital"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F44",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Gerenciador de senhas para indivíduos e famílias | 1Password",
+      "url": "https://1password.com/pt/product/password-manager",
+      "summary": "O produto é um gerenciador de senhas para uso individual e familiar.",
+      "supports": [
+        "software-digital"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F45",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "AI Note Taker | Transcrição de Reuniões AI Gratuita",
+      "url": "https://www.notta.ai/pt",
+      "summary": "O produto oferece transcrição, resumo e organização de reuniões com recursos de IA.",
+      "supports": [
+        "software-digital"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F46",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Disney+ Brasil | Filmes, séries e esportes ilimitados",
+      "url": "https://www.disneyplus.com/pt-br",
+      "summary": "A oferta consiste em assinatura para assistir a filmes, séries e transmissões esportivas.",
+      "supports": [
+        "entretenimento-games"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F47",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Nuuvem | A maior loja oficial de jogos da América Latina",
+      "url": "https://www.nuuvem.com/br-pt/catalog/types/games.html",
+      "summary": "O catálogo comercializa jogos digitais, com filtros por plataformas e sistemas.",
+      "supports": [
+        "entretenimento-games"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F48",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "PneuStore | Frete Grátis em Pneus Selecionados - Aproveite",
+      "url": "https://www.pneustore.com.br/",
+      "summary": "O catálogo é centrado em pneus e acessórios para veículos.",
+      "supports": [
+        "automotivo"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F49",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Onde Usar a Tag Sem Parar: Locais e Benefícios",
+      "url": "https://www.semparar.com.br/onde-usar",
+      "summary": "A tag é apresentada para pedágios, estacionamentos e outros usos ligados ao deslocamento de carro.",
+      "supports": [
+        "automotivo"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F50",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Flores. Floricultura Online, Cestas e Arranjos. Entregas em todo Brasil - Giuliana Flores",
+      "url": "https://www.giulianaflores.com.br/todos-os-produtos/gtodosprod/",
+      "summary": "O catálogo é organizado por flores, arranjos, presentes e ocasiões.",
+      "supports": [
+        "presentes-flores"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F51",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Parafuzo: Aplicativo de Faxina, Limpeza e Serviços Domésticos",
+      "url": "https://parafuzo.com/",
+      "summary": "O serviço oferece faxina, passadoria, montagem de móveis e assistência residencial.",
+      "supports": [
+        "casa-jardim"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "id": "F52",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Para quais países e moedas posso Enviar e Receber transferências com a Remessa Online?",
+      "url": "https://ajuda.remessaonline.com.br/para-quais-paises-a-remessa-online-envia",
+      "summary": "O serviço permite enviar e receber transferências internacionais.",
+      "supports": [
+        "financas-seguros"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F53",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Planos TIM Controle: Internet 5G, WhatsApp e Ligações Ilimitadas | TIM Oficial",
+      "url": "https://www.tim.com.br/sp-interior/para-voce/planos/controle",
+      "summary": "A página oferece planos de telefonia móvel com franquias de internet e chamadas.",
+      "supports": [
+        "telefonia-internet"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F54",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Condicionadores em Barra Naturais e Veganos | Use B.O.B – Marcado \"cabelo-ressecado\"",
+      "url": "https://www.usebob.com.br/collections/condicionador-em-barra/cabelo-ressecado",
+      "summary": "O catálogo apresenta shampoo, condicionador e outros cosméticos sólidos. O nome Bars Over Bottles não significa bebidas.",
+      "supports": [
+        "beleza-cuidados"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "id": "F55",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "title": "Página teste ops no Méliuz",
+      "url": "https://www.meliuz.com.br/desconto/teste-ops",
+      "summary": "A página do Méliuz confirma a presença do cadastro, mas usa texto genérico de cupons e não identifica o tipo de negócio.",
+      "supports": [],
+      "access": "pagina_aberta",
+      "kind": "plataforma_cashback",
+      "id": "F56",
+      "consulted_on_local": "2026-09-09",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "id": "F57",
+      "title": "Diretório de categorias do Mercado Livre — revisão",
+      "url": "https://www.mercadolivre.com.br/categorias",
+      "summary": "Diretório comercial com famílias de alimentação, vestuário, cuidados pessoais, saúde, tecnologia, lar, animais, jogos e peças veiculares.",
+      "supports": [
+        "alimentos-bebidas",
+        "moda-acessorios",
+        "beleza-cuidados",
+        "saude-bem-estar",
+        "eletronicos-informatica",
+        "casa-jardim",
+        "pets",
+        "entretenimento-games",
+        "automotivo"
+      ],
+      "access": "busca_indexada_abertura_bloqueada",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "supports_profile": [
+        "generalista",
+        "marketplace"
+      ],
+      "crawler_age_at_consultation": "hoje; abertura direta HTTP 403"
+    },
+    {
+      "id": "F58",
+      "title": "Navegação comercial do Mercado Livre",
+      "url": "https://lista.mercadolivre.com.br/categorias",
+      "summary": "Menu global inclui departamentos para prática esportiva e leitura; usado apenas como evidência de navegação, não dos resultados desta busca.",
+      "supports": [
+        "esportes-fitness",
+        "livros-educacao"
+      ],
+      "access": "busca_indexada",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "id": "F59",
+      "title": "Navegação e parceiros do Magalu",
+      "url": "https://especiais.magazineluiza.com.br/compre-agora/",
+      "summary": "Navegação para vestuário, celulares, informática, móveis e eletrodomésticos; canal para vendedores e contato com lojistas.",
+      "supports": [
+        "moda-acessorios",
+        "eletronicos-informatica",
+        "casa-jardim"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "supports_profile": [
+        "generalista",
+        "marketplace"
+      ]
+    },
+    {
+      "id": "F60",
+      "title": "Guia de categorias do Magalu — letra A",
+      "url": "https://www.magazineluiza.com.br/categorias/",
+      "summary": "Diretório da letra A inclui o departamento automotivo.",
+      "supports": [
+        "automotivo"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "id": "F61",
+      "title": "Beleza e perfumaria — Magalu",
+      "url": "https://www.magazineluiza.com.br/beleza-e-perfumaria/l/pf/",
+      "summary": "Departamento com perfumaria, maquiagem e linhas para cuidados capilares e corporais.",
+      "supports": [
+        "beleza-cuidados"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "crawler_age_at_consultation": "8 meses"
+    },
+    {
+      "id": "F62",
+      "title": "Esporte e lazer — Magalu",
+      "url": "https://www.magazineluiza.com.br/esporte-e-lazer/l/es/",
+      "summary": "Departamento com roupas esportivas, calçados para esporte e equipamentos, inclusive bicicletas.",
+      "supports": [
+        "esportes-fitness"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "crawler_age_at_consultation": "hoje"
+    },
+    {
+      "id": "F63",
+      "title": "Livros — Magalu",
+      "url": "https://www.magazineluiza.com.br/livros/l/li/",
+      "summary": "Departamento organizado por assuntos de livros e tipos de material de leitura. Itens patrocinados alheios ao segmento foram desconsiderados.",
+      "supports": [
+        "livros-educacao"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "crawler_age_at_consultation": "hoje"
+    },
+    {
+      "id": "F64",
+      "title": "Mercado — Magalu",
+      "url": "https://www.magazineluiza.com.br/mercado/l/me/",
+      "summary": "Departamento com divisões de alimentos e bebidas e variedade de marcas.",
+      "supports": [
+        "alimentos-bebidas"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "crawler_age_at_consultation": "hoje"
+    },
+    {
+      "id": "F65",
+      "title": "Pet Shop — Magalu",
+      "url": "https://www.magazineluiza.com.br/pet-shop/l/pe/",
+      "summary": "Departamento com alimentação, transporte, higiene e acessórios para animais.",
+      "supports": [
+        "pets"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "crawler_age_at_consultation": "hoje"
+    },
+    {
+      "id": "F66",
+      "title": "Saúde e cuidados pessoais — Magalu",
+      "url": "https://www.magazineluiza.com.br/saude-e-cuidados-pessoais/l/cp/",
+      "summary": "Departamento com instrumentos de medição, itens ortopédicos e cuidados humanos; sem avaliação de eficácia.",
+      "supports": [
+        "saude-bem-estar"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "crawler_age_at_consultation": "hoje"
+    },
+    {
+      "id": "F67",
+      "title": "Games — Magalu",
+      "url": "https://www.magazineluiza.com.br/games/l/ga/",
+      "summary": "Departamento com jogos, consoles e acessórios específicos.",
+      "supports": [
+        "entretenimento-games"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "crawler_age_at_consultation": "hoje"
+    },
+    {
+      "id": "F68",
+      "title": "Diretório de categorias da Shopee Brasil",
+      "url": "https://shopee.com.br/l/category/home",
+      "summary": "Navegação comercial com vestuário e calçados, lar, beleza, saúde, tecnologia, esporte, animais, alimentação, leitura, jogos e acessórios veiculares.",
+      "supports": [
+        "alimentos-bebidas",
+        "moda-acessorios",
+        "beleza-cuidados",
+        "saude-bem-estar",
+        "eletronicos-informatica",
+        "casa-jardim",
+        "esportes-fitness",
+        "pets",
+        "livros-educacao",
+        "entretenimento-games",
+        "automotivo"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "supports_profile": [
+        "generalista"
+      ]
+    },
+    {
+      "id": "F69",
+      "title": "Descrição do sortimento AliExpress no Méliuz",
+      "url": "https://www.meliuz.com.br/desconto/cupom-aliexpress",
+      "summary": "Descrição da loja menciona vestuário, eletrônicos, itens para casa, beleza e peças automotivas. Evidência indireta; catálogo oficial não acessível nesta sessão.",
+      "supports": [
+        "moda-acessorios",
+        "eletronicos-informatica",
+        "casa-jardim",
+        "beleza-cuidados",
+        "automotivo"
+      ],
+      "access": "pagina_aberta",
+      "kind": "plataforma_cashback",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "supports_profile": [
+        "marketplace"
+      ]
+    },
+    {
+      "id": "F70",
+      "title": "Descrição da loja AliExpress no Cuponomia",
+      "url": "https://www.cuponomia.com.br/desconto/aliexpress",
+      "summary": "Descrição comercial corrobora moda e eletrônicos. O termo telefonia não comprova venda de planos de conectividade.",
+      "supports": [
+        "moda-acessorios",
+        "eletronicos-informatica"
+      ],
+      "access": "pagina_aberta",
+      "kind": "plataforma_cashback",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10"
+    },
+    {
+      "id": "F71",
+      "title": "Departamentos do Mercado Carrefour",
+      "url": "https://mercado.carrefour.com.br/categoria/",
+      "summary": "Navegação de supermercado inclui alimentação, higiene e perfumaria, produtos para o lar e cuidados com animais. Drogaria permanece pendente de avaliação do canal.",
+      "supports": [
+        "alimentos-bebidas",
+        "beleza-cuidados",
+        "casa-jardim",
+        "pets"
+      ],
+      "access": "busca_indexada_abertura_bloqueada",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "crawler_age_at_consultation": "1 mês; abertura direta HTTP 403",
+      "supports_profile": [
+        "generalista"
+      ]
+    },
+    {
+      "id": "F72",
+      "title": "Departamentos e seleções Carrefour",
+      "url": "https://www.carrefour.com.br/",
+      "summary": "Navegação de móveis, informática, eletrodomésticos e jogos; seleção de consoles e pneus.",
+      "supports": [
+        "casa-jardim",
+        "eletronicos-informatica",
+        "entretenimento-games",
+        "automotivo"
+      ],
+      "access": "busca_indexada_abertura_bloqueada",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "crawler_age_at_consultation": "1 mês; abertura direta HTTP 403"
+    },
+    {
+      "id": "F73",
+      "title": "Sortimento de moda e esporte no Carrefour",
+      "url": "https://www.carrefour.com.br/s/olympikus%20olympikus?map=ft",
+      "summary": "Resultados agrupados em departamentos de calçados, vestuário e esporte, com vários tipos de roupas e equipamentos. Sustenta variedade além de anúncio isolado.",
+      "supports": [
+        "moda-acessorios",
+        "esportes-fitness"
+      ],
+      "access": "pagina_aberta",
+      "kind": "site_oficial",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "crawler_age_at_consultation": "4 meses"
+    },
+    {
+      "id": "F74",
+      "title": "Operação comercial Carrefour — Grupo Carrefour Brasil",
+      "url": "https://grupocarrefourbrasil.com.br/news/carrefour-e-powerade-parceiros-dos-jogos-olimpicos-paris-2024-criam-experiencia-imersiva-para-os-consumidores",
+      "summary": "Comunicado institucional descreve venda online de sortimento próprio alimentar e não alimentar e operação de marketplace.",
+      "supports": [],
+      "access": "busca_indexada",
+      "kind": "controladora",
+      "consulted_on_local": "2026-09-10",
+      "consulted_on_utc": "2026-09-10",
+      "supports_profile": [
+        "generalista",
+        "marketplace"
+      ],
+      "publication_context": "Comunicado referente a 2024; usado para perfil, não para sortimento atual."
+    }
+  ],
+  "limitations": [
+    "As categorias são inferências editoriais propostas, não categorias fornecidas ou aprovadas pelas lojas.",
+    "Resultados de busca indexados foram usados como evidência quando suficientes; consulta em 09/09 não significa que cada página foi rastreada naquele dia.",
+    "Não houve medição de acurácia nem revisão humana independente. 49 registros classificáveis não significa 98% de precisão.",
+    "Não foram verificadas todas as condições de cashback, disponibilidade regional, entrega ou preços.",
+    "As 16 categorias cobrem o piloto, não comprovam cobertura dos 1.019 registros.",
+    "Nenhuma categoria, oferta, alias, migration ou workflow foi alterado no banco ou na aplicação.",
+    "A revisão dos generalistas é parcial: categorias não propostas não representam uma lista negativa de produtos vendidos. As demais 45 lojas não tiveram seu sortimento reexaminado.",
+    "O perfil comercial das demais 45 lojas não foi avaliado. Não usar null como ausência de marketplace nem inferir especialização pela quantidade de categorias.",
+    "Fontes novas foram consultadas em 10/09/2026; datas de rastreamento e modalidades de acesso variam. AliExpress tem apenas evidência indireta de categorias."
+  ],
+  "revised_on_local": "2026-09-10",
+  "revision_scope": "Revisão dos cinco generalistas: múltiplas categorias por evidência; perfil comercial separado. Snapshot original preservado; demais 45 classificações não reavaliadas.",
+  "classification_policy": {
+    "unit": "loja_canonica",
+    "marketplace_is_product_category": false,
+    "category_limit": null,
+    "inclusion_rule": "Departamento comercial estruturado com variedade ou linha relevante descrita em fonte identificada. A mesma regra vale para generalistas e especialistas. Não exigir predominância nem participação percentual arbitrária.",
+    "evidence_rule": "Diretórios e departamentos oficiais têm preferência. Descrição da plataforma de cashback pode sustentar proposta com ressalva. Menção genérica a vender tudo, anúncio isolado, publicidade de outra categoria e marca do mesmo grupo são insuficientes.",
+    "missing_category_means": "não proposta nesta revisão; não comprova ausência de oferta",
+    "coverage": "parcial",
+    "cashback_scope": "Categorias indicam segmentos comerciais, não elegibilidade de cada produto, departamento ou canal para cashback.",
+    "profile_rule": "assortment_scope e operates_marketplace são eixos independentes; marketplace também pode ser especializado. Só os cinco generalistas tiveram o perfil avaliado nesta revisão. null não equivale a false.",
+    "navigation_proposal": "Incluir marketplaces nas categorias sustentadas. Eventual filtro por perfil é opcional e depende de completar a pesquisa dos perfis; não altera a ordenação aprovada do catálogo."
+  },
+  "store_profile_values": {
+    "assortment_scope": [
+      "generalista",
+      "especializado",
+      "nao_avaliado"
+    ],
+    "operates_marketplace": "true, false ou null (não avaliado)"
+  },
+  "revision_summary": {
+    "stores": 50,
+    "categories": 16,
+    "sources": 74,
+    "category_associations": 99,
+    "multi_category_stores": 13,
+    "review_attention": 9,
+    "inconclusive": 1
+  }
+}

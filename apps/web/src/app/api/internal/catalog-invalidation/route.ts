@@ -12,7 +12,7 @@ const InvalidationEvent = z.object({
   // "logos" (F3/T15, #61): idem para a troca de ponteiro de logo. O emissor sempre mandou
   // esse valor, mas só passa por aqui quando ALGUMA loja muda de ponteiro — coisa que nunca
   // acontecera até a ADR-0057 destravar os downloads, e por isso o 401 ficou latente.
-  platform_id: z.enum(["inter", "meliuz", "cuponomia", "mycashback", "zoom", "curation", "logos"]),
+  platform_id: z.enum(["inter", "meliuz", "cuponomia", "mycashback", "zoom", "curation", "categories", "logos"]),
   run_id: z.number().int().nonnegative(),
   timestamp: z.number().int().nonnegative(),
 });

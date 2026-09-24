@@ -10,9 +10,10 @@ const SORTS: { value: CatalogSort; label: string }[] = [
 interface CatalogControlsProps {
   query: string;
   sort: CatalogSort;
+  category?: string;
 }
 
-export function CatalogControls({ query, sort }: CatalogControlsProps) {
+export function CatalogControls({ query, sort, category }: CatalogControlsProps) {
   return (
     <div className="flex flex-wrap items-center gap-1.5">
       <span className="mr-1 text-sm text-[#5b5f56]">Ordenar por</span>
@@ -24,7 +25,7 @@ export function CatalogControls({ query, sort }: CatalogControlsProps) {
             className={active
               ? "rounded-full border border-[#e0ddd4] bg-white px-3.5 py-1.5 text-sm font-semibold text-[#12140f] shadow-sm"
               : "rounded-full px-2.5 py-1.5 text-sm font-medium text-[#5b5f56] hover:text-[#12140f]"}
-            href={`${catalogHref({ page: 1, query, sort: option.value })}#catalogo`}
+            href={`${catalogHref({ page: 1, query, sort: option.value, category })}#catalogo`}
             key={option.value}
           >
             {option.label}

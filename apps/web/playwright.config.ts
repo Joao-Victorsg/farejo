@@ -42,6 +42,7 @@ export default defineConfig({
     { name: "visual", testMatch: /visual\.spec\.ts/, dependencies: ["seed"] },
     { name: "responsive", testMatch: /responsive\.spec\.ts/, dependencies: ["seed"] },
     { name: "accessibility", testMatch: /accessibility\.spec\.ts/, dependencies: ["seed"] },
-    { name: "cleanup", testMatch: /cleanup\.teardown\.ts/, dependencies: ["visual", "responsive", "accessibility"] },
+    { name: "categories", testMatch: /categories\.spec\.ts/, dependencies: ["seed"] },
+    { name: "cleanup", testMatch: /cleanup\.teardown\.ts/, dependencies: ["visual", "responsive", "accessibility", "categories"] },
   ],
 });

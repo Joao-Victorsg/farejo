@@ -39,6 +39,8 @@ export const EXPECTED_LOGIN_ROLES = [
 export const EXPECTED_WEB_READ_VIEWS = [
   "catalog_offers",
   "catalog_stores",
+  "catalog_categories",
+  "catalog_store_categories",
   "catalog_search_terms",
   "store_details",
   "store_redirects",
@@ -55,6 +57,9 @@ export const EXPECTED_FUNCTIONS = [
   { schema: "activation", name: "record_activation" },
   { schema: "curation", name: "apply_alias_merge" },
   { schema: "curation", name: "verify_alias_merge" },
+  { schema: "curation", name: "category_state" },
+  { schema: "curation", name: "verify_category_manifest" },
+  { schema: "curation", name: "apply_category_manifest" },
   { schema: "alerts", name: "pending_avisos" },
 ] as const;
 
@@ -71,6 +76,8 @@ export const EXPECTED_RLS_TABLES = [
   "store_slug_redirects",
   "subscribers",
   "subscriptions",
+  "categories",
+  "store_categories",
 ] as const;
 
 export const LOGO_BUCKET_ID = "store-logos";
@@ -84,6 +91,7 @@ const LOGO_BUCKET_MIME_TYPE = "image/webp";
 export const EXPECTED_TABLE_GRANTS = [
   { role: "farejo_web", relation: "web_read.catalog_offers", privilege: "SELECT" },
   { role: "farejo_web", relation: "web_read.catalog_stores", privilege: "SELECT" },
+  { role: "farejo_web", relation: "web_read.catalog_categories", privilege: "SELECT" },
   { role: "farejo_web", relation: "web_read.store_details", privilege: "SELECT" },
   { role: "farejo_web", relation: "web_read.store_redirects", privilege: "SELECT" },
   { role: "farejo_logo_writer", relation: "public.store_logo_sources", privilege: "SELECT" },
@@ -105,6 +113,7 @@ export const EXPECTED_TABLE_GRANTS = [
 
 export const EXPECTED_FUNCTION_GRANTS = [
   { role: "farejo_web", signature: "web_read.catalog_search(text, text, integer)" },
+  { role: "farejo_web", signature: "web_read.catalog_search(text, text, integer, text)" },
   { role: "farejo_web", signature: "web_read.store_history(text)" },
   { role: "farejo_web", signature: "web_read.catalog_history(text[])" },
   { role: "farejo_web", signature: "web_read.platform_stats(text[])" },
@@ -112,6 +121,9 @@ export const EXPECTED_FUNCTION_GRANTS = [
   { role: "farejo_metrics", signature: "activation.record_activation(bigint, text)" },
   { role: "farejo_curation", signature: "curation.apply_alias_merge(text, jsonb)" },
   { role: "farejo_curation", signature: "curation.verify_alias_merge(text, jsonb)" },
+  { role: "farejo_curation", signature: "curation.category_state(text[])" },
+  { role: "farejo_curation", signature: "curation.verify_category_manifest(jsonb)" },
+  { role: "farejo_curation", signature: "curation.apply_category_manifest(jsonb)" },
   { role: "farejo_notifier", signature: "alerts.pending_avisos(bigint)" },
 ] as const;
 
