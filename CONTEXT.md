@@ -67,6 +67,11 @@ taxa de correntista para que o toggle não mova lojas.
 Clique em “Ativar” validado pelo servidor antes de redirecionar à URL vigente da plataforma. Não é o
 pagamento do cashback e não torna o farejô intermediário da compra.
 
+**Redirecionamento validado**:
+Resposta `307` da rota de ativação depois de confirmar a oferta vigente. O relatório agrega esses
+encaminhamentos por loja e plataforma; não afirma pessoa única, chegada confirmada ao destino ou compra.
+As verificações automáticas de produção são agregadas em separado.
+
 **Histórico sendo construído**:
 Estado público de uma série ainda sem observação histórica ou cuja primeira observação ainda não foi
 confirmada por uma coleta posterior com a mesma grandeza, valor e modalidade. Não é erro, série vazia

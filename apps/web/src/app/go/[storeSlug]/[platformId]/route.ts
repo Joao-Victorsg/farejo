@@ -1,5 +1,6 @@
 import { after, NextResponse } from "next/server";
 import { activationErrorHtml } from "../../../../components/activation-error";
+import { activationSourceForRequest } from "../../../../lib/activation-smoke";
 import { recordActivation, resolveActivation } from "../../../../lib/activation";
 
 export const dynamic = "force-dynamic";
@@ -47,9 +48,14 @@ export async function GET(request: Request, { params }: ActivationRouteContext) 
   }
 
   console.info("activation_validation", { outcome: "redirect", durationMs: Math.round(performance.now() - startedAt) });
+  const source = activationSourceForRequest(request);
   try {
-    after(() => {
-      void recordActivation(resolution.storeId, platformId).catch(() => undefined);
+    after(async () => {
+      try {
+        await recordActivation(resolution.storeId, platformId, source);
+      } catch (error) {
+        console.error("activation_metrics_write", { outcome: "failure", errorName: error instanceof Error ? error.name : "unknown" });
+      }
     });
   } catch {
     // Telemetry is explicitly best-effort and cannot change a verified redirect.

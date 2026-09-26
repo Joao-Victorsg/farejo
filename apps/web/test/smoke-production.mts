@@ -128,6 +128,10 @@ export function signInvalidation(secret: string, timestamp: string, body: string
   return createHmac("sha256", secret).update(timestamp).update(body).digest("hex");
 }
 
+export function signActivationSmokeRequest(secret: string, timestamp: string, method: string, pathname: string): string {
+  return createHmac("sha256", secret).update(timestamp).update(`${method}\n${pathname}`).digest("hex");
+}
+
 /** Slugs dos cards do catálogo, na ordem renderizada. Um `<a href="/loja/...">` por card. */
 export function extractStoreCardSlugs(html: string): string[] {
   const matches = [...html.matchAll(/<a[^>]+href="\/loja\/([^"#]+)"/g)];
@@ -551,7 +555,7 @@ async function checkSearch(baseUrl: URL): Promise<SmokeCheck[]> {
   return checks;
 }
 
-async function checkActivation(baseUrl: URL, storeSlug: string, platformId: string): Promise<{ checks: SmokeCheck[]; samplesMs: number[] }> {
+async function checkActivation(baseUrl: URL, storeSlug: string, platformId: string, secret: string): Promise<{ checks: SmokeCheck[]; samplesMs: number[] }> {
   const path = `/go/${encodeURIComponent(storeSlug)}/${encodeURIComponent(platformId)}`;
   const samplesMs: number[] = [];
   const checks: SmokeCheck[] = [];
@@ -565,17 +569,28 @@ async function checkActivation(baseUrl: URL, storeSlug: string, platformId: stri
     detail: `status=${status} destino=${location ? new URL(location).origin : "ausente"} durationMs=${Math.round(durationMs)}`,
   });
 
-  const cold = await timed(() => smokeFetch(new URL(path, baseUrl), { redirect: "manual" }));
+  const cold = await timed(() => smokeActivationFetch(new URL(path, baseUrl), secret));
   samplesMs.push(cold.durationMs);
   checks.push(evaluate("cold", cold.value.status, cold.value.headers.get("location"), cold.durationMs));
 
   for (let attempt = 0; attempt < WARM_REQUESTS; attempt += 1) {
-    const warm = await timed(() => smokeFetch(new URL(path, baseUrl), { redirect: "manual" }));
+    const warm = await timed(() => smokeActivationFetch(new URL(path, baseUrl), secret));
     samplesMs.push(warm.durationMs);
     checks.push(evaluate(`warm ${attempt + 1}/${WARM_REQUESTS}`, warm.value.status, warm.value.headers.get("location"), warm.durationMs));
   }
 
   return { checks, samplesMs };
+}
+
+function smokeActivationFetch(url: URL, secret: string): Promise<Response> {
+  const timestamp = String(Date.now());
+  return smokeFetch(url, {
+    redirect: "manual",
+    headers: {
+      "x-farejo-smoke-timestamp": timestamp,
+      "x-farejo-smoke-signature": signActivationSmokeRequest(secret, timestamp, "GET", url.pathname),
+    },
+  });
 }
 
 /**
@@ -767,13 +782,13 @@ export async function runProductionSmoke(baseUrl: URL, invalidationSecret: strin
 
     if (!found) {
       checks.push({ name: "ativação (/go/...)", ok: false, detail: `nenhuma das ${storeSlugs.length} lojas amostradas tinha uma oferta ativa para testar o redirect` });
-    } else if (readOnly) {
+    } else if (invalidationSecret === null) {
       checks.push(info(
         `ativação (/go/${found.storeSlug}/${found.platformId})`,
         "modo somente-leitura: redirect NÃO exercitado para não gravar ativações reais em activation_metrics",
       ));
     } else {
-      const activation = await checkActivation(baseUrl, found.storeSlug, found.platformId);
+      const activation = await checkActivation(baseUrl, found.storeSlug, found.platformId, invalidationSecret);
       checks.push(...activation.checks);
       activationSamplesMs = activation.samplesMs;
     }

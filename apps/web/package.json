@@ -11,6 +11,7 @@
     "test:smoke": "tsx test/smoke.mts",
     "test:e2e": "playwright test",
     "test:smoke:production": "tsx test/smoke-production.mts",
+    "report:partners": "tsx scripts/generate-partner-report.mts",
     "test:smoke:production:browser": "tsx test/smoke-production-browser.mts"
   },
   "dependencies": {

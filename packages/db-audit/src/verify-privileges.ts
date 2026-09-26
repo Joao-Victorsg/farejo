@@ -42,6 +42,7 @@ export const AUDITED_GRANTEES = [
   "authenticated",
   "farejo_web",
   "farejo_logo_writer",
+  "farejo_metrics",
   // Avisos (#113, ADR-0064). `farejo_bot` entra por ser a superfície exposta na internet — é o
   // grantee de maior risco do projeto, e é aqui que "o bot nunca vê o histórico de ofertas" deixa
   // de ser texto de ADR. `farejo_notifier` entra junto porque as duas nascem do mesmo contrato.
@@ -86,6 +87,13 @@ export const ALLOWED_TABLE_GRANTS = new Set([
   "farejo_notifier|public.platforms|SELECT",
   // #119 (ADR-0063): só para o guard do workflow recusar rodar com um scrape em andamento.
   "farejo_notifier|public.scrape_runs|SELECT",
+  "farejo_metrics|public.activation_metrics|SELECT",
+  "farejo_metrics|public.activation_metrics|INSERT",
+  "farejo_metrics|public.activation_metrics|UPDATE",
+  "farejo_metrics|public.activation_smoke_metrics|SELECT",
+  "farejo_metrics|public.activation_smoke_metrics|INSERT",
+  "farejo_metrics|public.activation_smoke_metrics|UPDATE",
+  "farejo_metrics|public.activation_metrics_cutover|SELECT",
 ]);
 
 export const ALLOWED_COLUMN_GRANTS = new Set([
@@ -102,6 +110,7 @@ export const ALLOWED_FUNCTION_GRANTS = new Set([
   // Funções nascem com EXECUTE para PUBLIC; a migration revoga, e é este conjunto exato que
   // garante que continue revogado.
   "farejo_notifier|alerts.pending_avisos|EXECUTE",
+  "farejo_metrics|activation.record_activation|EXECUTE",
 ]);
 
 export const ALLOWED_SCHEMA_GRANTS = new Set([
@@ -111,6 +120,8 @@ export const ALLOWED_SCHEMA_GRANTS = new Set([
   "farejo_bot|web_read|USAGE",
   "farejo_notifier|public|USAGE",
   "farejo_notifier|alerts|USAGE",
+  "farejo_metrics|public|USAGE",
+  "farejo_metrics|activation|USAGE",
 ]);
 
 // A única policy do produto que pode referenciar PUBLIC/anon/authenticated: leitura pública de
@@ -162,11 +173,11 @@ interface PolicyRow {
 }
 
 // Roles que DEVEM poder logar (as outras auditadas devem ser NOLOGIN).
-const LOGIN_ROLES = new Set(["farejo_web", "farejo_logo_writer", "farejo_bot", "farejo_notifier"]);
+const LOGIN_ROLES = new Set(["farejo_web", "farejo_logo_writer", "farejo_metrics", "farejo_bot", "farejo_notifier"]);
 // Roles criadas pelo farejô com `noinherit` por contrato. anon/authenticated são da plataforma
 // Supabase e carregam o default INHERIT do Postgres — inócuo, porque não são membros de nenhuma
 // role (o check de membership abaixo garante que continue assim), então INHERIT só é auditado aqui.
-const NOINHERIT_ROLES = new Set(["farejo_web", "farejo_logo_writer", "farejo_bot", "farejo_notifier"]);
+const NOINHERIT_ROLES = new Set(["farejo_web", "farejo_logo_writer", "farejo_metrics", "farejo_bot", "farejo_notifier"]);
 
 export async function verifyProductionPrivileges(pool: PrivilegeCheckPool): Promise<PrivilegeVerificationReport> {
   const grantees = [...AUDITED_GRANTEES];

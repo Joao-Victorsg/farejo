@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { createHmac } from "node:crypto";
 
 const { after, recordActivation, resolveActivation } = vi.hoisted(() => ({
   after: vi.fn(),
@@ -18,12 +19,27 @@ function request(path: string) {
   return new Request(`https://farejo.test${path}`);
 }
 
+function smokeRequest(path: string, secret = "test-smoke-secret") {
+  const timestamp = String(Date.now());
+  const signature = createHmac("sha256", secret)
+    .update(timestamp)
+    .update(`GET\n${path}`)
+    .digest("hex");
+  return new Request(`https://farejo.test${path}`, {
+    headers: {
+      "x-farejo-smoke-timestamp": timestamp,
+      "x-farejo-smoke-signature": signature,
+    },
+  });
+}
+
 function context(storeSlug = "loja-segura", platformId = "inter") {
   return { params: Promise.resolve({ storeSlug, platformId }) };
 }
 
 describe("GET /go/[storeSlug]/[platformId]", () => {
   beforeEach(() => {
+    vi.stubEnv("FAREJO_CATALOG_INVALIDATION_SECRET", "test-smoke-secret");
     after.mockReset();
     recordActivation.mockReset();
     recordActivation.mockResolvedValue(undefined);
@@ -40,7 +56,54 @@ describe("GET /go/[storeSlug]/[platformId]", () => {
     expect(after).toHaveBeenCalledOnce();
     expect(recordActivation).not.toHaveBeenCalled();
     await after.mock.calls[0]?.[0]();
-    expect(recordActivation).toHaveBeenCalledWith(91, "inter");
+    expect(recordActivation).toHaveBeenCalledWith(91, "inter", "user");
+  });
+
+  it("records signed production smoke redirects separately from user activations", async () => {
+    resolveActivation.mockResolvedValue({ kind: "available", storeId: 91, destination: "https://shopping.inter.co/site-parceiro/lojas/loja-segura" });
+
+    const response = await GET(smokeRequest("/go/loja-segura/inter"), context());
+
+    expect(response.status).toBe(307);
+    await after.mock.calls[0]?.[0]();
+    expect(recordActivation).toHaveBeenCalledWith(91, "inter", "production_smoke");
+  });
+
+  it("keeps the post-response task alive until the metric write settles", async () => {
+    let resolveWrite: (() => void) | undefined;
+    recordActivation.mockReturnValue(new Promise<void>((resolve) => { resolveWrite = resolve; }));
+    resolveActivation.mockResolvedValue({ kind: "available", storeId: 91, destination: "https://shopping.inter.co/site-parceiro/lojas/loja-segura" });
+
+    const response = await GET(request("/go/loja-segura/inter"), context());
+    expect(response.status).toBe(307);
+
+    const callback = after.mock.calls[0]?.[0] as (() => unknown) | undefined;
+    const task = callback?.();
+    expect(task).toBeInstanceOf(Promise);
+    let completed = false;
+    void (task as Promise<void>).then(() => { completed = true; });
+    await Promise.resolve();
+    expect(completed).toBe(false);
+
+    resolveWrite?.();
+    await task;
+    expect(completed).toBe(true);
+  });
+
+  it("treats an invalid smoke signature as an ordinary activation", async () => {
+    resolveActivation.mockResolvedValue({ kind: "available", storeId: 91, destination: "https://shopping.inter.co/site-parceiro/lojas/loja-segura" });
+
+    const invalid = new Request("https://farejo.test/go/loja-segura/inter", {
+      headers: {
+        "x-farejo-smoke-timestamp": String(Date.now()),
+        "x-farejo-smoke-signature": "0".repeat(64),
+      },
+    });
+    const response = await GET(invalid, context());
+
+    expect(response.status).toBe(307);
+    await after.mock.calls[0]?.[0]();
+    expect(recordActivation).toHaveBeenCalledWith(91, "inter", "user");
   });
 
   it("returns a noindex 410 without leaking a destination when the offer is unavailable or forged", async () => {
@@ -54,6 +117,8 @@ describe("GET /go/[storeSlug]/[platformId]", () => {
     expect(html).toContain("Esta oferta não está mais disponível");
     expect(html).toContain("/loja/loja-forjada");
     expect(html).not.toContain("https://shopping.inter.co");
+    expect(after).not.toHaveBeenCalled();
+    expect(recordActivation).not.toHaveBeenCalled();
   });
 
   it("returns a retryable noindex 503 when validation fails", async () => {
@@ -67,5 +132,6 @@ describe("GET /go/[storeSlug]/[platformId]", () => {
     expect(html).toContain("Não conseguimos validar esta oferta agora");
     expect(html).toContain("Tentar novamente");
     expect(after).not.toHaveBeenCalled();
+    expect(recordActivation).not.toHaveBeenCalled();
   });
 });
