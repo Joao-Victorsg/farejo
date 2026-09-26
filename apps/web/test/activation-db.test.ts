@@ -84,6 +84,35 @@ describe("activation database boundary", () => {
     await expect(client.query("select activations from public.activation_metrics where store_id = $1 and platform_id = 'inter'", [storeId])).resolves.toMatchObject({ rows: [{ activations: 1 }] });
   });
 
+  it("keeps production smoke checks in a separate daily aggregate", async () => {
+    const smokeBefore = await client.query<{ activations: number }>(
+      "select activations from public.activation_smoke_metrics where day = current_date",
+    );
+    const userBefore = await client.query<{ activations: number }>(
+      "select activations from public.activation_metrics where day = current_date and store_id = $1 and platform_id = 'inter'",
+      [storeId],
+    );
+
+    await client.query("set role farejo_metrics");
+    try {
+      await client.query("select activation.record_activation($1, $2, 'production_smoke')", [storeId, "inter"]);
+      await expect(client.query("select clean_from from public.activation_metrics_cutover")).resolves.toMatchObject({ rowCount: 1 });
+      await expect(client.query("select * from public.stores")).rejects.toThrow(/permission denied/i);
+    } finally {
+      await client.query("reset role");
+    }
+
+    const smokeAfter = await client.query<{ activations: number }>(
+      "select activations from public.activation_smoke_metrics where day = current_date",
+    );
+    const userAfter = await client.query<{ activations: number }>(
+      "select activations from public.activation_metrics where day = current_date and store_id = $1 and platform_id = 'inter'",
+      [storeId],
+    );
+    expect(Number(smokeAfter.rows[0]?.activations ?? 0) - Number(smokeBefore.rows[0]?.activations ?? 0)).toBe(1);
+    expect(Number(userAfter.rows[0]?.activations ?? 0) - Number(userBefore.rows[0]?.activations ?? 0)).toBe(0);
+  });
+
   it("keeps the indexed validation lookup as one dedicated function", async () => {
     await expect(client.query("select to_regclass('public.idx_offers_activation_eligible') as index_name")).resolves.toMatchObject({ rows: [{ index_name: "idx_offers_activation_eligible" }] });
     await expect(client.query("select has_function_privilege('farejo_activation', 'activation.resolve_destination(text, text)', 'execute') as can_resolve, has_function_privilege('farejo_activation', 'activation.record_activation(bigint, text)', 'execute') as can_record, has_function_privilege('farejo_metrics', 'activation.record_activation(bigint, text)', 'execute') as can_record_metric")).resolves.toMatchObject({ rows: [{ can_resolve: true, can_record: false, can_record_metric: true }] });

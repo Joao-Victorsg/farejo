@@ -10,6 +10,7 @@ blob-report/
 # CI runs ubuntu-latest only — commit *-linux.png baselines, never local dev-machine ones.
 apps/web/e2e/**/*-win32.png
 apps/web/e2e/**/*-darwin.png
+apps/web/reports/partner-reports/
 *.tsbuildinfo
 .env*
 !.env.example

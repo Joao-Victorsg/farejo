@@ -47,6 +47,8 @@ export async function resolveActivation(storeSlug: string, platformId: string): 
   return row ? { kind: "available", storeId: row.store_id, destination: row.destination } : { kind: "unavailable" };
 }
 
-export async function recordActivation(storeId: number, platformId: string) {
-  await getMetricsPool().query("select activation.record_activation($1, $2)", [storeId, platformId]);
+export type ActivationSource = "user" | "production_smoke";
+
+export async function recordActivation(storeId: number, platformId: string, source: ActivationSource) {
+  await getMetricsPool().query("select activation.record_activation($1, $2, $3)", [storeId, platformId, source]);
 }

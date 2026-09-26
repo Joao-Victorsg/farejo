@@ -17,6 +17,7 @@ import {
   readMetaRefreshTarget,
   readInterSwitchState,
   readPaginationTotalPages,
+  signActivationSmokeRequest,
   signInvalidation,
   storeSample,
   type SmokeCheck,
@@ -70,6 +71,16 @@ describe("signInvalidation", () => {
     const body = JSON.stringify({ platform_id: "curation", run_id: 0, timestamp: 1737331200000 });
     const expected = createHmac("sha256", secret).update(timestamp).update(body).digest("hex");
     expect(signInvalidation(secret, timestamp, body)).toBe(expected);
+  });
+});
+
+describe("signActivationSmokeRequest", () => {
+  it("signs the timestamp, method and exact redirect path for source classification", () => {
+    const expected = createHmac("sha256", "test-secret")
+      .update("1737331200000")
+      .update("GET\n/go/fast-shop/inter")
+      .digest("hex");
+    expect(signActivationSmokeRequest("test-secret", "1737331200000", "GET", "/go/fast-shop/inter")).toBe(expected);
   });
 });
 
