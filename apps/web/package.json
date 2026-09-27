@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "prebuild": "pnpm --filter @farejo/postgres build",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
