@@ -23,7 +23,7 @@ declare global {
   dataLayer?: unknown[];
     gtag?: Gtag;
     __farejoGa4ScriptRequested?: boolean;
-    lastPageViewLocation?: string;
+    __farejoLastPageViewLocation?: string;
   }
 }
 

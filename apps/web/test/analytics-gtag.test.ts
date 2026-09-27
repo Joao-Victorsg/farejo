@@ -21,7 +21,7 @@ describe("Google tag command queue", () => {
   it("sends the first page view after consent and deduplicates the initial route", () => {
     const dataLayer: unknown[] = [];
     const gtag = createGoogleTag(dataLayer);
-    const state: { lastPageViewLocation?: string } = {};
+    const state: { __farejoLastPageViewLocation?: string } = {};
     const pageView = {
       pageLocation: "https://farejo.vercel.app/loja/asics",
       pageTitle: "farejô | Página de loja",
