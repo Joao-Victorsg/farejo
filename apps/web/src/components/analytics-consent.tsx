@@ -2,6 +2,7 @@
 
 import { createContext, Suspense, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { createGoogleTag } from "@/lib/analytics-gtag";
 
 const CONSENT_COOKIE = "farejo_ga4_consent";
 const CONSENT_MAX_AGE_SECONDS = 60 * 60 * 24 * 180;
@@ -19,7 +20,7 @@ type Gtag = (...arguments_: unknown[]) => void;
 
 declare global {
   interface Window {
-    dataLayer?: unknown[][];
+  dataLayer?: unknown[];
     gtag?: Gtag;
     __farejoGa4ScriptRequested?: boolean;
   }
@@ -65,7 +66,7 @@ function initializeGoogleTag(choice: Exclude<ConsentChoice, null>) {
   if (!MEASUREMENT_ID || !/^G-[A-Z0-9]+$/.test(MEASUREMENT_ID)) return;
 
   window.dataLayer ??= [];
-  window.gtag ??= (...arguments_: unknown[]) => window.dataLayer?.push(arguments_);
+  window.gtag ??= createGoogleTag(window.dataLayer);
   window.gtag("consent", "default", CONSENT_DENIED satisfies GoogleConsent);
   if (choice === "granted") {
     window.gtag("consent", "update", {
