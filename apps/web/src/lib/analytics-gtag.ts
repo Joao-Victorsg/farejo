@@ -1,7 +1,7 @@
 type Gtag = (...arguments_: unknown[]) => void;
 
 export interface GooglePageViewState {
-  lastPageViewLocation?: string;
+  __farejoLastPageViewLocation?: string;
 }
 
 export interface GooglePageView {
@@ -22,9 +22,9 @@ export function sendGooglePageView(
   state: GooglePageViewState,
   pageView: GooglePageView,
 ) {
-  if (!gtag || state.lastPageViewLocation === pageView.pageLocation) return;
+  if (!gtag || state.__farejoLastPageViewLocation === pageView.pageLocation) return;
 
-  state.lastPageViewLocation = pageView.pageLocation;
+  state.__farejoLastPageViewLocation = pageView.pageLocation;
   gtag("event", "page_view", {
     page_location: pageView.pageLocation,
     page_title: pageView.pageTitle,
