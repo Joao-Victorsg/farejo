@@ -2,6 +2,7 @@ import { after, NextResponse } from "next/server";
 import { activationErrorHtml } from "../../../../components/activation-error";
 import { activationSourceForRequest } from "../../../../lib/activation-smoke";
 import { recordActivation, resolveActivation } from "../../../../lib/activation";
+import { recordGa4Redirect } from "../../../../lib/ga4-measurement";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -51,10 +52,15 @@ export async function GET(request: Request, { params }: ActivationRouteContext) 
   const source = activationSourceForRequest(request);
   try {
     after(async () => {
-      try {
-        await recordActivation(resolution.storeId, platformId, source);
-      } catch (error) {
-        console.error("activation_metrics_write", { outcome: "failure", errorName: error instanceof Error ? error.name : "unknown" });
+      const [activationResult, analyticsResult] = await Promise.allSettled([
+        recordActivation(resolution.storeId, platformId, source),
+        source === "user" ? recordGa4Redirect(request, { storeSlug, platformId }) : Promise.resolve(),
+      ]);
+      if (activationResult.status === "rejected") {
+        console.error("activation_metrics_write", { outcome: "failure", errorName: activationResult.reason instanceof Error ? activationResult.reason.name : "unknown" });
+      }
+      if (analyticsResult.status === "rejected") {
+        console.error("ga4_activation_event", { outcome: "failure", errorName: analyticsResult.reason instanceof Error ? analyticsResult.reason.name : "unknown" });
       }
     });
   } catch {

@@ -84,9 +84,11 @@ sem CTA, para não confundir indisponibilidade temporária com slug inexistente.
 ### Avisos
 
 **Usuário**:
-Pessoa anônima que consulta o farejô. Deliberadamente **não modelada**: sem conta, sem sessão, sem
-cookie e sem linha em tabela nenhuma. Só a preferência de **Correntista** persiste, e apenas no
-navegador dele.
+Pessoa que consulta o farejô, sem conta de produto nem linha de identidade em tabela do Farejo.
+Quando aceita analytics, o Google Analytics distingue sessões com identificadores pseudônimos em
+cookies; eles não são persistidos pelo Farejo nem associados ao **Assinante** do Telegram. A escolha
+de consentimento também persiste em cookie first-party para ser respeitada na rota de redirect. A
+preferência de **Correntista** continua apenas no navegador.
 _Avoid_: visitante (sinônimo casual), cliente (é o **Correntista**, cliente do Inter).
 
 **Assinante**:

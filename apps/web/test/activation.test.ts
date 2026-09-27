@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createHmac } from "node:crypto";
 
-const { after, recordActivation, resolveActivation } = vi.hoisted(() => ({
+const { after, recordActivation, recordGa4Redirect, resolveActivation } = vi.hoisted(() => ({
   after: vi.fn(),
   recordActivation: vi.fn(),
+  recordGa4Redirect: vi.fn(),
   resolveActivation: vi.fn(),
 }));
 
@@ -12,6 +13,7 @@ vi.mock("next/server", async (importOriginal) => ({
   after,
 }));
 vi.mock("../src/lib/activation.js", () => ({ recordActivation, resolveActivation }));
+vi.mock("../src/lib/ga4-measurement.js", () => ({ recordGa4Redirect }));
 
 import { GET } from "../src/app/go/[storeSlug]/[platformId]/route.js";
 
@@ -43,6 +45,8 @@ describe("GET /go/[storeSlug]/[platformId]", () => {
     after.mockReset();
     recordActivation.mockReset();
     recordActivation.mockResolvedValue(undefined);
+    recordGa4Redirect.mockReset();
+    recordGa4Redirect.mockResolvedValue(undefined);
     resolveActivation.mockReset();
   });
 
@@ -57,6 +61,7 @@ describe("GET /go/[storeSlug]/[platformId]", () => {
     expect(recordActivation).not.toHaveBeenCalled();
     await after.mock.calls[0]?.[0]();
     expect(recordActivation).toHaveBeenCalledWith(91, "inter", "user");
+    expect(recordGa4Redirect).toHaveBeenCalledWith(expect.any(Request), { storeSlug: "loja-segura", platformId: "inter" });
   });
 
   it("records signed production smoke redirects separately from user activations", async () => {
@@ -67,6 +72,7 @@ describe("GET /go/[storeSlug]/[platformId]", () => {
     expect(response.status).toBe(307);
     await after.mock.calls[0]?.[0]();
     expect(recordActivation).toHaveBeenCalledWith(91, "inter", "production_smoke");
+    expect(recordGa4Redirect).not.toHaveBeenCalled();
   });
 
   it("keeps the post-response task alive until the metric write settles", async () => {
@@ -119,6 +125,7 @@ describe("GET /go/[storeSlug]/[platformId]", () => {
     expect(html).not.toContain("https://shopping.inter.co");
     expect(after).not.toHaveBeenCalled();
     expect(recordActivation).not.toHaveBeenCalled();
+    expect(recordGa4Redirect).not.toHaveBeenCalled();
   });
 
   it("returns a retryable noindex 503 when validation fails", async () => {
@@ -133,5 +140,6 @@ describe("GET /go/[storeSlug]/[platformId]", () => {
     expect(html).toContain("Tentar novamente");
     expect(after).not.toHaveBeenCalled();
     expect(recordActivation).not.toHaveBeenCalled();
+    expect(recordGa4Redirect).not.toHaveBeenCalled();
   });
 });

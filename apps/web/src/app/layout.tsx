@@ -7,6 +7,7 @@ import "@fontsource-variable/space-grotesk";
 import "./globals.css";
 import { InterPreferenceProvider } from "@/lib/inter-preference";
 import { getSiteUrl } from "@/lib/site-url";
+import { AnalyticsConsentProvider } from "@/components/analytics-consent";
 
 export const metadata: Metadata = {
   metadataBase: getSiteUrl(),
@@ -16,5 +17,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="pt-BR" className={GeistMono.variable}><body><a className="skip-link" href="#conteudo">Pular para o conteúdo</a><InterPreferenceProvider>{children}</InterPreferenceProvider><Analytics /><SpeedInsights /></body></html>;
+  return <html lang="pt-BR" className={GeistMono.variable}><body><a className="skip-link" href="#conteudo">Pular para o conteúdo</a><AnalyticsConsentProvider><InterPreferenceProvider>{children}</InterPreferenceProvider></AnalyticsConsentProvider><Analytics /><SpeedInsights /></body></html>;
 }
