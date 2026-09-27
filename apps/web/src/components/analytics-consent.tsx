@@ -2,7 +2,7 @@
 
 import { createContext, Suspense, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
-import { createGoogleTag } from "@/lib/analytics-gtag";
+import { createGoogleTag, sendGooglePageView } from "@/lib/analytics-gtag";
 
 const CONSENT_COOKIE = "farejo_ga4_consent";
 const CONSENT_MAX_AGE_SECONDS = 60 * 60 * 24 * 180;
@@ -23,6 +23,7 @@ declare global {
   dataLayer?: unknown[];
     gtag?: Gtag;
     __farejoGa4ScriptRequested?: boolean;
+    lastPageViewLocation?: string;
   }
 }
 
@@ -88,6 +89,7 @@ function initializeGoogleTag(choice: Exclude<ConsentChoice, null>) {
     cookie_expires: 60 * 60 * 24 * 90,
     ...(process.env.NODE_ENV === "development" ? { debug_mode: true } : {}),
   });
+  if (choice === "granted") trackPageView(pathname);
 
   if (!window.__farejoGa4ScriptRequested) {
     const script = document.createElement("script");
@@ -110,6 +112,16 @@ function storeSlugForPath(pathname: string) {
   return match?.[1];
 }
 
+function trackPageView(pathname: string) {
+  const storeSlug = storeSlugForPath(pathname);
+  sendGooglePageView(window.gtag, window, {
+    pageLocation: `${window.location.origin}${pathname}`,
+    pageTitle: pageTitleForPath(pathname),
+    pageReferrer: safeReferrer(),
+    ...(storeSlug ? { storeSlug } : {}),
+  });
+}
+
 function safeReferrer() {
   if (!document.referrer) return "";
   try {
@@ -129,15 +141,7 @@ function PageViewTracker({ choice }: { choice: ConsentChoice }) {
 
   useEffect(() => {
     if (choice !== "granted" || !MEASUREMENT_ID || !window.gtag || !pathname) return;
-
-    const pageLocation = `${window.location.origin}${pathname}`;
-    const storeSlug = storeSlugForPath(pathname);
-    window.gtag("event", "page_view", {
-      page_location: pageLocation,
-      page_title: pageTitleForPath(pathname),
-      page_referrer: safeReferrer(),
-      ...(storeSlug ? { store_slug: storeSlug } : {}),
-    });
+    trackPageView(pathname);
   }, [choice, pathname, queryKey]);
 
   return null;
