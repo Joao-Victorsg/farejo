@@ -17,6 +17,7 @@ process.env.FAREJO_WEB_DATABASE_URL = databaseUrl;
 process.env.FAREJO_ACTIVATION_DATABASE_URL = `${databaseUrl}?options=-c%20role%3Dfarejo_activation`;
 process.env.FAREJO_METRICS_DATABASE_URL = `${databaseUrl}?options=-c%20role%3Dfarejo_metrics`;
 process.env.FAREJO_CATALOG_INVALIDATION_SECRET = "issue49-smoke-secret-at-least-32-characters";
+process.env.FAREJO_SITE_URL = "https://www.farejo.site";
 process.env.VERCEL = "1";
 const runtimeEnv = { ...process.env, PATH: [dirname(process.execPath), process.env.PATH].filter(Boolean).join(delimiter) };
 
@@ -235,7 +236,7 @@ try {
   const explicitDefaultSort = await (await fetch(`${baseUrl}/?sort=platforms`)).text();
   assert.match(explicitDefaultSort, /http-equiv="refresh" content="1;url=\/"/);
   const { html: indexedSecondPage } = await fetchRendered("/?page=2");
-  assert.match(indexedSecondPage, /<link rel="canonical" href="https:\/\/farejo\.com\.br\/\?page=2"/);
+  assert.match(indexedSecondPage, /<link rel="canonical" href="https:\/\/www\.farejo\.site\/\?page=2"/);
   assert.doesNotMatch(indexedSecondPage, /name="robots" content="noindex, follow"/);
   const { html: outOfRangePage } = await fetchRendered("/?page=999");
   assert.match(outOfRangePage, /Esta página não existe/);
@@ -249,16 +250,17 @@ try {
   assert.match(searchPage, /Loja real sem logo 00/);
   assert.match(searchPage, /name="robots" content="noindex, follow"/);
   const sitemap = await (await fetch(`${baseUrl}/sitemap.xml`)).text();
-  assert.match(sitemap, /https:\/\/farejo\.com\.br\/\?page=2/);
-  assert.match(sitemap, new RegExp(`https://farejo\\.com\\.br/loja/${fixturePrefix}00`));
+  assert.match(sitemap, /https:\/\/www\.farejo\.site\/\?page=2/);
+  assert.match(sitemap, new RegExp(`https://www\\.farejo\\.site/loja/${fixturePrefix}00`));
   assert.doesNotMatch(sitemap, new RegExp(`${fixturePrefix}indisponivel`));
   const robots = await (await fetch(`${baseUrl}/robots.txt`)).text();
   assert.match(robots, /Disallow: \/go\//);
+  assert.match(robots, /Sitemap: https:\/\/www\.farejo\.site\/sitemap\.xml/);
 
   const { status: detailStatus, html: detailHtml } = await fetchRendered(`/loja/${fixturePrefix}00`);
   assert.equal(detailStatus, 200);
   assert.match(detailHtml, /<h1[^>]*>Loja real sem logo 00<\/h1>/);
-  assert.match(detailHtml, new RegExp(`<link rel="canonical" href="https://farejo\\.com\\.br/loja/${fixturePrefix}00"`));
+  assert.match(detailHtml, new RegExp(`<link rel="canonical" href="https://www\\.farejo\\.site/loja/${fixturePrefix}00"`));
   assert.ok(detailHtml.indexOf("Até 7%") < detailHtml.indexOf("5%"));
   assert.ok(detailHtml.indexOf("5%") < detailHtml.indexOf("R$ 30"));
   assert.match(detailHtml, /Teto anunciado pela plataforma/);
