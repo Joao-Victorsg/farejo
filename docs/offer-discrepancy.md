@@ -1,6 +1,6 @@
 # Avisos de valor divergente
 
-O botão de cada oferta envia apenas `storeSlug` e `platformId` para `POST /api/offer-discrepancy`. A função `feedback.report_offer_discrepancy` revalida a oferta ativa e observada nas últimas 48 horas, captura tipo, valores e versão (último evento de `offer_history`) e mantém uma linha por oferta e versão. Envios novos e repetidos recebem a mesma resposta `202`. O registro não contém IP, cookie, texto livre nem identificador do visitante.
+A interface para enviar avisos está suspensa enquanto decidimos onde colocá-la na experiência da página. O servidor está preparado: `POST /api/offer-discrepancy` recebe apenas `storeSlug` e `platformId`. A função `feedback.report_offer_discrepancy` revalida a oferta ativa e observada nas últimas 48 horas, captura tipo, valores e versão (último evento de `offer_history`) e mantém uma linha por oferta e versão. Envios novos e repetidos recebem a mesma resposta `202`. O registro não contém IP, cookie, texto livre nem identificador do visitante.
 
 ## Acesso e revisão
 

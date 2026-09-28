@@ -3,7 +3,6 @@
 import { ExternalLink } from "lucide-react";
 import { InterToggle } from "@/components/inter-toggle";
 import { PlatformIcon } from "@/components/platform-icon";
-import { OfferDiscrepancyButton } from "@/components/offer-discrepancy-button";
 import type { CatalogOffer, StoreDetail } from "@/lib/catalog";
 import { useInterPreference } from "@/lib/inter-preference";
 import { competitionPosition, effectiveSignals, formatPreviousValue, formatReward, isInterCorrentistaOffer, leaderOffers, rankOffers } from "@/lib/offer-ranking";
@@ -67,7 +66,6 @@ export function StoreRanking({ store }: { store: StoreDetail }) {
               </div>
               <span className={`ml-auto min-w-[70px] text-right font-numbers text-[28px] font-semibold leading-none tracking-[-0.02em] ${valueCls}`}>{formatReward(offer, isCorrentista)}</span>
               <a aria-label={`Ativar cashback pela ${offer.platformName} (abre em nova aba)`} className={`inline-flex min-h-11 shrink-0 items-center justify-center gap-1.5 rounded-[10px] px-[18px] text-[14.5px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1c7a4d] ${buttonCls}`} href={`/go/${encodeURIComponent(store.slug)}/${encodeURIComponent(offer.platformId)}`} rel="noopener noreferrer" target="_blank">Ativar <ExternalLink aria-hidden="true" size={15} /><span className="sr-only">(abre em nova aba)</span></a>
-              <OfferDiscrepancyButton platformId={offer.platformId} storeSlug={store.slug} />
             </li>
           );
         })}
