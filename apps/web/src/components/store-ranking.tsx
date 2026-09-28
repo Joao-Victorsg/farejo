@@ -5,7 +5,7 @@ import { InterToggle } from "@/components/inter-toggle";
 import { PlatformIcon } from "@/components/platform-icon";
 import type { CatalogOffer, StoreDetail } from "@/lib/catalog";
 import { useInterPreference } from "@/lib/inter-preference";
-import { effectiveSignals, formatPreviousValue, formatReward, isInterCorrentistaOffer, rankOffers } from "@/lib/offer-ranking";
+import { competitionPosition, effectiveSignals, formatPreviousValue, formatReward, isInterCorrentistaOffer, leaderOffers, rankOffers } from "@/lib/offer-ranking";
 
 const BADGE = "rounded-[5px] px-[7px] py-[3px] font-mono text-[10px] tracking-[0.03em]";
 
@@ -24,6 +24,7 @@ function secondaryBadge(offer: CatalogOffer, isCorrentista: boolean) {
 export function StoreRanking({ store }: { store: StoreDetail }) {
   const { isCorrentista } = useInterPreference();
   const offers = rankOffers(store.offers, isCorrentista);
+  const leaders = leaderOffers(offers, isCorrentista);
 
   return (
     <section className="mt-11" aria-labelledby="ranking-heading">
@@ -33,7 +34,8 @@ export function StoreRanking({ store }: { store: StoreDetail }) {
       </div>
       <ol className="space-y-3" aria-label={`Ranking de cashback de ${store.name}`}>
         {offers.map((offer, index) => {
-          const isBest = index === 0;
+          const isBest = leaders.includes(offer);
+          const position = competitionPosition(offers, index, isCorrentista);
           const isFixed = offer.reward.type === "fixed";
           const secondary = secondaryBadge(offer, isCorrentista);
           const previousText = formatPreviousValue(offer, isCorrentista);
@@ -45,7 +47,7 @@ export function StoreRanking({ store }: { store: StoreDetail }) {
           const buttonCls = !isBest ? "border border-[#e0ddd4] bg-white text-[#12140f] hover:bg-[#f6f5f0]" : isFixed ? "bg-[#8a6a33] text-white hover:bg-[#755729]" : "bg-[#1c7a4d] text-white hover:bg-[#16633f]";
           return (
             <li className={`flex flex-wrap items-center gap-x-[18px] gap-y-3 rounded-2xl border px-4 py-[18px] sm:px-[22px] ${rowCls}`} key={offer.platformId}>
-              <span aria-label={`${index + 1}ª posição`} className="w-5 shrink-0 text-center font-mono text-sm font-medium text-[#5b5f56]">{index + 1}</span>
+              <span aria-label={`${position}ª posição${isBest && leaders.length > 1 ? " compartilhada" : ""}`} className="w-5 shrink-0 text-center font-mono text-sm font-medium text-[#5b5f56]">{position}</span>
               <PlatformIcon platformId={offer.platformId} size={46} />
               <div className="min-w-32 flex-1">
                 <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">

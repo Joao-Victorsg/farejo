@@ -56,7 +56,9 @@ function PlatformCard({ stat }: { stat: PlatformStat }) {
           <p className="mt-1 text-[11px] text-[#70736a]">média por loja</p>
         </div>
         <div className="flex-1 rounded-xl border border-[#cfe7d9] bg-[#f2f9f5] p-3.5">
-          <p className="font-numbers text-[22px] font-semibold tracking-[-0.02em] text-[#1c7a4d]">{stat.percentPeak === null ? "—" : `${stat.percentPeakIsUpto ? "Até " : ""}${formatPercent(stat.percentPeak)}`}</p>
+          {stat.percentPeak !== null && stat.percentPeakStoreSlug ? (
+            <Link aria-label={`Ver a loja com o pico anunciado pela ${stat.platformName}`} className="font-numbers text-[22px] font-semibold tracking-[-0.02em] text-[#1c7a4d] underline decoration-[#9acdb0] underline-offset-4 hover:decoration-[#1c7a4d] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1c7a4d]" href={`/loja/${encodeURIComponent(stat.percentPeakStoreSlug)}`}>{stat.percentPeakIsUpto ? "Até " : ""}{formatPercent(stat.percentPeak)}</Link>
+          ) : <p className="font-numbers text-[22px] font-semibold tracking-[-0.02em] text-[#1c7a4d]">—</p>}
           <p className="mt-1 text-[11px] text-[#686c60]">pico anunciado</p>
         </div>
       </div>
@@ -94,9 +96,12 @@ export default async function PlatformsPage() {
               <p className="mt-2 text-[#5b5f56]">Isso pode indicar uma anomalia nos dados. Tente novamente em alguns instantes.</p>
             </div>
           ) : (
-            <ul aria-label="Estatísticas por plataforma" className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {stats.map((stat) => <PlatformCard key={stat.platformId} stat={stat} />)}
-            </ul>
+            <>
+              <p className="mt-9 max-w-3xl text-sm leading-6 text-[#5b5f56]">A cobertura conta lojas com oferta elegível. A média considera apenas taxas percentuais, com o mesmo peso para cada loja; o pico leva à loja que anuncia a taxa. Valores fixos não entram nesses cálculos. Para o Shopping Inter, usamos a taxa de correntista. Os valores podem depender de condições e da categoria da compra.</p>
+              <ul aria-label="Estatísticas por plataforma" className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {stats.map((stat) => <PlatformCard key={stat.platformId} stat={stat} />)}
+              </ul>
+            </>
           )}
         </section>
       </main>

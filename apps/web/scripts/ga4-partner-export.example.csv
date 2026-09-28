@@ -1,0 +1,11 @@
+period_start,period_end,metric,active_users,event_count,store_slug,platform_id,result_bucket
+2026-10-01,2026-10-31,site_access,1200,1540,,,
+2026-10-01,2026-10-31,search,440,690,,,
+2026-10-01,2026-10-31,search_results_view,33,38,,,0
+2026-10-01,2026-10-31,search_results_view,44,52,,,1
+2026-10-01,2026-10-31,search_results_view,110,145,,,2-5
+2026-10-01,2026-10-31,search_results_view,210,305,,,6+
+2026-10-01,2026-10-31,store_page_view,370,820,,,
+2026-10-01,2026-10-31,store_page_view,58,96,amazon,,
+2026-10-01,2026-10-31,activation_redirect,165,210,,,
+2026-10-01,2026-10-31,activation_redirect,22,31,amazon,inter,

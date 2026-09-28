@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { z } from "zod";
-import { buildPartnerReport, parseActivationMetricsCsv, renderPartnerReportHtml } from "../src/lib/partner-report.js";
+import { buildPartnerReport, parseActivationMetricsCsv, parseGa4PartnerMetricsCsv, renderPartnerReportHtml } from "../src/lib/partner-report.js";
 
 const Environment = z.object({
   VERCEL_TOKEN: z.string().min(1),
@@ -21,6 +21,8 @@ interface ReportArguments {
   since: string;
   until: string;
   redirects: string;
+  ga4: string | undefined;
+  ga4StartedOn: string | undefined;
   output: string;
 }
 
@@ -42,13 +44,18 @@ function parseArguments(argv: string[]): ReportArguments | null {
   const until = values.get("--until");
   const redirects = values.get("--redirects");
   if (!since || !until || !redirects) throw new Error("Informe --since, --until e --redirects. Use --help para ver o formato.");
-  const unexpected = [...values.keys()].filter((key) => !["--since", "--until", "--redirects", "--out"].includes(key));
+  const ga4 = values.get("--ga4");
+  const ga4StartedOn = values.get("--ga4-started-on");
+  if (Boolean(ga4) !== Boolean(ga4StartedOn)) throw new Error("Informe --ga4 e --ga4-started-on juntos, ou omita ambos.");
+  const unexpected = [...values.keys()].filter((key) => !["--since", "--until", "--redirects", "--ga4", "--ga4-started-on", "--out"].includes(key));
   if (unexpected.length > 0) throw new Error(`Argumento desconhecido: ${unexpected[0]}`);
 
   return {
     since,
     until,
     redirects,
+    ga4,
+    ga4StartedOn,
     output: values.get("--out") ?? `reports/partner-reports/farejo-${since}-${until}.html`,
   };
 }
@@ -76,12 +83,13 @@ async function fetchVercelAnalytics(since: string, until: string) {
 
 function helpText() {
   return [
-    "Gera um relatório HTML local a partir do Vercel Web Analytics e de um CSV do Supabase.",
+    "Gera um relatório HTML local a partir do Vercel Web Analytics, Supabase e um CSV agregado opcional do GA4.",
     "",
-    "Uso: pnpm --filter @farejo/web report:partners -- --since AAAA-MM-DD --until AAAA-MM-DD --redirects caminho.csv [--out caminho.html]",
+    "Uso: pnpm --filter @farejo/web report:partners -- --since AAAA-MM-DD --until AAAA-MM-DD --redirects supabase.csv [--ga4 ga4.csv --ga4-started-on AAAA-MM-DD] [--out caminho.html]",
     "",
     "Variáveis necessárias: VERCEL_TOKEN, VERCEL_TEAM_ID e VERCEL_PROJECT_ID.",
     "O CSV deve vir da consulta apps/web/scripts/partner-report-export.sql.",
+    "O CSV opcional do GA4 deve seguir apps/web/scripts/ga4-partner-export.example.csv; inclua somente métricas agregadas.",
   ].join("\n");
 }
 
@@ -89,12 +97,16 @@ export async function generatePartnerReport(argv: string[]) {
   const args = parseArguments(argv);
   if (!args) return helpText();
 
-  const [csv, vercel] = await Promise.all([
+  const [csv, vercel, ga4Csv] = await Promise.all([
     readFile(resolve(args.redirects), "utf8"),
     fetchVercelAnalytics(args.since, args.until),
+    args.ga4 ? readFile(resolve(args.ga4), "utf8") : Promise.resolve(undefined),
   ]);
   const rows = parseActivationMetricsCsv(csv);
-  const report = buildPartnerReport({ since: args.since, until: args.until, vercel, rows });
+  const ga4 = ga4Csv && args.ga4StartedOn
+    ? { startedOn: args.ga4StartedOn, rows: parseGa4PartnerMetricsCsv(ga4Csv) }
+    : undefined;
+  const report = buildPartnerReport({ since: args.since, until: args.until, vercel, rows, ga4 });
   const html = renderPartnerReportHtml(report);
   const output = resolve(args.output);
   await mkdir(dirname(output), { recursive: true });

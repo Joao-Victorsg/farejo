@@ -12,6 +12,7 @@ import {
   loadAliasManifest,
   protectionBypassHeaders,
   readActiveSortLabel,
+  readCanonicalOrigin,
   readCanonicalPath,
   readCurrentPaginationPage,
   readMetaRefreshTarget,
@@ -19,6 +20,7 @@ import {
   readPaginationTotalPages,
   signActivationSmokeRequest,
   signInvalidation,
+  sitemapHasCanonicalOrigin,
   storeSample,
   type SmokeCheck,
 } from "./smoke-production.mjs";
@@ -38,18 +40,25 @@ describe("protectionBypassHeaders (ADR-0056)", () => {
 
 describe("extractStoreSlugsFromSitemap", () => {
   it("extracts every /loja/<slug> from a sitemap.xml body, in order", () => {
-    const xml = `<?xml version="1.0"?><urlset><url><loc>https://farejo.com.br/</loc></url><url><loc>https://farejo.com.br/loja/fast-shop</loc></url><url><loc>https://farejo.com.br/loja/loja-do-mecanico</loc></url></urlset>`;
+    const xml = `<?xml version="1.0"?><urlset><url><loc>https://www.farejo.site/</loc></url><url><loc>https://www.farejo.site/loja/fast-shop</loc></url><url><loc>https://www.farejo.site/loja/loja-do-mecanico</loc></url></urlset>`;
     expect(extractStoreSlugsFromSitemap(xml)).toEqual(["fast-shop", "loja-do-mecanico"]);
   });
 
   it("decodes percent-encoded slugs", () => {
-    const xml = `<url><loc>https://farejo.com.br/loja/disney%2B</loc></url>`;
+    const xml = `<url><loc>https://www.farejo.site/loja/disney%2B</loc></url>`;
     expect(extractStoreSlugsFromSitemap(xml)).toEqual(["disney+"]);
   });
 
   it("returns an empty list when the sitemap has no store pages", () => {
-    const xml = `<urlset><url><loc>https://farejo.com.br/</loc></url><url><loc>https://farejo.com.br/faq</loc></url></urlset>`;
+    const xml = `<urlset><url><loc>https://www.farejo.site/</loc></url><url><loc>https://www.farejo.site/faq</loc></url></urlset>`;
     expect(extractStoreSlugsFromSitemap(xml)).toEqual([]);
+  });
+});
+
+describe("sitemapHasCanonicalOrigin", () => {
+  it("rejects even one URL from an old hostname", () => {
+    expect(sitemapHasCanonicalOrigin("<loc>https://www.farejo.site/</loc><loc>https://farejo.vercel.app/loja/asics</loc>", "https://www.farejo.site")).toBe(false);
+    expect(sitemapHasCanonicalOrigin("<loc>https://www.farejo.site/</loc><loc>https://www.farejo.site/loja/asics</loc>", "https://www.farejo.site")).toBe(true);
   });
 });
 
@@ -169,15 +178,17 @@ describe("readInterSwitchState", () => {
 
 describe("isNoindex / readCanonicalPath", () => {
   it("reads the SEO contract a non-default sort must ship", () => {
-    const html = `<meta name="robots" content="noindex, follow"/><link rel="canonical" href="https://farejo.com.br/?sort=az"/>`;
+    const html = `<meta name="robots" content="noindex, follow"/><link rel="canonical" href="https://www.farejo.site/?sort=az"/>`;
     expect(isNoindex(html)).toBe(true);
     expect(readCanonicalPath(html)).toBe("/?sort=az");
+    expect(readCanonicalOrigin(html)).toBe("https://www.farejo.site");
   });
 
   it("reports an indexable page and a bare-path canonical", () => {
     const html = `<meta name="robots" content="index, follow"/><link rel="canonical" href="/"/>`;
     expect(isNoindex(html)).toBe(false);
     expect(readCanonicalPath(html)).toBe("/");
+    expect(readCanonicalOrigin(html)).toBeNull();
   });
 
   it("returns null when the page ships no canonical at all", () => {

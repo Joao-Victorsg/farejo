@@ -48,8 +48,9 @@ export const AUDITED_GRANTEES = [
   // de ser texto de ADR. `farejo_notifier` entra junto porque as duas nascem do mesmo contrato.
   "farejo_bot",
   "farejo_notifier",
+  "farejo_feedback",
 ] as const;
-export const PRODUCT_SCHEMAS = ["public", "web_read", "activation", "curation", "alerts"] as const;
+export const PRODUCT_SCHEMAS = ["public", "web_read", "activation", "curation", "alerts", "feedback"] as const;
 // storage entra só para policies: a única policy que pode referenciar PUBLIC é a de leitura de logos.
 export const POLICY_SCHEMAS = [...PRODUCT_SCHEMAS, "storage"] as const;
 
@@ -107,6 +108,8 @@ export const ALLOWED_FUNCTION_GRANTS = new Set([
   "farejo_web|web_read.store_history|EXECUTE",
   "farejo_web|web_read.catalog_history|EXECUTE",
   "farejo_web|web_read.platform_stats|EXECUTE",
+  "farejo_web|web_read.platform_stats_v2|EXECUTE",
+  "farejo_feedback|feedback.report_offer_discrepancy|EXECUTE",
   // Funções nascem com EXECUTE para PUBLIC; a migration revoga, e é este conjunto exato que
   // garante que continue revogado.
   "farejo_notifier|alerts.pending_avisos|EXECUTE",
@@ -122,6 +125,7 @@ export const ALLOWED_SCHEMA_GRANTS = new Set([
   "farejo_notifier|alerts|USAGE",
   "farejo_metrics|public|USAGE",
   "farejo_metrics|activation|USAGE",
+  "farejo_feedback|feedback|USAGE",
 ]);
 
 // A única policy do produto que pode referenciar PUBLIC/anon/authenticated: leitura pública de
@@ -173,11 +177,11 @@ interface PolicyRow {
 }
 
 // Roles que DEVEM poder logar (as outras auditadas devem ser NOLOGIN).
-const LOGIN_ROLES = new Set(["farejo_web", "farejo_logo_writer", "farejo_metrics", "farejo_bot", "farejo_notifier"]);
+const LOGIN_ROLES = new Set(["farejo_web", "farejo_logo_writer", "farejo_metrics", "farejo_bot", "farejo_notifier", "farejo_feedback"]);
 // Roles criadas pelo farejô com `noinherit` por contrato. anon/authenticated são da plataforma
 // Supabase e carregam o default INHERIT do Postgres — inócuo, porque não são membros de nenhuma
 // role (o check de membership abaixo garante que continue assim), então INHERIT só é auditado aqui.
-const NOINHERIT_ROLES = new Set(["farejo_web", "farejo_logo_writer", "farejo_metrics", "farejo_bot", "farejo_notifier"]);
+const NOINHERIT_ROLES = new Set(["farejo_web", "farejo_logo_writer", "farejo_metrics", "farejo_bot", "farejo_notifier", "farejo_feedback"]);
 
 export async function verifyProductionPrivileges(pool: PrivilegeCheckPool): Promise<PrivilegeVerificationReport> {
   const grantees = [...AUDITED_GRANTEES];

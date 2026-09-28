@@ -8,6 +8,7 @@ import { CategoryFilter } from "@/components/category-filter";
 import { CatalogControls } from "@/components/catalog-controls";
 import { HeroSearch } from "@/components/hero-search";
 import { InterToggle } from "@/components/inter-toggle";
+import { SearchResultsTracker } from "@/components/analytics-consent";
 import { PageJump } from "@/components/page-jump";
 import { Button } from "@/components/ui/button";
 import { catalogHref, getCatalogPage, parseCatalogRequest, type CatalogRequest } from "@/lib/catalog";
@@ -119,6 +120,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   return (
     <PageFrame>
       <main id="conteudo" tabIndex={-1}>
+        {request.query && request.page === 1 && !catalog.invalidCategory ? <SearchResultsTracker key={catalogHref(request)} resultCount={catalog.total} /> : null}
         <section><div className="mx-auto max-w-[1160px] px-5 pt-14 pb-10 sm:px-8 sm:pt-20 sm:pb-12"><div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1fr)_auto]"><div><p className="font-mono text-xs font-medium tracking-[0.14em] text-[#1c7a4d]">{editorial.home.eyebrow}</p><h1 className="mt-5 max-w-2xl text-4xl font-bold leading-[1.03] tracking-[-0.055em] sm:text-6xl">{editorial.home.title}</h1><p className="mt-6 max-w-lg text-lg leading-8 text-[#5b5f56]">{editorial.home.description}</p><HeroSearch key={catalogHref(request)} placeholder={editorial.home.searchPlaceholder} query={request.query} category={request.category} sort={request.sort} /></div><dl className="flex gap-4"><div className="flex-1 rounded-2xl border border-[#ece9e2] bg-white px-7 py-8 text-center"><dd className="font-numbers text-5xl font-bold leading-none text-[#1c7a4d]">{formatHeroStoreCount(catalog.globalTotal)}</dd><dt className="mt-2 text-sm text-[#5b5f56]">lojas</dt></div><div className="flex-1 rounded-2xl border border-[#ece9e2] bg-white px-7 py-8 text-center"><dd className="font-numbers text-5xl font-bold leading-none text-[#1c7a4d]">5</dd><dt className="mt-2 text-sm text-[#5b5f56]">plataformas</dt></div></dl></div></div></section>
         <section id="catalogo" className="mx-auto max-w-[1160px] px-5 pb-16 pt-4 sm:px-8">
           <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4">

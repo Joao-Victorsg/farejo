@@ -34,6 +34,7 @@ export const EXPECTED_LOGIN_ROLES = [
   "farejo_logo_coverage",
   "farejo_bot",
   "farejo_notifier",
+  "farejo_feedback",
 ] as const;
 
 export const EXPECTED_WEB_READ_VIEWS = [
@@ -53,6 +54,8 @@ export const EXPECTED_FUNCTIONS = [
   { schema: "web_read", name: "store_history" },
   { schema: "web_read", name: "catalog_history" },
   { schema: "web_read", name: "platform_stats" },
+  { schema: "web_read", name: "platform_stats_v2" },
+  { schema: "feedback", name: "report_offer_discrepancy" },
   { schema: "activation", name: "resolve_destination" },
   { schema: "activation", name: "record_activation" },
   { schema: "curation", name: "apply_alias_merge" },
@@ -80,6 +83,7 @@ export const EXPECTED_RLS_TABLES = [
   "subscriptions",
   "categories",
   "store_categories",
+  "feedback.offer_discrepancies",
 ] as const;
 
 export const LOGO_BUCKET_ID = "store-logos";
@@ -119,6 +123,8 @@ export const EXPECTED_FUNCTION_GRANTS = [
   { role: "farejo_web", signature: "web_read.store_history(text)" },
   { role: "farejo_web", signature: "web_read.catalog_history(text[])" },
   { role: "farejo_web", signature: "web_read.platform_stats(text[])" },
+  { role: "farejo_web", signature: "web_read.platform_stats_v2(text[])" },
+  { role: "farejo_feedback", signature: "feedback.report_offer_discrepancy(text, text)" },
   { role: "farejo_activation", signature: "activation.resolve_destination(text, text)" },
   { role: "farejo_metrics", signature: "activation.record_activation(bigint, text)" },
   { role: "farejo_metrics", signature: "activation.record_activation(bigint, text, text)" },
@@ -188,14 +194,14 @@ export async function verifyProductionSchema(pool: SchemaCheckPool): Promise<Sch
        from pg_proc p
        join pg_namespace n on n.oid = p.pronamespace
        where n.nspname = any($1)`,
-      [["public", "web_read", "activation", "curation", "alerts"]],
+      [["public", "web_read", "activation", "curation", "alerts", "feedback"]],
     ),
     pool.query<{ relname: string; relrowsecurity: boolean }>(
-      `select c.relname, c.relrowsecurity
+      `select case when n.nspname = 'feedback' then n.nspname || '.' || c.relname else c.relname end as relname, c.relrowsecurity
        from pg_class c
        join pg_namespace n on n.oid = c.relnamespace
-       where n.nspname = 'public' and c.relname = any($1)`,
-      [EXPECTED_RLS_TABLES],
+       where n.nspname in ('public', 'feedback') and c.relname = any($1)`,
+      [EXPECTED_RLS_TABLES.map((table) => table.replace(/^feedback\./, ""))],
     ),
     pool.query<{ public: boolean; file_size_limit: string | number | null; allowed_mime_types: string[] | null }>(
       "select public, file_size_limit, allowed_mime_types from storage.buckets where id = $1",
