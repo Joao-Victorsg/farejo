@@ -33,6 +33,7 @@ import { z } from "zod";
 
 const SmokeEnvironment = z.object({
   FAREJO_SITE_URL: z.string().url(),
+  FAREJO_CANONICAL_ORIGIN: z.string().url().default("https://www.farejo.site"),
   // Opcional só para o modo somente-leitura abaixo; o refine adiante o exige em qualquer outro
   // caso, para o passo do deploy nunca rodar sem o check de invalidação por esquecimento.
   FAREJO_CATALOG_INVALIDATION_SECRET: z.string().min(32).optional(),
@@ -187,6 +188,28 @@ export function readCanonicalPath(html: string): string | null {
   } catch {
     return href[1]!;
   }
+}
+
+export function readCanonicalOrigin(html: string): string | null {
+  const link = /<link[^>]*rel="canonical"[^>]*>/.exec(html);
+  const href = link ? /href="([^"]+)"/.exec(link[0]) : null;
+  if (!href) return null;
+  try {
+    return new URL(href[1]!).origin;
+  } catch {
+    return null;
+  }
+}
+
+export function sitemapHasCanonicalOrigin(xml: string, expectedOrigin: string) {
+  const locations = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]!);
+  return locations.length > 0 && locations.every((location) => {
+    try {
+      return new URL(location).origin === expectedOrigin;
+    } catch {
+      return false;
+    }
+  });
 }
 
 /**
@@ -403,6 +426,7 @@ async function checkEditorialPages(baseUrl: URL): Promise<SmokeCheck[]> {
 
 interface CatalogHome {
   checks: SmokeCheck[];
+  html: string;
   totalPages: number | null;
   cardCount: number;
   cardSlugs: string[];
@@ -455,7 +479,7 @@ async function checkCatalogHome(baseUrl: URL): Promise<CatalogHome> {
     detail: `noindex=${isNoindex(home.html)} canonical=${JSON.stringify(readCanonicalPath(home.html))}`,
   });
 
-  return { checks, totalPages, cardCount, cardSlugs };
+  return { checks, html: home.html, totalPages, cardCount, cardSlugs };
 }
 
 async function checkPagination(baseUrl: URL, totalPages: number | null): Promise<SmokeCheck[]> {
@@ -724,21 +748,25 @@ async function checkInvalidation(baseUrl: URL, secret: string): Promise<SmokeChe
  * sempre passa o segredo e roda tudo — lá os dois efeitos são desejados e o deployment encenado
  * ainda nem recebeu tráfego.
  */
-export async function runProductionSmoke(baseUrl: URL, invalidationSecret: string | null): Promise<{ checks: SmokeCheck[]; activationSamplesMs: number[] }> {
+export async function runProductionSmoke(baseUrl: URL, invalidationSecret: string | null, canonicalOrigin = "https://www.farejo.site"): Promise<{ checks: SmokeCheck[]; activationSamplesMs: number[] }> {
   const readOnly = invalidationSecret === null;
   const checks: SmokeCheck[] = [];
 
   const home = await checkCatalogHome(baseUrl);
   checks.push(...home.checks);
+  checks.push({ name: "GET / (origem canônica)", ok: readCanonicalOrigin(home.html) === canonicalOrigin, detail: `canonical=${readCanonicalOrigin(home.html)} esperado=${canonicalOrigin}` });
   checks.push(...(await checkEditorialPages(baseUrl)));
   checks.push(...(await checkPagination(baseUrl, home.totalPages)));
   checks.push(...(await checkSorts(baseUrl, home.totalPages)));
   checks.push(...(await checkSearch(baseUrl)));
-  checks.push(...(await checkPage(baseUrl, "/robots.txt", { requireRendered: false, mustInclude: ["Disallow: /go/"] })).checks);
+  const robots = await checkPage(baseUrl, "/robots.txt", { requireRendered: false, mustInclude: ["Disallow: /go/"] });
+  checks.push(...robots.checks);
+  checks.push({ name: "GET /robots.txt (sitemap canônico)", ok: robots.html.includes(`Sitemap: ${canonicalOrigin}/sitemap.xml`), detail: `esperado=${canonicalOrigin}/sitemap.xml` });
 
   const sitemapResponse = await smokeFetch(new URL("/sitemap.xml", baseUrl));
   const sitemapXml = await sitemapResponse.text();
   checks.push({ name: "GET /sitemap.xml", ok: sitemapResponse.status === 200 && sitemapXml.includes("<urlset"), detail: `status=${sitemapResponse.status}` });
+  checks.push({ name: "GET /sitemap.xml (origens canônicas)", ok: sitemapHasCanonicalOrigin(sitemapXml, canonicalOrigin), detail: `esperado=${canonicalOrigin}` });
 
   const sitemapSlugs = extractStoreSlugsFromSitemap(sitemapXml);
   let activationSamplesMs: number[] = [];
@@ -757,6 +785,7 @@ export async function runProductionSmoke(baseUrl: URL, invalidationSecret: strin
         mustNotInclude: ["Não conseguimos carregar"],
       });
       checks.push(...detail.checks);
+      if (slug === firstStoreSlug) checks.push({ name: `GET /loja/${slug} (origem canônica)`, ok: readCanonicalOrigin(detail.html) === canonicalOrigin, detail: `canonical=${readCanonicalOrigin(detail.html)} esperado=${canonicalOrigin}` });
 
       // O toggle aparece no detalhe só quando a loja tem oferta do Inter (StoreRanking); o
       // primeiro detalhe com link de ativação é a amostra natural para conferir o markup.
@@ -800,6 +829,20 @@ export async function runProductionSmoke(baseUrl: URL, invalidationSecret: strin
     ? [info("invalidação do catálogo", "modo somente-leitura: POST assinado NÃO enviado para não expirar o cache do catálogo")]
     : await checkInvalidation(baseUrl, invalidationSecret)));
 
+  if (readOnly && baseUrl.origin === canonicalOrigin) {
+    const path = "/faq?utm_source=domain-smoke";
+    for (const oldOrigin of ["https://farejo.site", "https://farejo.vercel.app"]) {
+      const response = await smokeFetch(new URL(path, oldOrigin), { redirect: "manual" });
+      const location = response.headers.get("location");
+      const target = location ? new URL(location, oldOrigin).href : null;
+      checks.push({
+        name: `${oldOrigin} (redirect com caminho e query)`,
+        ok: response.status === 308 && target === `${canonicalOrigin}${path}`,
+        detail: `status=${response.status} location=${target}`,
+      });
+    }
+  }
+
   return { checks, activationSamplesMs };
 }
 
@@ -837,7 +880,7 @@ async function main(): Promise<void> {
   if (readOnly) console.log("[smoke-production] MODO SOMENTE-LEITURA: nenhum check que grave em produção será executado");
 
   const baseUrl = new URL(environment.data.FAREJO_SITE_URL);
-  const { checks, activationSamplesMs } = await runProductionSmoke(baseUrl, readOnly ? null : environment.data.FAREJO_CATALOG_INVALIDATION_SECRET!);
+  const { checks, activationSamplesMs } = await runProductionSmoke(baseUrl, readOnly ? null : environment.data.FAREJO_CATALOG_INVALIDATION_SECRET!, new URL(environment.data.FAREJO_CANONICAL_ORIGIN).origin);
   console.log(formatSmokeReport(checks, activationSamplesMs));
   if (hasSmokeFailure(checks)) process.exitCode = 1;
 }

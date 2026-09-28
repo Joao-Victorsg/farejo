@@ -5,17 +5,18 @@ import { ArrowRight } from "lucide-react";
 import type { CatalogStore } from "@/lib/catalog";
 import { useInterPreference } from "@/lib/inter-preference";
 import { PlatformIcon } from "@/components/platform-icon";
-import { effectiveSignals, formatPreviousValue, formatReward, isInterCorrentistaOffer, rankOffers } from "@/lib/offer-ranking";
+import { effectiveSignals, formatLeaderValue, formatPreviousValue, formatReward, isInterCorrentistaOffer, leaderOffers, rankOffers } from "@/lib/offer-ranking";
 
 const VISIBLE_OFFERS = 3;
 
 export function CatalogCard({ store }: { store: CatalogStore }) {
   const { isCorrentista } = useInterPreference();
   const offers = rankOffers(store.offers, isCorrentista);
-  const visibleOffers = offers.slice(0, VISIBLE_OFFERS);
+  const leaders = leaderOffers(offers, isCorrentista);
+  const visibleOffers = offers.slice(0, Math.max(VISIBLE_OFFERS, leaders.length));
   const remaining = offers.length - visibleOffers.length;
   const initial = store.name.trim().charAt(0).toLocaleUpperCase("pt-BR") || "L";
-  const bestReward = offers.length > 0 ? formatReward(offers[0], isCorrentista) : null;
+  const bestReward = offers[0] ? (leaders.length > 1 ? formatLeaderValue(offers[0], isCorrentista) : formatReward(offers[0], isCorrentista)) : null;
 
   return (
     <article className="rounded-2xl border border-[#ece9e2] bg-white shadow-[0_10px_30px_-18px_rgba(0,0,0,.25)] transition-shadow hover:shadow-[0_16px_40px_-20px_rgba(0,0,0,.3)]">
@@ -29,13 +30,13 @@ export function CatalogCard({ store }: { store: CatalogStore }) {
             )}
             <div className="min-w-0"><h3 className="truncate text-lg font-bold tracking-[-0.03em]">{store.name}</h3><p className="mt-0.5 text-xs text-[#5b5f56]">{store.platformCount} {store.platformCount === 1 ? "plataforma" : "plataformas"}</p></div>
           </div>
-          {bestReward ? <div className="shrink-0 text-right"><p className="font-numbers text-2xl font-bold leading-none text-[#1c7a4d]">{bestReward}</p><p className="mt-1 text-[11px] text-[#5b5f56]">melhor</p></div> : null}
+          {bestReward ? <div className="shrink-0 text-right"><p className="font-numbers text-2xl font-bold leading-none text-[#1c7a4d]">{bestReward}</p><p className="mt-1 text-[11px] text-[#5b5f56]">{leaders.length > 1 ? "líderes · valor anunciado" : "melhor"}</p></div> : null}
         </div>
         <ul className="mt-4 border-t border-[#f1efe9] divide-y divide-[#f1efe9]" aria-label={`Ofertas de ${store.name}`}>
-          {visibleOffers.map((offer, index) => {
+          {visibleOffers.map((offer) => {
             const signals = effectiveSignals(offer, isCorrentista);
             const previousText = formatPreviousValue(offer, isCorrentista);
-            const isBest = index === 0;
+            const isBest = leaders.includes(offer);
             // Na home cabe no máximo um sinal secundário por linha (handoff), além do MELHOR.
             const secondary = offer.freshness === "delayed"
               ? { label: "ATRASADO", cls: "bg-[#f0e7d3] text-[#805e26]", title: "Atualização atrasada" }

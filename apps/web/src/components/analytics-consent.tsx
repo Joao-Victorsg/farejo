@@ -3,6 +3,7 @@
 import { createContext, Suspense, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { createGoogleTag, sendGooglePageView } from "@/lib/analytics-gtag";
+import { searchResultsEventParams } from "@/lib/search-analytics";
 
 const CONSENT_COOKIE = "farejo_ga4_consent";
 const CONSENT_MAX_AGE_SECONDS = 60 * 60 * 24 * 180;
@@ -20,7 +21,7 @@ type Gtag = (...arguments_: unknown[]) => void;
 
 declare global {
   interface Window {
-  dataLayer?: unknown[];
+    dataLayer?: unknown[];
     gtag?: Gtag;
     __farejoGa4ScriptRequested?: boolean;
     __farejoLastPageViewLocation?: string;
@@ -206,6 +207,16 @@ export function useAnalyticsConsent() {
   const context = useContext(AnalyticsConsentContext);
   if (!context) throw new Error("useAnalyticsConsent deve ser usado dentro de AnalyticsConsentProvider");
   return context;
+}
+
+/** A página informa só a faixa; a query nunca entra no evento. */
+export function SearchResultsTracker({ resultCount }: { resultCount: number }) {
+  const { choice } = useAnalyticsConsent();
+  useEffect(() => {
+    if (choice !== "granted" || !MEASUREMENT_ID || !window.gtag) return;
+    window.gtag("event", "search_results_view", searchResultsEventParams(new URL(window.location.href), resultCount));
+  }, [choice, resultCount]);
+  return null;
 }
 
 export function AnalyticsPreferencesButton() {

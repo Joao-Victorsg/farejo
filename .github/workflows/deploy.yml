@@ -175,6 +175,7 @@ jobs:
         id: smoke
         env:
           FAREJO_SITE_URL: ${{ steps.deploy.outputs.url }}
+          FAREJO_CANONICAL_ORIGIN: https://www.farejo.site
           FAREJO_CATALOG_INVALIDATION_SECRET: ${{ secrets.FAREJO_CATALOG_INVALIDATION_SECRET }}
           # A Deployment Protection responde 302 para URLs de deployment; só o domínio de
           # produção é público. Sem este bypass o smoke mede a tela de login, não o site.
@@ -201,3 +202,10 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: apps/web/node_modules/.bin/vercel promote "${{ steps.deploy.outputs.url }}" --token="$VERCEL_TOKEN" --yes
+
+      - name: Verify public canonical domain after promotion
+        env:
+          FAREJO_SITE_URL: https://www.farejo.site
+          FAREJO_CANONICAL_ORIGIN: https://www.farejo.site
+          FAREJO_SMOKE_READ_ONLY: "1"
+        run: pnpm --filter @farejo/web test:smoke:production
