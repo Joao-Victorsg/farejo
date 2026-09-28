@@ -6,8 +6,6 @@ variable "project_id" {
 variable "billing_account_id" {
   description = "ID da conta de faturamento para criar o alerta mensal de US$ 5."
   type        = string
-  default     = null
-  nullable    = true
 }
 
 variable "region" {
@@ -110,6 +108,10 @@ resource "google_artifact_registry_repository" "scraper" {
   repository_id = local.name_prefix
   description   = "Imagens imutáveis do scraper Farejo executado no Cloud Run."
   format        = "DOCKER"
+
+  docker_config {
+    immutable_tags = true
+  }
 
   depends_on = [google_project_service.required]
 }
@@ -257,7 +259,6 @@ resource "google_cloud_scheduler_job" "scraper" {
 }
 
 resource "google_billing_budget" "pilot" {
-  count           = var.billing_account_id == null ? 0 : 1
   billing_account = var.billing_account_id
   display_name    = "Farejo Cloud Run pilot - USD ${var.monthly_budget_usd} monthly alert"
 
