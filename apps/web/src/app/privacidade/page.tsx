@@ -48,7 +48,7 @@ export default function PrivacyPage() {
         <details className={disclosureClass}>
           <summary className={summaryClass}>Avisos sobre ofertas divergentes<span aria-hidden="true" className="text-[#1c7a4d] transition-transform group-open:rotate-180">⌄</span></summary>
           <div className={contentClass}>
-            <p>Se você usar o botão para avisar que um valor está diferente na plataforma, guardamos somente a loja, a plataforma, os valores anunciados e a versão da oferta. Não pedimos texto, conta nem identificador do visitante. Avisos repetidos sobre a mesma versão geram uma única pendência para revisão manual; um aviso não altera a oferta automaticamente.</p>
+            <p>Se um aviso de divergência for enviado, guardamos somente a loja, a plataforma, os valores anunciados e a versão da oferta. Não pedimos texto, conta nem identificador do visitante. Avisos repetidos sobre a mesma versão geram uma única pendência para revisão manual; um aviso não altera a oferta automaticamente.</p>
             <p>O serviço de proteção limita a frequência de envios por endereço IP. O farejô não grava esse endereço no registro do aviso.</p>
           </div>
         </details>
