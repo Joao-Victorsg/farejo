@@ -1,0 +1,7 @@
+project_id       = "replace-with-your-google-cloud-project-id"
+billing_account_id = "000000-000000-000000"
+
+# Primeiro aplique com estes recursos desligados. Habilite o job após criar
+# os secrets e publicar uma imagem; habilite o scheduler após o canário manual.
+enable_job       = false
+enable_scheduler = false

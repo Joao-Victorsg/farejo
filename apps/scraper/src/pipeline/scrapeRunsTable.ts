@@ -16,6 +16,21 @@ export interface ScrapeRunRow {
   scope?: RunScopeLabel;
 }
 
+const ScrapeRunner = z.enum(["cloud-run"]).optional();
+
+/** Acrescenta a origem operacional sem alterar o contrato relacional de `scrape_runs`. */
+export function withExecutionSource(notes: string, runner: unknown): string {
+  const source = ScrapeRunner.parse(runner);
+  if (!source) return notes;
+
+  const parsed: unknown = JSON.parse(notes);
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new Error("scrape_runs.notes precisa ser um objeto JSON para receber execution_source");
+  }
+
+  return JSON.stringify({ ...parsed, execution_source: source });
+}
+
 /** Única forma de gravar em `scrape_runs` — usada pelo gate de sanity (T9, `pipeline/scrapeRun.ts`) e pelo caminho `failed` do runner (T10). */
 export async function insertScrapeRun(supabase: SupabaseClient, row: ScrapeRunRow): Promise<number> {
   const { data, error } = await supabase.from("scrape_runs").insert({
@@ -27,7 +42,7 @@ export async function insertScrapeRun(supabase: SupabaseClient, row: ScrapeRunRo
     active_offers: row.activeOffers,
     parse_errors: row.parseErrors,
     soft_blocks: row.softBlocks,
-    notes: row.notes,
+    notes: withExecutionSource(row.notes, process.env.SCRAPE_RUNNER),
     scope: row.scope ?? "full",
   }).select("id").single();
   if (error) throw error;

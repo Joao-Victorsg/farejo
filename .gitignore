@@ -18,3 +18,7 @@ apps/web/reports/partner-reports/
 .DS_Store
 .idea
 .claude/scheduled_tasks.lock
+infra/gcp/.terraform/
+infra/gcp/terraform.tfstate*
+infra/gcp/terraform.tfvars
+infra/gcp/*.tfplan
