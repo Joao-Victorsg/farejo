@@ -43,11 +43,20 @@ describe("feedback.report_offer_discrepancy", () => {
     if (!storeId) throw new Error("Fixture report missing");
     await client.query("update public.offers set value = 6, updated_at = now() where store_id = $1 and platform_id = 'zoom'", [storeId]);
     await client.query("insert into public.offer_history (store_id, platform_id, reward_type, value, is_upto) values ($1, 'zoom', 'percent', 6, false)", [storeId]);
-    await client.query("set role farejo_feedback");
+    const concurrentClients = [
+      new Client({ connectionString: "postgresql://postgres:postgres@127.0.0.1:55322/postgres" }),
+      new Client({ connectionString: "postgresql://postgres:postgres@127.0.0.1:55322/postgres" }),
+    ];
     try {
-      await client.query("select feedback.report_offer_discrepancy($1, 'zoom')", [slug]);
+      await Promise.all(concurrentClients.map(async (reporter) => {
+        await reporter.connect();
+        await reporter.query("set role farejo_feedback");
+      }));
+      const results = await Promise.all(concurrentClients.map((reporter) =>
+        reporter.query<{ accepted: boolean }>("select feedback.report_offer_discrepancy($1, 'zoom') as accepted", [slug])));
+      expect(results.map((result) => result.rows[0]?.accepted)).toEqual([true, true]);
     } finally {
-      await client.query("reset role");
+      await Promise.all(concurrentClients.map((reporter) => reporter.end()));
     }
     const updated = await client.query<{ count: string }>("select count(*)::text as count from feedback.offer_discrepancies where store_slug = $1", [slug]);
     expect(updated.rows[0]?.count).toBe("2");
