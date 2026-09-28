@@ -48,9 +48,9 @@ O piloto mantém os dois jobs do Supabase Cron ativos e acrescenta uma execuçã
    A execução grava dados de produção. Confirme sucesso no Cloud Run e uma linha `scrape_runs` para Inter com a origem no JSON de `notes` (consulta: `notes::jsonb ->> 'execution_source' = 'cloud-run'`).
 
 7. Após o canário passar, altere `enable_scheduler = true` e aplique outra vez. O recurso usa `0 9 * * *` no fuso `America/Sao_Paulo`, autentica com OAuth e não repete automaticamente uma chamada ou tarefa.
-8. Observe sete execuções diárias. Compare cada execução Cloud Run com os cinco registros `scrape_runs` correspondentes; mantenha os jobs do Supabase como operação principal durante o piloto.
+8. Observe sete execuções diárias **consecutivas**. Para cada disparo, confirme que o Cloud Scheduler criou a execução em até 2 minutos, que a tarefa começou em até 5 minutos e que o job concluiu com sucesso. Compare cada execução Cloud Run com os cinco registros `scrape_runs` correspondentes; mantenha os jobs do Supabase como operação principal durante o piloto.
 
-Para pausar somente o piloto, defina `enable_scheduler = false` e aplique. O Supabase Cron permanece ativo.
+Se um disparo ou job falhar, pause somente o piloto com `enable_scheduler = false` e aplique. Antes de qualquer nova tentativa manual ou reativação, confirme no histórico do Cloud Run que não há execução em andamento; isso evita sobreposição e gravações duplicadas. O Supabase Cron permanece ativo durante a pausa.
 
 ## Configuração e custos
 
