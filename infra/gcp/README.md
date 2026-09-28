@@ -6,7 +6,7 @@ O piloto mantém os dois jobs do Supabase Cron ativos e acrescenta uma execuçã
 
 - Projeto Google Cloud com faturamento habilitado. A região padrão é `southamerica-east1`, próxima ao projeto Supabase Farejo (`sa-east-1`).
 - Terraform 1.5+, Docker e Google Cloud CLI autenticados com uma conta autorizada a administrar o projeto.
-- Informe o ID da conta de faturamento; o Terraform cria um alerta mensal de US$ 5. O alerta notifica, mas não bloqueia gastos.
+- Informe o ID da conta de faturamento; o Terraform cria um alerta mensal de US$ 1. O alerta notifica, mas não bloqueia gastos.
 
 ## Provisionamento em etapas
 
@@ -58,4 +58,4 @@ Se um disparo ou job falhar, pause somente o piloto com `enable_scheduler = fals
 - A conta de execução do Cloud Run pode ler apenas os quatro segredos; a identidade do Scheduler pode apenas invocar o job.
 - Não há endpoint público. O Scheduler chama a API `run.googleapis.com` com OAuth.
 - As respostas HTML/JSON baixadas são tráfego de entrada. O tráfego de saída inclui requisições e gravações no Supabase; a região brasileira pode gerar cobrança de egress para destinos na América do Sul.
-- O alerta mensal de US$ 5 notifica os administradores do faturamento e, opcionalmente, do projeto; ele não é um limite rígido de gastos.
+- O alerta mensal de US$ 1 notifica os administradores do faturamento e, opcionalmente, do projeto; ele não é um limite rígido de gastos.

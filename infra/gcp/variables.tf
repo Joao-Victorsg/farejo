@@ -4,7 +4,7 @@ variable "project_id" {
 }
 
 variable "billing_account_id" {
-  description = "ID da conta de faturamento para criar o alerta mensal de US$ 5."
+  description = "ID da conta de faturamento para criar o alerta mensal de US$ 1."
   type        = string
 }
 
@@ -47,7 +47,7 @@ variable "time_zone" {
 variable "monthly_budget_usd" {
   description = "Alerta de orçamento mensal; notifica, mas não limita gastos."
   type        = number
-  default     = 5
+  default     = 1
 }
 
 variable "budget_notification_channels" {
