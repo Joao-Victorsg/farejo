@@ -2,7 +2,7 @@ import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync, appendFileSync, copyFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
-import { project, region, repository, imagePrefix, validateCandidate, validateManifest, validatePlan, validateUpstream, relevantPaths, planFingerprint } from './release-policy.mjs';
+import { project, region, repository, imagePrefix, validateCandidate, validateManifest, validatePlan, validateUpstream, relevantPaths, planFingerprint, successfullyPublished } from './release-policy.mjs';
 
 const directory = '.local/release';
 mkdirSync(directory, { recursive: true });
@@ -84,7 +84,13 @@ if (action === 'select') {
   // A missing workflow is expected during the first release; other API failures must stop preparation.
   const workflows = api('actions/workflows?per_page=100').workflows;
   const workflow = workflows.find(w => w.path === '.github/workflows/gcp-deploy.yml');
-  if (workflow) previous = api(`actions/workflows/${workflow.id}/runs?branch=master&status=success&per_page=1`).workflow_runs[0]?.head_sha;
+  if (workflow) {
+    const runs = api(`actions/workflows/${workflow.id}/runs?branch=master&status=success&per_page=100`).workflow_runs;
+    for (const run of runs) {
+      const jobs = api(`actions/runs/${run.id}/jobs?per_page=100`).jobs;
+      if (successfullyPublished(run, jobs)) { previous = run.head_sha; break; }
+    }
+  }
   const paths = previous ? run('git', ['diff', '--name-only', previous, ci.head_sha]).split('\n') : ['Dockerfile'];
   const relevant = relevantPaths(paths);
   output('relevant', String(relevant));

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { imagePrefix, validateCandidate, relevantPaths, validateUpstream, validateManifest, validatePlan } from './release-policy.mjs';
+import { imagePrefix, validateCandidate, relevantPaths, validateUpstream, validateManifest, validatePlan, successfullyPublished } from './release-policy.mjs';
 
 const candidate = { sha: 'a'.repeat(40), prepareRunId: '123', ciRunId: '122', image: imagePrefix + '@sha256:' + 'b'.repeat(64), containerTest: 'passed' };
 test('candidate requires the tested digest in the Farejo registry', () => {
@@ -15,6 +15,15 @@ test('changes are compared with the last deployed release and include transitive
   assert(relevantPaths(['supabase/migrations/20261006000000.sql']));
   assert(relevantPaths(['.github/workflows/gcp-deploy.yml']));
   assert(!relevantPaths(['apps/web/src/app/page.tsx', 'docs/design.md']));
+});
+test('an all-skipped successful workflow never advances the deployed baseline', () => {
+  const run = { conclusion: 'success', event: 'workflow_dispatch', head_branch: 'master', head_repository: { id: 1297090348 } };
+  const job = { name: 'deploy', conclusion: 'success', steps: [{ name: 'Apply the approved plan and verify configuration', conclusion: 'success' }] };
+  assert(successfullyPublished(run, [job]));
+  assert(!successfullyPublished(run, [{ ...job, conclusion: 'skipped' }]));
+  assert(!successfullyPublished(run, [{ ...job, steps: [] }]));
+  assert(!successfullyPublished(run, [{ ...job, steps: [{ ...job.steps[0], conclusion: 'skipped' }] }]));
+  assert(!successfullyPublished({ ...run, head_branch: 'feature' }, [job]));
 });
 test('forks, failing CI and non-master source runs are rejected', () => {
   const run = { name: 'CI', conclusion: 'success', head_branch: 'master', head_repository: { id: 1297090348 }, head_sha: candidate.sha };

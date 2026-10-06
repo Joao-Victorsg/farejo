@@ -37,6 +37,13 @@ export function relevantPaths(paths) {
     || ['Dockerfile', '.dockerignore', 'package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'tsconfig.base.json'].includes(p));
 }
 
+export function successfullyPublished(run, jobs) {
+  return run.conclusion === 'success' && run.event === 'workflow_dispatch'
+    && run.head_branch === 'master' && run.head_repository?.id === 1297090348
+    && jobs.some(job => job.name === 'deploy' && job.conclusion === 'success'
+      && job.steps?.some(step => step.name === 'Apply the approved plan and verify configuration' && step.conclusion === 'success'));
+}
+
 function jobContract(value, candidate, releaseId) {
   assert.equal(value.project, project);
   assert.equal(value.location, region);
