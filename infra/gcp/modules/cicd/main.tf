@@ -1,9 +1,6 @@
 variable "project_id" { type = string }
 variable "region" { type = string }
 variable "runner_email" { type = string }
-variable "scheduler_email" { type = string }
-
-data "google_project" "current" { project_id = var.project_id }
 
 locals {
   repository_id = "1297090348"
@@ -13,9 +10,7 @@ locals {
     planner   = { file = "gcp-plan.yml", event = "workflow_run" }
     deployer  = { file = "gcp-deploy.yml", event = "workflow_dispatch" }
   }
-  state_prefix       = "scraper-prod"
-  job_resource       = "projects/${var.project_id}/locations/${var.region}/jobs/farejo-scraper"
-  scheduler_resource = "projects/${var.project_id}/locations/${var.region}/jobs/farejo-scrape-0900-brt"
+  state_prefix = "scraper-prod"
 }
 
 resource "google_project_service" "federation" {
@@ -117,11 +112,25 @@ resource "google_service_account_iam_member" "federation" {
   member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github[each.key].name}/attribute.repository_id/${local.repository_id}"
 }
 
+resource "google_project_iam_custom_role" "artifact_publisher" {
+  project = var.project_id
+  role_id = "farejoArtifactPublisher"
+  title   = "Farejo new image publication without tag replacement"
+  permissions = [
+    "artifactregistry.repositories.get", "artifactregistry.repositories.downloadArtifacts",
+    "artifactregistry.repositories.uploadArtifacts", "artifactregistry.dockerimages.get",
+    "artifactregistry.dockerimages.list", "artifactregistry.files.get", "artifactregistry.files.list",
+    "artifactregistry.packages.get", "artifactregistry.packages.list",
+    "artifactregistry.versions.get", "artifactregistry.versions.list",
+    "artifactregistry.tags.create", "artifactregistry.tags.get", "artifactregistry.tags.list",
+  ]
+}
+
 resource "google_artifact_registry_repository_iam_member" "publisher" {
   project    = var.project_id
   location   = var.region
   repository = "farejo-scraper"
-  role       = "roles/artifactregistry.writer"
+  role       = google_project_iam_custom_role.artifact_publisher.name
   member     = "serviceAccount:${google_service_account.ci["publisher"].email}"
 }
 
@@ -148,14 +157,14 @@ resource "google_project_iam_custom_role" "runtime_reader" {
   project     = var.project_id
   role_id     = "farejoRuntimeReader"
   title       = "Farejo runtime planning"
-  permissions = ["run.jobs.get", "run.jobs.getIamPolicy", "cloudscheduler.jobs.get"]
+  permissions = ["run.jobs.get", "run.jobs.getIamPolicy"]
 }
 
 resource "google_project_iam_custom_role" "runtime_writer" {
   project     = var.project_id
   role_id     = "farejoRuntimeWriter"
   title       = "Farejo runtime apply"
-  permissions = ["run.jobs.get", "run.jobs.update", "run.jobs.getIamPolicy", "cloudscheduler.jobs.get", "cloudscheduler.jobs.update"]
+  permissions = ["run.jobs.get", "run.jobs.update", "run.jobs.getIamPolicy"]
 }
 
 resource "google_cloud_run_v2_job_iam_member" "runtime" {
@@ -167,15 +176,20 @@ resource "google_cloud_run_v2_job_iam_member" "runtime" {
   name     = "farejo-scraper"
 }
 
+resource "google_project_iam_custom_role" "scheduler_reader" {
+  project     = var.project_id
+  role_id     = "farejoSchedulerReader"
+  title       = "Farejo Scheduler configuration read"
+  permissions = ["cloudscheduler.jobs.get"]
+}
+
+# Scheduler resource attributes are not supported by IAM Conditions.
+# Read metadata at project scope; never grant CI update/create/run permissions.
 resource "google_project_iam_member" "scheduler" {
   for_each = toset(["planner", "deployer"])
   project  = var.project_id
-  role     = each.key == "planner" ? google_project_iam_custom_role.runtime_reader.name : google_project_iam_custom_role.runtime_writer.name
+  role     = google_project_iam_custom_role.scheduler_reader.name
   member   = "serviceAccount:${google_service_account.ci[each.key].email}"
-  condition {
-    title      = "farejo_scheduler_only"
-    expression = "resource.service == 'cloudscheduler.googleapis.com' && (resource.name == '${local.scheduler_resource}' || resource.name == 'projects/${data.google_project.current.number}/locations/${var.region}/jobs/farejo-scrape-0900-brt')"
-  }
 }
 
 resource "google_project_iam_custom_role" "project_metadata" {
@@ -207,7 +221,7 @@ resource "google_project_iam_member" "metadata" {
 }
 
 resource "google_service_account_iam_member" "act_as" {
-  for_each           = toset([var.runner_email, var.scheduler_email])
+  for_each           = toset([var.runner_email])
   service_account_id = "projects/${var.project_id}/serviceAccounts/${each.value}"
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:${google_service_account.ci["deployer"].email}"

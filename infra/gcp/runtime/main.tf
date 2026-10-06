@@ -53,9 +53,10 @@ resource "google_cloud_run_v2_job" "scraper" {
     task_count  = 1
     parallelism = 1
     template {
-      service_account = "farejo-scraper-runner@${var.project_id}.iam.gserviceaccount.com"
-      timeout         = "5400s"
-      max_retries     = 0
+      service_account       = "farejo-scraper-runner@${var.project_id}.iam.gserviceaccount.com"
+      timeout               = "5400s"
+      max_retries           = 0
+      execution_environment = "EXECUTION_ENVIRONMENT_GEN2"
       containers {
         image = var.image_uri
         resources {

@@ -127,10 +127,25 @@ if (action === 'select') {
   run('docker', ['push', tag], true);
   const digests = json('docker', ['image', 'inspect', tag])[0].RepoDigests;
   const image = digests.find(d => d.startsWith(imagePrefix + '@sha256:'));
+  // Test a disposable tag, never a production pin. Both APIs must deny replacement.
+  const current = json('gcloud', ['artifacts', 'docker', 'images', 'describe', imagePrefix + ':protected-current', `--project=${project}`, '--format=json']).image_summary.fully_qualified_digest;
+  assert(current.startsWith(imagePrefix + '@sha256:'));
+  assert.notEqual(current, image, 'A new candidate must differ from the current image');
+  const probe = `${imagePrefix}:permission-probe-${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT}`;
+  run('gcloud', ['artifacts', 'docker', 'tags', 'add', current, probe, `--project=${project}`, '--quiet']);
+  const denied = (tool, args) => {
+    const result = spawnSync(tool, args, { encoding: 'utf8' });
+    assert(result.status !== 0 && /denied|unauthorized|403|forbidden/i.test((result.stderr ?? '') + (result.stdout ?? '')), 'Publisher can replace an existing tag or the permission probe was inconclusive');
+    const persisted = json('gcloud', ['artifacts', 'docker', 'images', 'describe', probe, `--project=${project}`, '--format=json']);
+    assert.equal(persisted.image_summary.fully_qualified_digest, current, 'Existing tag changed through the publisher identity');
+  };
+  denied('gcloud', ['artifacts', 'docker', 'tags', 'add', image, probe, `--project=${project}`, '--quiet']);
+  run('docker', ['tag', localImage, probe]);
+  denied('docker', ['push', probe]);
   const candidate = validateCandidate({ sha, image, prepareRunId: process.env.GITHUB_RUN_ID, ciRunId: process.env.CI_RUN_ID, containerTest: 'passed' });
   mkdirSync('.local/candidate', { recursive: true });
   save('.local/candidate/candidate.json', candidate);
-  summary(`Tested candidate: \`${image}\`. Publishing the candidate does not activate it.`);
+  summary(`Tested candidate: \`${image}\`. New-tag publication passed; existing-tag replacement through IAM and Docker was denied. Publishing the candidate does not activate it.`);
 } else if (action === 'probe') {
   const prepare = upstream('Prepare scraper release');
   const artifacts = api(`actions/runs/${prepare.id}/artifacts`).artifacts;

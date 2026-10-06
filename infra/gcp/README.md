@@ -8,7 +8,7 @@ O piloto existente continua em `southamerica-east1`, às **09h America/Sao_Paulo
 | Diretório | Recursos | Quem aplica |
 | --- | --- | --- |
 | `infra/gcp` | APIs, registry, secrets sem valores, orçamento, IAM/WIF e buckets | Administrador local, após revisão e aprovação |
-| `infra/gcp/runtime` | Job e Scheduler existentes | Deploy manual do GitHub, após plano aprovado |
+| `infra/gcp/runtime` | Job e Scheduler existentes | GitHub atualiza Job aprovado; Scheduler fixo, alteração só administrativa |
 
 Atualizar o digest/configuração pelo `terraform apply` já publica a próxima execução. O workflow verifica a configuração e termina; não inicia nem acompanha coletas.
 
@@ -21,23 +21,25 @@ Requisitos: Terraform **1.16.5**, Google provider **7.46.1** (lockfiles versiona
 3. A remoção do binding Editor da conta Compute padrão usa o bloco `removed`. O binding precisa estar no state administrativo antes do plano; neste checkout já foi importado. A remoção não apaga a conta. Confirme dependências antes de aprovar.
 4. Gere um plano administrativo salvo. O bootstrap esperado cria WIF/IAM/buckets, altera o registry para tags mutáveis e limpeza em dry run, e remove apenas o binding Editor identificado. **Não altera Job/Scheduler.** Não publique state, plano binário ou JSON completo em artifacts, PR ou logs.
 5. Obtenha aprovação humana para o plano concreto e aplique **exatamente o arquivo salvo**. O GitHub não administra essa infraestrutura de segurança.
-6. Execute `node scripts/gcp/protect-images.mjs`: resolve a imagem realmente configurada e grava/verifica os dois pins iniciais. Depois revise/aprove separadamente a alteração `artifact_cleanup_dry_run=false`. Enquanto isso o registry somente simula limpeza. Tags mutáveis permitem limpeza; o Job sempre usa digest após o primeiro release. Publisher pode escrever tags, mas não substituir bytes referenciados por digest.
+6. Execute `node scripts/gcp/protect-images.mjs`: resolve a imagem realmente configurada e grava/verifica os dois pins iniciais. Mantenha cleanup em dry run até a primeira preparação provar push de tag nova e negar substituição via API e Docker. Publisher usa role customizada sem `tags.update`; se falhar, não conceder writer ampla para contornar. Só então revise/aprove separadamente `artifact_cleanup_dry_run=false`. Tags mutáveis permitem limpeza; Job usa digest após o primeiro release.
 7. Com os buckets criados, use `node scripts/gcp/migrate-backend.mjs --approved-bootstrap`. Informe `TERRAFORM_BINARY` se o executável 1.16.5 não for padrão. O script faz novo backup privado, migra ambos os states e compara lineage/recursos. Prefixos: `bootstrap` e `scraper-prod`. Não apagar backups antes de confirmar objetos remotos e novo plan sem recriações.
 8. Exporte privadamente `terraform output -json github_variables` e passe o arquivo a `node scripts/gcp/configure-github.mjs ARQUIVO`. São **10 variables sem segredo**: projeto, região, dois buckets, provider e service account para cada identidade. Nunca copiar valores dos quatro secrets para esse arquivo.
 9. Execute `node scripts/gcp/configure-repository.mjs` para preparar o snapshot/proposta privados; confira e execute novamente com `--apply`. Limita Actions aos fornecedores usados, desliga aprovação de PR pelo token automático e protege `master` com o check `test`. Preserva outras proteções existentes. A proteção exige plano GitHub compatível caso o repo vire privado; confirmar antes de mudar a visibilidade. Exigência global de SHA somente após os workflows fixados estarem em `master`.
 10. Publique o PR, confirme CI e faça o merge aprovado. OIDC rejeita branches de desenvolvimento; validação da autenticação federada acontece com os workflows em `master`. IAM pode levar alguns minutos para propagar. Não criar chaves para contornar falha: conferir condição do provider, claims e binding.
 
+Após merge, execute `configure-repository.mjs --apply --require-sha`: o script verifica os workflows de `master` antes de exigir SHA globalmente. Os prepares deixam tags `permission-probe-*`, sem nova imagem; podem ser limpas administrativamente depois da validação, preservando pins. Não habilitar limpeza automática sem comprovar as negações.
+
 ## Release normal
 
 1. CI mantém testes, build/typecheck, políticas de release e validação Terraform. PRs e forks não recebem identidade GCP.
-2. Em push aprovado em `master`, `Prepare scraper release` identifica mudanças desde o último deploy bem-sucedido. Constrói uma imagem uma vez e testa seu comando normal com cinco fixtures, Supabase local e invalidação HMAC. O job de teste não tem `id-token: write`. Segundo job verifica artifact e publica exatamente a imagem testada.
+2. Em push aprovado em `master`, `Prepare scraper release` identifica mudanças desde o último apply/verificação concluído. Constrói uma imagem uma vez e testa seu comando normal com cinco fixtures, Supabase local e invalidação HMAC. O job de teste não tem `id-token: write`. Segundo job verifica artifact e publica a imagem testada, depois testa negação de substituição em uma tag descartável. Nunca usa pins de produção como alvo negativo.
 3. `Plan scraper release` salva plano/manifest em GCS privado e publica somente resumo com commit, digest, ações e **release ID**. Nenhum state/plano vira artifact do GitHub. Plano válido por 24h.
 4. Revise o resumo e execute `Deploy scraper production` em `master`, release ID e `approve=true`. Somente actor ID `54454575` obtém a identidade deployer. Reruns, forks, branches, commit antigo, plano alterado ou config fora do contrato são rejeitados.
 5. Confere hash/generation, CI/commit, baseline e novo plano equivalente, protege imagem anterior/atual, aplica plano salvo e verifica digest, labels, identidade e horário. Plano/deploy compartilham exclusão mútua; backend GCS também tem lock. Não acompanha execução nessa pipeline.
 
 ## Secrets e limites
 
-Quatro secrets existentes continuam no Secret Manager, versão `1`; valores nunca entram no Terraform. Apenas `farejo-scraper-runner` lê valores. Publisher escreve registry; planner lê configuração/state e escreve novos planos; deployer atualiza apenas Job/Scheduler designados, usa somente suas duas contas existentes e acessa prefixo runtime do state. Não modifica WIF, IAM, orçamento, valores dos secrets ou apaga imagens.
+Quatro secrets existentes continuam no Secret Manager, versão `1`; valores nunca entram no Terraform. Apenas `farejo-scraper-runner` lê valores. Publisher cria imagens/tags no registry; planner lê configuração/state e escreve novos planos; deployer atualiza somente Job designado, tem `actAs` apenas na conta runner e acessa prefixo runtime do state. Scheduler tem apenas leitura `jobs.get` em escopo de projeto, sem listagem, disparo ou alteração; qualquer diff nele exige administrador e novo plano aprovado fora do CI. Não modifica WIF, IAM, orçamento, valores dos secrets ou apaga imagens.
 
 | Secret Manager | Variável runtime |
 | --- | --- |

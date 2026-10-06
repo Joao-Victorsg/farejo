@@ -26,9 +26,9 @@ test('an all-skipped successful workflow never advances the deployed baseline', 
   assert(!successfullyPublished({ ...run, head_branch: 'feature' }, [job]));
 });
 test('forks, failing CI and non-master source runs are rejected', () => {
-  const run = { name: 'CI', conclusion: 'success', head_branch: 'master', head_repository: { id: 1297090348 }, head_sha: candidate.sha };
+  const run = { name: 'CI', path: '.github/workflows/ci.yml', conclusion: 'success', head_branch: 'master', head_repository: { id: 1297090348 }, head_sha: candidate.sha };
   assert.equal(validateUpstream(run, 'CI'), candidate.sha);
-  for (const delta of [{ head_repository: { id: 7 } }, { head_branch: 'feature' }, { conclusion: 'failure' }, { name: 'Other' }]) {
+  for (const delta of [{ path: '.github/workflows/fake-ci.yml' }, { head_repository: { id: 7 } }, { head_branch: 'feature' }, { conclusion: 'failure' }, { name: 'Other' }]) {
     assert.throws(() => validateUpstream({ ...run, ...delta }, 'CI'));
   }
 });
@@ -54,6 +54,10 @@ test('runtime privilege expansion, plaintext secrets and destructive actions are
     p => { const e = p.planned_values.root_module.resources[0].values.template[0].template[0].containers[0].env.find(e => e.name === 'SUPABASE_SERVICE_ROLE_KEY'); e.value = 'plaintext'; },
     p => { p.resource_changes[0].change.actions = ['delete', 'create']; },
     p => { p.planned_values.root_module.resources[1].values.schedule = '* * * * *'; },
+    p => { p.planned_values.root_module.resources[0].values.template[0].template[0].volumes = [{ name: 'unexpected' }]; },
+    p => { p.planned_values.root_module.resources[0].values.template[0].template[0].vpc_access = [{ connector: 'unexpected' }]; },
+    p => { p.resource_changes[1].change.actions = ['update']; },
+    p => { p.planned_values.root_module.resources[0].values.start_execution_token = 'trigger'; },
   ];
   for (const mutate of mutations) {
     const plan = structuredClone(fixture.plan);

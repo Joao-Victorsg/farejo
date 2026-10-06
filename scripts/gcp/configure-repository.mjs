@@ -21,6 +21,16 @@ const workflow = api('actions/permissions/workflow');
 const protection = api('branches/master/protection', 'GET', undefined, true);
 const allowlist = permission.allowed_actions === 'selected' ? api('actions/permissions/selected-actions') : null;
 writeFileSync(`${backup}/before.json`, JSON.stringify({ permission, workflow, protection, allowlist }, null, 2));
+const requireSha = process.argv.includes('--require-sha');
+if (requireSha) {
+  const files = api('contents/.github/workflows?ref=master').filter(file => /\.ya?ml$/.test(file.name));
+  for (const file of files) {
+    const source = Buffer.from(api(`contents/${file.path}?ref=master`).content, 'base64').toString('utf8');
+    for (const match of source.matchAll(/\buses:\s*([^\s#]+)/g)) {
+      assert(match[1].startsWith('./') || /^[\w.-]+\/[\w./-]+@[a-f0-9]{40}$/.test(match[1]), `${file.path}: main still contains an unpinned action`);
+    }
+  }
+}
 const config = {
   required_status_checks: {
     strict: true,
@@ -42,7 +52,7 @@ const config = {
     require_code_owner_reviews: protection.required_pull_request_reviews.require_code_owner_reviews,
     required_approving_review_count: protection.required_pull_request_reviews.required_approving_review_count,
     require_last_push_approval: protection.required_pull_request_reviews.require_last_push_approval,
-  } : null,
+  } : { dismiss_stale_reviews: true, require_code_owner_reviews: false, required_approving_review_count: 0, require_last_push_approval: false },
   restrictions: protection?.restrictions ? {
     users: protection.restrictions.users.map(user => user.login),
     teams: protection.restrictions.teams.map(team => team.slug),
@@ -68,9 +78,10 @@ if (!process.argv.includes('--apply')) {
   // Check branch protection eligibility before changing Actions policy.
   api('branches/master/protection', 'PUT', config);
   api('actions/permissions/workflow', 'PUT', { default_workflow_permissions: 'read', can_approve_pull_request_reviews: false });
-  api('actions/permissions', 'PUT', { enabled: true, allowed_actions: 'selected', sha_pinning_required: permission.sha_pinning_required ?? false });
+  api('actions/permissions', 'PUT', { enabled: true, allowed_actions: 'selected', sha_pinning_required: requireSha || (permission.sha_pinning_required ?? false) });
   api('actions/permissions/selected-actions', 'PUT', selectedActions);
   assert.equal(api('actions/permissions').allowed_actions, 'selected');
+  if (requireSha) assert.equal(api('actions/permissions').sha_pinning_required, true);
   assert.equal(api('actions/permissions/workflow').can_approve_pull_request_reviews, false);
   const current = api('branches/master/protection');
   assert(current.required_status_checks.checks.some(check => check.context === 'test' && check.app_id === 15368));

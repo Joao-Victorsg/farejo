@@ -1,5 +1,9 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+
+// Full template approved for provider 7.46.1; only the image may vary per release.
+const contract = JSON.parse(readFileSync(new URL('./fixtures/runtime-plan.json', import.meta.url), 'utf8')).plan.planned_values.root_module.resources;
 
 export const project = 'farejo-510021';
 export const region = 'southamerica-east1';
@@ -25,6 +29,8 @@ export function validateCandidate(value) {
 
 export function validateUpstream(run, name) {
   assert.equal(run.name, name);
+  const workflows = { CI: '.github/workflows/ci.yml', 'Prepare scraper release': '.github/workflows/gcp-prepare.yml', 'Plan scraper release': '.github/workflows/gcp-plan.yml' };
+  assert.equal(run.path, workflows[name], 'Upstream workflow identity differs from the trusted file');
   assert.equal(run.conclusion, 'success');
   assert.equal(run.head_branch, 'master');
   assert.equal(run.head_repository?.id, 1297090348);
@@ -51,6 +57,9 @@ function jobContract(value, candidate, releaseId) {
   assert.equal(value.deletion_protection, true);
   assert.equal(value.labels.source_sha, candidate.sha);
   assert.equal(value.labels.release_id, releaseId);
+  assert.deepEqual(Object.keys(value.labels).sort(), ['release_id', 'source_sha']);
+  for (const key of ['annotations', 'binary_authorization']) assert.equal(Object.keys(value[key] ?? {}).length, 0, `Unexpected ${key}`);
+  for (const key of ['start_execution_token', 'run_execution_token']) assert(!value[key], 'Release must not trigger a job execution');
   assert.equal(value.template.length, 1);
   const tasks = value.template[0];
   assert.equal(tasks.task_count, 1);
@@ -79,6 +88,12 @@ function jobContract(value, candidate, releaseId) {
     assert.equal(env[name].value_source[0].secret_key_ref[0].secret, secret);
     assert.equal(env[name].value_source[0].secret_key_ref[0].version, '1');
   }
+  const expected = structuredClone(contract.find(resource => resource.address === 'google_cloud_run_v2_job.scraper').values.template);
+  expected[0].template[0].containers[0].image = candidate.image;
+  const actual = structuredClone(value.template);
+  // Provider can encode the absent plaintext secret value as null or empty.
+  for (const env of actual[0].template[0].containers[0].env) if (env.value == null) env.value = '';
+  assert.deepEqual(actual, expected, 'Job template is outside the approved operational contract');
 }
 
 function schedulerContract(value) {
@@ -95,6 +110,10 @@ function schedulerContract(value) {
   assert.equal(target.uri, `https://run.googleapis.com/v2/projects/${project}/locations/${region}/jobs/farejo-scraper:run`);
   assert.equal(target.oauth_token[0].service_account_email, `farejo-scraper-scheduler@${project}.iam.gserviceaccount.com`);
   assert.equal(target.oauth_token[0].scope, 'https://www.googleapis.com/auth/cloud-platform');
+  const expected = contract.find(resource => resource.address === 'google_cloud_scheduler_job.scraper').values;
+  for (const key of ['retry_config', 'http_target']) assert.deepEqual(value[key], expected[key]);
+  assert.equal(value.pubsub_target?.length ?? 0, 0);
+  assert.equal(value.app_engine_http_target?.length ?? 0, 0);
 }
 
 export function validatePlan(plan, candidate, releaseId) {
@@ -111,6 +130,7 @@ export function validatePlan(plan, candidate, releaseId) {
     assert([job.address, scheduler.address].includes(change.address));
     assert.deepEqual(change.mode, 'managed');
     assert(change.change.actions.length === 1 && ['no-op', 'update'].includes(change.change.actions[0]), 'Creation, deletion and replacement require administrative review');
+    if (change.address === scheduler.address) assert.deepEqual(change.change.actions, ['no-op'], 'Scheduler changes require administrative approval outside CI');
   }
   return (plan.resource_changes ?? []).filter(c => c.change.actions[0] !== 'no-op').map(c => ({ address: c.address, actions: c.change.actions }));
 }
@@ -118,7 +138,7 @@ export function validatePlan(plan, candidate, releaseId) {
 // Exclude server-generated execution metadata; compare all configuration that the two resources own.
 export function planFingerprint(plan) {
   const keys = {
-    google_cloud_run_v2_job: ['project', 'location', 'name', 'labels', 'deletion_protection', 'template', 'binary_authorization'],
+    google_cloud_run_v2_job: ['project', 'location', 'name', 'labels', 'annotations', 'description', 'client', 'client_version', 'launch_stage', 'deletion_protection', 'template', 'binary_authorization', 'start_execution_token', 'run_execution_token'],
     google_cloud_scheduler_job: ['project', 'region', 'name', 'description', 'schedule', 'time_zone', 'attempt_deadline', 'paused', 'retry_config', 'http_target', 'pubsub_target', 'app_engine_http_target'],
   };
   const changes = (plan.resource_changes ?? []).map(r => ({
