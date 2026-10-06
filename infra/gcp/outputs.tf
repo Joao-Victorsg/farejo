@@ -20,10 +20,10 @@ output "scheduler_service_account" {
 
 output "cloud_run_job_name" {
   description = "Nome do Cloud Run Job, quando habilitado."
-  value       = var.enable_job ? google_cloud_run_v2_job.scraper[0].name : null
+  value       = var.enable_job ? local.name_prefix : null
 }
 
 output "cloud_scheduler_job_name" {
   description = "Nome do Cloud Scheduler, quando habilitado."
-  value       = var.enable_scheduler ? google_cloud_scheduler_job.scraper[0].name : null
+  value       = var.enable_scheduler ? "farejo-scrape-0900-brt" : null
 }

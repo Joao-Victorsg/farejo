@@ -1,0 +1,115 @@
+name: Prepare scraper release
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: prepare-scraper-${{ github.event.workflow_run.head_sha }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'master' &&
+      github.event.workflow_run.head_repository.id == 1297090348
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    outputs:
+      relevant: ${{ steps.selection.outputs.relevant }}
+      sha: ${{ steps.selection.outputs.sha }}
+      ci_run_id: ${{ steps.selection.outputs.ci_run_id }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+      - name: Select changes since last published release
+        id: selection
+        run: node scripts/gcp/release.mjs select
+      - name: Build candidate once
+        if: steps.selection.outputs.relevant == 'true'
+        env:
+          SOURCE_SHA: ${{ steps.selection.outputs.sha }}
+        run: docker build --platform linux/amd64 --label org.opencontainers.image.revision="$SOURCE_SHA" -t "farejo-candidate:$SOURCE_SHA" .
+      - uses: supabase/setup-cli@1dedf2c611547ede7232d26866dd3c56ab903bbb # v1
+        if: steps.selection.outputs.relevant == 'true'
+        with:
+          version: 2.109.1
+      - name: Five-platform container integration
+        if: steps.selection.outputs.relevant == 'true'
+        env:
+          SOURCE_SHA: ${{ steps.selection.outputs.sha }}
+        run: node scripts/gcp/container-test.mjs "farejo-candidate:$SOURCE_SHA"
+      - name: Archive exactly the tested image
+        if: steps.selection.outputs.relevant == 'true'
+        env:
+          SOURCE_SHA: ${{ steps.selection.outputs.sha }}
+          CI_RUN_ID: ${{ steps.selection.outputs.ci_run_id }}
+        run: node scripts/gcp/release.mjs archive
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: steps.selection.outputs.relevant == 'true'
+        with:
+          name: scraper-tested-image
+          path: .local/tested-image/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: build
+    if: needs.build.outputs.relevant == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SOURCE_SHA: ${{ needs.build.outputs.sha }}
+      CI_RUN_ID: ${{ needs.build.outputs.ci_run_id }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ needs.build.outputs.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: scraper-tested-image
+          path: .local/tested-image
+      - name: Verify checksum and image identity
+        run: node scripts/gcp/release.mjs load
+      # Build/tests run in a separate job with no id-token permission.
+      - uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_PUBLISHER_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_PUBLISHER_SERVICE_ACCOUNT }}
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+          request_reason: farejo-prepare-${{ github.run_id }}
+      - uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3
+      - name: Publish the tested image
+        run: node scripts/gcp/release.mjs publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: scraper-candidate
+          path: .local/candidate/candidate.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7

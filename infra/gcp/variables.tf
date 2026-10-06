@@ -44,10 +44,10 @@ variable "time_zone" {
   default     = "America/Sao_Paulo"
 }
 
-variable "monthly_budget_usd" {
-  description = "Alerta de orçamento mensal; notifica, mas não limita gastos."
+variable "monthly_budget_brl" {
+  description = "Alerta de orçamento mensal em BRL, moeda da conta de faturamento; notifica, mas não limita gastos."
   type        = number
-  default     = 1
+  default     = 5.20
 }
 
 variable "budget_notification_channels" {
@@ -58,6 +58,12 @@ variable "budget_notification_channels" {
 
 variable "budget_enable_project_recipients" {
   description = "Também envia alertas aos membros com acesso ao projeto."
+  type        = bool
+  default     = true
+}
+
+variable "artifact_cleanup_dry_run" {
+  description = "Manter true até as tags protected-current/previous serem verificadas no bootstrap."
   type        = bool
   default     = true
 }
@@ -110,7 +116,33 @@ resource "google_artifact_registry_repository" "scraper" {
   format        = "DOCKER"
 
   docker_config {
-    immutable_tags = true
+    immutable_tags = false
+  }
+
+  cleanup_policy_dry_run = var.artifact_cleanup_dry_run
+  cleanup_policies {
+    id     = "keep-protected"
+    action = "KEEP"
+    condition {
+      tag_state    = "TAGGED"
+      tag_prefixes = ["protected-"]
+    }
+  }
+  cleanup_policies {
+    id     = "keep-recent-five"
+    action = "KEEP"
+    most_recent_versions {
+      package_name_prefixes = ["scraper"]
+      keep_count            = 5
+    }
+  }
+  cleanup_policies {
+    id     = "delete-old-candidates"
+    action = "DELETE"
+    condition {
+      tag_state  = "ANY"
+      older_than = "604800s"
+    }
   }
 
   depends_on = [google_project_service.required]
@@ -148,119 +180,22 @@ resource "google_secret_manager_secret_iam_member" "runner_access" {
   member    = "serviceAccount:${google_service_account.runner.email}"
 }
 
-resource "google_cloud_run_v2_job" "scraper" {
-  count    = var.enable_job ? 1 : 0
-  project  = var.project_id
-  name     = local.name_prefix
-  location = var.region
 
-  template {
-    task_count  = 1
-    parallelism = 1
-
-    template {
-      service_account = google_service_account.runner.email
-      timeout         = "5400s"
-      max_retries     = 0
-
-      containers {
-        image = var.image_uri
-
-        resources {
-          limits = {
-            cpu    = "1"
-            memory = "2Gi"
-          }
-        }
-
-        env {
-          name  = "SCRAPE_PLATFORM"
-          value = "all"
-        }
-
-        env {
-          name  = "SCRAPE_TIER"
-          value = "active"
-        }
-
-        env {
-          name  = "SCRAPE_RUNNER"
-          value = "cloud-run"
-        }
-
-        dynamic "env" {
-          for_each = local.secret_ids
-          content {
-            name = upper(env.key)
-            value_source {
-              secret_key_ref {
-                secret  = google_secret_manager_secret.scraper[env.key].secret_id
-                version = "1"
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  depends_on = [
-    google_project_service.required,
-    google_secret_manager_secret_iam_member.runner_access,
-  ]
-
-  lifecycle {
-    precondition {
-      condition     = trimspace(var.image_uri) != ""
-      error_message = "Defina image_uri com a imagem do scraper antes de habilitar o Cloud Run Job."
-    }
-  }
-}
 
 resource "google_cloud_run_v2_job_iam_member" "scheduler_invoker" {
   count    = var.enable_job ? 1 : 0
   project  = var.project_id
   location = var.region
-  name     = google_cloud_run_v2_job.scraper[0].name
+  name     = local.name_prefix
   role     = "roles/run.invoker"
   member   = "serviceAccount:${google_service_account.scheduler.email}"
 }
 
-resource "google_cloud_scheduler_job" "scraper" {
-  count       = var.enable_scheduler ? 1 : 0
-  project     = var.project_id
-  region      = var.region
-  name        = "farejo-scrape-0900-brt"
-  description = "Dispara a coleta active-only do Farejo às 09h de São Paulo."
-  schedule    = var.schedule
-  time_zone   = var.time_zone
 
-  attempt_deadline = "320s"
-
-  retry_config {
-    retry_count = 0
-  }
-
-  http_target {
-    http_method = "POST"
-    uri         = "https://run.googleapis.com/v2/projects/${var.project_id}/locations/${var.region}/jobs/${local.name_prefix}:run"
-
-    oauth_token {
-      service_account_email = google_service_account.scheduler.email
-      scope                 = "https://www.googleapis.com/auth/cloud-platform"
-    }
-  }
-
-  depends_on = [
-    google_cloud_run_v2_job.scraper,
-    google_cloud_run_v2_job_iam_member.scheduler_invoker,
-    terraform_data.configuration_guard,
-  ]
-}
 
 resource "google_billing_budget" "pilot" {
   billing_account = var.billing_account_id
-  display_name    = "Farejo Cloud Run pilot - USD ${var.monthly_budget_usd} monthly alert"
+  display_name    = "Farejo Cloud Run pilot - BRL ${var.monthly_budget_brl} monthly alert"
 
   budget_filter {
     projects               = ["projects/${data.google_project.current.number}"]
@@ -270,9 +205,9 @@ resource "google_billing_budget" "pilot" {
 
   amount {
     specified_amount {
-      currency_code = "USD"
-      units         = tostring(floor(var.monthly_budget_usd))
-      nanos         = floor((var.monthly_budget_usd - floor(var.monthly_budget_usd)) * 1000000000)
+      currency_code = "BRL"
+      units         = tostring(floor(var.monthly_budget_brl))
+      nanos         = floor((var.monthly_budget_brl - floor(var.monthly_budget_brl)) * 1000000000)
     }
   }
 
