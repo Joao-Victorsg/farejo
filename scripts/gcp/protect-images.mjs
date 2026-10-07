@@ -23,4 +23,4 @@ for (const tag of ['protected-current', 'protected-previous']) {
   const pinned = json(['artifacts', 'docker', 'images', 'describe', `${imagePrefix}:${tag}`, `--project=${project}`]);
   assert.equal(pinned.image_summary.fully_qualified_digest, image);
 }
-console.log(`Initial current/previous pins verified: ${image}. Cleanup remains in dry run until a separate approved apply.`);
+console.log(`Initial current/previous pins verified: ${image}. Immutable tags require reviewed administrative retention; cleanup remains in dry run.`);

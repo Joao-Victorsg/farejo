@@ -7,5 +7,5 @@ monthly_budget_brl = 5.20 # Ajustar à moeda BRL da conta de faturamento.
 enable_job       = true
 enable_scheduler = true
 
-# Habilitar a limpeza apenas depois de verificar os pins das imagens.
+# Tags imutáveis exigem retenção administrativa; manter a limpeza simulada.
 artifact_cleanup_dry_run = true

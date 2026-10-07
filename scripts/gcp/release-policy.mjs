@@ -43,6 +43,15 @@ export function relevantPaths(paths) {
     || ['Dockerfile', '.dockerignore', 'package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'tsconfig.base.json'].includes(p));
 }
 
+export function releasePins(releaseId) {
+  assert.match(releaseId, /^\d+$/);
+  return { current: `${imagePrefix}:protected-current-${releaseId}`, previous: `${imagePrefix}:protected-previous-${releaseId}` };
+}
+
+export function replacementDenied(result) {
+  return result.status !== 0 && /denied|unauthorized|403|forbidden|immutable|immutability/i.test((result.stderr ?? '') + (result.stdout ?? ''));
+}
+
 export function successfullyPublished(run, jobs) {
   return run.conclusion === 'success' && run.event === 'workflow_dispatch'
     && run.head_branch === 'master' && run.head_repository?.id === 1297090348
