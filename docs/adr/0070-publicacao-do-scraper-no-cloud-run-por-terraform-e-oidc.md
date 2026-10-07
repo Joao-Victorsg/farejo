@@ -18,7 +18,7 @@ O piloto executa às 09h de America/Sao_Paulo. Supabase Cron continua como opera
 - O apply exige CI e preparação de origem válidos, master atual, plano íntegro por hash/generation, aprovação com menos de 24 horas, infraestrutura equivalente ao plano revisado e estado anterior do job preservado. Criações, exclusões, substituições e ampliação do contrato operacional são bloqueadas.
 - A pipeline termina ao verificar a configuração publicada. Não inicia, espera nem acompanha a coleta das 09h.
 - State usa locking, versionamento, bloqueio público e caminhos separados. Migração local/remota preserva recursos e lineages; os backups ficam privados.
-- Imutabilidade da release é o digest. Tags administrativas `protected-current` e `protected-previous` protegem contra limpeza. Tags precisam ser mutáveis para retenção: Google proíbe apagar artefatos com tags imutáveis. Publisher usa role customizada sem `tags.update`; antes de liberar candidato, testa substituição negada via API e Docker em tag descartável. Cleanup começa em dry run; ativação administrativa somente após pins e provas de permissões confirmados. Se o push exigir permissão adicional ou conseguir substituir tag, preparação falha e requer nova análise, sem conceder writer ampla automaticamente.
+- Releases usam digest e o registry exige tags imutáveis. A validação federada de 07/10/2026 demonstrou que `uploadArtifacts` permite substituir tags via Docker mesmo sem `tags.update`; o candidato foi bloqueado, sem mudar a imagem do piloto. A imutabilidade do registry impede esse caminho. Pins iniciais `protected-current` e `protected-previous` permanecem como âncora; cada aprovação cria `protected-current-ID` e `protected-previous-ID`, sem mover tags existentes. Antes de liberar candidato, a preparação testa push novo e substituição negada via API e Docker em tag descartável, conferindo o digest preservado. Cleanup permanece em dry run: Google proíbe apagar artefatos com tags imutáveis. Retenção exige manutenção administrativa separada, preservando imagem vigente, rollback e âncora inicial. Não desativar a proteção durante publicações; o prepare rejeita registry mutável. Sem conceder permissões amplas para contornar falhas.
 
 ## Consequências
 
@@ -26,7 +26,7 @@ Nenhuma chave Google permanente é armazenada no GitHub. Publicação escreve im
 
 A permissão de trocar a imagem permite acesso indireto aos secrets do runtime. Aprovação e proteção do código são essenciais. A credencial Supabase service_role continua elevada; substituí-la por uma role restrita exige um trabalho específico de grants e compatibilidade do scraper, sem fingir que WIF reduz seus privilégios.
 
-Cloud Storage nos limites gratuitos e WIF não acrescentam mensalidade. Imagens, operações excedentes, logs e minutos do GitHub privado podem ser cobrados. O orçamento de BRL 5,20 é um alerta, sem corte automático.
+Cloud Storage nos limites gratuitos e WIF não acrescentam mensalidade. Imagens, operações excedentes, logs e minutos do GitHub privado podem ser cobrados. Sem retenção administrativa, imagens acumulam; cinco versões recentes não constituem um limite automático. O orçamento de BRL 5,20 é um alerta, sem corte automático.
 
 ## Referências
 

@@ -1,9 +1,20 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { imagePrefix, validateCandidate, relevantPaths, validateUpstream, validateManifest, validatePlan, successfullyPublished } from './release-policy.mjs';
+import { imagePrefix, validateCandidate, relevantPaths, validateUpstream, validateManifest, validatePlan, successfullyPublished, releasePins, replacementDenied } from './release-policy.mjs';
 
 const candidate = { sha: 'a'.repeat(40), prepareRunId: '123', ciRunId: '122', image: imagePrefix + '@sha256:' + 'b'.repeat(64), containerTest: 'passed' };
+test('retention pins use distinct immutable names for each approval', () => {
+  assert.deepEqual(releasePins('123'), { current: imagePrefix + ':protected-current-123', previous: imagePrefix + ':protected-previous-123' });
+  assert.notEqual(releasePins('124').current, releasePins('123').current);
+  assert.throws(() => releasePins('../123'));
+});
+test('replacement probes accept explicit authorization or immutable-tag denial only', () => {
+  assert(replacementDenied({ status: 1, stderr: 'denied: artifactregistry.tags.update' }));
+  assert(replacementDenied({ status: 1, stderr: 'Repository has enabled tag immutability' }));
+  assert(!replacementDenied({ status: 0, stderr: 'immutable' }));
+  assert(!replacementDenied({ status: 1, stderr: 'network timeout' }));
+});
 test('candidate requires the tested digest in the Farejo registry', () => {
   assert.equal(validateCandidate(candidate), candidate);
   for (const delta of [{ image: imagePrefix + ':latest' }, { image: 'evil.example/scraper@sha256:' + 'b'.repeat(64) }, { containerTest: 'skipped' }, { sha: 'master' }]) {

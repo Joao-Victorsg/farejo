@@ -2,7 +2,7 @@ import { spawnSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync, appendFileSync, copyFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
-import { project, region, repository, imagePrefix, validateCandidate, validateManifest, validatePlan, validateUpstream, relevantPaths, planFingerprint, successfullyPublished } from './release-policy.mjs';
+import { project, region, repository, imagePrefix, validateCandidate, validateManifest, validatePlan, validateUpstream, relevantPaths, planFingerprint, successfullyPublished, releasePins, replacementDenied } from './release-policy.mjs';
 
 const directory = '.local/release';
 mkdirSync(directory, { recursive: true });
@@ -75,6 +75,19 @@ function storage(path) { return `gs://${project}-releases/${path}`; }
 function object(path) { return json('gcloud', ['storage', 'objects', 'describe', storage(path), '--format=json']); }
 function immutableUpload(local, path) { run('gcloud', ['storage', 'cp', local, storage(path), '--if-generation-match=0']); }
 
+function pinImage(image, tag) {
+  const args = ['artifacts', 'docker', 'images', 'describe', tag, `--project=${project}`, '--format=json'];
+  const existing = spawnSync('gcloud', args, { encoding: 'utf8' });
+  if (existing.status === 0) {
+    const pinned = JSON.parse(existing.stdout).image_summary.fully_qualified_digest;
+    const requested = json('gcloud', ['artifacts', 'docker', 'images', 'describe', image, `--project=${project}`, '--format=json']).image_summary.fully_qualified_digest;
+    assert.equal(pinned, requested, 'Existing immutable release pin differs from this approval');
+    return;
+  }
+  assert(/not.?found|404|does not exist/i.test(existing.stderr ?? ''), 'Pin inspection failed');
+  run('gcloud', ['artifacts', 'docker', 'tags', 'add', image, tag, `--project=${project}`, '--quiet']);
+}
+
 const action = process.argv[2];
 if (action === 'select') {
   const ci = upstream('CI');
@@ -122,6 +135,8 @@ if (action === 'select') {
   assertCurrent(sha);
   const localImage = `farejo-candidate:${sha}`;
   const tag = `${imagePrefix}:${sha}-${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT}`;
+  const registry = json('gcloud', ['artifacts', 'repositories', 'describe', 'farejo-scraper', `--location=${region}`, `--project=${project}`, '--format=json']);
+  assert.equal(registry.dockerConfig.immutableTags, true, 'Publishing requires registry-enforced tag immutability');
   run('gcloud', ['auth', 'configure-docker', `${region}-docker.pkg.dev`, '--quiet']);
   run('docker', ['tag', localImage, tag]);
   run('docker', ['push', tag], true);
@@ -135,7 +150,7 @@ if (action === 'select') {
   run('gcloud', ['artifacts', 'docker', 'tags', 'add', current, probe, `--project=${project}`, '--quiet']);
   const denied = (tool, args) => {
     const result = spawnSync(tool, args, { encoding: 'utf8' });
-    assert(result.status !== 0 && /denied|unauthorized|403|forbidden/i.test((result.stderr ?? '') + (result.stdout ?? '')), 'Publisher can replace an existing tag or the permission probe was inconclusive');
+    assert(replacementDenied(result), 'Publisher can replace an existing tag or the permission probe was inconclusive');
     const persisted = json('gcloud', ['artifacts', 'docker', 'images', 'describe', probe, `--project=${project}`, '--format=json']);
     assert.equal(persisted.image_summary.fully_qualified_digest, current, 'Existing tag changed through the publisher identity');
   };
@@ -195,8 +210,9 @@ if (action === 'select') {
   const previousImage = manifest.previous.image;
   assert(previousImage.startsWith(imagePrefix + '@sha256:') || new RegExp('^' + imagePrefix.replaceAll('.', '\\.') + ':[a-f0-9]{40}$').test(previousImage));
   // Protect both sides before changing the job. A failed apply retains both images.
-  run('gcloud', ['artifacts', 'docker', 'tags', 'add', previousImage, imagePrefix + ':protected-previous', `--project=${project}`, '--quiet']);
-  run('gcloud', ['artifacts', 'docker', 'tags', 'add', manifest.image, imagePrefix + ':protected-current', `--project=${project}`, '--quiet']);
+  const pins = releasePins(releaseId);
+  pinImage(previousImage, pins.previous);
+  pinImage(manifest.image, pins.current);
   run('terraform', ['-chdir=infra/gcp/runtime', 'apply', '-input=false', '-lock-timeout=60s', `../../../${filename}`]);
   const current = job();
   assert.equal(baseline(current).image, manifest.image);

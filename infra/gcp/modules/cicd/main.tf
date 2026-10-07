@@ -141,7 +141,7 @@ resource "google_project_iam_custom_role" "artifact_pins" {
   permissions = [
     "artifactregistry.repositories.get", "artifactregistry.dockerimages.get",
     "artifactregistry.versions.get", "artifactregistry.tags.get", "artifactregistry.tags.list",
-    "artifactregistry.tags.create", "artifactregistry.tags.update",
+    "artifactregistry.tags.create",
   ]
 }
 

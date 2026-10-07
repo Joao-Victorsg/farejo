@@ -63,9 +63,13 @@ variable "budget_enable_project_recipients" {
 }
 
 variable "artifact_cleanup_dry_run" {
-  description = "Manter true até as tags protected-current/previous serem verificadas no bootstrap."
+  description = "Limpeza permanece simulada: versões com tags imutáveis exigem manutenção administrativa."
   type        = bool
   default     = true
+  validation {
+    condition     = var.artifact_cleanup_dry_run
+    error_message = "Não habilite cleanup automático de releases com tags imutáveis; a retenção exige uma operação administrativa revisada."
+  }
 }
 
 locals {
@@ -116,7 +120,7 @@ resource "google_artifact_registry_repository" "scraper" {
   format        = "DOCKER"
 
   docker_config {
-    immutable_tags = false
+    immutable_tags = true
   }
 
   cleanup_policy_dry_run = var.artifact_cleanup_dry_run
