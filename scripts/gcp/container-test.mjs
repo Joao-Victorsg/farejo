@@ -22,6 +22,8 @@ const output = resolve('.local/container-test-output');
 mkdirSync(output, { recursive: true });
 chmodSync(output, 0o777);
 writeFileSync(output + '/invalidation.jsonl', '');
+// This scratch file contains fixture events only. Runner/container UIDs differ.
+chmodSync(output + '/invalidation.jsonl', 0o666);
 
 try {
   command('supabase', ['start', '--workdir', stack], true);
