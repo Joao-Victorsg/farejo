@@ -24,6 +24,8 @@ O piloto executa às 09h de America/Sao_Paulo. Supabase Cron continua como opera
 
 Nenhuma chave Google permanente é armazenada no GitHub. Publicação escreve imagens/tags novas no registry; planejamento lê infraestrutura/state e só escreve lock e novos objetos de release; deploy atualiza apenas Job, state operacional e pins. Scheduler é consultado, não alterado. Runtime lê quatro secrets; identidade de invocação do Scheduler mantém somente invocação do job.
 
+Validação federada do apply em 07/10/2026: Cloud Run exige que o deployer possa baixar a imagem selecionada (`artifactregistry.repositories.downloadArtifacts`). A role dos pins concede essa leitura somente no registry Farejo; não recebe upload, alteração ou exclusão. Audit logs confirmaram a negação antes de atualizar o Job. A correção administrativa acrescenta uma permissão de leitura, sem mudar confiança, secrets ou agendamento.
+
 A permissão de trocar a imagem permite acesso indireto aos secrets do runtime. Aprovação e proteção do código são essenciais. A credencial Supabase service_role continua elevada; substituí-la por uma role restrita exige um trabalho específico de grants e compatibilidade do scraper, sem fingir que WIF reduz seus privilégios.
 
 Cloud Storage nos limites gratuitos e WIF não acrescentam mensalidade. Imagens, operações excedentes, logs e minutos do GitHub privado podem ser cobrados. Sem retenção administrativa, imagens acumulam; cinco versões recentes não constituem um limite automático. O orçamento de BRL 5,20 é um alerta, sem corte automático.

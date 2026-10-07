@@ -50,6 +50,8 @@ Quatro secrets existentes continuam no Secret Manager, versão `1`; valores nunc
 
 Supabase `service_role` continua ampla no runtime; role específica requer trabalho separado de grants/compatibilidade. Exclusão mútua desta entrega cobre publicações, não todos os scrapes manuais. Administrador do Job ou state continua autoridade de produção.
 
+Cloud Run também exige `artifactregistry.repositories.downloadArtifacts` na identidade que publica a configuração do Job. Deployer recebe essa leitura apenas no registry `farejo-scraper`, junto dos pins; não recebe upload, substituição ou exclusão de imagens. A primeira tentativa federada de apply confirmou essa exigência nos audit logs: Job permaneceu intacto até corrigir a permissão. [Permissões de deploy](https://cloud.google.com/run/docs/create-jobs).
+
 ## Recuperação
 
 - Falha no prepare/plan: produção permanece vigente; corrija e gere candidato/plano novo.
