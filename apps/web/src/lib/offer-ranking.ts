@@ -37,17 +37,46 @@ export function formatPreviousValue(offer: CatalogOffer, isCorrentista = true) {
     : previousValue.toLocaleString("pt-BR", { style: "currency", currency: offer.reward.currency });
 }
 
-function effectiveValue(offer: CatalogOffer, isCorrentista: boolean) {
+export function effectiveValue(offer: CatalogOffer, isCorrentista: boolean) {
   if (offer.reward.type !== "percent") return offer.reward.value;
-  if (!isCorrentista && isInterCorrentistaOffer(offer)) return offer.reward.valuePartial as number;
+  if (!isCorrentista && isInterCorrentistaOffer(offer)) return offer.reward.valuePartial ?? offer.reward.value;
   return offer.reward.value;
+}
+
+export function sameRankValue(left: CatalogOffer, right: CatalogOffer, isCorrentista: boolean) {
+  if (left.reward.type !== right.reward.type) return false;
+  if (left.reward.type === "fixed" && right.reward.type === "fixed" && left.reward.currency !== right.reward.currency) return false;
+  return effectiveValue(left, isCorrentista) === effectiveValue(right, isCorrentista);
 }
 
 export function rankOffers(offers: CatalogOffer[], isCorrentista = true) {
   return [...offers].sort((left, right) => {
     if (left.reward.type !== right.reward.type) return left.reward.type === "percent" ? -1 : 1;
-    return effectiveValue(right, isCorrentista) - effectiveValue(left, isCorrentista);
+    const valueDifference = effectiveValue(right, isCorrentista) - effectiveValue(left, isCorrentista);
+    if (valueDifference !== 0) return valueDifference;
+    if (left.reward.type === "fixed" && right.reward.type === "fixed") {
+      const currencyDifference = left.reward.currency.localeCompare(right.reward.currency);
+      if (currencyDifference !== 0) return currencyDifference;
+    }
+    return left.platformId.localeCompare(right.platformId);
   });
+}
+
+export function leaderOffers(rankedOffers: CatalogOffer[], isCorrentista = true) {
+  const first = rankedOffers[0];
+  return first ? rankedOffers.filter((offer) => sameRankValue(offer, first, isCorrentista)) : [];
+}
+
+export function competitionPosition(rankedOffers: CatalogOffer[], index: number, isCorrentista = true) {
+  const offer = rankedOffers[index];
+  if (!offer) return index + 1;
+  const firstEqualIndex = rankedOffers.findIndex((candidate) => sameRankValue(candidate, offer, isCorrentista));
+  return firstEqualIndex + 1;
+}
+
+export function formatLeaderValue(offer: CatalogOffer, isCorrentista = true) {
+  if (offer.reward.type === "percent") return `${effectiveValue(offer, isCorrentista).toLocaleString("pt-BR")}%`;
+  return formatReward(offer, isCorrentista);
 }
 
 export function formatReward(offer: CatalogOffer, isCorrentista = true) {

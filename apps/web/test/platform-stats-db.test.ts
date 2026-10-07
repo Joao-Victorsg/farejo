@@ -196,3 +196,19 @@ describe("web_read.platform_stats", () => {
     }
   });
 });
+
+describe("web_read.platform_stats_v2", () => {
+  it("liga o pico à loja que sustenta o valor exibido", async () => {
+    const upto = await insertStore("v2-upto", "Issue56 V2 Até");
+    const exact = await insertStore("v2-exact", "Issue56 V2 Exata");
+    await insertOffer(upto.id, "zoom", { rewardType: "percent", value: 30, isUpto: true });
+    await insertOffer(exact.id, "zoom", { rewardType: "percent", value: 30 });
+    const result = await client.query<{ platform_id: string; percent_max_store_slug: string | null; percent_max_is_upto: boolean | null }>(
+      "select platform_id, percent_max_store_slug, percent_max_is_upto from web_read.platform_stats_v2($1)",
+      [[upto.slug, exact.slug]],
+    );
+    const zoom = result.rows.find((row) => row.platform_id === "zoom");
+    expect(zoom?.percent_max_store_slug).toBe(exact.slug);
+    expect(zoom?.percent_max_is_upto).toBe(false);
+  });
+});

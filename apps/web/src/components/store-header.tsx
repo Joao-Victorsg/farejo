@@ -3,7 +3,7 @@
 import { FreshnessSummary } from "@/components/freshness-summary";
 import type { StoreDetail } from "@/lib/catalog";
 import { useInterPreference } from "@/lib/inter-preference";
-import { formatReward, rankOffers } from "@/lib/offer-ranking";
+import { formatLeaderValue, formatReward, leaderOffers, rankOffers } from "@/lib/offer-ranking";
 
 /**
  * Cabeçalho do detalhe (handoff): identidade da loja à esquerda e o melhor cashback como o
@@ -13,6 +13,7 @@ import { formatReward, rankOffers } from "@/lib/offer-ranking";
 export function StoreHeader({ store }: { store: StoreDetail }) {
   const { isCorrentista } = useInterPreference();
   const offers = rankOffers(store.offers, isCorrentista);
+  const leaders = leaderOffers(offers, isCorrentista);
   const best = offers[0] ?? null;
   const initial = store.name.trim().charAt(0).toLocaleUpperCase("pt-BR") || "L";
   const oldestSeenAt = offers.reduce<string | null>((oldest, offer) => !oldest || offer.lastSeenAt < oldest ? offer.lastSeenAt : oldest, null);
@@ -35,8 +36,8 @@ export function StoreHeader({ store }: { store: StoreDetail }) {
       </div>
       {best ? (
         <div className="text-right">
-          <p className={`font-numbers text-[44px] font-semibold leading-none tracking-[-0.03em] ${best.reward.type === "fixed" ? "text-[#8a6a33]" : "text-[#1c7a4d]"}`}>{formatReward(best, isCorrentista)}</p>
-          <p className="mt-1.5 text-[13px] text-[#70736a]">melhor · via {best.platformName}</p>
+          <p className={`font-numbers text-[44px] font-semibold leading-none tracking-[-0.03em] ${best.reward.type === "fixed" ? "text-[#8a6a33]" : "text-[#1c7a4d]"}`}>{leaders.length > 1 ? formatLeaderValue(best, isCorrentista) : formatReward(best, isCorrentista)}</p>
+          <p className="mt-1.5 max-w-xs text-[13px] text-[#70736a]">{leaders.length > 1 ? `líderes pelo valor anunciado · ${leaders.map((offer) => offer.platformName).join(", ")}` : `melhor · via ${best.platformName}`}</p>
         </div>
       ) : null}
     </header>

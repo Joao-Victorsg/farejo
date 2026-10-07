@@ -68,6 +68,7 @@ const PlatformStatsRow = z.object({
   percent_avg: z.number().nonnegative().nullable(),
   percent_max: z.number().nonnegative().nullable(),
   percent_max_is_upto: z.boolean().nullable(),
+  percent_max_store_slug: z.string().nullable(),
 });
 
 const StoreHistoryDbRow = z.object({
@@ -134,6 +135,7 @@ export type PlatformStat = {
   percentAverage: number | null;
   percentPeak: number | null;
   percentPeakIsUpto: boolean;
+  percentPeakStoreSlug: string | null;
 };
 
 let pool: Pool | undefined;
@@ -416,7 +418,7 @@ export async function getCatalogPage(request: CatalogRequest): Promise<CatalogPa
 async function getPlatformStatsUncached(): Promise<PlatformStat[]> {
   const database = getPool();
   const result = await database.query(
-    "select platform_id, platform_name, store_count, percent_avg, percent_max, percent_max_is_upto from web_read.platform_stats()",
+    "select platform_id, platform_name, store_count, percent_avg, percent_max, percent_max_is_upto, percent_max_store_slug from web_read.platform_stats_v2()",
   );
   const rows = z.array(PlatformStatsRow).parse(result.rows);
 
@@ -427,10 +429,11 @@ async function getPlatformStatsUncached(): Promise<PlatformStat[]> {
     percentAverage: row.percent_avg,
     percentPeak: row.percent_max,
     percentPeakIsUpto: row.percent_max_is_upto ?? false,
+    percentPeakStoreSlug: row.percent_max_store_slug,
   }));
 }
 
-const getCachedPlatformStats = unstable_cache(getPlatformStatsUncached, ["platform-stats-v1"], {
+const getCachedPlatformStats = unstable_cache(getPlatformStatsUncached, ["platform-stats-v2"], {
   tags: [CATALOG_CACHE_TAG],
   revalidate: CATALOG_CACHE_TTL_SECONDS,
 });

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { CatalogOffer, PlatformStat } from "../src/lib/catalog";
 import { NO_OFFER_SIGNALS, type OfferSignals } from "../src/lib/history";
-import { effectiveSignals, formatPreviousValue, formatReward, isAnomalousPlatformCoverage, isInterCorrentistaOffer, rankOffers } from "../src/lib/offer-ranking";
+import { competitionPosition, effectiveSignals, formatPreviousValue, formatReward, isAnomalousPlatformCoverage, isInterCorrentistaOffer, leaderOffers, rankOffers } from "../src/lib/offer-ranking";
 
 type PlatformOverrides = { platformId?: string; platformName?: string };
 
@@ -100,8 +100,33 @@ describe("rankOffers and formatReward — unaffected by the new signals (regress
   });
 });
 
+describe("líderes compartilhados", () => {
+  it("mostra duas taxas iguais como líderes mesmo quando uma é até ou condicional", () => {
+    const offers = rankOffers([
+      percentOffer({ isUpto: true }, { platformId: "zoom", platformName: "Zoom" }),
+      percentOffer({ valuePartial: 2 }, { platformId: "inter", platformName: "Shopping Inter" }),
+      percentOffer({ value: 2 }, { platformId: "meliuz", platformName: "Méliuz" }),
+    ]);
+    expect(leaderOffers(offers).map((offer) => offer.platformId)).toEqual(["inter", "zoom"]);
+    expect(offers.map((_, index) => competitionPosition(offers, index))).toEqual([1, 1, 3]);
+    const withoutInter = rankOffers(offers, false);
+    expect(leaderOffers(withoutInter, false).map((offer) => offer.platformId)).toEqual(["zoom"]);
+  });
+
+  it("não mistura porcentagem com valor fixo e aceita empate triplo", () => {
+    const offers = rankOffers([
+      fixedOffer({ value: 5 }),
+      percentOffer({}, { platformId: "zoom" }),
+      percentOffer({}, { platformId: "inter" }),
+      percentOffer({}, { platformId: "meliuz" }),
+    ]);
+    expect(leaderOffers(offers)).toHaveLength(3);
+    expect(offers.map((_, index) => competitionPosition(offers, index))).toEqual([1, 1, 1, 4]);
+  });
+});
+
 function statOf(overrides: Partial<PlatformStat> = {}): PlatformStat {
-  return { platformId: "meliuz", platformName: "Méliuz", storeCount: 0, percentAverage: null, percentPeak: null, percentPeakIsUpto: false, ...overrides };
+  return { platformId: "meliuz", platformName: "Méliuz", storeCount: 0, percentAverage: null, percentPeak: null, percentPeakIsUpto: false, percentPeakStoreSlug: null, ...overrides };
 }
 
 describe("isAnomalousPlatformCoverage", () => {
