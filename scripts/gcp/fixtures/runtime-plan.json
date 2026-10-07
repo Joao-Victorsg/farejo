@@ -1,0 +1,520 @@
+{
+  "candidate": {
+    "sha": "dda3c86862d12b5bca9feb9be056a0721748fe23",
+    "prepareRunId": "1",
+    "ciRunId": "1",
+    "containerTest": "passed",
+    "image": "southamerica-east1-docker.pkg.dev/farejo-510021/farejo-scraper/scraper@sha256:9f870d79bd92467741dadb40581145b543c0c5921bc1f68f475832a4ddf7b051"
+  },
+  "plan": {
+    "planned_values": {
+      "root_module": {
+        "resources": [
+          {
+            "address": "google_cloud_run_v2_job.scraper",
+            "type": "google_cloud_run_v2_job",
+            "mode": "managed",
+            "values": {
+              "project": "farejo-510021",
+              "location": "southamerica-east1",
+              "name": "farejo-scraper",
+              "labels": {
+                "release_id": "0",
+                "source_sha": "dda3c86862d12b5bca9feb9be056a0721748fe23"
+              },
+              "deletion_protection": true,
+              "template": [
+                {
+                  "annotations": {},
+                  "labels": {},
+                  "parallelism": 1,
+                  "task_count": 1,
+                  "template": [
+                    {
+                      "containers": [
+                        {
+                          "args": [],
+                          "command": [],
+                          "depends_on": [],
+                          "env": [
+                            {
+                              "name": "CATALOG_INVALIDATION_SECRET",
+                              "value": "",
+                              "value_source": [
+                                {
+                                  "secret_key_ref": [
+                                    {
+                                      "secret": "farejo-scraper-catalog-invalidation-secret",
+                                      "version": "1"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "CATALOG_INVALIDATION_URL",
+                              "value": "",
+                              "value_source": [
+                                {
+                                  "secret_key_ref": [
+                                    {
+                                      "secret": "farejo-scraper-catalog-invalidation-url",
+                                      "version": "1"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "SCRAPE_PLATFORM",
+                              "value": "all",
+                              "value_source": []
+                            },
+                            {
+                              "name": "SCRAPE_RUNNER",
+                              "value": "cloud-run",
+                              "value_source": []
+                            },
+                            {
+                              "name": "SCRAPE_TIER",
+                              "value": "active",
+                              "value_source": []
+                            },
+                            {
+                              "name": "SUPABASE_SERVICE_ROLE_KEY",
+                              "value": "",
+                              "value_source": [
+                                {
+                                  "secret_key_ref": [
+                                    {
+                                      "secret": "farejo-scraper-supabase-service-role-key",
+                                      "version": "1"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "SUPABASE_URL",
+                              "value": "",
+                              "value_source": [
+                                {
+                                  "secret_key_ref": [
+                                    {
+                                      "secret": "farejo-scraper-supabase-url",
+                                      "version": "1"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "image": "southamerica-east1-docker.pkg.dev/farejo-510021/farejo-scraper/scraper@sha256:9f870d79bd92467741dadb40581145b543c0c5921bc1f68f475832a4ddf7b051",
+                          "name": "",
+                          "ports": [],
+                          "resources": [
+                            {
+                              "limits": {
+                                "cpu": "1",
+                                "memory": "2Gi"
+                              }
+                            }
+                          ],
+                          "startup_probe": [],
+                          "volume_mounts": [],
+                          "working_dir": ""
+                        }
+                      ],
+                      "encryption_key": "",
+                      "execution_environment": "EXECUTION_ENVIRONMENT_GEN2",
+                      "gpu_zonal_redundancy_disabled": false,
+                      "max_retries": 0,
+                      "node_selector": [],
+                      "service_account": "farejo-scraper-runner@farejo-510021.iam.gserviceaccount.com",
+                      "timeout": "5400s",
+                      "volumes": [],
+                      "vpc_access": []
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "address": "google_cloud_scheduler_job.scraper",
+            "type": "google_cloud_scheduler_job",
+            "mode": "managed",
+            "values": {
+              "project": "farejo-510021",
+              "region": "southamerica-east1",
+              "name": "farejo-scrape-0900-brt",
+              "schedule": "0 9 * * *",
+              "time_zone": "America/Sao_Paulo",
+              "attempt_deadline": "320s",
+              "paused": false,
+              "retry_config": [
+                {
+                  "max_backoff_duration": "3600s",
+                  "max_doublings": 5,
+                  "max_retry_duration": "0s",
+                  "min_backoff_duration": "5s",
+                  "retry_count": 0
+                }
+              ],
+              "http_target": [
+                {
+                  "body": "",
+                  "headers": {},
+                  "http_method": "POST",
+                  "oauth_token": [
+                    {
+                      "scope": "https://www.googleapis.com/auth/cloud-platform",
+                      "service_account_email": "farejo-scraper-scheduler@farejo-510021.iam.gserviceaccount.com"
+                    }
+                  ],
+                  "oidc_token": [],
+                  "uri": "https://run.googleapis.com/v2/projects/farejo-510021/locations/southamerica-east1/jobs/farejo-scraper:run"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "resource_changes": [
+      {
+        "address": "google_cloud_run_v2_job.scraper",
+        "type": "google_cloud_run_v2_job",
+        "mode": "managed",
+        "change": {
+          "actions": [
+            "update"
+          ],
+          "before": {
+            "project": "farejo-510021",
+            "location": "southamerica-east1",
+            "name": "farejo-scraper",
+            "labels": {},
+            "deletion_protection": true,
+            "template": [
+              {
+                "annotations": {},
+                "labels": {},
+                "parallelism": 1,
+                "task_count": 1,
+                "template": [
+                  {
+                    "containers": [
+                      {
+                        "args": [],
+                        "command": [],
+                        "depends_on": [],
+                        "env": [
+                          {
+                            "name": "CATALOG_INVALIDATION_SECRET",
+                            "value": "",
+                            "value_source": [
+                              {
+                                "secret_key_ref": [
+                                  {
+                                    "secret": "farejo-scraper-catalog-invalidation-secret",
+                                    "version": "1"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "CATALOG_INVALIDATION_URL",
+                            "value": "",
+                            "value_source": [
+                              {
+                                "secret_key_ref": [
+                                  {
+                                    "secret": "farejo-scraper-catalog-invalidation-url",
+                                    "version": "1"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "SCRAPE_PLATFORM",
+                            "value": "all",
+                            "value_source": []
+                          },
+                          {
+                            "name": "SCRAPE_RUNNER",
+                            "value": "cloud-run",
+                            "value_source": []
+                          },
+                          {
+                            "name": "SCRAPE_TIER",
+                            "value": "active",
+                            "value_source": []
+                          },
+                          {
+                            "name": "SUPABASE_SERVICE_ROLE_KEY",
+                            "value": "",
+                            "value_source": [
+                              {
+                                "secret_key_ref": [
+                                  {
+                                    "secret": "farejo-scraper-supabase-service-role-key",
+                                    "version": "1"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "SUPABASE_URL",
+                            "value": "",
+                            "value_source": [
+                              {
+                                "secret_key_ref": [
+                                  {
+                                    "secret": "farejo-scraper-supabase-url",
+                                    "version": "1"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ],
+                        "image": "southamerica-east1-docker.pkg.dev/farejo-510021/farejo-scraper/scraper:dda3c86862d12b5bca9feb9be056a0721748fe23",
+                        "name": "",
+                        "ports": [],
+                        "resources": [
+                          {
+                            "limits": {
+                              "cpu": "1",
+                              "memory": "2Gi"
+                            }
+                          }
+                        ],
+                        "startup_probe": [],
+                        "volume_mounts": [],
+                        "working_dir": ""
+                      }
+                    ],
+                    "encryption_key": "",
+                    "execution_environment": "EXECUTION_ENVIRONMENT_GEN2",
+                    "gpu_zonal_redundancy_disabled": false,
+                    "max_retries": 0,
+                    "node_selector": [],
+                    "service_account": "farejo-scraper-runner@farejo-510021.iam.gserviceaccount.com",
+                    "timeout": "5400s",
+                    "volumes": [],
+                    "vpc_access": []
+                  }
+                ]
+              }
+            ]
+          },
+          "after": {
+            "project": "farejo-510021",
+            "location": "southamerica-east1",
+            "name": "farejo-scraper",
+            "labels": {
+              "release_id": "0",
+              "source_sha": "dda3c86862d12b5bca9feb9be056a0721748fe23"
+            },
+            "deletion_protection": true,
+            "template": [
+              {
+                "annotations": {},
+                "labels": {},
+                "parallelism": 1,
+                "task_count": 1,
+                "template": [
+                  {
+                    "containers": [
+                      {
+                        "args": [],
+                        "command": [],
+                        "depends_on": [],
+                        "env": [
+                          {
+                            "name": "CATALOG_INVALIDATION_SECRET",
+                            "value": "",
+                            "value_source": [
+                              {
+                                "secret_key_ref": [
+                                  {
+                                    "secret": "farejo-scraper-catalog-invalidation-secret",
+                                    "version": "1"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "CATALOG_INVALIDATION_URL",
+                            "value": "",
+                            "value_source": [
+                              {
+                                "secret_key_ref": [
+                                  {
+                                    "secret": "farejo-scraper-catalog-invalidation-url",
+                                    "version": "1"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "SCRAPE_PLATFORM",
+                            "value": "all",
+                            "value_source": []
+                          },
+                          {
+                            "name": "SCRAPE_RUNNER",
+                            "value": "cloud-run",
+                            "value_source": []
+                          },
+                          {
+                            "name": "SCRAPE_TIER",
+                            "value": "active",
+                            "value_source": []
+                          },
+                          {
+                            "name": "SUPABASE_SERVICE_ROLE_KEY",
+                            "value": "",
+                            "value_source": [
+                              {
+                                "secret_key_ref": [
+                                  {
+                                    "secret": "farejo-scraper-supabase-service-role-key",
+                                    "version": "1"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "name": "SUPABASE_URL",
+                            "value": "",
+                            "value_source": [
+                              {
+                                "secret_key_ref": [
+                                  {
+                                    "secret": "farejo-scraper-supabase-url",
+                                    "version": "1"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ],
+                        "image": "southamerica-east1-docker.pkg.dev/farejo-510021/farejo-scraper/scraper@sha256:9f870d79bd92467741dadb40581145b543c0c5921bc1f68f475832a4ddf7b051",
+                        "name": "",
+                        "ports": [],
+                        "resources": [
+                          {
+                            "limits": {
+                              "cpu": "1",
+                              "memory": "2Gi"
+                            }
+                          }
+                        ],
+                        "startup_probe": [],
+                        "volume_mounts": [],
+                        "working_dir": ""
+                      }
+                    ],
+                    "encryption_key": "",
+                    "execution_environment": "EXECUTION_ENVIRONMENT_GEN2",
+                    "gpu_zonal_redundancy_disabled": false,
+                    "max_retries": 0,
+                    "node_selector": [],
+                    "service_account": "farejo-scraper-runner@farejo-510021.iam.gserviceaccount.com",
+                    "timeout": "5400s",
+                    "volumes": [],
+                    "vpc_access": []
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "address": "google_cloud_scheduler_job.scraper",
+        "type": "google_cloud_scheduler_job",
+        "mode": "managed",
+        "change": {
+          "actions": [
+            "no-op"
+          ],
+          "before": {
+            "project": "farejo-510021",
+            "region": "southamerica-east1",
+            "name": "farejo-scrape-0900-brt",
+            "schedule": "0 9 * * *",
+            "time_zone": "America/Sao_Paulo",
+            "attempt_deadline": "320s",
+            "paused": false,
+            "retry_config": [
+              {
+                "max_backoff_duration": "3600s",
+                "max_doublings": 5,
+                "max_retry_duration": "0s",
+                "min_backoff_duration": "5s",
+                "retry_count": 0
+              }
+            ],
+            "http_target": [
+              {
+                "body": "",
+                "headers": {},
+                "http_method": "POST",
+                "oauth_token": [
+                  {
+                    "scope": "https://www.googleapis.com/auth/cloud-platform",
+                    "service_account_email": "farejo-scraper-scheduler@farejo-510021.iam.gserviceaccount.com"
+                  }
+                ],
+                "oidc_token": [],
+                "uri": "https://run.googleapis.com/v2/projects/farejo-510021/locations/southamerica-east1/jobs/farejo-scraper:run"
+              }
+            ]
+          },
+          "after": {
+            "project": "farejo-510021",
+            "region": "southamerica-east1",
+            "name": "farejo-scrape-0900-brt",
+            "schedule": "0 9 * * *",
+            "time_zone": "America/Sao_Paulo",
+            "attempt_deadline": "320s",
+            "paused": false,
+            "retry_config": [
+              {
+                "max_backoff_duration": "3600s",
+                "max_doublings": 5,
+                "max_retry_duration": "0s",
+                "min_backoff_duration": "5s",
+                "retry_count": 0
+              }
+            ],
+            "http_target": [
+              {
+                "body": "",
+                "headers": {},
+                "http_method": "POST",
+                "oauth_token": [
+                  {
+                    "scope": "https://www.googleapis.com/auth/cloud-platform",
+                    "service_account_email": "farejo-scraper-scheduler@farejo-510021.iam.gserviceaccount.com"
+                  }
+                ],
+                "oidc_token": [],
+                "uri": "https://run.googleapis.com/v2/projects/farejo-510021/locations/southamerica-east1/jobs/farejo-scraper:run"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

@@ -222,6 +222,16 @@ Regra que barra a gravação de um run cujos números destoam (queda de ofertas/
   atravessando várias **Inscrições** e várias **Lojas canônicas**. É um por (assinante, run) — nunca
   um por melhoria, nunca um por loja.
 
+### Publicação do scraper (ADR-0070)
+
+**Candidato**: imagem construída uma vez, validada com fixtures das cinco plataformas e banco local, publicada no registry por digest. Ainda não é a configuração do job de produção.
+
+**Release aprovado**: commit, digest, plano Terraform privado e geração/hash identificados por um release ID, com aprovação humana válida por 24 horas.
+
+**Publicação do scraper**: aplicação do plano aprovado que altera o job agendado. O `terraform apply` já é o deploy; a pipeline verifica configuração e encerra sem iniciar ou acompanhar coletas.
+
+**Bootstrap de segurança**: infraestrutura administrativa de IAM/WIF, buckets e permissões, aplicada por administrador após revisão. As identidades de CI não podem alterá-la.
+
 ## Flagged ambiguities
 
 - "site"/"portal" eram usados para a entidade de cashback — resolvido: a entidade é **Plataforma**; "site" fica só para **site alvo** (a propriedade web raspada); "portal" é _avoid_.
