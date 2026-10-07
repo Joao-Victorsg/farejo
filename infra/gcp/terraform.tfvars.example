@@ -1,0 +1,11 @@
+project_id       = "replace-with-your-google-cloud-project-id"
+billing_account_id = "000000-000000-000000"
+monthly_budget_brl = 5.20 # Ajustar à moeda BRL da conta de faturamento.
+
+# Estes indicadores preservam bindings administrativos do piloto existente.
+# Job/Scheduler pertencem agora a infra/gcp/runtime; estes flags não os pausam.
+enable_job       = true
+enable_scheduler = true
+
+# Habilitar a limpeza apenas depois de verificar os pins das imagens.
+artifact_cleanup_dry_run = true
