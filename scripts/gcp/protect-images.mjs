@@ -3,7 +3,8 @@ import assert from 'node:assert/strict';
 import { project, region, imagePrefix } from './release-policy.mjs';
 
 function run(args) {
-  const result = spawnSync('gcloud', args, { encoding: 'utf8' });
+  // Windows SDK provides a .cmd launcher; RTK resolves it without shell strings.
+  const result = spawnSync(process.platform === 'win32' ? 'rtk' : 'gcloud', process.platform === 'win32' ? ['proxy', 'gcloud', ...args] : args, { encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr);
   return result.stdout.trim();
 }
