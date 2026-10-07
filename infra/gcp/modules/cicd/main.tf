@@ -139,7 +139,9 @@ resource "google_project_iam_custom_role" "artifact_pins" {
   role_id = "farejoArtifactPins"
   title   = "Farejo current and rollback image pins"
   permissions = [
-    "artifactregistry.repositories.get", "artifactregistry.dockerimages.get",
+    # Cloud Run validates that the deployer can download the selected image.
+    "artifactregistry.repositories.get", "artifactregistry.repositories.downloadArtifacts",
+    "artifactregistry.dockerimages.get",
     "artifactregistry.versions.get", "artifactregistry.tags.get", "artifactregistry.tags.list",
     "artifactregistry.tags.create",
   ]
