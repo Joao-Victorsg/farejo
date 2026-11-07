@@ -50,7 +50,7 @@ export type ScrapeInstruction = {
 
 /**
  * Metadados de coleta que só o adapter observa (ADR-0001) — declaredTotal,
- * rawCount e softBlocks não são interpretação, e o pipeline decide o veredito.
+ * rawCount, softBlocks e adapterParseErrors não são interpretação, e o pipeline decide o veredito.
  */
 export interface ScrapeResult {
   offers: RawOffer[];
@@ -60,6 +60,8 @@ export interface ScrapeResult {
   /** Itens recebidos com desfecho real, ANTES do filtro de inativas. */
   rawCount: number;
   softBlocks: number;
+  /** Registros de origem inválidos antes de virarem RawOffer. */
+  adapterParseErrors?: number;
   /** Só preenchido por coleta tiered (méliuz, cuponomia); ausente nos sites de 1 request. */
   outcomes?: SlugOutcome[];
 }

@@ -60,5 +60,6 @@ describe("parseZoom", () => {
     const malformed = parseZoom(html);
     expect(malformed.rawCount).toBe(213);
     expect(malformed.offers).toHaveLength(171);
+    expect(malformed.adapterParseErrors).toBe(1);
   });
 });

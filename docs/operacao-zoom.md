@@ -28,9 +28,9 @@ Somente coletas completas do Zoom iniciadas a partir de 07/11/2026 às 12h
 (15h UTC) usam a nova referência. Enquanto houver menos de três coletas
 aceitas após essa data, a referência é 188 lojas e a média de 14, 15 e 15
 ofertas ativas. Todos os limites continuam valendo. Enquanto a referência
-verificada estiver em uso, qualquer erro de interpretação das ofertas bloqueia
-a escrita. O total declarado é obrigatório nesse período e nas coletas
-seguintes do Zoom.
+verificada estiver em uso, qualquer erro de interpretação das ofertas ou
+registro inválido no diretório bloqueia a escrita. O total declarado é
+obrigatório nesse período e nas coletas seguintes do Zoom.
 
 A partir de três coletas aceitas, o cálculo volta à média móvel de até cinco
 coletas aceitas desde a data de corte. O histórico anterior é preservado, mas

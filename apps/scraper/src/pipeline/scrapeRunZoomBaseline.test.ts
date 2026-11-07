@@ -1,5 +1,6 @@
 import { createClient, type ScrapeResult } from "@farejo/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { parseZoom } from "../zoom.js";
 import { prepareOffers } from "./run.js";
 import { runPlatformScrape } from "./scrapeRun.js";
 
@@ -80,6 +81,27 @@ describe("Zoom verified baseline transition", () => {
     expect(await runPlatformScrape(client, "zoom", scrape, postChange))
       .toMatchObject({ status: "suspicious", tripped: rule });
     expect(writes).not.toHaveBeenCalled();
+  });
+
+  it("rejects a directory with a malformed seller even when its total matches", async () => {
+    const sellers = Array.from({ length: 187 }, (_, i) => ({
+      name: `Store ${i}`,
+      paths: { homePage: `/cupom-de-desconto/store-${i}` },
+      cashbackModality: {
+        bestFormula: i < 14 ? 0.01 : null, allMerchant: null, offerRates: null, categories: [],
+      },
+    }));
+    const flight = `"sellers":${JSON.stringify([...sellers, { broken: true }])}`;
+    const scrape = parseZoom(`188 lojas encontradas<script>self.__next_f.push([1,${JSON.stringify(flight)}])</script>`);
+    expect(scrape).toMatchObject({ rawCount: 188, declaredTotal: 188 });
+    expect(scrape.offers).toHaveLength(14);
+
+    const { client, writes, records } = setup();
+    expect(await runPlatformScrape(client, "zoom", scrape, postChange)).toMatchObject({
+      status: "suspicious", tripped: "rule3_parse_errors", parseErrors: 1,
+    });
+    expect(writes).not.toHaveBeenCalled();
+    expect(records).toHaveBeenCalledWith(expect.objectContaining({ parse_errors: 1 }));
   });
 
   it.each([

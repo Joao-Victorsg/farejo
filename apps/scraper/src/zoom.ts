@@ -12,7 +12,7 @@ const LIST_URL = `${BASE}/cupom-de-desconto/lojas`;
  * Shape cru do bundle do zoom — `shared` nunca vê isto, só `RawOffer`.
  */
 const ZoomSeller = z.object({
-  name: z.string(),
+  name: z.string().refine((name) => name.trim().length > 0),
   cashbackModality: z
     .object({
       allMerchant: z.number().nullable(),
@@ -81,7 +81,6 @@ function parseZoomSellers(sellers: ZoomSeller[]): RawOffer[] {
     const m = s.cashbackModality;
     const best = m?.bestFormula ?? 0;
     if (!(best > 0)) continue; // inativa (bestFormula null; nunca 0). allMerchant NÃO serve de gate.
-    if (!s.name) continue;
 
     offers.push({
       storeName: s.name,
@@ -106,12 +105,14 @@ function declaredCount(html: string): number | undefined {
  */
 export function parseZoom(html: string): ScrapeResult {
   const rawSellers = extractRawSellers(html);
+  const validSellers = parseValidSellers(rawSellers);
   return {
-    offers: parseZoomSellers(parseValidSellers(rawSellers)),
+    offers: parseZoomSellers(validSellers),
     scope: { kind: "full" },
     declaredTotal: declaredCount(html),
     rawCount: rawSellers.length,
     softBlocks: 0,
+    adapterParseErrors: rawSellers.length - validSellers.length,
   };
 }
 

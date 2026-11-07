@@ -52,7 +52,8 @@ export async function runPlatformScrape(
 ): Promise<ScrapeRunOutcome> {
   assertScopeHasOutcomes(scrapeResult);
 
-  const zoomResetAt = platformId === "zoom" && scope === "full" && runStartedAt.toISOString() >= ZOOM_BASELINE_RESET_AT
+  const zoomResetAt = platformId === "zoom" && scope === "full" && scrapeResult.scope.kind === "full" &&
+    runStartedAt.toISOString() >= ZOOM_BASELINE_RESET_AT
     ? ZOOM_BASELINE_RESET_AT
     : undefined;
   const [historicalBaseline, prepared] = await Promise.all([
@@ -65,7 +66,7 @@ export async function runPlatformScrape(
   const actual: SanityActual = {
     offersFound: scrapeResult.rawCount,
     activeOffers: scrapeResult.offers.length,
-    parseErrors: prepared.parseErrors,
+    parseErrors: prepared.parseErrors + (scrapeResult.adapterParseErrors ?? 0),
     declaredTotal: scrapeResult.declaredTotal ?? null,
     scope,
   };
@@ -124,7 +125,7 @@ export async function runPlatformScrape(
     runId,
     status: verdict.verdict,
     offersWritten: verdict.verdict === "ok" ? prepared.rows.length : 0,
-    parseErrors: prepared.parseErrors,
+    parseErrors: actual.parseErrors,
     tripped: verdict.tripped,
     anomalies: prepared.anomalies,
   };
