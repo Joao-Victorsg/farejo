@@ -6,4 +6,4 @@ Gerado automaticamente (F3/T13, #59). L2 continua sendo a única identidade — 
 
 | Loja A | Loja B | Sinal | Similaridade | Chaves normalizadas | Veredito IA | Proposta |
 | --- | --- | --- | --- | --- | --- | --- |
-| Loja Madesa (`lojamadesa`, meliuz) | Madesa (`madesa`, cuponomia, inter, mycashback) | l3_exact | 1.00 | madesa / madesa | — | merge → `madesa` (canônico escolhido automaticamente — **confirme antes de mergear**) |
+| Drogasil (`drogasil`, cuponomia, meliuz) | Drogasmil (`drogasmil`, cuponomia, inter, meliuz, mycashback) | levenshtein | 0.89 | drogasil / drogasmil | — | sem decisão (revisão manual) |
